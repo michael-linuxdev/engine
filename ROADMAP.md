@@ -9,8 +9,8 @@ Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtw
 | P0 | Fundament | fertig |
 | P1 | Engine-Kern | fertig |
 | P2 | Speichern | fertig |
-| P3 | Prestige und Meta | in Arbeit |
-| P4 | React, UI-Kit, i18n | offen |
+| P3 | Prestige und Meta | fertig |
+| P4 | React, UI-Kit, i18n | in Arbeit |
 | P5 | Lichtwarte: spielbarer Kern | offen |
 | P6 | Balance-Pass 1 | offen |
 | P7 | Bindung | offen |
@@ -48,10 +48,10 @@ Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtw
 
 ## P3 — Prestige und Meta
 
-- [ ] N Schichten als Daten, Probe-Schwelle, √-Auszahlung, Mindestbedingungen, Reset je Modul
-- [ ] Meta-Laden (Freischaltung beim Wiederaufbau, Empfehlungs-Band)
-- [ ] Burst, Helfer, Überraschungen, Bester Kauf, Nächstes Ziel
-- [ ] Drei Schichten nacheinander getestet, Mini-Simulator der Vorlage bis zur ersten Schicht
+- [x] N Schichten als Daten, Probe-Schwelle, √-Auszahlung, Mindestbedingungen, Reset je Modul
+- [x] Meta-Laden (Freischaltung beim Wiederaufbau, Empfehlungs-Band)
+- [x] Burst, Helfer, Überraschungen, Bester Kauf, Nächstes Ziel
+- [x] Drei Schichten nacheinander getestet, Mini-Simulator der Vorlage bis zur ersten Schicht
 
 ## P4 — React, UI-Kit, i18n
 
