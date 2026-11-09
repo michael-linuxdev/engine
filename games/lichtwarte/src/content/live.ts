@@ -5,11 +5,12 @@
  */
 import {
   burstMax, isFeatureOpen, layerStatus, levelOf, MODULE, ownedOf, prestigeState, producerLevelsTotal, producersOnline,
-  type AchievementDef, type BurstState, type ChallengeConfig, type DailyConfig, type FeatureDef, type FestConfig, type FlashConfig, type ProgressionState,
+  type AchievementDef, type BurstState, type ChallengeConfig, type DailyConfig, type FeatureDef, type FestConfig, type FestItem, type FlashConfig, type ProgressionState,
   type QuestConfig, type WeekendConfig, type WheelConfig, type WorldView,
 } from '@engine/core'
 import type { HintDef } from '@engine/react'
 import { CURRENCY, LAYER } from '../ids'
+import { FEST_VARIETIES } from './world'
 
 const pebbles = (amount: number) => ({ currency: CURRENCY.glowPebbles, amount })
 const shards = (amount: number) => ({ currency: CURRENCY.runeShards, amount })
@@ -74,6 +75,21 @@ export const MARKET_NIGHT: WeekendConfig = { from: { weekday: 5, hour: 18 }, to:
 
 export const STAR_WINDOW: FlashConfig = { durationMs: 18 * 60_000, cooldownMs: 150 * 60_000, chance: 0.55, checkMs: 10 * 60_000, mult: 1.15, goalSeconds: 360, graceMs: 10 * 60_000, reward: [pebbles(12)] }
 
+const BASE_SHOP: FestItem[] = [
+  { id: 'festBoost', cost: 20, max: 3, kind: 'boost', mult: 2, durationMs: 30 * 60_000 },
+  { id: 'festPebbles', cost: 15, max: 3, kind: 'grant', grant: [pebbles(10)] },
+  { id: 'festShards', cost: 25, max: 2, kind: 'grant', grant: [shards(5)] },
+]
+
+/** Fest-Laden: Grundangebot plus die Fest-Sorte(n) fürs Bestiarium & Kräuterkunde (P8). */
+function festShops(): Record<string, readonly FestItem[]> {
+  const out: Record<string, readonly FestItem[]> = { default: BASE_SHOP }
+  for (const [fest, ids] of Object.entries(FEST_VARIETIES)) {
+    out[fest] = [...BASE_SHOP, ...ids.map((id, i): FestItem => ({ id: `variety_${id}`, cost: i === 0 ? 60 : 160, max: 1, kind: 'item', event: { type: 'collection.found', id, source: 'fest' } }))]
+  }
+  return out
+}
+
 /** ?fest=<id> erzwingt ein Fest (Tests, Screenshots). */
 function festOverride(): string | null {
   try {
@@ -95,13 +111,7 @@ export const FESTIVALS: FestConfig = {
     { id: 'mistMoon', from: [11, 1], to: [12, 14], major: false },
     { id: 'longLight', from: [12, 15], to: [12, 31], major: true },
   ],
-  shop: {
-    default: [
-      { id: 'festBoost', cost: 20, max: 3, kind: 'boost', mult: 2, durationMs: 30 * 60_000 },
-      { id: 'festPebbles', cost: 15, max: 3, kind: 'grant', grant: [pebbles(10)] },
-      { id: 'festShards', cost: 25, max: 2, kind: 'grant', grant: [shards(5)] },
-    ],
-  },
+  shop: festShops(),
   earn: { 'daily.claimed': 10, 'burst.used': 2, 'prestige.performed': 15, 'quest.claimed': 5 },
   override: festOverride,
 }

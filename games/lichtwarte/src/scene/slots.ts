@@ -27,3 +27,15 @@ export const MAP_CROP = 110
 export function slotView(s: { x: number; y: number }): { left: number; top: number } {
   return { left: s.x, top: (((s.y / 100) * MAP_H - MAP_CROP) / (MAP_H - MAP_CROP)) * 100 }
 }
+
+/** Schmuck-Plätze (Banner & Steine) entlang des Pfades. */
+export const DECOR_SLOTS: { x: number; y: number }[] = [
+  { x: 50, y: 93 },
+  { x: 58, y: 86 },
+  { x: 44, y: 79 },
+  { x: 48, y: 69 },
+  { x: 50, y: 61 },
+  { x: 46, y: 52 },
+  { x: 50, y: 43 },
+  { x: 48, y: 35 },
+]

@@ -4,16 +4,17 @@
  */
 import { useEffect, useState } from 'react'
 import { tierFor } from '@engine/art'
-import { isUnlocked, ownedOf } from '@engine/core'
+import { DECOR_ID, isUnlocked, ownedOf, type DecorState } from '@engine/core'
 import { useEngine } from '@engine/react'
 import { useUi } from '@engine/ui'
 import { Backdrop, Shade, Snow } from '../art/Backdrop'
 import { BuildingArt } from '../art/Building'
+import { DecorArt } from '../art/decor'
 import { TIER_LEVELS } from '../art/registry'
 import { game } from '../game'
 import { t } from '../runtime'
 import { currentMood } from './mood'
-import { BUILD_SCALE, MAP_CROP, MAP_H, MAP_W, SLOTS, slotView } from './slots'
+import { BUILD_SCALE, DECOR_SLOTS, MAP_CROP, MAP_H, MAP_W, SLOTS, slotView } from './slots'
 
 export function ValleyMap({ onOpen }: { onOpen: (id: string) => void }) {
   const ui = useUi()
@@ -37,6 +38,13 @@ export function ValleyMap({ onOpen }: { onOpen: (id: string) => void }) {
             </g>
           )
         })}
+        {(world.get<DecorState>(DECOR_ID)?.placed ?? []).map((id, i) =>
+          id && DECOR_SLOTS[i] ? (
+            <g key={`decor-${i}`} transform={`translate(${(DECOR_SLOTS[i].x / 100) * MAP_W} ${(DECOR_SLOTS[i].y / 100) * MAP_H}) scale(1.3)`} data-decor={id}>
+              <DecorArt id={id} m={mood} />
+            </g>
+          ) : null,
+        )}
         <Snow m={mood} />
         <Shade m={mood} />
       </svg>

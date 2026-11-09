@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { DAILY_ID, dailyStatus, isFeatureOpen, localDayKey, MODULE, QUESTS_ID, type DailyState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
 import { currentStep, useEngine, useStore, useSteps } from '@engine/react'
-import { BurstButton, FtueCoach, GameShell, Hud, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
+import { BurstButton, CardPicker, FtueCoach, GameShell, Hud, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
 import { BuildingArt } from './art/Building'
 import { TIER_LEVELS } from './art/registry'
@@ -10,6 +10,7 @@ import { CHRONICLE } from './content/chronicle'
 import { DAILY } from './content/live'
 import { Notices } from './story/Notices'
 import { WatchView } from './story/Watch'
+import { WorldTab } from './story/WorldTab'
 import { ftueSteps } from './content/ftue'
 import { CURRENCY, game } from './game'
 import { chronicleRead, ftue, i18n, labels, prefs, rt, t, tabsSeen } from './runtime'
@@ -20,6 +21,11 @@ import { ChronicleSheet } from './story/Chronicle'
 import { useChronicle } from './story/useChronicle'
 
 declare const __APP_VERSION__: string
+
+/** Sternbilder warten auf eine Wahl (erst nach der Freischaltung). */
+function cardsWaiting(w: WorldView): boolean {
+  return isFeatureOpen(w, 'constellations') && ((w.get<{ offer: string[] }>('layerCards')?.offer.length ?? 0) > 0)
+}
 
 /** Abzeichen am Wacht-Tab: Wachrunde offen oder Auftrag fertig. */
 function watchBadge(w: WorldView): boolean {
@@ -144,7 +150,10 @@ export function App() {
       }
       play={<Play onOpen={setSelected} />}
       menu={[{ id: 'chronicle', label: t.chronicle.menu, onSelect: () => setChronicle(true), badge: unread }]}
-      tabs={isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, badge: watchBadge(world) }, view: <WatchView /> }] : []}
+      tabs={[
+        ...(isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, badge: watchBadge(world) }, view: <WatchView /> }] : []),
+        ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab }, view: <WorldTab /> }] : []),
+      ]}
       notice={<NoticeArea onEvents={() => setTab('watch')} />}
       tab={tab}
       onTab={(id) => {
@@ -167,6 +176,7 @@ export function App() {
             }}
           />
           <WheelSheet open={wheelOpen && !ceremony && !chronicleOpen} onClose={() => setWheelOpen(false)} />
+          <CardPicker open={!wheelOpen && !ceremony && !chronicleOpen && cardsWaiting(world)} onClose={() => rt.dispatch('layerCards', 'pick', { id: (rt.get().modules.layerCards as { offer: string[] }).offer[0] })} />
         </>
       }
     />
