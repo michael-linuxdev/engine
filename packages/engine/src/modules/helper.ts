@@ -60,13 +60,24 @@ export function helperModule(): EngineModule<HelperState> {
     tick: (s, dt, _ctx, world) => {
       if (s.rank <= 0) return s
       const interval = helperInterval(world, s.rank)
-      const carry = Math.min(interval * 2, s.carryMs + dt)
-      if (carry < interval) return { ...s, carryMs: carry }
+      // Long steps (simulator, catch-up) may hold several buys; capped so a gap never floods.
+      const carry = Math.min(interval * 20, s.carryMs + dt)
+      const n = Math.floor(carry / interval)
+      if (n <= 0) return { ...s, carryMs: carry }
       const id = helperTarget(world, s.rule)
-      const next = { ...s, carryMs: carry - interval, bought: id ? s.bought + 1 : s.bought }
-      return id ? act(next, { dispatch: [{ module: MODULE.producers, type: 'buy', payload: { id, count: 1, source: 'helper' } }] }) : next
+      const next = { ...s, carryMs: carry - n * interval, bought: id ? s.bought + n : s.bought }
+      if (!id) return next
+      // Re-target after every buy: the follow-ups run in order, each picks its own target.
+      const buys = Array.from({ length: n }, () => ({ module: MODULE.helper, type: 'buyOne', payload: undefined }))
+      return act(next, { dispatch: buys })
     },
     actions: {
+      /** One automatic buy (internal follow-up of `tick`). */
+      buyOne: (s, _p, _ctx, world) => {
+        if (s.rank <= 0) return s
+        const id = helperTarget(world, s.rule)
+        return id ? act(s, { dispatch: [{ module: MODULE.producers, type: 'buy', payload: { id, count: 1, source: 'helper' } }] }) : s
+      },
       upgrade: (s, _p, _ctx, world) => {
         const r = world.def.balance.helper.ranks[s.rank]
         if (!r) return s

@@ -19,3 +19,5 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+      - name: Balance-Smoke (Vorlage, engaged, 2 h)
+        run: SUMMARY=1 npm run -s balance -- vorlage engaged 2
