@@ -36,7 +36,7 @@ export interface SimEvent {
   at: number
   /** Active minutes played until then. */
   active: number
-  kind: 'unlock' | 'prestige' | 'level'
+  kind: 'unlock' | 'prestige' | 'level' | 'region'
   id: string
   detail?: string
 }
@@ -60,6 +60,13 @@ function isPlaying(profile: Profile, minuteOfDay: number, minuteSinceStart: numb
   if (!s) return true
   if (minuteOfDay >= 23 * 60) return false
   return minuteSinceStart % s.every < s.len
+}
+
+const regionDefs = new WeakMap<GameDefinition, readonly { id: string; areas: readonly { id: string }[] }[]>()
+
+/** Let the simulator know the region list (the module keeps it private). */
+export function registerRegions(def: GameDefinition, regions: readonly { id: string; areas: readonly { id: string }[] }[]): void {
+  regionDefs.set(def, regions)
 }
 
 export function simulate(def: GameDefinition, opts: SimOptions): SimResult {
@@ -106,6 +113,21 @@ export function simulate(def: GameDefinition, opts: SimOptions): SimResult {
       if (!b?.affordable || !act('producers', 'buy', { id: b.id, count: 1 })) break
     }
     act('helper', 'upgrade')
+    // Lande: in jedem offenen Land so viel wie möglich ausbauen (günstigste offene Bereiche)
+    const regions = (s.modules.regions as { regions?: Record<string, { open: boolean }> } | undefined)?.regions
+    if (regions) {
+      for (const [id, r] of Object.entries(regions)) {
+        if (!r.open) continue
+        const rdef = (regionDefs.get(def) ?? []).find((x) => x.id === id)
+        if (!rdef) continue
+        for (let i = 0; i < 40; i++) {
+          let bought = false
+          for (const a of rdef.areas) if (act('regions', 'buy', { region: id, area: a.id, count: 1 })) bought = true
+          if (!bought) break
+        }
+        act('regions', 'care', { region: id, kind: 'grow' })
+      }
+    }
     for (let i = 0; i < 50; i++) {
       const w = view(def, s)
       const open = def.metaShop.filter((it) => canBuyMeta(w, it)).sort((a, b) => metaCost(a, rankOf(w, a.id)) - metaCost(b, rankOf(w, b.id)))
@@ -126,6 +148,12 @@ export function simulate(def: GameDefinition, opts: SimOptions): SimResult {
       if (n > 0 && !seen.has(p.id)) {
         seen.add(p.id)
         record('unlock', p.id)
+      }
+    }
+    for (const [id, r] of Object.entries((s.modules.regions as { regions?: Record<string, { open: boolean }> } | undefined)?.regions ?? {})) {
+      if (r.open && !seen.has(`region:${id}`)) {
+        seen.add(`region:${id}`)
+        record('region', id)
       }
     }
     // --- time passes ---

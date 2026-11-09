@@ -19,6 +19,8 @@ Werkzeug: `npm run balance -- lichtwarte <engaged|regular|casual> <stunden>` (Si
 
 **Tempo:** die größte der letzten drei Lücken (mindestens 10 min). Ziele kommen in Schüben; ein Schub ist keine Mauer, eine Lücke über dem Dreifachen des Tempos schon.
 
+| Lande öffnen sich nach und nach | regular | Land 3 mindestens 12 h nach Land 2, mindestens 3 Lande in 21 Tagen | Taktung der Lande | ✓ (`realms.test.ts`) |
+
 ## Stellschrauben
 
 - **Leiter** (`LADDER` in `game.ts`): C0, g und r0 wie in der Referenz. Frühe Tore sind angepasst: Holzlager braucht 4.000 verdient oder Kräuterkate Stufe 25, Steinbruch 90.000 oder Holzlager Stufe 25.

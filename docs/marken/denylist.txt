@@ -80,6 +80,7 @@ Lord of the Rings
 Herr der Ringe
 Middle-earth
 Mittelerde
+cs:\bAuenland\b
 Hobbit
 Mithrill?
 Balrog
