@@ -39,6 +39,9 @@ jobs:
           echo 'engine.micana.de' > dist/CNAME
           test -f dist/index.html
           test -f dist/vorlage/index.html
+          grep -q 'assets/' dist/index.html
+          ! grep -q '/src/main.tsx' dist/index.html
+          test -f dist/manifest.webmanifest
           grep -q 'assets/' dist/vorlage/index.html
           ! grep -q '/src/main.tsx' dist/vorlage/index.html
           test -f dist/vorlage/manifest.webmanifest

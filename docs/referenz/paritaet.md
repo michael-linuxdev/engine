@@ -10,11 +10,11 @@ Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `i
 |---|---|---|---|---|---|
 | Erzeuger | `generators.ts`, `state/buy.ts`, `state/garden.ts` | `producers` | 10 Bauwerke (Kräuterkate … Sternwarte) | 10 Erzeuger, 10 Meilensteine (×2), Tore bei Prestige 1/2/4/6/9/12 | im Spiel |
 | Mengenkauf ×1/×10/×max | `state/garden.ts` | `producers` (`quote`, `maxAffordable`) | — | 3 Modi | im Spiel |
-| Ausbaustufen-Grafik | `theme/tiers.ts` | `art-kit` (`tierFor`) | 4 Stufen je Bauwerk | 5 Stufen × 10 (Ziel 4–5) | im Spiel (Stufe 1–4) |
-| Zweige | `branches.ts` | `branches` | Effizienz / Fassung | 2 Arten × 5 Ränge × 10 = 100 Ränge | Engine fertig |
+| Ausbaustufen-Grafik | `theme/tiers.ts` | `art-kit` (`tierFor`) | Wildnis + 4 Stufen je Bauwerk | 5 Stufen × 10 | getestet (Pixelvergleich, 50 Zustände) |
+| Zweige | `branches.ts` | `branches` | Effizienz / Fassung | 2 Arten × 5 Ränge × 10 = 100 Ränge | im Spiel |
 | Spieler-Level | `progression.ts` | `progression` | Wächterrang | 40 Stufen, 7 Belohnungen, +0,5 %/Stufe bis +12 % | im Spiel |
-| Prestige 1 | `economy.ts` | `prestige` Schicht 0 | Mondwende → Runensplitter | Probe-Schwelle, √-Auszahlung, ≥ 3 Erzeuger ab Lauf 2 | im Spiel |
-| Prestige 2 | `longLoop.ts` | `prestige` Schicht 1 | Lange Nacht → Nachtsilber | 4 Gegenstände / 41 Ränge, 3 Tage Ruhezeit | Engine fertig (Laden: P10) |
+| Prestige 1 | `economy.ts` | `prestige` Schicht 0 | Mondwende → Runensplitter | Probe-Schwelle, √-Auszahlung, ≥ 3 Erzeuger ab Lauf 2 | getestet (smoke, Balance-CI) |
+| Prestige 2 | `longLoop.ts` | `prestige` Schicht 1 | Lange Nacht → Nachttau | 4 Gegenstände / 41 Ränge, 3 Tage Ruhezeit | Engine fertig (Laden, Ruhezeit: P10) |
 | Prestige 3 | `generations.ts` | `prestige` Schicht 2 | Zeitalter → Ahnenlicht | 5 Gegenstände (ohne Deckel) | Engine fertig (Laden: P10) |
 | Meta-Laden | `truhe.ts` | `metaShop` | Archiv der Wächter | **10 Gegenstände, 163 Ränge, 3 Zweige**, Empfehlungs-Band 5 + 2 | im Spiel |
 | Burst-Tap | `state/rewards.ts`, `economy.ts` | `burst` | Funkenruf | 60 s Ertrag, 5 min Aufladung | im Spiel |
@@ -38,7 +38,7 @@ Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `i
 | Glücksrad | `gardenLife.ts` | `wheel` | Schicksalsrad → eigener Name nötig | 4 Arten auf 6 Feldern | offen |
 | Freischalt-Liste | `featureUnlocks.ts` | `featureUnlocks` | — | **9** Systeme | offen |
 | Hinweise | `hints.ts` | `hints` | Randnotizen der Chronik | **16** | offen |
-| FTUE | `ftue.ts` | `ftue` | Erste Wache | **6 Schritte** | im Spiel (Grundform) |
+| FTUE | `ftue.ts` | engine-react `createSteps` + ui-kit `FtueCoach` | Erste Wache | **6 Schritte** | getestet (6 Schritte, smoke) |
 | Benachrichtigungen | `notify.ts` | engine-react | — | 1 Stelle | offen |
 
 ## Sammeln und Welt (P8)
@@ -54,7 +54,7 @@ Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `i
 | Karten nach Prestige | `seasonCards.ts` | `layerCards` | Sternbilder | **12** (9 + 3), 1 aus 3 | offen |
 | Entscheidungs-Ereignis | `weatherEvents.ts`, `gardenLife.ts` | `choiceEvents` | Omen | 4 Wetterarten, 3 Ereignisse × 2 Optionen | offen |
 | Großprojekte | `projects.ts` | `projects` | Großwerke | **6 × 3 = 18 Stufen** | offen |
-| Stimmungen | `theme/art/mood.ts`, `theme/ambient.ts` | `art-kit` (`moodFor`) | Tag/Abend/Nacht × 4 Jahreszeiten | 16 Zustände | im Spiel (Tag/Abend/Nacht) |
+| Stimmungen | `theme/art/mood.ts`, `theme/ambient.ts` | `art-kit` (`moodAt`) | Morgen/Tag/Abend/Nacht × 4 Jahreszeiten | 16 Zustände | getestet (16 im Spiel, 4 im Pixelvergleich) |
 
 ## Lande (P9)
 
@@ -66,7 +66,7 @@ Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `i
 
 | System | Referenz-Datei(en) | Engine-Modul | Fantasy-Entsprechung | Mindestmenge | Status |
 |---|---|---|---|---|---|
-| Briefe | `notebook.ts` | `narrative` | Chronik | **20** | im Spiel (Einstieg: 4) |
+| Briefe | `notebook.ts` | `narrative` (vorerst Spiel + `createSeen`) | Chronik | **20** | im Spiel (6 von 20) |
 | Rückkehr-Brief | `story/ComebackLetter.tsx` | `narrative` | Rückkehr-Seite | 1 (≥ 48 h) | offen |
 | Zeremonie | `story/SeasonCeremony.tsx` | ui-kit | Mondwende-Zeremonie | 1 (3 Phasen) | im Spiel (Grundform) |
 

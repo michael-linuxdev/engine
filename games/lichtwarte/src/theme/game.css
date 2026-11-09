@@ -1,0 +1,101 @@
+/* Spiel-Stile (nach den Engine-Stilen). Nur Token-Farben. */
+.lw-app .ek-main {
+  padding: 0;
+  max-width: 720px;
+}
+.lw-map {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin: 0 auto;
+}
+.lw-map__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.lw-slot {
+  /* Knopf über dem ganzen Bauwerk, Schild unten am Fußpunkt */
+  position: absolute;
+  transform: translate(-50%, -82%);
+  width: 26%;
+  height: 13%;
+  min-width: var(--tap);
+  min-height: var(--tap);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-m);
+  background: transparent;
+  color: var(--map-ink);
+  font: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+.lw-slot__plaque {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  padding: 1px 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  background: var(--plaque);
+  font-size: 0.7rem;
+  line-height: 1.15;
+  box-shadow: 0 2px 5px rgb(43 33 28 / 0.2);
+}
+.lw-slot.is-wild .lw-slot__plaque {
+  background: var(--surface-2);
+}
+.lw-slot__name {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+.lw-slot__level {
+  color: var(--ink-muted);
+  font-size: 0.66rem;
+}
+.lw-glimmer-icon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--surface) 0 30%, var(--accent-2) 70%);
+}
+.lw-upgrade-art {
+  width: 140px;
+  height: 132px;
+  align-self: center;
+}
+.lw-page {
+  border-left: 3px solid var(--accent-2);
+  padding-left: var(--space-3);
+}
+.lw-signature {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--ink-muted);
+  text-align: right;
+}
+.lw-ceremony__moon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--surface) 0 40%, var(--line) 75%);
+  box-shadow: 0 0 24px var(--line);
+}
+@media (min-width: 760px) {
+  .lw-slot__plaque {
+    font-size: 0.82rem;
+  }
+}
+.lw-app .ek-panel {
+  padding: var(--space-3);
+}

@@ -70,6 +70,11 @@ try {
     const buy = await openBuy(p, first)
     await buy.click()
     await p.waitForFunction(() => window.__engine.get().modules.producers.owned[Object.keys(window.__engine.get().modules.producers.owned)[0]] >= 1)
+    // Ein Ausbau-Fenster (Karten-Spiele) wieder schließen
+    if (await p.getByTestId('upgrade-sheet').isVisible().catch(() => false)) {
+      await p.keyboard.press('Escape')
+      await p.getByTestId('upgrade-sheet').waitFor({ state: 'detached' })
+    }
     const before = await p.getByTestId('hud-amount').innerText()
     await p.getByTestId('burst').click()
     await p.waitForTimeout(300)
@@ -202,7 +207,7 @@ try {
     await desk.ctx.close()
   }
 
-  if (G.extraSmoke) await G.extraSmoke({ browser, page, URL, T, def, E, seed, assert })
+  if (G.extraSmoke) await G.extraSmoke({ browser, page, phone, URL, T, def, E, seed, assert })
   if (errors.length) throw new Error('Seitenfehler:\n' + errors.join('\n'))
   console.log(`smoke ${slug} ${lang}: ok`)
 } finally {

@@ -1,0 +1,130 @@
+{
+  "format": "engine-save",
+  "engineVersion": 1,
+  "game": "lichtwarte",
+  "contentVersion": 1,
+  "savedAt": 1794224400000,
+  "core": {
+    "primary": 206183.814999998,
+    "primaryRun": 1272568.815000033,
+    "primaryLifetime": 2339331.040000111,
+    "lastSeen": 1794224400000,
+    "createdAt": 1794211200000,
+    "rng": "66b28535"
+  },
+  "modules": {
+    "wallet": {
+      "v": 1,
+      "data": {
+        "balances": {
+          "runeShards": 0,
+          "glowPebbles": 10,
+          "nightDew": 0,
+          "forebearLight": 0
+        },
+        "earned": {
+          "runeShards": 73,
+          "glowPebbles": 10,
+          "nightDew": 0,
+          "forebearLight": 0
+        }
+      }
+    },
+    "producers": {
+      "v": 1,
+      "data": {
+        "owned": {
+          "kraeuterkate": 30,
+          "holzlager": 25,
+          "steinbruch": 15,
+          "quellschrein": 10,
+          "schmiede": 2
+        }
+      }
+    },
+    "branches": {
+      "v": 1,
+      "data": {
+        "ranks": {}
+      }
+    },
+    "progression": {
+      "v": 1,
+      "data": {
+        "xp": 1328,
+        "rewarded": [
+          2,
+          3,
+          5
+        ]
+      }
+    },
+    "prestige": {
+      "v": 1,
+      "data": {
+        "layers": [
+          {
+            "count": 1,
+            "runEarned": 1272568.815000033,
+            "sinceReset": 1
+          },
+          {
+            "count": 0,
+            "runEarned": 2339331.040000111,
+            "sinceReset": 0
+          },
+          {
+            "count": 0,
+            "runEarned": 2339331.040000111,
+            "sinceReset": 0
+          }
+        ]
+      }
+    },
+    "metaShop": {
+      "v": 1,
+      "data": {
+        "ranks": {
+          "oldLantern": 1,
+          "builderChalk": 1,
+          "hourglass": 1
+        }
+      }
+    },
+    "offline": {
+      "v": 1,
+      "data": {
+        "pending": {
+          "gained": 45738472.5,
+          "elapsedMs": 10800000,
+          "capped": false,
+          "at": 1794224400000
+        },
+        "claims": 0
+      }
+    },
+    "burst": {
+      "v": 1,
+      "data": {
+        "charges": 3,
+        "nextAt": 0,
+        "uses": 8
+      }
+    },
+    "helper": {
+      "v": 1,
+      "data": {
+        "rank": 0,
+        "rule": "cheapest",
+        "bought": 0
+      }
+    },
+    "surprises": {
+      "v": 1,
+      "data": {
+        "found": 7,
+        "lastAt": 1794213380000
+      }
+    }
+  }
+}

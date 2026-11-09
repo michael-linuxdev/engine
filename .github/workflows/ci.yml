@@ -30,5 +30,7 @@ jobs:
           name: e2e-screens
           path: e2e-screens
           if-no-files-found: ignore
+      - name: Balance (Lichtwarte, engaged, 72 h, Zielkorridore)
+        run: SUMMARY=1 CHECK=1 npm run -s balance -- lichtwarte engaged 72
       - name: Balance-Smoke (Vorlage, engaged, 2 h)
         run: SUMMARY=1 npm run -s balance -- vorlage engaged 2

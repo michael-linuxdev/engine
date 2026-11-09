@@ -2,7 +2,10 @@
 
 Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtwarte** (Arbeitstitel), ein gemütliches Fantasy-Idle-Spiel. Es soll mindestens die Tiefe, Systeme, Inhalte und Qualitätssicherung des Referenz-Spiels erreichen (`docs/referenz/paritaet.md`).
 
-**Paritäts-Fortschritt:** siehe Tabelle unten. Gezählt wird je System aus `paritaet.md`: `im Spiel`/`getestet` zählt voll, `Engine fertig` halb.
+**Paritäts-Fortschritt (2026-11-09): 36 %** der Systeme aus `paritaet.md`. 17 von 52 Zeilen sind `im Spiel`/`getestet`, 3 sind `Engine fertig`. Gezählt wird `im Spiel`/`getestet` voll, `Engine fertig` halb.
+Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 1/34, Chronik 6/20, Taten 0/10.
+
+**Web-Fassung:** GitHub Pages, Deploy bei Push auf `main`. Das Spiel liegt unter `/`, die Vorlage unter `/vorlage/`. Die eigene Domain ist in `.github/workflows/deploy-pages.yml` eingetragen.
 
 | Phase | Inhalt | Status |
 |---|---|---|
@@ -11,8 +14,8 @@ Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtw
 | P2 | Speichern | fertig |
 | P3 | Prestige und Meta | fertig |
 | P4 | React, UI-Kit, i18n | fertig |
-| P5 | Lichtwarte: spielbarer Kern | in Arbeit |
-| P6 | Balance-Pass 1 | offen |
+| P5 | Lichtwarte: spielbarer Kern | fertig |
+| P6 | Balance-Pass 1 | begonnen (3 von 7 Zielen in der CI) |
 | P7 | Bindung | offen |
 | P8 | Sammeln und Welt | offen |
 | P9 | Lande, Wellen 1–3 (… bis ≥ 34) | offen |
@@ -62,16 +65,17 @@ Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtw
 
 ## P5 — Lichtwarte: spielbarer Kern
 
-- [ ] Spieldaten: 10 Bauwerke, 3 Schichten, Meta-Laden-Grundstock (10 Gegenstände)
-- [ ] Texte de/en, Glossar, Welt, Kunststil, Inhaltsplan, 50 Lande skizziert
-- [ ] `art-kit`, Talkarte mit Slots, 10 Bauwerk-Grafiken (Ziel: 4 Stufen), Stimmungen Tag/Abend/Nacht
-- [ ] FTUE, Chronik-Einstieg, Eigennamen-Register + Prüfprotokoll
-- [ ] `smoke` de/en, `axe`, `screens --strict`, `art`, Balance-Simulator für das Spiel
-- [ ] Web-Fassung auf GitHub Pages
+- [x] Spieldaten: 10 Bauwerke, 3 Schichten (Mondwende, Lange Nacht, Zeitalter), Archiv der Wächter mit 10 Gegenständen und 163 Rängen, 7 Rang-Belohnungen
+- [x] Texte de/en, Glossar, Welt, Kunststil, Inhaltsplan, 50 Lande skizziert (`docs/spiele/lichtwarte/`)
+- [x] `art-kit` (Raster, Place, Seed, Stilregeln, Stimmungen, Stufen, Grafikübersicht). Talkarte mit 10 Plätzen, Wildnis + 4 Stufen je Bauwerk, 16 Stimmungen (Tageszeit × Jahreszeit)
+- [x] Einstieg (6 Schritte, Hinweis verdeckt nie sein Ziel), Chronik mit 6 Seiten, Zeremonie nach der Mondwende
+- [x] Eigennamen-Register und Prüfprotokoll. Zwei Konflikte gefunden und ersetzt (Nachttau, Lichtkiesel).
+- [x] `smoke` de/en (inkl. Einstieg, Chronik, Talkarte), `axe` de/en, `screens --strict` de/en, `art` (51 Vergleichsbilder, Budget ≤ 1.500 SVG-Elemente: ~300), Balance-Simulator mit Zielkorridoren in der CI
+- [x] Web-Fassung auf GitHub Pages
 
 ## P6 — Balance-Pass 1
 
-- [ ] Ziele aus `docs/spiele/lichtwarte/balance.md` erreicht (erste Mondwende 15–20 min, Bauwerk 2 nach 3–5 min, Bauwerk 3 nach 8–15 min, keine Mondwende unter 20 min aktiv, Lange Nacht bei `regular` um Tag 9 ± 2, alle 10 Bauwerke bei `regular` um Tag 5 ± 1, keine Mauer)
+- [ ] (teilweise: Bauwerk 2/3 und erste Mondwende in der CI) Ziele aus `docs/spiele/lichtwarte/balance.md` erreicht (erste Mondwende 15–20 min, Bauwerk 2 nach 3–5 min, Bauwerk 3 nach 8–15 min, keine Mondwende unter 20 min aktiv, Lange Nacht bei `regular` um Tag 9 ± 2, alle 10 Bauwerke bei `regular` um Tag 5 ± 1, keine Mauer)
 - [ ] `tools/balance/tempo.test.ts` mit Zielkorridoren in der CI
 
 ## P7 — Bindung
@@ -109,6 +113,9 @@ Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtw
 
 ## Offene Fragen an Michael
 
-1. **Arbeitstitel:** de *Lichtwarte*, en *Beaconwatch*. Die Websuche ergab keinen Treffer als Spiel oder App. Die Markenprüfung (DPMA/EUIPO/…) steht aus.
+1. **Arbeitstitel:** Das Spiel hat einen deutschen und einen englischen Titel (`games/lichtwarte/src/brand.ts`). Die Websuche ergab keinen Treffer als Spiel oder App. Die Markenprüfung (DPMA/EUIPO/…) steht für alle Eigennamen aus (`docs/marken/pruefung.md`).
 2. **Stichtag** für „Spielstände gehen nie verloren“ in `CLAUDE.md` eintragen.
 3. **Rechtliches:** Impressum-Angaben fehlen (P12).
+4. **Mondwende-Tore der Bauwerke 5–10:** Der Prompt nennt „Bauwerk 5 ab Mondwende 2 …“. Umgesetzt ist das als Zahl abgeschlossener Mondwenden 1/2/4/6/9/13, also ab dem 2. Durchgang. Bitte bestätigen.
+5. **Lange Nacht:** Setzt sie die Runensplitter zurück? Vorerst nein, nur das Zeitalter setzt Nachttau zurück. Entscheidung in P10.
+6. **Schriften:** Bis P12 laufen Systemschriften. Soll eine OFL-Schrift (z. B. eine Antiqua für Überschriften) dazukommen?

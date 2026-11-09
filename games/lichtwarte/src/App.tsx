@@ -1,0 +1,131 @@
+import { useEffect, useState } from 'react'
+import { MODULE, type ProducerDef } from '@engine/core'
+import { currentStep, useEngine, useStore, useSteps } from '@engine/react'
+import { BurstButton, FtueCoach, GameShell, Hud, UpgradeSheet, useUi } from '@engine/ui'
+import { tierFor } from '@engine/art'
+import { BuildingArt } from './art/Building'
+import { TIER_LEVELS } from './art/registry'
+import { DISTRIBUTION, TEST_PHASE } from './distribution'
+import { CHRONICLE } from './content/chronicle'
+import { ftueSteps } from './content/ftue'
+import { CURRENCY, game } from './game'
+import { chronicleRead, ftue, i18n, labels, prefs, rt, t, tabsSeen } from './runtime'
+import { ValleyMap } from './scene/ValleyMap'
+import { currentMood } from './scene/mood'
+import { Ceremony } from './story/Ceremony'
+import { ChronicleSheet } from './story/Chronicle'
+import { useChronicle } from './story/useChronicle'
+
+declare const __APP_VERSION__: string
+
+const steps = ftueSteps((id) => chronicleRead.has(id), (id) => tabsSeen.has(id))
+
+function Play({ onOpen }: { onOpen: (id: string) => void }) {
+  return <ValleyMap onOpen={onOpen} />
+}
+
+function ProducerArt({ p }: { p: ProducerDef }) {
+  const ui = useUi()
+  const { world } = useEngine(ui.rt)
+  const level = (world.get<{ owned: Record<string, number> }>(MODULE.producers)?.owned[p.id] ?? 0)
+  return (
+    <svg className="lw-upgrade-art" viewBox="-48 -112 96 118" role="img" aria-label={ui.labels.producer(p.id).name}>
+      <BuildingArt id={p.id} tier={Math.max(1, tierFor(level, TIER_LEVELS))} m={currentMood()} />
+    </svg>
+  )
+}
+
+function Coach() {
+  const ui = useUi()
+  const { world } = useEngine(ui.rt)
+  useSteps(ftue)
+  useStore(chronicleRead)
+  useStore(tabsSeen)
+  const step = currentStep(steps, ftue, world)
+  if (!step) return null
+  const s = t.ftue.steps[step.id as keyof typeof t.ftue.steps]
+  return <FtueCoach title={s.title} body={s.body} skipLabel={t.ftue.skip} onSkip={() => ftue.dismiss()} />
+}
+
+function GameOverlays({ selected, onClose, chronicleOpen, setChronicle, ceremony, endCeremony }: {
+  selected: string | null
+  onClose: () => void
+  chronicleOpen: boolean
+  setChronicle: (v: boolean) => void
+  ceremony: { layer: string; payout: number } | null
+  endCeremony: () => void
+}) {
+  const { unread } = useChronicle()
+  const p = game.producers.find((x) => x.id === selected) ?? null
+  // Erster Start: die erste Chronik-Seite öffnet sich von selbst.
+  useEffect(() => {
+    if (unread.some((e) => e.id === 'welcome')) setChronicle(true)
+  }, [unread, setChronicle])
+  const ldef = ceremony ? game.prestigeLayers.find((l) => l.id === ceremony.layer) : null
+  return (
+    <>
+      <UpgradeSheet p={p} open={!!p} onClose={onClose} art={p ? <ProducerArt p={p} /> : null} note={p ? (t.producers as Record<string, { note: string }>)[p.id]?.note : undefined} />
+      <ChronicleSheet open={chronicleOpen} onClose={() => setChronicle(false)} />
+      {ceremony && ldef ? (
+        <Ceremony
+          layer={ceremony.layer}
+          payout={ceremony.payout}
+          currency={ldef.currency}
+          onDone={() => {
+            endCeremony()
+            if (unread.length) setTimeout(() => setChronicle(true), 0)
+          }}
+        />
+      ) : null}
+    </>
+  )
+}
+
+export function App() {
+  const [selected, setSelected] = useState<string | null>(null)
+  const [chronicleOpen, setChronicle] = useState(false)
+  const [ceremony, setCeremony] = useState<{ layer: string; payout: number } | null>(null)
+  const read = useStore(chronicleRead)
+  const { world } = useEngine(rt)
+  const unread = CHRONICLE.some((e) => e.open(world) && !read.includes(e.id))
+  return (
+    <GameShell
+      rt={rt}
+      i18n={i18n}
+      prefs={prefs}
+      labels={labels}
+      className="lw-app"
+      title={() => t.app.title}
+      distribution={DISTRIBUTION}
+      testPhase={TEST_PHASE}
+      version={__APP_VERSION__}
+      backup={{ prefix: 'LW1:', keys: [game.saveKey, `${game.id}-chronicle-v1`, `${game.id}-ftue-v1`], fileName: (d) => `${game.id}-sicherung-${d}.txt` }}
+      hud={
+        <Hud
+          primaryId={CURRENCY.glimmer}
+          icon={<span className="lw-glimmer-icon" />}
+          extra={<BurstButton label={t.play.burst} />}
+          goalText={(g) =>
+            g.kind === 'unlock'
+              ? t.play.goalUnlock(labels.producer(g.id).name)
+              : g.kind === 'milestone'
+                ? t.play.goalMilestone(labels.producer(g.id).name, String(g.at))
+                : g.kind === 'prestige'
+                  ? t.play.goalPrestige(labels.layer(g.layer).name)
+                  : g.kind === 'prestigeProgress'
+                    ? t.play.goalProgress(labels.layer(g.layer).name)
+                    : null
+          }
+        />
+      }
+      play={<Play onOpen={setSelected} />}
+      menu={[{ id: 'chronicle', label: t.chronicle.menu, onSelect: () => setChronicle(true), badge: unread }]}
+      notice={<Coach />}
+      onTab={(id) => tabsSeen.add(id)}
+      onPrestige={(layer, payout) => setCeremony({ layer, payout })}
+      overlays={
+        <GameOverlays selected={selected} onClose={() => setSelected(null)} chronicleOpen={chronicleOpen} setChronicle={setChronicle} ceremony={ceremony} endCeremony={() => setCeremony(null)} />
+      }
+    />
+  )
+}

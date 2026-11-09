@@ -1,0 +1,27 @@
+{
+  "note": "Werte, die nach dem Laden gelten müssen. Nie anpassen, außer eine Migration verschiebt ein Feld (dann Pfad ändern, Wert behalten).",
+  "values": {
+    "core.primary": 206183.814999998,
+    "core.primaryRun": 1272568.815000033,
+    "core.primaryLifetime": 2339331.040000111,
+    "core.lastSeen": 1794224400000,
+    "core.rng": "66b28535",
+    "modules.producers.owned.kraeuterkate": 30,
+    "modules.producers.owned.holzlager": 25,
+    "modules.producers.owned.steinbruch": 15,
+    "modules.producers.owned.quellschrein": 10,
+    "modules.producers.owned.schmiede": 2,
+    "modules.prestige.layers.0.count": 1,
+    "modules.prestige.layers.1.count": 0,
+    "modules.prestige.layers.2.count": 0,
+    "modules.metaShop.ranks.oldLantern": 1,
+    "modules.metaShop.ranks.builderChalk": 1,
+    "modules.metaShop.ranks.hourglass": 1,
+    "modules.wallet.balances.runeShards": 0,
+    "modules.wallet.balances.glowPebbles": 10,
+    "modules.wallet.balances.nightDew": 0,
+    "modules.wallet.balances.forebearLight": 0,
+    "modules.progression.xp": 1328,
+    "modules.offline.pending.gained": 45738472.5
+  }
+}
