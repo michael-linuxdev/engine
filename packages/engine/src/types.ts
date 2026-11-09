@@ -212,6 +212,11 @@ export interface BalanceConfig {
     xpQuad: number
     multPerLevel: number
     multCapLevels: number
+    /** XP for each prestige of any layer (× layer index + 1). */
+    xpPerPrestige: number
+    /** XP for claiming an offline basket: √(amount) · factor, capped. */
+    xpOfflineFactor: number
+    xpOfflineCap: number
   }
   metaShop: {
     /** Layer whose count drives tip bands and credit. */

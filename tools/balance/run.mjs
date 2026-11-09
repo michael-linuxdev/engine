@@ -19,7 +19,7 @@ const r = sim.simulate(def, { profile, hours: Number(hours) })
 console.log(`${slug} · ${profile} · ${hours} h`)
 console.log(sim.formatResult(r, !!process.env.SUMMARY))
 if (process.env.CHECK) {
-  const fails = sim.checkTargets(r, sim.game.balanceTargets?.[profile] ?? [])
+  const fails = [...sim.checkTargets(r, sim.game.balanceTargets?.[profile] ?? []), ...sim.checkWalls(r)]
   for (const f of fails) console.error('ZIEL VERFEHLT: ' + f)
   if (fails.length) process.exit(1)
   console.log('Zielkorridore eingehalten.')
