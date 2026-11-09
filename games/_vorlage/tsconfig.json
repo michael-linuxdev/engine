@@ -4,9 +4,27 @@
     "outDir": "../../.tsbuild/vorlage",
     "tsBuildInfoFile": "../../.tsbuild/vorlage.tsbuildinfo",
     "rootDir": "src",
-    "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    "types": ["vite/client"]
+    "lib": [
+      "ES2023",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "vite/client"
+    ]
   },
-  "include": ["src"],
-  "references": [{ "path": "../../packages/engine" }]
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../../packages/engine"
+    },
+    {
+      "path": "../../packages/engine-react"
+    },
+    {
+      "path": "../../packages/ui-kit"
+    }
+  ]
 }

@@ -8,6 +8,12 @@
       "path": "./packages/testing"
     },
     {
+      "path": "./packages/ui-kit"
+    },
+    {
+      "path": "./packages/engine-react"
+    },
+    {
       "path": "./tsconfig.tests.json"
     },
     {
