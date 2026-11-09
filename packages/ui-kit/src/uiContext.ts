@@ -15,6 +15,8 @@ export interface UiLabels {
   metaBranch(id: string): string
   /** Effect breakdown label for a labelKey (fallback: the key). */
   effect(labelKey: string): string
+  /** Names of further content ids, namespaced: `quest.<id>`, `deed.<id>`, `trial.<id>`, `fest.<id>`, `festItem.<id>`, `wheel.<id>`, `title.<system>`, `hint.<id>` … */
+  content(key: string): { name: string; blurb: string }
 }
 
 export interface UiValue {

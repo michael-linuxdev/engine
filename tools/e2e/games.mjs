@@ -31,10 +31,16 @@ export const GAMES = [
     afterPrestige: async (p) => {
       await p.getByTestId('ceremony').waitFor()
       await p.getByTestId('ceremony-ok').click()
-      // Danach öffnet sich die neue Chronik-Seite
+      // Danach öffnet sich die neue Chronik-Seite, dann das Sternenrad
       await p.getByTestId('chronicle').waitFor()
       await p.keyboard.press('Escape')
       await p.getByTestId('chronicle').waitFor({ state: 'detached' })
+      await p.getByTestId('wheel-sheet').waitFor()
+      await p.getByTestId('wheel-spin').click()
+      const spun = await p.evaluate(() => window.__engine.get().modules.wheel.total)
+      if (spun !== 1) throw new Error('E2E: Sternenrad gedreht')
+      await p.keyboard.press('Escape')
+      await p.getByTestId('wheel-sheet').waitFor({ state: 'detached' })
     },
     /** Spielspezifisch: Chronik beim ersten Start, geführter Einstieg, Talkarte. */
     extraSmoke: async ({ browser, phone, URL, T, assert }) => {
@@ -66,6 +72,36 @@ export const GAMES = [
       await q.keyboard.press('Escape')
       if (errs.length) throw new Error(errs.join('\n'))
       await fresh.close()
+
+      // Wacht: Wachrunde, Aufträge, Lichterfest (?fest=budding), Taten
+      const w = await browser.newContext(phone)
+      await w.addInitScript(() => {
+        if (sessionStorage.getItem('seeded')) return
+        sessionStorage.setItem('seeded', '1')
+        localStorage.setItem('lichtwarte-chronicle-v1', '["welcome"]')
+        localStorage.setItem('lichtwarte-ftue-v1', '{"completed":[],"dismissed":true}')
+        localStorage.setItem('lichtwarte-hints-v1', '["wilds","milestone","buyMode","branches","bonuses","burstRecharge","watchTab","moonturnNear","archive","wheel","festivals","producersNeeded","apprentice","offlineCaps","trials","longNight"]')
+      })
+      const r = await w.newPage()
+      r.on('pageerror', (e) => errs.push(e.message))
+      await r.goto(URL + '?installGate=0&fest=budding')
+      await r.getByTestId('hud-amount').waitFor()
+      await r.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        rt.replace({ ...s, core: { ...s.core, primary: 1e9 }, modules: { ...s.modules, prestige: { layers: [{ count: 6, runEarned: 0, sinceReset: 6 }, ...s.modules.prestige.layers.slice(1)] } } })
+        rt.dispatch('producers', 'buy', { id: 'kraeuterkate', count: 30 })
+      })
+      await r.getByTestId('tab-watch').click()
+      await r.getByTestId('daily-claim').click()
+      assert(await r.getByTestId('daily-claim').isDisabled(), 'Wachrunde nur einmal am Tag')
+      await r.getByTestId('card-fest').getByText(T.watch.fests.budding.name).waitFor()
+      await r.getByTestId('card-trials').waitFor()
+      const deeds = await r.evaluate(() => window.__engine.get().modules.achievements.done)
+      assert(deeds.includes('firstLight'), 'Tat „Erstes Licht“ erreicht')
+      await r.getByTestId('deed-firstLight').waitFor()
+      if (errs.length) throw new Error(errs.join('\n'))
+      await w.close()
     },
   },
   {

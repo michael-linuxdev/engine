@@ -40,6 +40,8 @@ export interface GameShellProps<S extends EngineStrings> {
   openRef?: (open: (id: string) => void) => void
   /** Called when the player switches tabs. */
   onTab?: (id: string) => void
+  /** Controlled active tab (optional; otherwise the shell keeps its own). */
+  tab?: string
   className?: string
 }
 
@@ -49,7 +51,8 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
   const locale = p.i18n.useLocale()
   const prefs = usePrefs(p.prefs)
   useRuntimeLoop(p.rt)
-  const [tab, setTab] = useState('play')
+  const [ownTab, setTab] = useState('play')
+  const tab = p.tab ?? ownTab
   const [overlay, setOverlay] = useState<string | null>(null)
   const [flags, setFlags] = useState(() => readJson<{ installSkipped?: boolean; testPhaseOk?: boolean; record?: boolean }>(flagsKey(p.rt), {}))
   const saveFlags = (f: typeof flags) => {

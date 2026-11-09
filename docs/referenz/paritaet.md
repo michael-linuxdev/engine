@@ -28,16 +28,16 @@ Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `i
 
 | System | Referenz-Datei(en) | Engine-Modul | Fantasy-Entsprechung | Mindestmenge | Status |
 |---|---|---|---|---|---|
-| Tägliche Runde | `dailyOps.ts` | `daily` | Wachrunde | 7-Tage-Serie, Einfrieren statt Verfall, 3 Rückkehr-Stufen | offen |
-| Tagesziele | `quests.ts` | `quests` | Aufträge | 6 Vorlagen, 3 je Tag | offen |
-| Erfolge | `achievements.ts` | `achievements` | Taten | **10** | offen |
-| Herausforderungen | `challenges.ts` | `challenges` | Prüfungen | **3** (+3 % je) | offen |
-| Wochenend-Event | `events.ts`, `state/events.ts` | `weekendEvent` | Marktnacht | 1 (Fr 18 Uhr bis So, ×1,25) | offen |
-| Blitz-Event | `flashEvent.ts` | `flash` | Sternfenster | 1 Art (18 min, ×1,15) | offen |
-| Kalender-Feste | `fests.ts`, `state/fest.ts` | `calendarFests` | Lichterfeste | **9** (4 große, 5 kleine), Fest-Laden 6/8 Zeilen | offen |
-| Glücksrad | `gardenLife.ts` | `wheel` | Schicksalsrad → eigener Name nötig | 4 Arten auf 6 Feldern | offen |
-| Freischalt-Liste | `featureUnlocks.ts` | `featureUnlocks` | — | **9** Systeme | offen |
-| Hinweise | `hints.ts` | `hints` | Randnotizen der Chronik | **16** | offen |
+| Tägliche Runde | `dailyOps.ts` | `daily` | Wachrunde | 7-Tage-Serie, Einfrieren statt Verfall, 3 Rückkehr-Stufen | getestet (7 Tage, 3 Stufen) |
+| Tagesziele | `quests.ts` | `quests` | Aufträge | 6 Vorlagen, 3 je Tag | im Spiel (6 Vorlagen) |
+| Erfolge | `achievements.ts` | `achievements` | Taten | **10** | getestet (12) |
+| Herausforderungen | `challenges.ts` | `challenges` | Prüfungen | **3** (+3 % je) | im Spiel (3) |
+| Wochenend-Event | `events.ts`, `state/events.ts` | `weekendEvent` | Marktnacht | 1 (Fr 18 Uhr bis So, ×1,25) | im Spiel |
+| Blitz-Event | `flashEvent.ts` | `flash` | Sternfenster | 1 Art (18 min, ×1,15) | im Spiel |
+| Kalender-Feste | `fests.ts`, `state/fest.ts` | `calendarFests` | Lichterfeste | **9** (4 große, 5 kleine), Fest-Laden 6/8 Zeilen | getestet (9 Feste, Laden 3 Zeilen; Fest-Sorten mit P8) |
+| Rad | `gardenLife.ts` | `wheel` | Sternenrad | 4 Arten auf 6 Feldern | getestet (4 Arten, 6 Gewichte) |
+| Freischalt-Liste | `featureUnlocks.ts` | `featureUnlocks` | — | **9** Systeme | im Spiel (5; P8 bringt 5 weitere) |
+| Hinweise | `hints.ts` | engine-react `pickHint` | Randnotizen der Chronik | **16** | im Spiel (16) |
 | FTUE | `ftue.ts` | engine-react `createSteps` + ui-kit `FtueCoach` | Erste Wache | **6 Schritte** | getestet (6 Schritte, smoke) |
 | Benachrichtigungen | `notify.ts` | engine-react | — | 1 Stelle | offen |
 

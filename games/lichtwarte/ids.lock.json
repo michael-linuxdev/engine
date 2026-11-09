@@ -1,15 +1,24 @@
 {
   "modules": [
+    "achievements",
     "branches",
     "burst",
+    "calendarFests",
+    "challenges",
+    "daily",
+    "featureUnlocks",
+    "flash",
     "helper",
     "metaShop",
     "offline",
     "prestige",
     "producers",
     "progression",
+    "quests",
     "surprises",
-    "wallet"
+    "wallet",
+    "weekendEvent",
+    "wheel"
   ],
   "currencies": [
     "forebearLight",
@@ -46,5 +55,61 @@
     "starChart",
     "travelPurse",
     "wardenCloak"
+  ],
+  "quests": [
+    "build25",
+    "build60",
+    "gather20",
+    "gather5",
+    "sparks3",
+    "watchRound"
+  ],
+  "deeds": [
+    "fifteenMoonturns",
+    "firstLight",
+    "firstLongNight",
+    "firstMoonturn",
+    "fiveHundredLevels",
+    "fiveMoonturns",
+    "hundredLevels",
+    "rankTen",
+    "rankTwentyFive",
+    "sparkSinger",
+    "thousandLevels",
+    "wholeValley"
+  ],
+  "trials": [
+    "fiveOnly",
+    "silentSparks",
+    "withoutWoodshed"
+  ],
+  "fests": [
+    "blossomRound",
+    "budding",
+    "fireflyNights",
+    "hoarfrost",
+    "lanternMoon",
+    "longLight",
+    "midsummerGlow",
+    "mistMoon",
+    "snowdrop"
+  ],
+  "festItems": [
+    "festBoost",
+    "festPebbles",
+    "festShards"
+  ],
+  "wheel": [
+    "brightRun",
+    "longSparks",
+    "pebbleRain",
+    "shardGift"
+  ],
+  "features": [
+    "events",
+    "festivals",
+    "trials",
+    "watch",
+    "wheel"
   ]
 }

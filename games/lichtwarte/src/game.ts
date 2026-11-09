@@ -4,8 +4,12 @@
  * (docs/referenz/paritaet.md); P6 stimmt sie mit dem Simulator nach.
  * Inhalts-IDs sind stabil und stehen in ids.lock.json — nie ändern, nur anhängen.
  */
-import { defaultBalance, standardModules, type GameDefinition, type GateAtom, type MetaItemDef, type ProducerDef } from '@engine/core'
+import {
+  achievementsModule, calendarFestsModule, challengesModule, dailyModule, defaultBalance, featureUnlocksModule, flashModule, questsModule, standardModules,
+  weekendModule, wheelModule, type GameDefinition, type GateAtom, type MetaItemDef, type ProducerDef,
+} from '@engine/core'
 import { BRAND } from './brand'
+import { DAILY, DEEDS, FEATURES, FESTIVALS, MARKET_NIGHT, QUESTS, STAR_WHEEL, STAR_WINDOW, TRIALS } from './content/live'
 
 export const PRODUCER_IDS = [
   'kraeuterkate',
@@ -21,8 +25,8 @@ export const PRODUCER_IDS = [
 ] as const
 export type ProducerId = (typeof PRODUCER_IDS)[number]
 
-export const LAYER = { moonturn: 'moonturn', longNight: 'longNight', ages: 'ages' } as const
-export const CURRENCY = { glimmer: 'glimmer', runeShards: 'runeShards', glowPebbles: 'glowPebbles', nightDew: 'nightDew', forebearLight: 'forebearLight' } as const
+export { CURRENCY, LAYER } from './ids'
+import { CURRENCY, LAYER } from './ids'
 
 /** Leiter: [Kosten C0, Wachstum g, Ertrag r0, Laufertrag-Tor, Mondwenden-Tor, Wächterrang-Tor, Stufe des Vorgängers] */
 const LADDER: [number, number, number, number, number, number, number][] = [
@@ -148,10 +152,39 @@ export const game: GameDefinition = {
     { level: 15, grant: [{ currency: CURRENCY.glowPebbles, amount: 25 }] },
     { level: 20, grant: [{ currency: CURRENCY.glowPebbles, amount: 40 }] },
   ],
-  modules: standardModules(),
+  modules: [
+    ...standardModules(),
+    // P7 Bindung (Inhalte: content/live.ts; Import erst hier, um Zirkel zu vermeiden)
+    ...liveModules(),
+  ],
   balance,
   startPrimary: 25,
   seed: 0x1c47a2e1,
+}
+
+function liveModules() {
+  return [
+    dailyModule(DAILY),
+    questsModule(QUESTS),
+    achievementsModule(DEEDS),
+    challengesModule(TRIALS),
+    weekendModule(MARKET_NIGHT),
+    flashModule(STAR_WINDOW),
+    calendarFestsModule(FESTIVALS),
+    wheelModule(STAR_WHEEL),
+    featureUnlocksModule(FEATURES),
+  ]
+}
+
+/** Weitere gespeicherte Inhalts-IDs (für ids.lock.json). */
+export const extraIds = {
+  quests: QUESTS.templates.map((q) => q.id),
+  deeds: DEEDS.map((d) => d.id),
+  trials: TRIALS.list.map((c) => c.id),
+  fests: FESTIVALS.fests.map((f) => f.id),
+  festItems: Object.values(FESTIVALS.shop).flatMap((items) => items.map((i) => i.id)),
+  wheel: STAR_WHEEL.segments.map((s) => s.id),
+  features: FEATURES.map((f) => f.id),
 }
 
 /** Zielkorridore für den Simulator (CHECK=1), begründet in docs/spiele/lichtwarte/balance.md. */

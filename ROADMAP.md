@@ -2,8 +2,8 @@
 
 Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtwarte** (Arbeitstitel), ein gemütliches Fantasy-Idle-Spiel. Es soll mindestens die Tiefe, Systeme, Inhalte und Qualitätssicherung des Referenz-Spiels erreichen (`docs/referenz/paritaet.md`).
 
-**Paritäts-Fortschritt (2026-11-09): 36 %** der Systeme aus `paritaet.md`. 17 von 52 Zeilen sind `im Spiel`/`getestet`, 3 sind `Engine fertig`. Gezählt wird `im Spiel`/`getestet` voll, `Engine fertig` halb.
-Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 1/34, Chronik 6/20, Taten 0/10.
+**Paritäts-Fortschritt (2026-11-10): 55 %** der Systeme aus `paritaet.md`. 27 von 52 Zeilen sind `im Spiel`/`getestet`, 3 sind `Engine fertig`. Gezählt wird `im Spiel`/`getestet` voll, `Engine fertig` halb.
+Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 1/34, Chronik 6/20, Taten 12/10 ✓, Feste 9/9 ✓.
 
 **Web-Fassung:** GitHub Pages, Deploy bei Push auf `main`. Das Spiel liegt unter `/`, die Vorlage unter `/vorlage/`. Die eigene Domain ist in `.github/workflows/deploy-pages.yml` eingetragen.
 
@@ -16,7 +16,7 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 | P4 | React, UI-Kit, i18n | fertig |
 | P5 | Lichtwarte: spielbarer Kern | fertig |
 | P6 | Balance-Pass 1 | fertig |
-| P7 | Bindung | offen |
+| P7 | Bindung | fertig |
 | P8 | Sammeln und Welt | offen |
 | P9 | Lande, Wellen 1–3 (… bis ≥ 34) | offen |
 | P10 | Lange Nacht und Zeitalter | offen |
@@ -81,9 +81,11 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 
 ## P7 — Bindung
 
-- [ ] Engine-Module: `daily`, `quests`, `achievements`, `challenges`, `weekendEvent`, `flash`, `calendarFests`, `wheel`, `hints`, `featureUnlocks` (je mit Tests)
-- [ ] Inhalte: Wachrunde (7-Tage-Serie), 6 Auftrags-Vorlagen, ≥ 10 Taten, 3 Prüfungen, Marktnacht, Sternfenster, 9 Lichterfeste, Rad (eigener Name), 16 Hinweise, 9 Freischaltungen
-- [ ] Rückkehr-Korb-Fenster, Benachrichtigungen
+- [x] Engine-Module mit Tests: `daily`, `quests`, `achievements`, `challenges` (mit `guard`-Hook für Einschränkungen), `weekendEvent`, `flash`, `calendarFests`, `wheel`, `featureUnlocks`. Dazu `pickHint` (engine-react), lokale Kalenderzeit über `Clock.offsetMin`.
+- [x] Inhalte: Wachrunde (7 Tage, Einfrieren statt Verfall, 3 Rückkehr-Stufen), 6 Auftrags-Vorlagen (3 je Tag), 12 Taten, 3 Prüfungen, Marktnacht, Sternfenster, 9 Lichterfeste mit Laden, Sternenrad (4 Arten), 5 Freischaltungen, 16 Hinweise
+- [x] UI: Wacht-Tab (öffnet sich nach Kräuterkate Stufe 10), Ereignis-Pillen, Hinweisblase, Sternenrad nach der Zeremonie. Neue Eigennamen sind geprüft und eingetragen.
+- [x] Overlay-Stapel: genau ein History-Eintrag, Änderungen gebündelt. Vorher konnte Escape nach „Fenster zu, neues Fenster auf“ die Seite verlassen.
+- [ ] Rückkehr-Brief (≥ 48 h) und Benachrichtigungen: folgen mit P10 bzw. P12
 
 ## P8 — Sammeln und Welt
 

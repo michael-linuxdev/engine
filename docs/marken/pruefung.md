@@ -31,6 +31,23 @@ Der Store-Start ist gesperrt, solange ein Name nicht `frei` ist (`DISTRIBUTION =
 | sparkCall | Funkenruf | Spark Call | System | 2026-11-09 | — | Gattungswörter | ungeprüft |
 | wardenRank | Wächterrang | Warden Rank | System | 2026-11-09 | — | Gattungswörter | ungeprüft |
 | chronicle | Chronik der Wächterin | The Warden's Chronicle | System | 2026-11-09 | — | Gattungswörter | ungeprüft |
+| watchRound | Wachrunde | Watch Round | System | 2026-11-09 | Websuche | Websuche (idle game): kein Treffer | ungeprüft |
+| errands | Aufträge | Errands | System | 2026-11-09 | — | Gattungswort | ungeprüft |
+| deeds | Taten | Deeds | System | 2026-11-09 | — | Gattungswort | ungeprüft |
+| trials | Prüfungen | Trials | System | 2026-11-09 | — | Gattungswort | ungeprüft |
+| marketNight | Marktnacht | Market Night | System | 2026-11-09 | Websuche | Websuche: kein Spiel dieses Namens; ähnlich ein Steam-Idle mit „night market“ (anderer Name) | ungeprüft |
+| starWindow | Sternfenster | Star Window | System | 2026-11-09 | Websuche | Websuche: kein Treffer | ungeprüft |
+| starWheel | Sternenrad | Star Wheel | System | 2026-11-09 | Websuche | Websuche: kein Spiel; ersetzt das geschützte TV-Format für das Rad | ungeprüft |
+| festivalsOfLight | Lichterfeste | Festivals of Light | System | 2026-11-09 | — | Gattungsausdruck; kein Bezug zu einem bestimmten religiösen Fest | ungeprüft |
+| festHoarfrost | Raureifnächte | Hoarfrost Nights | Fest | 2026-11-09 | — | Gattungswörter | ungeprüft |
+| festSnowdrop | Schneeglöckchentage | Snowdrop Days | Fest | 2026-11-09 | — | Gattungswörter | ungeprüft |
+| festBudding | Knospenfest | Budding Fair | Fest | 2026-11-09 | — | Gattungswörter | ungeprüft |
+| festBlossomRound | Blütenreigen | Blossom Round | Fest | 2026-11-09 | — | Gattungswörter | ungeprüft |
+| festMidsummerGlow | Mittsommerglanz | Midsummer Glow | Fest | 2026-11-09 | — | Gattungswörter (Jahreszeit, kein Kirchenfest) | ungeprüft |
+| festFirefly | Glühwürmchennächte | Firefly Nights | Fest | 2026-11-09 | — | Gattungswörter | ungeprüft |
+| festLantern | Laternenherbst | Lantern Autumn | Fest | 2026-11-09 | Websuche | „Lantern Moon (Festival)“ ist ein traditioneller Festname → ersetzt | ungeprüft |
+| festMistMoon | Nebelmond | Mist Moon | Fest | 2026-11-09 | — | Gattungswörter | ungeprüft |
+| festLongLight | Fest des langen Lichts | Feast of the Long Light | Fest | 2026-11-09 | — | Gattungswörter (Wintersonnenwende, ohne religiösen Bezug) | ungeprüft |
 
 ## Verworfene Namen
 
@@ -39,4 +56,5 @@ Der Store-Start ist gesperrt, solange ein Name nicht `frei` ist (`DISTRIBUTION =
 | Nachtsilber / Nightsilver | „Nightsilver Woods“ (Dota 2) |
 | Mondperlen / Moonpearls | „Moon Pearls“ (Gegenstand in Bayonetta 3) |
 | Ancestral Light | zu nah an „Ancient Light“ (Sky: Children of the Light) |
-| Schicksalsrad / Wheel of Fortune | geschütztes TV-Format; eigener Name folgt mit dem Rad (P7) |
+| Schicksalsrad / Wheel of Fortune | geschütztes TV-Format → Sternenrad / Star Wheel |
+| Laternenmond / Lantern Moon | traditioneller Festname (Mondfest) → Laternenherbst / Lantern Autumn |

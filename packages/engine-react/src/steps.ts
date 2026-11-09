@@ -78,3 +78,14 @@ export function createSeen(key: string) {
     },
   }
 }
+
+/** One-time hints: the first hint whose condition holds and that was not seen yet. */
+export interface HintDef<W> {
+  id: string
+  when: (world: W) => boolean
+}
+
+export function pickHint<W>(hints: readonly HintDef<W>[], seen: (id: string) => boolean, world: W): HintDef<W> | null {
+  for (const h of hints) if (!seen(h.id) && h.when(world)) return h
+  return null
+}

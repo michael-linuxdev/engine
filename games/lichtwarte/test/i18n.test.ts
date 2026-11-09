@@ -1,7 +1,8 @@
 import { join } from 'node:path'
 import { describeI18nGuards, walk } from '@engine/testing'
 import { game } from '../src/game'
-import { stringsDe } from '../src/i18n/de'
+import { gameDe, stringsDe } from '../src/i18n/de'
+import { engineDe } from '@engine/ui'
 import { stringsEn } from '../src/i18n/en'
 import { i18n, labels, t } from '../src/runtime'
 import { CHRONICLE } from '../src/content/chronicle'
@@ -14,6 +15,8 @@ describeI18nGuards({
   de: stringsDe,
   en: stringsEn,
   files,
+  engine: engineDe,
+  gameKeys: Object.keys(gameDe),
   stale: {
     set: (s) => i18n.__setStrings(s),
     restore: () => i18n.__setStrings(stringsDe, 'de'),

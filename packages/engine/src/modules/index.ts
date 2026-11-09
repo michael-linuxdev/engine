@@ -40,3 +40,11 @@ export function standardModules(): AnyModule[] {
     surprisesModule(),
   ]
 }
+export * from './achievements'
+export * from './calendarFests'
+export * from './challenges'
+export * from './daily'
+export * from './featureUnlocks'
+export * from './quests'
+export * from './timedEvents'
+export * from './wheel'

@@ -168,6 +168,8 @@ export interface EngineModule<S> {
   /** Must depend on module slices and the definition only (cached per slice set). */
   effects?(s: S, view: StateView): readonly EffectSource[]
   actions?: Readonly<Record<string, ActionFn<S>>>
+  /** Veto any action (of any module) before it runs, e.g. challenge restrictions. */
+  guard?(s: S, req: DispatchRequest, world: WorldView): boolean
   playtestEvents?: readonly string[]
   /** Payout if `layer` may be performed now, else 0 (only the prestige module implements this). */
   prestigePayout?(s: S, layer: string, world: WorldView): number
