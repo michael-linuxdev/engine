@@ -7,8 +7,8 @@ Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtw
 | Phase | Inhalt | Status |
 |---|---|---|
 | P0 | Fundament | fertig |
-| P1 | Engine-Kern | in Arbeit |
-| P2 | Speichern | offen |
+| P1 | Engine-Kern | fertig |
+| P2 | Speichern | in Arbeit |
 | P3 | Prestige und Meta | offen |
 | P4 | React, UI-Kit, i18n | offen |
 | P5 | Lichtwarte: spielbarer Kern | offen |
@@ -33,11 +33,11 @@ Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtw
 
 ## P1 — Engine-Kern
 
-- [ ] `Ctx` (Uhr, RNG), `Num`, `format` (de/en, kompakt, bis 1e300)
-- [ ] Erzeuger-Formeln, Mengenkauf geschlossen, Freischalt-Tore
-- [ ] Effekt-Pipeline mit Aufschlüsselung
-- [ ] Takt mit Akkumulator, Offline in geschlossener Form, Progression/XP, Zweige
-- [ ] Determinismus-Test, Engine-Handbuch `docs/engine/*`
+- [x] `Ctx` (Uhr, RNG), `Num`, `format` (de/en, kompakt, bis 1e300)
+- [x] Erzeuger-Formeln, Mengenkauf geschlossen, Freischalt-Tore
+- [x] Effekt-Pipeline mit Aufschlüsselung
+- [x] Takt mit Akkumulator, Offline in geschlossener Form, Progression/XP, Zweige
+- [x] Determinismus-Test, Engine-Handbuch `docs/engine/*`
 
 ## P2 — Speichern
 
