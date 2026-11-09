@@ -2,6 +2,8 @@ import type { ArtEntry, Mood } from '@engine/art'
 import { BuildingArt } from '../art/Building'
 import { DecorArt } from '../art/decor'
 import { DECOR } from '../content/world'
+import { REALM_IDS } from '../content/realms'
+import { RealmArt } from '../art/realm'
 import { PRODUCER_IDS } from '../game'
 
 export const SHEET_MOODS: Mood[] = [
@@ -23,5 +25,10 @@ export const ART_ENTRIES: ArtEntry[] = [
     id: `decor-${d.id}`,
     viewBox: '-16 -32 32 36',
     render: (m: Mood) => <DecorArt id={d.id} m={m} />,
+  })),
+  ...REALM_IDS.map((id) => ({
+    id: `realm-${id}`,
+    viewBox: '0 0 120 90',
+    render: (m: Mood) => <RealmArt id={id} m={m} />,
   })),
 ]

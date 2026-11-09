@@ -34,7 +34,7 @@ if (typeof window !== 'undefined') (window as unknown as { __engine?: unknown })
 type Keyed<T> = Record<string, T>
 
 const NAMESPACES: Record<string, () => Keyed<{ name: string; blurb: string }>> = {
-  title: () => ({ ...t.watch.titles, ...t.world.titles }),
+  title: () => ({ ...t.watch.titles, ...t.world.titles, realms: { name: t.realms.tab, blurb: t.realms.opensFirst } }),
   quest: () => t.watch.quests,
   deed: () => t.watch.deeds,
   trial: () => t.watch.trials,
@@ -52,9 +52,29 @@ const NAMESPACES: Record<string, () => Keyed<{ name: string; blurb: string }>> =
   work: () => t.world.works,
 }
 
+type Land = { name: string; currency: string; figure: string; intro: string; areas: Record<string, string> }
+const land = (id: string): Land | undefined => (t.realms.lands as Record<string, Land>)[id]
+
+/** Inhalts-Namen der Lande: realm.<id>, realmCurrency.<id>, realmFigure.<id>, realmArea.<land>_<bereich>. */
+function realmContent(ns: string, rest: string): { name: string; blurb: string } | null {
+  if (ns === 'realmArea') {
+    const i = rest.indexOf('_')
+    const name = land(rest.slice(0, i))?.areas[rest.slice(i + 1)]
+    return name ? { name, blurb: '' } : null
+  }
+  const l = land(rest)
+  if (!l) return null
+  if (ns === 'realm') return { name: l.name, blurb: l.intro }
+  if (ns === 'realmCurrency') return { name: l.currency, blurb: '' }
+  if (ns === 'realmFigure') return { name: l.figure, blurb: '' }
+  return null
+}
+
 export const labels: UiLabels = {
   content: (key) => {
     const i = key.indexOf('.')
+    const realm = key.startsWith('realm') ? realmContent(key.slice(0, i), key.slice(i + 1)) : null
+    if (realm) return realm
     const table = NAMESPACES[key.slice(0, i)]?.()
     return table?.[key.slice(i + 1)] ?? { name: key, blurb: '' }
   },

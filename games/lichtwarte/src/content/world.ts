@@ -4,7 +4,7 @@
  * Texte in i18n/*.ts (world.*), IDs in ids.lock.json.
  */
 import {
-  ownedOf, prestigeState,
+  ownedOf, prestigeState, REGIONS_ID, type RegionsState,
   type AlbumConfig, type CardConfig, type ChoiceConfig, type CollectionConfig, type CollectionEntry, type CombineConfig, type DecorConfig,
   type FeatureDef, type ProjectDef, type VisitorConfig, type WorldView,
 } from '@engine/core'
@@ -199,4 +199,5 @@ export const WORLD_FEATURES: FeatureDef[] = [
   { id: 'constellations', when: (w) => turns(w) >= 3 },
   { id: 'omens', when: (w) => turns(w) >= 2 },
   { id: 'greatWorks', when: (w) => turns(w) >= 4 },
+  { id: 'realms', when: (w) => Object.values(w.get<RegionsState | undefined>(REGIONS_ID)?.regions ?? {}).some((r) => r.open) },
 ]

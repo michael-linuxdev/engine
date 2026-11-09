@@ -4,6 +4,7 @@
  */
 import { engineDe } from '@engine/ui'
 import { BRAND } from '../brand'
+import { realmsDe } from './realms.de'
 
 export const gameDe = {
   app: {
@@ -321,6 +322,7 @@ export const gameDe = {
       skyGarden: { name: 'Himmelsgarten', blurb: 'Ein Garten auf dem höchsten Hügel.' },
     },
   },
+  realms: realmsDe,
   effectLabels: { archive: 'Archiv' },
 }
 

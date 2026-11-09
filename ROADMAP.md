@@ -18,7 +18,7 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 | P6 | Balance-Pass 1 | fertig |
 | P7 | Bindung | fertig |
 | P8 | Sammeln und Welt | fertig |
-| P9 | Lande, Wellen 1–3 (… bis ≥ 34) | offen |
+| P9 | Lande, Wellen 1–3 (… bis ≥ 34) | in Arbeit (Welle 1 fertig) |
 | P10 | Lange Nacht und Zeitalter | offen |
 | P11 | Markt-Attrappen, Testgeld, Festwoche, Talstile, Zirkel | offen |
 | P12 | Ton, Ambiente, Playtest-Log, Store-Vorbereitung | offen |
@@ -100,8 +100,15 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 
 ## P9 — Lande
 
-- [ ] Engine-Modul `regions` (Unterwirtschaft, Pflege, Intro, Öffnungszeit, `parseRegions` füllt auf; Größen-Test 50 Regionen < 100 KB)
-- [ ] Welle 1–3: Lande 2–12; danach Wellen bis ≥ 34 (Parität), geplant bis 50 (`docs/spiele/lichtwarte/regionen.md`)
+- [x] Engine-Modul `regions`:
+  - je Land eigene Währung und 10 Bereiche (Kauf ×1/Max), Pflege mit 2 Arten × 10 Rängen;
+  - Öffnungsbedingung, Offline-Ertrag mit denselben Deckeln;
+  - weich gedeckelter Bonus aufs Tal;
+  - der Parser füllt neue Lande auf; Größen-Test: 50 voll ausgebaute Lande bleiben unter 100 KB.
+- [x] UI: Lande-Tab (Übersicht + nächstes gesperrtes Land), Land-Fenster mit Einleitung der Figur, Bereichen und Pflege
+- [x] Welle 1: Lande 2–12 (Moorgrund … Sternweiher) mit Landschaftsgrafik, Figur, Währung, Einleitung und 10 Bereichen de/en. Land 2 öffnet nach der ersten Langen Nacht, jedes weitere, wenn im vorigen der 8. Bereich steht.
+- [ ] Wellen 2–4: Lande 13–34 (Parität), danach 35–50 (Plan: `docs/spiele/lichtwarte/regionen.md`)
+- [ ] Lande im Balance-Simulator spielen (Taktung über Tage)
 
 ## P10 — Lange Nacht und Zeitalter
 
