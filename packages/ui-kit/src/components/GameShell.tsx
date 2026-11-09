@@ -28,6 +28,8 @@ export interface GameShellProps<S extends EngineStrings> {
   tabs?: { item: NavItem; view: ReactNode }[]
   /** Extra menu entries before save/settings/legal. */
   menu?: MenuItem[]
+  /** Shop: which meta branches to show (default: all). */
+  metaBranchVisible?: (branch: string) => boolean
   /** Hint area between HUD and main view (FTUE coach …). */
   notice?: ReactNode
   /** Extra overlays (game sheets) rendered on top. */
@@ -83,7 +85,7 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
   const views: Record<string, ReactNode> = {
     play: p.play,
     prestige: <PrestigePanel onPerformed={p.onPrestige} art={p.prestigeArt} />,
-    shop: <MetaShopPanel />,
+    shop: <MetaShopPanel branchVisible={p.metaBranchVisible} />,
   }
   for (const x of p.tabs ?? []) views[x.item.id] = x.view
   const close = () => setOverlay(null)

@@ -5,12 +5,13 @@ import { Button } from './Button'
 import { ProgressBar } from './ProgressBar'
 
 /** Meta shop grouped by branch; shows rank, effect, cost, lock state and the next unlock. */
-export function MetaShopPanel({ title }: { title?: string }) {
+/** `branchVisible`: hide branches until the player can use them (e.g. layer currencies never earned). */
+export function MetaShopPanel({ title, branchVisible }: { title?: string; branchVisible?: (branch: string) => boolean }) {
   const ui = useUi()
   const { world, dispatch } = useEngine(ui.rt)
   const items = world.def.metaShop
-  const branches = [...new Set(items.map((i) => i.branch))]
-  const currencies = [...new Set(items.map((i) => i.currency))]
+  const branches = [...new Set(items.map((i) => i.branch))].filter((b) => !branchVisible || branchVisible(b))
+  const currencies = [...new Set(items.filter((i) => branches.includes(i.branch)).map((i) => i.currency))]
   const next = nextLockedMeta(world)
   const count = metaLayerCount(world)
   return (

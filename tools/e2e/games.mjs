@@ -134,6 +134,18 @@ export const GAMES = [
       await r.getByTestId('tab-play').click()
       assert((await r.locator('[data-decor="blueBanner"]').count()) === 1, 'Banner auf der Talkarte')
 
+      // Rückkehr-Brief nach 50 Stunden: Brief + Geschenk (20 Lichtkiesel)
+      const pebblesBefore = await r.evaluate(() => window.__engine.get().modules.wallet.balances.glowPebbles)
+      await r.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        rt.replace({ ...s, modules: { ...s.modules, offline: { pending: { gained: 1000, elapsedMs: 50 * 3600_000, capped: true, at: Date.now() }, claims: 0 } } })
+      })
+      await r.getByTestId('comeback-letter').getByText(T.chronicle.comeback.title).waitFor()
+      await r.getByTestId('welcome-claim').click()
+      const pebblesAfter = await r.evaluate(() => window.__engine.get().modules.wallet.balances.glowPebbles)
+      assert(pebblesAfter - pebblesBefore >= 20, `Rückkehr-Geschenk (${pebblesBefore} → ${pebblesAfter})`)
+
       // Lande: nach der ersten Langen Nacht öffnet sich Moorgrund
       await r.evaluate(() => {
         const rt = window.__engine

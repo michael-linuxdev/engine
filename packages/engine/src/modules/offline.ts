@@ -63,11 +63,13 @@ export function offlineModule(): EngineModule<OfflineState> {
         if (!s.pending) return s
         const mult = Math.max(1, Number((payload as { mult?: number } | undefined)?.mult) || 1)
         const amount = s.pending.gained * mult
+        const o = world.def.balance.offline
+        const comeback = !!o.comebackMs && s.pending.elapsedMs >= o.comebackMs
         return act(
           { pending: null, claims: s.claims + 1 },
           {
-            grant: [{ currency: primaryCurrency(world.def), amount, source: 'offline' }],
-            events: [{ type: 'offline.claimed', amount, elapsedMs: s.pending.elapsedMs }],
+            grant: [{ currency: primaryCurrency(world.def), amount, source: 'offline' }, ...(comeback ? (o.comebackGrant ?? []).map((g) => ({ ...g, source: 'comeback' })) : [])],
+            events: [{ type: 'offline.claimed', amount, elapsedMs: s.pending.elapsedMs }, ...(comeback ? [{ type: 'offline.comeback', elapsedMs: s.pending.elapsedMs }] : [])],
           },
         )
       },

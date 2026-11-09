@@ -37,13 +37,15 @@ export function checkTargets(r: SimResult, targets: readonly BalanceTarget[]): s
 /**
  * "No wall": the active time to the next NEW goal (a producer unlock or the
  * first run of a prestige layer — repeated runs are the loop, not goals) is never
- * more than `factor` × the previous gap. Gaps below `floorMin` count as
+ * more than `factor` × the recent pace. Content tracks (`kinds`) are checked
+ * separately: the valley (unlock/prestige/level) and the realms (region).
+ * Gaps below `floorMin` count as
  * `floorMin`, so the quick first minutes do not make every later gap a "wall".
  */
-export function checkWalls(r: SimResult, factor = 3, floorMin = 10, untilMin = Infinity): string[] {
+export function checkWalls(r: SimResult, factor = 3, floorMin = 10, untilMin = Infinity, kinds: readonly string[] = ['unlock', 'prestige', 'level']): string[] {
   const seen = new Set<string>()
   const goals = r.events.filter((e) => {
-    if (e.active > untilMin) return false
+    if (e.active > untilMin || !kinds.includes(e.kind)) return false
     const key = `${e.kind}:${e.id}`
     if (seen.has(key)) return false
     seen.add(key)

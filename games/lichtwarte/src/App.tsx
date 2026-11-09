@@ -18,7 +18,7 @@ import { chronicleRead, ftue, i18n, labels, prefs, rt, t, tabsSeen } from './run
 import { ValleyMap } from './scene/ValleyMap'
 import { currentMood } from './scene/mood'
 import { Ceremony } from './story/Ceremony'
-import { ChronicleSheet } from './story/Chronicle'
+import { ChronicleSheet, ComebackLetter } from './story/Chronicle'
 import { useChronicle } from './story/useChronicle'
 
 declare const __APP_VERSION__: string
@@ -157,6 +157,14 @@ export function App() {
         ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab }, view: <RealmsTab /> }] : []),
       ]}
       notice={<NoticeArea onEvents={() => setTab('watch')} />}
+      metaBranchVisible={(b) => {
+        // Läden der Langen Nacht und des Zeitalters erst zeigen, wenn es ihre Währung schon gab
+        const earned = (rt.get().modules.wallet as { earned: Record<string, number> }).earned
+        if (b === 'night') return (earned[CURRENCY.nightDew] ?? 0) > 0
+        if (b === 'ages') return (earned[CURRENCY.forebearLight] ?? 0) > 0
+        return true
+      }}
+      welcomeArt={<ComebackLetter />}
       tab={tab}
       onTab={(id) => {
         setTab(id)

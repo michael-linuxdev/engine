@@ -58,6 +58,7 @@ export const engineDe = {
     blockedEarned: 'Schwelle noch nicht erreicht',
     blockedProducers: (n: string) => `Erst ${n} Erzeuger in Betrieb nehmen`,
     blockedLower: (n: string, layer: string) => `Erst ${n}× ${layer}`,
+    blockedRest: (time: string) => `Ruhezeit: noch ${time}`,
     resetInfo: 'Setzt diesen Lauf zurück. Erworbenes im Laden bleibt.',
     count: (n: string) => `Bisher: ${n}`,
   },
