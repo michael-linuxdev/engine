@@ -124,8 +124,8 @@ export function metaShopModule(): EngineModule<MetaShopState> {
       const r = isRecord(raw) && isRecord(raw.ranks) ? raw.ranks : {}
       const ranks: Record<string, number> = {}
       for (const item of def.metaShop) {
-        const n = parseInt0(r[item.id], 0, item.maxRank)
-        if (n > 0) ranks[item.id] = n
+        if (!(item.id in r)) continue
+        ranks[item.id] = parseInt0(r[item.id], 0, item.maxRank)
       }
       return { ranks }
     },

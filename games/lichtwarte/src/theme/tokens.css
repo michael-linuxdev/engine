@@ -1,0 +1,22 @@
+/* Werte des Spiels für den Token-Vertrag (@engine/ui/styles/tokens.css). Kontrast geprüft: test/content.test.ts */
+:root {
+  --bg: #efe6d6;
+  --surface: #fbf6ec;
+  --surface-2: #ebdfca;
+  --ink: #2b211c;
+  --ink-muted: #5a4a3f;
+  --accent: #2f4f66;
+  --on-accent: #fff9ee;
+  --accent-2: #8a4b23;
+  --danger: #8f2a22;
+  --on-danger: #fff9ee;
+  --line: #cdbca1;
+  --focus: #1d5d9b;
+  --shadow: 0 8px 28px rgb(43 33 28 / 0.25);
+  --font-display: Georgia, 'Palatino Linotype', 'Book Antiqua', serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --radius-m: 12px;
+  --radius-l: 20px;
+  --map-ink: #2b211c;
+  --plaque: #fbf6ec;
+}

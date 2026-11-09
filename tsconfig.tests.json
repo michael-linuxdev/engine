@@ -29,6 +29,18 @@
     },
     {
       "path": "./games/_vorlage"
+    },
+    {
+      "path": "./packages/art-kit"
+    },
+    {
+      "path": "./packages/engine-react"
+    },
+    {
+      "path": "./packages/ui-kit"
+    },
+    {
+      "path": "./games/lichtwarte"
     }
   ]
 }

@@ -1,0 +1,50 @@
+{
+  "modules": [
+    "branches",
+    "burst",
+    "helper",
+    "metaShop",
+    "offline",
+    "prestige",
+    "producers",
+    "progression",
+    "surprises",
+    "wallet"
+  ],
+  "currencies": [
+    "forebearLight",
+    "glimmer",
+    "glowPebbles",
+    "nightDew",
+    "runeShards"
+  ],
+  "producers": [
+    "alchemistenturm",
+    "greifenhorst",
+    "holzlager",
+    "kartenstube",
+    "kraeuterkate",
+    "quellschrein",
+    "runenhalle",
+    "schmiede",
+    "steinbruch",
+    "sternwarte"
+  ],
+  "prestigeLayers": [
+    "ages",
+    "longNight",
+    "moonturn"
+  ],
+  "metaShop": [
+    "builderChalk",
+    "foundationStone",
+    "hourglass",
+    "nightCandle",
+    "oldLantern",
+    "sparkBell",
+    "stackedWood",
+    "starChart",
+    "travelPurse",
+    "wardenCloak"
+  ]
+}

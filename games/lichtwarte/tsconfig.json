@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../.tsbuild/lichtwarte",
+    "tsBuildInfoFile": "../../.tsbuild/lichtwarte.tsbuildinfo",
+    "rootDir": "src",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"]
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../../packages/engine" },
+    { "path": "../../packages/engine-react" },
+    { "path": "../../packages/ui-kit" },
+    { "path": "../../packages/art-kit" }
+  ]
+}

@@ -28,6 +28,8 @@ export interface GameShellProps<S extends EngineStrings> {
   tabs?: { item: NavItem; view: ReactNode }[]
   /** Extra menu entries before save/settings/legal. */
   menu?: MenuItem[]
+  /** Hint area between HUD and main view (FTUE coach …). */
+  notice?: ReactNode
   /** Extra overlays (game sheets) rendered on top. */
   overlays?: ReactNode
   onPrestige?: (layer: string, payout: number) => void
@@ -36,6 +38,8 @@ export interface GameShellProps<S extends EngineStrings> {
   prestigeArt?: (layer: string) => ReactNode
   /** Open a named overlay from outside (FTUE …). */
   openRef?: (open: (id: string) => void) => void
+  /** Called when the player switches tabs. */
+  onTab?: (id: string) => void
   className?: string
 }
 
@@ -89,10 +93,19 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
           <div className={['ek-app', p.className ?? ''].join(' ').trim()} data-locale={locale}>
             <SaveGuardBanner />
             {p.hud}
+            {p.notice}
             <main className="ek-main" id="main" data-testid={`view-${tab}`}>
               {views[tab] ?? p.play}
             </main>
-            <AppNav items={items} active={tab} onChange={setTab} menu={menu} />
+            <AppNav
+              items={items}
+              active={tab}
+              onChange={(id) => {
+                setTab(id)
+                p.onTab?.(id)
+              }}
+              menu={menu}
+            />
             {testPhase ? <TestPhaseNotice onDone={(record) => saveFlags({ ...flags, testPhaseOk: true, record })} /> : <WelcomeBack art={p.welcomeArt} />}
             <SaveSheet open={overlay === 'save'} onClose={close} prefix={p.backup.prefix} app={p.rt.def.id} keys={p.backup.keys} fileName={p.backup.fileName} />
             <SettingsSheet open={overlay === 'settings'} onClose={close} version={p.version} />

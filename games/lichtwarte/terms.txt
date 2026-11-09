@@ -6,12 +6,12 @@ Glimmer
 glimmer
 Runensplitter
 Rune Shards
-Mondperlen
-Moonpearls
-Nachtsilber
-Nightsilver
+Lichtkiesel
+Glowpebbles
+Nachttau
+Nightdew
 Ahnenlicht
-Ancestral Light
+Forebear Light
 Mondwende
 Moonturn
 Lange Nacht
@@ -28,3 +28,7 @@ Kräuterkate
 Sternwarte
 Greifenhorst
 Runenhalle
+Dämmertal
+Duskvale
+Alwine
+Fenno
