@@ -160,6 +160,23 @@ export const GAMES = [
       await r.getByTestId('area-buy-moorgrund_boardwalk').click()
       assert((await r.evaluate(() => window.__engine.get().modules.regions.regions.moorgrund.owned.moorgrund_boardwalk)) === 1, 'Land: erster Bereich gebaut')
       await r.keyboard.press('Escape')
+
+      // Markt: Tagesgeschenk, Talstil kaufen und anlegen, Testkauf mit Testgeld
+      await r.getByTestId('tab-market').click()
+      await r.getByTestId('card-gift').waitFor()
+      const pebbles = () => r.evaluate(() => window.__engine.get().modules.wallet.balances.glowPebbles)
+      const p0 = await pebbles()
+      await r.getByTestId('gift-claim').click()
+      assert((await pebbles()) === p0 + 3, 'Markt: Tagesgeschenk')
+      await r.getByTestId('style-emberRed').getByRole('button').click()
+      await r.getByTestId('style-equip-emberRed').click()
+      assert((await r.evaluate(() => window.__engine.get().modules.market.equipped)) === 'emberRed', 'Talstil angelegt')
+      const p1 = await pebbles()
+      await r.getByTestId('offer-buy-pebbles50').click()
+      assert((await pebbles()) === p1 + 50, 'Testkauf: 50 Lichtkiesel')
+      assert((await r.getByTestId('wallet').getAttribute('data-spent')) === '99', 'Testgeld: 0,99 € gebucht')
+      await r.getByTestId('tab-play').click()
+      assert((await r.locator('.lw-map[data-style="emberRed"]').count()) === 1, 'Talstil auf der Karte')
       if (errs.length) throw new Error(errs.join('\n'))
       await w.close()
     },

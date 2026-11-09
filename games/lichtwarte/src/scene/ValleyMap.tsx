@@ -4,7 +4,7 @@
  */
 import { useEffect, useState } from 'react'
 import { tierFor } from '@engine/art'
-import { DECOR_ID, isUnlocked, ownedOf, type DecorState } from '@engine/core'
+import { DECOR_ID, isUnlocked, MARKET_ID, ownedOf, type DecorState, type MarketState } from '@engine/core'
 import { useEngine } from '@engine/react'
 import { useUi } from '@engine/ui'
 import { Backdrop, Shade, Snow } from '../art/Backdrop'
@@ -25,7 +25,7 @@ export function ValleyMap({ onOpen }: { onOpen: (id: string) => void }) {
     return () => clearInterval(id)
   }, [])
   return (
-    <section className="lw-map" style={{ aspectRatio: `${MAP_W} / ${MAP_H - MAP_CROP}` }} aria-label={t.play.map} data-mood={`${mood.daypart}-${mood.season}`}>
+    <section className="lw-map" style={{ aspectRatio: `${MAP_W} / ${MAP_H - MAP_CROP}` }} aria-label={t.play.map} data-mood={`${mood.daypart}-${mood.season}`} data-style={world.get<MarketState>(MARKET_ID)?.equipped ?? 'duskBlue'}>
       <svg className="lw-map__svg" viewBox={`0 ${MAP_CROP} ${MAP_W} ${MAP_H - MAP_CROP}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label={t.play.map} data-testid="valley-svg">
         <Backdrop m={mood} />
         {SLOTS.map((s, i) => {

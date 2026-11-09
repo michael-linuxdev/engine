@@ -1,6 +1,7 @@
 /** Laufzeit: Engine, Geräte-Einstellungen, Sprache, Gerätemerker (Chronik, Einstieg). */
-import { createI18n, createPrefs, createRuntime, createSeen, createSteps } from '@engine/react'
+import { createI18n, createPrefs, createRuntime, createSeen, createSteps, createTestWallet } from '@engine/react'
 import type { UiLabels } from '@engine/ui'
+import { TEST_BUDGET_CENTS, TEST_WALLET_ENABLED } from './content/market'
 import { game } from './game'
 import { stringsDe, type Strings } from './i18n/de'
 
@@ -29,12 +30,19 @@ export const chronicleRead = createSeen(STORAGE.chronicle)
 export const tabsSeen = createSeen(STORAGE.tabs)
 export const hintsSeen = createSeen(STORAGE.hints)
 export const ftue = createSteps(STORAGE.ftue)
+/** Testgeld (nur Testphase, eigener Schlüssel, nicht im Spielstand). */
+export const testWallet = TEST_WALLET_ENABLED ? createTestWallet(game.id, TEST_BUDGET_CENTS, () => rt.clock.now()) : null
 if (typeof window !== 'undefined') (window as unknown as { __engine?: unknown }).__engine = rt
 
 type Keyed<T> = Record<string, T>
 
 const NAMESPACES: Record<string, () => Keyed<{ name: string; blurb: string }>> = {
-  title: () => ({ ...t.watch.titles, ...t.world.titles, realms: { name: t.realms.tab, blurb: t.realms.opensFirst } }),
+  title: () => ({ ...t.watch.titles, ...t.world.titles, realms: { name: t.realms.tab, blurb: t.realms.opensFirst }, market: t.trade.title }),
+  cosmetic: () => t.trade.cosmetics,
+  offer: () => t.trade.offers,
+  skip: () => t.trade.skips,
+  adChoice: () => t.trade.adChoices,
+  market: () => t.trade.boosts,
   quest: () => t.watch.quests,
   deed: () => t.watch.deeds,
   trial: () => t.watch.trials,

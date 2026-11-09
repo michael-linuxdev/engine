@@ -2,6 +2,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { createManualClock, createState, view } from '@engine/core'
 import { contrast, CONTRAST_PAIRS, cssTokens, walk } from '@engine/testing'
 import { BRAND } from '../src/brand'
 import { NAMES } from '../src/content/names'
@@ -10,6 +11,8 @@ import { game, PRODUCER_IDS } from '../src/game'
 import { BUILDINGS } from '../src/art/registry'
 import { SLOTS } from '../src/scene/slots'
 import { CHRONICLE } from '../src/content/chronicle'
+import { MARKET, OFFER_PRICES, STORE_ENABLED, STYLE_TINT, TEST_WALLET_ENABLED } from '../src/content/market'
+import { TEST_PHASE } from '../src/distribution'
 
 const GAME = join(__dirname, '..')
 const ROOT = join(GAME, '..', '..')
@@ -32,6 +35,35 @@ describe('Spiel: Inhalt', () => {
     expect(night).toHaveLength(4)
     expect(night.reduce((a, m) => a + m.maxRank, 0)).toBe(41)
     expect(game.metaShop.filter((m) => m.currency === 'forebearLight')).toHaveLength(5)
+  })
+})
+
+describe('Spiel: Markt (Attrappen)', () => {
+  it('7 Angebote mit Preis, 8 Talstile (4 + 4 Fest), Festwoche 5 Stufen, 2 Zeitsprünge mit 6 h am Tag', () => {
+    expect(MARKET.offers).toHaveLength(7)
+    for (const o of MARKET.offers) expect(OFFER_PRICES[o.id], o.id).toBeGreaterThan(0)
+    expect(MARKET.cosmetics).toHaveLength(8)
+    expect(MARKET.cosmetics.filter((c) => c.when)).toHaveLength(4)
+    for (const c of MARKET.cosmetics) expect(STYLE_TINT[c.id], c.id).toBeDefined()
+    expect(MARKET.pass.tiers).toHaveLength(5)
+    expect(MARKET.skips).toHaveLength(2)
+    expect(MARKET.skipCapHours).toBe(6)
+    expect(MARKET.ad.choices).toHaveLength(2)
+  })
+  it('Echtgeld bleibt aus; Testgeld nur in der Testphase', () => {
+    expect(STORE_ENABLED).toBe(false)
+    expect(TEST_WALLET_ENABLED).toBe(TEST_PHASE)
+  })
+  it('jeder Fest-Stil ist genau während seines Festes zu kaufen', () => {
+    const at = { budWreath: [4, 1], solsticeSheen: [7, 1], lanternParade: [10, 1], starOfLights: [12, 20] } as Record<string, [number, number]>
+    for (const c of MARKET.cosmetics.filter((x) => x.when)) {
+      const [mo, d] = at[c.id]
+      const clock = createManualClock(Date.UTC(2027, mo - 1, d, 12))
+      const w = view(game, createState(game, clock))
+      expect(c.when?.(w, clock), c.id).toBe(true)
+      clock.advance(60 * 86_400_000)
+      expect(c.when?.(w, clock), `${c.id} außerhalb`).toBe(false)
+    }
   })
 })
 

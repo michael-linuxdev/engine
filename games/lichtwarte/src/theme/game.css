@@ -99,3 +99,15 @@
 .lw-app .ek-panel {
   padding: var(--space-3);
 }
+
+/* Talstile (Markt): tönen nur die Karte, nie die Bedienung. Dämmerblau = unverändert. */
+.lw-map[data-style='emberRed'] .lw-map__svg { filter: sepia(0.25) saturate(1.25) hue-rotate(-12deg); }
+.lw-map[data-style='iceBlue'] .lw-map__svg { filter: saturate(0.8) hue-rotate(12deg) brightness(1.05); }
+.lw-map[data-style='amber'] .lw-map__svg { filter: sepia(0.35) saturate(1.1) brightness(1.04); }
+.lw-map[data-style='budWreath'] .lw-map__svg { filter: hue-rotate(-20deg) saturate(1.15) brightness(1.06); }
+.lw-map[data-style='solsticeSheen'] .lw-map__svg { filter: brightness(1.12) saturate(1.1); }
+.lw-map[data-style='lanternParade'] .lw-map__svg { filter: hue-rotate(-35deg) saturate(1.2); }
+.lw-map[data-style='starOfLights'] .lw-map__svg { filter: saturate(0.85) brightness(0.95) contrast(1.08); }
+@media (prefers-reduced-motion: no-preference) {
+  .lw-map__svg { transition: filter 0.6s ease; }
+}

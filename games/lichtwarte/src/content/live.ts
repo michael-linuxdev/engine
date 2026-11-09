@@ -133,6 +133,7 @@ export const FEATURES: FeatureDef[] = [
   { id: 'festivals', when: (w) => turns(w) >= 1 },
   { id: 'wheel', when: (w) => turns(w) >= 1 },
   { id: 'trials', when: (w) => turns(w) >= 5 },
+  { id: 'market', when: (w) => turns(w) >= 1 },
 ]
 
 export function featureOpen(w: WorldView, id: string): boolean {

@@ -74,13 +74,13 @@ Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `i
 
 | System | Referenz-Datei(en) | Engine-Modul | Fantasy-Entsprechung | Mindestmenge | Status |
 |---|---|---|---|---|---|
-| Markt-Angebote | `monetization.ts` | `market` | Markt | **7** Angebote (Attrappen) | offen |
-| Kosmetik | `monetization.ts` | `market` | Talstile | **8** (4 + 4 Fest) | offen |
-| Werbung (Attrappe) | `monetization.ts` | `market` | — | 2 Wahlen, Sperre 30/60 s | offen |
-| Premium-Woche | `monetization.ts` | `market` | Festwoche | **5** Stufen | offen |
-| Zeitsprung | `monetization.ts` | `market` | — | **2**, Tageskontingent 6 h | offen |
-| Testgeld | `testWallet.ts` | `testWallet` | — | 7 Preise, 20 €/Monat | offen |
-| Clan | `ClanPanel`, `vereinMult` | `clan` | Zirkel | Boost ×1,1–×1,25 | offen |
+| Markt-Angebote | `monetization.ts` | `market` | Markt | **7** Angebote (Attrappen) | getestet (7, Store aus) |
+| Kosmetik | `monetization.ts` | `market` | Talstile | **8** (4 + 4 Fest) | getestet (8, Fest-Stile nur im Fest) |
+| Werbung (Attrappe) | `monetization.ts` | `market` | Bonus-Video | 2 Wahlen, Sperre 30/60 s | getestet (2 Wahlen, 3 min Pause, Testphase 30/60 s) |
+| Premium-Woche | `monetization.ts` | `market` | Festwoche | **5** Stufen | getestet (5, frei + Plus, Wochenwechsel) |
+| Zeitsprung | `monetization.ts` | `market` | Kurze Stunde, Lange Wache | **2**, Tageskontingent 6 h | getestet (2, 6 h) |
+| Testgeld | `testWallet.ts` | engine-react `createTestWallet` | — | 7 Preise, 20 €/Monat | getestet (7 Preise, 20 €, Monatswechsel, E2E-Testkauf) |
+| Clan | `ClanPanel`, `vereinMult` | `market` (circle) | Wächterzirkel | Boost ×1,1–×1,25 | getestet (×1,1 + 0,05 bis ×1,25) |
 | Playtest-Log | `playtestCore.ts`, `playtestLog.ts` | engine-react | — | **40** Ereignistypen, 48 h roh, Minutenzähler | offen (Engine liefert `playtestEvents`) |
 | Ton-Effekte | `sound.ts` | engine-react | — | **8** | offen |
 | Ambiente | `ambience.ts` | engine-react | Wind, Feuer, Wasser, Nacht | **3** (Ziel 4) | offen |

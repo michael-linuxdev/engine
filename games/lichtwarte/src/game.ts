@@ -5,11 +5,12 @@
  * Inhalts-IDs sind stabil und stehen in ids.lock.json — nie ändern, nur anhängen.
  */
 import {
-  achievementsModule, calendarFestsModule, challengesModule, choiceEventsModule, collectionsModule, combineModule, dailyModule, regionsModule, decorModule, layerCardsModule, projectsModule, seasonAlbumModule, visitorsModule, defaultBalance, featureUnlocksModule, flashModule, questsModule, standardModules,
+  achievementsModule, calendarFestsModule, challengesModule, choiceEventsModule, collectionsModule, combineModule, dailyModule, regionsModule, marketModule, decorModule, layerCardsModule, projectsModule, seasonAlbumModule, visitorsModule, defaultBalance, featureUnlocksModule, flashModule, questsModule, standardModules,
   weekendModule, wheelModule, type GameDefinition, type GateAtom, type MetaItemDef, type ProducerDef,
 } from '@engine/core'
 import { BRAND } from './brand'
 import { DAILY, DEEDS, FEATURES, FESTIVALS, MARKET_NIGHT, QUESTS, STAR_WHEEL, STAR_WINDOW, TRIALS } from './content/live'
+import { MARKET } from './content/market'
 import { REALMS } from './content/realms'
 
 export { REALMS }
@@ -213,6 +214,7 @@ function liveModules() {
     projectsModule(GREAT_WORKS),
     // P9 Lande
     regionsModule(REALMS),
+    marketModule(MARKET),
   ]
 }
 
@@ -235,6 +237,10 @@ export const extraIds = {
   greatWorks: GREAT_WORKS.map((p) => p.id),
   realms: REALMS.regions.map((r) => r.id),
   realmAreas: REALMS.regions.flatMap((r) => r.areas.map((a) => a.id)),
+  cosmetics: MARKET.cosmetics.map((c) => c.id),
+  offers: MARKET.offers.map((o) => o.id),
+  skips: MARKET.skips.map((k) => k.id),
+  adChoices: MARKET.ad.choices.map((c) => c.id),
 }
 
 /** Zielkorridore für den Simulator (CHECK=1), begründet in docs/spiele/lichtwarte/balance.md. */

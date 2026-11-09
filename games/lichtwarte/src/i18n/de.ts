@@ -346,6 +346,41 @@ export const gameDe = {
       skyGarden: { name: 'Himmelsgarten', blurb: 'Ein Garten auf dem höchsten Hügel.' },
     },
   },
+  trade: {
+    tab: 'Markt',
+    title: { name: 'Markt', blurb: 'Händler aus den Nachbartälern. Alles hier ist freiwillig.' },
+    cosmetics: {
+      duskBlue: { name: 'Dämmerblau', blurb: 'Das Tal, wie es jeden Abend aussieht.' },
+      emberRed: { name: 'Glutrot', blurb: 'Warmes Licht, als glühte jeder Herd.' },
+      iceBlue: { name: 'Eisblau', blurb: 'Klare Winternacht über den Dächern.' },
+      amber: { name: 'Bernstein', blurb: 'Goldene Stunde, die nicht enden will.' },
+      budWreath: { name: 'Knospenkranz', blurb: 'Zartes Grün und Blüten. Nur zum Knospenfest.' },
+      solsticeSheen: { name: 'Sonnwendschein', blurb: 'Helle Mittsommernacht. Nur zum Mittsommerglanz.' },
+      lanternParade: { name: 'Laternenzug', blurb: 'Bunte Laternen im Nebel. Nur zum Laternenherbst.' },
+      starOfLights: { name: 'Lichterstern', blurb: 'Sterne über verschneiten Dächern. Nur zum Fest des langen Lichts.' },
+    },
+    offers: {
+      starterBundle: { name: 'Willkommenspaket', blurb: '200 Lichtkiesel und der Stil Glutrot. Nur einmal.' },
+      removeAds: { name: 'Ohne Werbung', blurb: 'Keine Bonus-Videos mehr. Alles andere bleibt.' },
+      pebbles50: { name: 'Beutel Lichtkiesel', blurb: '50 Lichtkiesel.' },
+      pebbles150: { name: 'Kiste Lichtkiesel', blurb: '150 Lichtkiesel.' },
+      pebbles500: { name: 'Fass Lichtkiesel', blurb: '500 Lichtkiesel.' },
+      stylePack: { name: 'Stil-Paket', blurb: 'Die Stile Eisblau und Bernstein. Nur einmal.' },
+      festWeekPlus: { name: 'Festwoche Plus', blurb: 'Diese Woche die zweite Belohnungsreihe der Festwoche.' },
+    },
+    skips: {
+      shortHour: { name: 'Kurze Stunde', blurb: 'Eine Stunde vergeht im Nu.' },
+      longWatch: { name: 'Lange Wache', blurb: 'Vier Stunden auf einen Schlag.' },
+    },
+    adChoices: {
+      glimmer: { name: '10 Minuten Glimmer', blurb: 'So viel Glimmer, wie das Tal in zehn Minuten sammelt.' },
+      pebbles: { name: '6 Lichtkiesel', blurb: 'Eine Handvoll Lichtkiesel.' },
+    },
+    boosts: {
+      boost: { name: 'Leuchtöl', blurb: 'Eigener Ertrag ×1,15 für 30 Minuten.' },
+      circle: { name: 'Wächterzirkel', blurb: 'Die Wächter der Nachbartäler leuchten mit: ×1,1, mit jeder Runde +0,05 bis ×1,25, je 1 Stunde.' },
+    },
+  },
   realms: realmsDe,
   effectLabels: { archive: 'Archiv' },
 }

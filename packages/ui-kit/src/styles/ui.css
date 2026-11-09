@@ -637,3 +637,37 @@ body {
   width: 100%;
   height: 100%;
 }
+
+/* Market: blocking mock video, style preview */
+.ek-adlock {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgb(0 0 0 / 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+.ek-adlock__box {
+  width: 100%;
+  max-width: 22rem;
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.ek-row__art {
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  display: block;
+}
+.ek-row__art svg {
+  width: 100%;
+  height: 100%;
+}

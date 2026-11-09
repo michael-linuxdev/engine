@@ -344,6 +344,41 @@ export const stringsEn: Strings = {
       skyGarden: { name: 'Sky Garden', blurb: 'A garden on the highest hill.' },
     },
   },
+  trade: {
+    tab: 'Market',
+    title: { name: 'Market', blurb: 'Traders from the neighbouring valleys. Everything here is optional.' },
+    cosmetics: {
+      duskBlue: { name: 'Dusk Blue', blurb: 'The valley as it looks every evening.' },
+      emberRed: { name: 'Ember Red', blurb: 'Warm light, as if every hearth were glowing.' },
+      iceBlue: { name: 'Ice Blue', blurb: 'A clear winter night over the roofs.' },
+      amber: { name: 'Amber', blurb: 'A golden hour that never ends.' },
+      budWreath: { name: 'Bud Wreath', blurb: 'Tender green and blossoms. Budding Fair only.' },
+      solsticeSheen: { name: 'Solstice Sheen', blurb: 'A bright midsummer night. Midsummer Glow only.' },
+      lanternParade: { name: 'Lantern Parade', blurb: 'Coloured lanterns in the mist. Lantern Autumn only.' },
+      starOfLights: { name: 'Star of Lights', blurb: 'Stars above snowy roofs. Feast of the Long Light only.' },
+    },
+    offers: {
+      starterBundle: { name: 'Welcome Bundle', blurb: '200 Glowpebbles and the Ember Red style. Once only.' },
+      removeAds: { name: 'No Ads', blurb: 'No more bonus videos. Everything else stays.' },
+      pebbles50: { name: 'Pouch of Glowpebbles', blurb: '50 Glowpebbles.' },
+      pebbles150: { name: 'Crate of Glowpebbles', blurb: '150 Glowpebbles.' },
+      pebbles500: { name: 'Barrel of Glowpebbles', blurb: '500 Glowpebbles.' },
+      stylePack: { name: 'Style Pack', blurb: 'The Ice Blue and Amber styles. Once only.' },
+      festWeekPlus: { name: 'Festival Week Plus', blurb: 'The second reward track of this Festival Week.' },
+    },
+    skips: {
+      shortHour: { name: 'Short Hour', blurb: 'An hour passes in a blink.' },
+      longWatch: { name: 'Long Watch', blurb: 'Four hours at once.' },
+    },
+    adChoices: {
+      glimmer: { name: '10 minutes of Glimmer', blurb: 'As much Glimmer as the valley gathers in ten minutes.' },
+      pebbles: { name: '6 Glowpebbles', blurb: 'A handful of Glowpebbles.' },
+    },
+    boosts: {
+      boost: { name: 'Lamp Oil', blurb: 'Your own yield ×1.15 for 30 minutes.' },
+      circle: { name: 'Warden Circle', blurb: 'Wardens of the neighbouring valleys shine with you: ×1.1, +0.05 each round up to ×1.25, 1 hour each.' },
+    },
+  },
   realms: realmsEn,
   effectLabels: { archive: 'Archive' },
 }

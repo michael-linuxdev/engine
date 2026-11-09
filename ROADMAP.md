@@ -2,7 +2,7 @@
 
 Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtwarte** (Arbeitstitel), ein gemütliches Fantasy-Idle-Spiel. Es soll mindestens die Tiefe, Systeme, Inhalte und Qualitätssicherung des Referenz-Spiels erreichen (`docs/referenz/paritaet.md`).
 
-**Paritäts-Fortschritt (2026-11-10): 78 %** der Systeme aus `paritaet.md`. 40 von 52 Zeilen sind `im Spiel`/`getestet`, 1 sind `Engine fertig`. Gezählt wird `im Spiel`/`getestet` voll, `Engine fertig` halb.
+**Paritäts-Fortschritt (2026-11-10): 91 %** der Systeme aus `paritaet.md`. 47 von 52 Zeilen sind `im Spiel`/`getestet`, 1 sind `Engine fertig`. Gezählt wird `im Spiel`/`getestet` voll, `Engine fertig` halb.
 Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 34/34 ✓, Chronik 20/20 ✓, Taten 12/10 ✓, Feste 9/9 ✓, Sammlung 49/37 ✓.
 
 **Web-Fassung:** GitHub Pages, Deploy bei Push auf `main`. Das Spiel liegt unter `/`, die Vorlage unter `/vorlage/`. Die eigene Domain ist in `.github/workflows/deploy-pages.yml` eingetragen.
@@ -20,7 +20,7 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 | P8 | Sammeln und Welt | fertig |
 | P9 | Lande, Wellen 1–3 (… bis ≥ 34) | fertig (34/34; Lande 35–50 geplant) |
 | P10 | Lange Nacht und Zeitalter | fertig |
-| P11 | Markt-Attrappen, Testgeld, Festwoche, Talstile, Zirkel | offen |
+| P11 | Markt-Attrappen, Testgeld, Festwoche, Talstile, Zirkel | fertig |
 | P12 | Ton, Ambiente, Playtest-Log, Store-Vorbereitung | offen |
 
 ---
@@ -121,7 +121,9 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 
 ## P11 — Markt (Attrappen)
 
-- [ ] `market`, `testWallet`, `clan`: 7 Angebote, 8 Talstile, Werbe-Attrappe (30/60 s), Festwoche (5 Stufen), Zeitsprung (Tageskontingent), Zirkel-Boost
+- [x] Engine-Modul `market`: 7 Angebote, 8 Talstile (4 + 4 Fest), Bonus-Video mit Pause, Festwoche (5 Stufen, frei + Plus), Zeitsprung (6 h am Tag), Tagesgeschenk, Leuchtöl, Wächterzirkel (×1,1 bis ×1,25). Echtgeld ist aus (`STORE_ENABLED = false`).
+- [x] Testgeld (engine-react `createTestWallet`): 20 € im Monat, eigener Schlüssel, nicht im Spielstand. Das Bonus-Video sperrt in der Testphase 30 oder 60 s.
+- [x] Markt-Tab ab der ersten Mondwende. Talstile tönen die Karte. Preise und Senken: `docs/spiele/lichtwarte/markt.md`.
 
 ## P12 — Ton, Ambiente, Playtest-Log, Store
 
