@@ -5,11 +5,12 @@
  * Inhalts-IDs sind stabil und stehen in ids.lock.json — nie ändern, nur anhängen.
  */
 import {
-  achievementsModule, calendarFestsModule, challengesModule, dailyModule, defaultBalance, featureUnlocksModule, flashModule, questsModule, standardModules,
+  achievementsModule, calendarFestsModule, challengesModule, choiceEventsModule, collectionsModule, combineModule, dailyModule, decorModule, layerCardsModule, projectsModule, seasonAlbumModule, visitorsModule, defaultBalance, featureUnlocksModule, flashModule, questsModule, standardModules,
   weekendModule, wheelModule, type GameDefinition, type GateAtom, type MetaItemDef, type ProducerDef,
 } from '@engine/core'
 import { BRAND } from './brand'
 import { DAILY, DEEDS, FEATURES, FESTIVALS, MARKET_NIGHT, QUESTS, STAR_WHEEL, STAR_WINDOW, TRIALS } from './content/live'
+import { ALCHEMY, COLLECTION, CONSTELLATIONS, DECOR, FOLIO, GREAT_WORKS, GUESTS, OMENS, WORLD_FEATURES } from './content/world'
 
 export const PRODUCER_IDS = [
   'kraeuterkate',
@@ -172,7 +173,16 @@ function liveModules() {
     flashModule(STAR_WINDOW),
     calendarFestsModule(FESTIVALS),
     wheelModule(STAR_WHEEL),
-    featureUnlocksModule(FEATURES),
+    featureUnlocksModule([...FEATURES, ...WORLD_FEATURES]),
+    // P8 Sammeln und Welt
+    collectionsModule(COLLECTION),
+    combineModule(ALCHEMY),
+    visitorsModule(GUESTS),
+    decorModule(DECOR),
+    seasonAlbumModule(FOLIO),
+    layerCardsModule(CONSTELLATIONS),
+    choiceEventsModule(OMENS),
+    projectsModule(GREAT_WORKS),
   ]
 }
 
@@ -184,7 +194,15 @@ export const extraIds = {
   fests: FESTIVALS.fests.map((f) => f.id),
   festItems: Object.values(FESTIVALS.shop).flatMap((items) => items.map((i) => i.id)),
   wheel: STAR_WHEEL.segments.map((s) => s.id),
-  features: FEATURES.map((f) => f.id),
+  features: [...FEATURES, ...WORLD_FEATURES].map((f) => f.id),
+  collection: COLLECTION.entries.map((e) => e.id),
+  recipes: ALCHEMY.recipes.map((r) => r.id),
+  guests: GUESTS.list.map((v) => v.id),
+  decor: DECOR.items.map((d) => d.id),
+  folio: FOLIO.goals.map((g) => g.id),
+  constellations: CONSTELLATIONS.cards.map((c) => c.id),
+  omens: OMENS.list.map((o) => o.id),
+  greatWorks: GREAT_WORKS.map((p) => p.id),
 }
 
 /** Zielkorridore für den Simulator (CHECK=1), begründet in docs/spiele/lichtwarte/balance.md. */

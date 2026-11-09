@@ -2,7 +2,7 @@
 
 Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtwarte** (Arbeitstitel), ein gemütliches Fantasy-Idle-Spiel. Es soll mindestens die Tiefe, Systeme, Inhalte und Qualitätssicherung des Referenz-Spiels erreichen (`docs/referenz/paritaet.md`).
 
-**Paritäts-Fortschritt (2026-11-10): 55 %** der Systeme aus `paritaet.md`. 27 von 52 Zeilen sind `im Spiel`/`getestet`, 3 sind `Engine fertig`. Gezählt wird `im Spiel`/`getestet` voll, `Engine fertig` halb.
+**Paritäts-Fortschritt (2026-11-10): 72 %** der Systeme aus `paritaet.md`. 36 von 52 Zeilen sind `im Spiel`/`getestet`, 3 sind `Engine fertig`. Gezählt wird `im Spiel`/`getestet` voll, `Engine fertig` halb.
 Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 1/34, Chronik 6/20, Taten 12/10 ✓, Feste 9/9 ✓.
 
 **Web-Fassung:** GitHub Pages, Deploy bei Push auf `main`. Das Spiel liegt unter `/`, die Vorlage unter `/vorlage/`. Die eigene Domain ist in `.github/workflows/deploy-pages.yml` eingetragen.
@@ -17,7 +17,7 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 | P5 | Lichtwarte: spielbarer Kern | fertig |
 | P6 | Balance-Pass 1 | fertig |
 | P7 | Bindung | fertig |
-| P8 | Sammeln und Welt | offen |
+| P8 | Sammeln und Welt | fertig |
 | P9 | Lande, Wellen 1–3 (… bis ≥ 34) | offen |
 | P10 | Lange Nacht und Zeitalter | offen |
 | P11 | Markt-Attrappen, Testgeld, Festwoche, Talstile, Zirkel | offen |
@@ -89,9 +89,14 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 
 ## P8 — Sammeln und Welt
 
-- [ ] Engine-Module: `collections`, `combine`, `visitors`, `decor`, `seasonAlbum`, `layerCards`, `choiceEvents`, `projects`
-- [ ] Inhalte: ≥ 37 Einträge Bestiarium/Kräuterkunde, 12 Alchemie-Ergebnisse, 12 Talgäste, 16 Banner & Steine (8 Plätze), 48 Folio-Ziele, 12 Sternbilder, 3 Omen × 2, 6 Großwerke × 3 Stufen
-- [ ] Jahreszeiten × Tageszeit (16 Stimmungen)
+- [x] Engine-Module mit Tests: `collections`, `combine`, `visitors`, `decor`, `seasonAlbum`, `layerCards`, `choiceEvents`, `projects`
+- [x] Inhalte:
+  - Bestiarium & Kräuterkunde mit 49 Einträgen in 5 Kategorien und 3 Seltenheiten; die Fest-Sorten gibt es im Fest-Laden.
+  - 12 Alchemie-Rezepte (4 h, auch offline), 12 Talgäste, 16 Banner & Steine auf 8 Plätzen der Talkarte.
+  - 12 Folio-Ziele je Jahreszeit, 12 Sternbilder (1 aus 3), 3 Omen × 2, 6 Großwerke × 3 Stufen.
+- [x] UI: Tal-Tab, Gast- und Omen-Hinweis (höchstens ein Hinweis gleichzeitig), Sternbild-Wahl nach dem Sternenrad. Deko ist auf der Karte und im Pixelvergleich (67 Bilder).
+- [x] Jahreszeiten × Tageszeit: 16 Stimmungen (seit P5)
+- [ ] Wetterarten (4) als tägliche Stimmung: offen, eingeplant mit P12 (Ambiente)
 
 ## P9 — Lande
 

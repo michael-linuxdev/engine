@@ -1,5 +1,7 @@
 import type { ArtEntry, Mood } from '@engine/art'
 import { BuildingArt } from '../art/Building'
+import { DecorArt } from '../art/decor'
+import { DECOR } from '../content/world'
 import { PRODUCER_IDS } from '../game'
 
 export const SHEET_MOODS: Mood[] = [
@@ -17,4 +19,9 @@ export const ART_ENTRIES: ArtEntry[] = [
       render: (m: Mood) => <BuildingArt id={id} tier={tier} m={m} variant={i} />,
     })),
   ),
+  ...DECOR.items.map((d) => ({
+    id: `decor-${d.id}`,
+    viewBox: '-16 -32 32 36',
+    render: (m: Mood) => <DecorArt id={d.id} m={m} />,
+  })),
 ]

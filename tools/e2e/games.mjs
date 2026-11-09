@@ -90,6 +90,7 @@ export const GAMES = [
         const rt = window.__engine
         const s = rt.get()
         rt.replace({ ...s, core: { ...s.core, primary: 1e9 }, modules: { ...s.modules, prestige: { layers: [{ count: 6, runEarned: 0, sinceReset: 6 }, ...s.modules.prestige.layers.slice(1)] } } })
+        rt.dispatch('burst', 'use')
         rt.dispatch('producers', 'buy', { id: 'kraeuterkate', count: 30 })
       })
       await r.getByTestId('tab-watch').click()
@@ -100,6 +101,38 @@ export const GAMES = [
       const deeds = await r.evaluate(() => window.__engine.get().modules.achievements.done)
       assert(deeds.includes('firstLight'), 'Tat „Erstes Licht“ erreicht')
       await r.getByTestId('deed-firstLight').waitFor()
+
+      // Tal: Sammlung, Alchemie, Banner & Steine, Talgast, Omen
+      await r.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        rt.replace({
+          ...s,
+          modules: {
+            ...s.modules,
+            wallet: { ...s.modules.wallet, balances: { ...s.modules.wallet.balances, glowPebbles: 500, runeShards: 500 } },
+            collections: { found: { moonsage: 1, dewcup: 1 } },
+            visitors: { ...s.modules.visitors, current: 'fox', until: Date.now() + 60_000 },
+            choiceEvents: { ...s.modules.choiceEvents, day: 'x', pending: 'stormNight' },
+          },
+        })
+        rt.dispatch('producers', 'buy', { id: 'kraeuterkate', count: 1 })
+      })
+      await r.getByTestId('tab-world').click()
+      await r.getByTestId('card-collection').waitFor()
+      await r.getByTestId('brew-a').selectOption('moonsage')
+      await r.getByTestId('brew-b').selectOption('dewcup')
+      await r.getByTestId('brew').click()
+      assert((await r.evaluate(() => window.__engine.get().modules.combine.recipe)) === 'glowTea', 'Alchemie: Rezept braut')
+      await r.getByTestId('decor-blueBanner').getByRole('button').click()
+      await r.getByTestId('decor-slot-0').selectOption('blueBanner')
+      assert((await r.evaluate(() => window.__engine.get().modules.decor.placed[0])) === 'blueBanner', 'Banner aufgestellt')
+      await r.getByTestId('visitor-greet').click()
+      assert((await r.evaluate(() => window.__engine.get().modules.visitors.seen.fox)) === 1, 'Talgast begrüßt')
+      await r.getByTestId('omen-safe').click()
+      assert((await r.evaluate(() => window.__engine.get().modules.choiceEvents.active)) === true, 'Omen gewählt')
+      await r.getByTestId('tab-play').click()
+      assert((await r.locator('[data-decor="blueBanner"]').count()) === 1, 'Banner auf der Talkarte')
       if (errs.length) throw new Error(errs.join('\n'))
       await w.close()
     },

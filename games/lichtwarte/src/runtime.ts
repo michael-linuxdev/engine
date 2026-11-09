@@ -34,7 +34,7 @@ if (typeof window !== 'undefined') (window as unknown as { __engine?: unknown })
 type Keyed<T> = Record<string, T>
 
 const NAMESPACES: Record<string, () => Keyed<{ name: string; blurb: string }>> = {
-  title: () => t.watch.titles,
+  title: () => ({ ...t.watch.titles, ...t.world.titles }),
   quest: () => t.watch.quests,
   deed: () => t.watch.deeds,
   trial: () => t.watch.trials,
@@ -42,6 +42,14 @@ const NAMESPACES: Record<string, () => Keyed<{ name: string; blurb: string }>> =
   festItem: () => t.watch.festItems,
   wheel: () => t.watch.wheel,
   hint: () => t.watch.hints,
+  category: () => t.world.categories,
+  entry: () => t.world.entries,
+  guest: () => t.world.guests,
+  decor: () => t.world.decor,
+  folio: () => t.world.folio,
+  card: () => t.world.cards,
+  omen: () => t.world.omens,
+  work: () => t.world.works,
 }
 
 export const labels: UiLabels = {
@@ -57,6 +65,7 @@ export const labels: UiLabels = {
   metaBranch: (id) => (t.branches as Keyed<string>)[id] ?? id,
   effect: (key) => {
     if (key.startsWith('meta.')) return `${t.effectLabels.archive}: ${labels.metaItem(key.slice(5)).name}`
+    if (key.startsWith('card.')) return labels.content(key).name
     const k = key.replace('effect.', '') as keyof typeof t.effects
     return t.effects[k] ?? key
   },

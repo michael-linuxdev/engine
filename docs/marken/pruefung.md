@@ -49,6 +49,21 @@ Der Store-Start ist gesperrt, solange ein Name nicht `frei` ist (`DISTRIBUTION =
 | festMistMoon | Nebelmond | Mist Moon | Fest | 2026-11-09 | — | Gattungswörter | ungeprüft |
 | festLongLight | Fest des langen Lichts | Feast of the Long Light | Fest | 2026-11-09 | — | Gattungswörter (Wintersonnenwende, ohne religiösen Bezug) | ungeprüft |
 
+## Beschreibende Gattungsnamen (ohne Einzelzeile)
+
+Die folgenden Inhalte tragen beschreibende Namen aus Gattungswörtern, zum Beispiel „Glimmertee“, „Moossteinmann“, „Flussbrücke“, „Der Kräuterstern“ oder „Fuchs“. Sie gelten nicht als Eigennamen im Sinne des Registers. Der Namens-Wächter prüft sie trotzdem gegen die Denylist, und vor dem Store-Start werden sie einmal gesammelt per Websuche geprüft.
+
+| Bereich | Anzahl | Quelle |
+|---|---:|---|
+| Bestiarium & Kräuterkunde (Kräuter, Steine, Wesen, Festschätze, Tränke) | 49 | `games/lichtwarte/src/i18n/*.ts` → `world.entries` |
+| Talgäste (Tiere und Sagengestalten als Gattungswort) | 12 | `world.guests` |
+| Banner & Steine | 16 | `world.decor` |
+| Jahreskreis-Folio-Ziele | 12 | `world.folio` |
+| Sternbilder | 12 | `world.cards` |
+| Omen | 3 | `world.omens` |
+| Großwerke | 6 | `world.works` |
+| Taten, Aufträge, Prüfungen, Fest-Laden, Sternenrad-Felder | 12 + 6 + 3 + 3 + 4 | `watch.*` |
+
 ## Verworfene Namen
 
 | Name | Grund |

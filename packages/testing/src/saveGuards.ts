@@ -185,7 +185,13 @@ export function describeSaveGuards(opts: SaveGuardOptions): void {
         const r = loadState(def, input, clock)
         const once = serializeState(def, r.state, GUARD_NOW)
         const twice = serializeState(def, loadState(def, once, clock).state, GUARD_NOW)
-        expect(twice).toBe(once)
+        if (twice !== once) {
+          const a = JSON.parse(once)
+          const b = JSON.parse(twice)
+          const diff = Object.keys(a.modules).filter((k) => JSON.stringify(a.modules[k]) !== JSON.stringify(b.modules[k]))
+          const core = JSON.stringify(a.core) !== JSON.stringify(b.core) ? ['core'] : []
+          expect([...core, ...diff].map((k) => `${k}: ${JSON.stringify(k === 'core' ? a.core : a.modules[k]).slice(0, 200)} → ${JSON.stringify(k === 'core' ? b.core : b.modules[k]).slice(0, 200)}`), 'instabil nach zweitem Laden').toEqual([])
+        }
         // NaN/Infinity in state would turn into null on save and break the stability check above.
         for (const v of Object.values(r.state.core)) if (typeof v === 'number') expect(Number.isFinite(v)).toBe(true)
       }

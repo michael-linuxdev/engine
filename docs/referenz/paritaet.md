@@ -36,7 +36,7 @@ Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `i
 | Blitz-Event | `flashEvent.ts` | `flash` | Sternfenster | 1 Art (18 min, ×1,15) | im Spiel |
 | Kalender-Feste | `fests.ts`, `state/fest.ts` | `calendarFests` | Lichterfeste | **9** (4 große, 5 kleine), Fest-Laden 6/8 Zeilen | getestet (9 Feste, Laden 3 Zeilen; Fest-Sorten mit P8) |
 | Rad | `gardenLife.ts` | `wheel` | Sternenrad | 4 Arten auf 6 Feldern | getestet (4 Arten, 6 Gewichte) |
-| Freischalt-Liste | `featureUnlocks.ts` | `featureUnlocks` | — | **9** Systeme | im Spiel (5; P8 bringt 5 weitere) |
+| Freischalt-Liste | `featureUnlocks.ts` | `featureUnlocks` | — | **9** Systeme | im Spiel (13) |
 | Hinweise | `hints.ts` | engine-react `pickHint` | Randnotizen der Chronik | **16** | im Spiel (16) |
 | FTUE | `ftue.ts` | engine-react `createSteps` + ui-kit `FtueCoach` | Erste Wache | **6 Schritte** | getestet (6 Schritte, smoke) |
 | Benachrichtigungen | `notify.ts` | engine-react | — | 1 Stelle | offen |
@@ -45,15 +45,15 @@ Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `i
 
 | System | Referenz-Datei(en) | Engine-Modul | Fantasy-Entsprechung | Mindestmenge | Status |
 |---|---|---|---|---|---|
-| Sammelbuch-Sorten | `gardenLife.ts` (`VARIETIES`) | `collections` | Bestiarium & Kräuterkunde | **37** (24 + 13 Fest), 3 Seltenheiten | offen |
-| Sammel-Übersicht | `collections.ts` | `collections` | — | 6 Kategorien | offen |
-| Kombinieren | `crossing.ts` | `combine` | Alchemie | **12** Ergebnisse, 4 h | offen |
-| Besucher | `residents.ts` | `visitors` | Talgäste | **12** Arten | offen |
-| Deko | `decor.ts` | `decor` | Banner & Steine | **16** Teile (10 + 6 exklusiv), **8** Plätze | offen |
-| Album | `album.ts` | `seasonAlbum` | Jahreskreis-Folio | **12** Ziele je Jahreszeit (48/Jahr) | offen |
-| Karten nach Prestige | `seasonCards.ts` | `layerCards` | Sternbilder | **12** (9 + 3), 1 aus 3 | offen |
-| Entscheidungs-Ereignis | `weatherEvents.ts`, `gardenLife.ts` | `choiceEvents` | Omen | 4 Wetterarten, 3 Ereignisse × 2 Optionen | offen |
-| Großprojekte | `projects.ts` | `projects` | Großwerke | **6 × 3 = 18 Stufen** | offen |
+| Sammelbuch-Sorten | `gardenLife.ts` (`VARIETIES`) | `collections` | Bestiarium & Kräuterkunde | **37** (24 + 13 Fest), 3 Seltenheiten | getestet (49: 24 + 13 Fest + 12 Tränke) |
+| Sammel-Übersicht | `collections.ts` | `collections` | — | 6 Kategorien | im Spiel (5 Kategorien + Gäste, Folio, Taten als eigene Karten) |
+| Kombinieren | `crossing.ts` | `combine` | Alchemie | **12** Ergebnisse, 4 h | getestet (12) |
+| Besucher | `residents.ts` | `visitors` | Talgäste | **12** Arten | getestet (12) |
+| Deko | `decor.ts` | `decor` | Banner & Steine | **16** Teile (10 + 6 exklusiv), **8** Plätze | getestet (16, 8 Plätze, auf der Talkarte) |
+| Album | `album.ts` | `seasonAlbum` | Jahreskreis-Folio | **12** Ziele je Jahreszeit (48/Jahr) | im Spiel (12 × 4) |
+| Karten nach Prestige | `seasonCards.ts` | `layerCards` | Sternbilder | **12** (9 + 3), 1 aus 3 | im Spiel (12) |
+| Entscheidungs-Ereignis | `weatherEvents.ts`, `gardenLife.ts` | `choiceEvents` | Omen | 4 Wetterarten, 3 Ereignisse × 2 Optionen | getestet (3 × 2; Wetterarten offen) |
+| Großprojekte | `projects.ts` | `projects` | Großwerke | **6 × 3 = 18 Stufen** | im Spiel (6 × 3) |
 | Stimmungen | `theme/art/mood.ts`, `theme/ambient.ts` | `art-kit` (`moodAt`) | Morgen/Tag/Abend/Nacht × 4 Jahreszeiten | 16 Zustände | getestet (16 im Spiel, 4 im Pixelvergleich) |
 
 ## Lande (P9)

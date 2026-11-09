@@ -587,3 +587,44 @@ body {
 .ek-card .ek-h3 {
   margin: 0;
 }
+.ek-select {
+  min-height: var(--tap);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  padding: 0 var(--space-2);
+  max-width: 100%;
+}
+.ek-details summary {
+  min-height: var(--tap);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 700;
+}
+.ek-grid-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-2);
+}
+.ek-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  background: var(--surface);
+  overflow-wrap: anywhere;
+}
+.ek-tile.is-locked {
+  background: var(--surface-2);
+}
+.ek-tile.is-done {
+  border-color: var(--accent);
+}
