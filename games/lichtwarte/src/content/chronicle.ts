@@ -1,6 +1,6 @@
 /** Chronik: Seiten erscheinen nach Fortschritt (Bedingung auf dem Spielstand). Texte in i18n/*.ts. */
 import { layerStatus, ownedOf, prestigeState, type WorldView } from '@engine/core'
-import { LAYER } from '../game'
+import { LAYER } from '../ids'
 
 export interface ChronicleEntry {
   id: 'welcome' | 'firstBuild' | 'holzlager' | 'steinbruch' | 'moonturnReady' | 'afterMoonturn'

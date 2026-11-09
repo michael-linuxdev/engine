@@ -1,7 +1,11 @@
 /**
  * Overlay stack: the topmost open window closes on Escape or the system back
- * gesture. Each open overlay pushes one history entry so "back" closes it
- * instead of leaving the app.
+ * gesture. While any overlay is open there is exactly ONE extra history
+ * entry, so "back" closes the top overlay instead of leaving the app.
+ *
+ * History changes are batched in a microtask: closing one overlay and opening
+ * the next in the same render must not race `history.back()` against
+ * `pushState()` (that used to navigate away from the page).
  */
 import { useEffect, useRef } from 'react'
 
@@ -13,7 +17,30 @@ interface Entry {
 const stack: Entry[] = []
 let nextId = 1
 let installed = false
+let hasEntry = false
 let ignorePop = 0
+let scheduled = false
+
+function sync(): void {
+  if (scheduled) return
+  scheduled = true
+  queueMicrotask(() => {
+    scheduled = false
+    const want = stack.length > 0
+    try {
+      if (want && !hasEntry) {
+        history.pushState({ overlay: true }, '')
+        hasEntry = true
+      } else if (!want && hasEntry) {
+        hasEntry = false
+        ignorePop += 1
+        history.back()
+      }
+    } catch {
+      /* no history (tests) */
+    }
+  })
+}
 
 function install(): void {
   if (installed || typeof window === 'undefined') return
@@ -21,23 +48,19 @@ function install(): void {
   window.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape' || !stack.length) return
     e.preventDefault()
-    closeTop()
+    stack[stack.length - 1].close()
   })
   window.addEventListener('popstate', () => {
     if (ignorePop > 0) {
       ignorePop -= 1
       return
     }
-    const top = stack.pop()
-    top?.close()
+    // The system back gesture consumed our entry: close the top overlay;
+    // if others remain open, sync() pushes a fresh entry.
+    hasEntry = false
+    stack[stack.length - 1]?.close()
+    sync()
   })
-}
-
-function closeTop(): void {
-  const top = stack[stack.length - 1]
-  if (!top) return
-  // Going back pops our history entry; popstate then closes the overlay.
-  history.back()
 }
 
 export function openOverlayCount(): number {
@@ -55,23 +78,11 @@ export function useOverlay(open: boolean, onClose: () => void): void {
     install()
     const entry: Entry = { id: nextId++, close: () => closeRef.current() }
     stack.push(entry)
-    try {
-      history.pushState({ overlay: entry.id }, '')
-    } catch {
-      /* ignore */
-    }
+    sync()
     return () => {
       const i = stack.indexOf(entry)
-      if (i >= 0) {
-        // Closed by the app (button): drop our history entry without closing another overlay.
-        stack.splice(i, 1)
-        ignorePop += 1
-        try {
-          history.back()
-        } catch {
-          ignorePop -= 1
-        }
-      }
+      if (i >= 0) stack.splice(i, 1)
+      sync()
     }
   }, [open])
 }

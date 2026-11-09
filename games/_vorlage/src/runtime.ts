@@ -21,6 +21,7 @@ export const rt = createRuntime(game)
 type Keyed<T> = Record<string, T>
 
 export const labels: UiLabels = {
+  content: (key) => ({ name: key, blurb: '' }),
   currency: (id) => (t.currencies as Keyed<string>)[id] ?? id,
   producer: (id) => (t.producers as Keyed<{ name: string; blurb: string }>)[id] ?? { name: id, blurb: '' },
   layer: (id) => (t.layers as Keyed<{ name: string; action: string; blurb: string }>)[id] ?? { name: id, action: id, blurb: '' },

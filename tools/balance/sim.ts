@@ -36,7 +36,7 @@ export interface SimEvent {
   at: number
   /** Active minutes played until then. */
   active: number
-  kind: 'unlock' | 'prestige'
+  kind: 'unlock' | 'prestige' | 'level'
   id: string
   detail?: string
 }
@@ -76,9 +76,13 @@ export function simulate(def: GameDefinition, opts: SimOptions): SimResult {
   let wasPlaying = true
   const minutes = () => (clock.now() - start) / 60_000
   const record = (kind: SimEvent['kind'], id: string, detail?: string) => events.push({ at: minutes(), active: activeMs / 60_000, kind, id, detail })
+  const levelUps = (events: readonly { type: string; level?: unknown }[]) => {
+    for (const e of events) if (e.type === 'level.up') record('level', `rang${Number(e.level)}`)
+  }
   const act = (module: string, type: string, payload?: unknown): boolean => {
     const r = dispatch(def, s, { module, type, payload }, clock)
     s = r.state
+    levelUps(r.events)
     return r.ok
   }
 
@@ -126,7 +130,9 @@ export function simulate(def: GameDefinition, opts: SimOptions): SimResult {
     }
     // --- time passes ---
     clock.advance(step)
-    s = tick(def, s, step, clock).state
+    const t = tick(def, s, step, clock)
+    s = t.state
+    levelUps(t.events)
     activeMs += step
     maxPrimary = Math.max(maxPrimary, s.core.primary)
   }
@@ -136,10 +142,10 @@ export function simulate(def: GameDefinition, opts: SimOptions): SimResult {
 export function formatResult(r: SimResult, summary: boolean): string {
   const lines: string[] = []
   const fmt = (m: number) => (m < 120 ? `${m.toFixed(1)} min` : m < 2880 ? `${(m / 60).toFixed(1)} h` : `Tag ${(m / 1440 + 1).toFixed(1)}`)
-  const shown = summary ? r.events.filter((e, i, all) => e.kind === 'unlock' || all.findIndex((x) => x.id === e.id) === i || i === all.length - 1 || (e.kind === 'prestige' && Number(e.detail?.slice(1).split(' ')[0]) <= 15)) : r.events
+  const shown = summary ? r.events.filter((e) => e.kind !== 'level').filter((e, i, all) => e.kind === 'unlock' || all.findIndex((x) => x.id === e.id) === i || i === all.length - 1 || (e.kind === 'prestige' && Number(e.detail?.slice(1).split(' ')[0]) <= 15)) : r.events
   for (const e of shown) lines.push(`${fmt(e.at).padStart(10)}  aktiv ${e.active.toFixed(1).padStart(7)} min  ${e.kind.padEnd(8)} ${e.id} ${e.detail ?? ''}`)
   const pr = (r.final.modules.prestige as { layers: { count: number }[] }).layers.map((l) => l.count)
-  lines.push(`SUMMARY aktiv=${r.activeMinutes.toFixed(0)} min  prestige=${pr.join('/')}  erzeuger=${r.events.filter((e) => e.kind === 'unlock').length}  max=${r.maxPrimary.toExponential(2)}`)
+  lines.push(`SUMMARY aktiv=${r.activeMinutes.toFixed(0)} min  lebenszeit=${r.final.core.primaryLifetime.toExponential(2)}  prestige=${pr.join('/')}  erzeuger=${r.events.filter((e) => e.kind === 'unlock').length}  max=${r.maxPrimary.toExponential(2)}`)
   if (r.maxPrimary > 1e200) lines.push('WARNUNG: Wirtschaft über 1e200 (ADR 0002)')
   return lines.join('\n')
 }

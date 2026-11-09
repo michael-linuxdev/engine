@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
-import { MODULE, type ProducerDef } from '@engine/core'
+import { DAILY_ID, dailyStatus, isFeatureOpen, localDayKey, MODULE, QUESTS_ID, type DailyState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
 import { currentStep, useEngine, useStore, useSteps } from '@engine/react'
-import { BurstButton, FtueCoach, GameShell, Hud, UpgradeSheet, useUi } from '@engine/ui'
+import { BurstButton, FtueCoach, GameShell, Hud, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
 import { BuildingArt } from './art/Building'
 import { TIER_LEVELS } from './art/registry'
 import { DISTRIBUTION, TEST_PHASE } from './distribution'
 import { CHRONICLE } from './content/chronicle'
+import { DAILY } from './content/live'
+import { Notices } from './story/Notices'
+import { WatchView } from './story/Watch'
 import { ftueSteps } from './content/ftue'
 import { CURRENCY, game } from './game'
 import { chronicleRead, ftue, i18n, labels, prefs, rt, t, tabsSeen } from './runtime'
@@ -17,6 +20,13 @@ import { ChronicleSheet } from './story/Chronicle'
 import { useChronicle } from './story/useChronicle'
 
 declare const __APP_VERSION__: string
+
+/** Abzeichen am Wacht-Tab: Wachrunde offen oder Auftrag fertig. */
+function watchBadge(w: WorldView): boolean {
+  const d = w.get<DailyState>(DAILY_ID)
+  const q = w.get<QuestsState>(QUESTS_ID)
+  return (!!d && dailyStatus(d, localDayKey(rt.clock), DAILY).canClaim) || (q?.active.some((x) => !x.claimed && x.progress >= x.goal) ?? false)
+}
 
 const steps = ftueSteps((id) => chronicleRead.has(id), (id) => tabsSeen.has(id))
 
@@ -33,6 +43,18 @@ function ProducerArt({ p }: { p: ProducerDef }) {
       <BuildingArt id={p.id} tier={Math.max(1, tierFor(level, TIER_LEVELS))} m={currentMood()} />
     </svg>
   )
+}
+
+function useCoachActive(): boolean {
+  const ui = useUi()
+  const { world } = useEngine(ui.rt)
+  useSteps(ftue)
+  return currentStep(steps, ftue, world) !== null
+}
+
+function NoticeArea({ onEvents }: { onEvents: () => void }) {
+  const active = useCoachActive()
+  return <Notices coach={active ? <Coach /> : null} onEvents={onEvents} />
 }
 
 function Coach() {
@@ -72,8 +94,8 @@ function GameOverlays({ selected, onClose, chronicleOpen, setChronicle, ceremony
           payout={ceremony.payout}
           currency={ldef.currency}
           onDone={() => {
+            if (unread.length) setChronicle(true)
             endCeremony()
-            if (unread.length) setTimeout(() => setChronicle(true), 0)
           }}
         />
       ) : null}
@@ -85,6 +107,8 @@ export function App() {
   const [selected, setSelected] = useState<string | null>(null)
   const [chronicleOpen, setChronicle] = useState(false)
   const [ceremony, setCeremony] = useState<{ layer: string; payout: number } | null>(null)
+  const [wheelOpen, setWheelOpen] = useState(false)
+  const [tab, setTab] = useState('play')
   const read = useStore(chronicleRead)
   const { world } = useEngine(rt)
   const unread = CHRONICLE.some((e) => e.open(world) && !read.includes(e.id))
@@ -120,11 +144,30 @@ export function App() {
       }
       play={<Play onOpen={setSelected} />}
       menu={[{ id: 'chronicle', label: t.chronicle.menu, onSelect: () => setChronicle(true), badge: unread }]}
-      notice={<Coach />}
-      onTab={(id) => tabsSeen.add(id)}
+      tabs={isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, badge: watchBadge(world) }, view: <WatchView /> }] : []}
+      notice={<NoticeArea onEvents={() => setTab('watch')} />}
+      tab={tab}
+      onTab={(id) => {
+        setTab(id)
+        tabsSeen.add(id)
+      }}
       onPrestige={(layer, payout) => setCeremony({ layer, payout })}
       overlays={
-        <GameOverlays selected={selected} onClose={() => setSelected(null)} chronicleOpen={chronicleOpen} setChronicle={setChronicle} ceremony={ceremony} endCeremony={() => setCeremony(null)} />
+        <>
+          <GameOverlays
+            selected={selected}
+            onClose={() => setSelected(null)}
+            chronicleOpen={chronicleOpen}
+            setChronicle={setChronicle}
+            ceremony={ceremony}
+            endCeremony={() => {
+              setCeremony(null)
+              // Danach einmal am Sternenrad drehen (falls freigeschaltet) — erst wenn die Chronik zu ist
+              if (isFeatureOpen(rt.world(), 'wheel') && (rt.get().modules.wheel as { spins: number }).spins > 0) setWheelOpen(true)
+            }}
+          />
+          <WheelSheet open={wheelOpen && !ceremony && !chronicleOpen} onClose={() => setWheelOpen(false)} />
+        </>
       }
     />
   )

@@ -4,7 +4,7 @@
  */
 import { act } from '../result'
 import { isRecord, parseInt0, parseNum } from '../state'
-import type { Amount, BalanceConfig, EngineModule } from '../types'
+import type { Amount, BalanceConfig, EngineEvent, EngineModule, WorldView } from '../types'
 import { MODULE } from './ids'
 
 export interface ProgressionState {
@@ -37,6 +37,27 @@ export function levelMult(level: number, b: BalanceConfig): number {
   return 1 + Math.max(0, Math.min(b.progression.multCapLevels, level - 1)) * b.progression.multPerLevel
 }
 
+/** XP an event is worth (0 = none). Sources: upgrades, prestige, offline claims, explicit grants. */
+export function xpFor(e: EngineEvent, world: WorldView): number {
+  const p = world.def.balance.progression
+  switch (e.type) {
+    case 'producer.bought':
+      return p.xpPerUpgrade * (Number(e.count) || 0)
+    case 'prestige.performed': {
+      const k = world.def.prestigeLayers.findIndex((l) => l.id === e.layer)
+      return p.xpPerPrestige * (k + 1)
+    }
+    case 'offline.claimed': {
+      const a = Number(e.amount) || 0
+      return a > 0 ? Math.max(5, Math.min(p.xpOfflineCap, Math.floor(Math.sqrt(a) * p.xpOfflineFactor))) : 0
+    }
+    case 'xp.add':
+      return Number(e.amount) || 0
+    default:
+      return 0
+  }
+}
+
 export function progressionModule(): EngineModule<ProgressionState> {
   return {
     id: MODULE.progression,
@@ -53,9 +74,8 @@ export function progressionModule(): EngineModule<ProgressionState> {
       return m > 1 ? [{ id: 'level', target: 'rate:*', op: 'mul', value: m, labelKey: 'effect.level' }] : []
     },
     on: (s, e, _ctx, world) => {
-      if (e.type !== 'producer.bought' && e.type !== 'xp.add') return s
       const b = world.def.balance
-      const gain = e.type === 'xp.add' ? Number(e.amount) || 0 : b.progression.xpPerUpgrade * (Number(e.count) || 0) * world.value('xp.mult', 1)
+      const gain = xpFor(e, world) * (e.type === 'xp.add' ? 1 : world.value('xp.mult', 1))
       if (gain <= 0) return s
       const before = levelOf(s.xp, b).level
       const xp = s.xp + gain

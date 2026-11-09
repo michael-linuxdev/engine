@@ -28,7 +28,7 @@ function richSave() {
   let s = E.createState(def, clock)
   const owned = {}
   def.producers.forEach((p, i) => (owned[p.id] = Math.max(1, 60 - i * 6)))
-  const layers = s.modules.prestige.layers.map((l, i) => (i === 0 ? { count: 3, runEarned: 1e12, sinceReset: 3 } : l))
+  const layers = s.modules.prestige.layers.map((l, i) => (i === 0 ? { count: 6, runEarned: 1e12, sinceReset: 6 } : l))
   const balances = { ...s.modules.wallet.balances }
   for (const c of Object.keys(balances)) balances[c] = 5000
   s = { ...s, core: { ...s.core, primary: 1e12, primaryRun: 1e12, primaryLifetime: 1e13 }, modules: { ...s.modules, producers: { owned }, prestige: { layers }, wallet: { balances, earned: balances } } }
@@ -75,7 +75,8 @@ try {
     for (const b of await truncated(p)) problems.push(`[${lang}] ${name}: ${b}`)
   }
   await shot('01-start')
-  for (const tab of ['prestige', 'shop']) {
+  const tabs = await p.locator('[data-testid^="tab-"]').evaluateAll((els) => els.map((e) => e.getAttribute('data-testid').slice(4)).filter((x) => x !== 'play'))
+  for (const tab of tabs) {
     await p.getByTestId(`tab-${tab}`).click()
     await shot(`02-tab-${tab}`)
   }

@@ -10,7 +10,7 @@ import {
 import { startSaveLock } from './saveLock'
 import { keepCopy, readKey, writeKey } from './storage'
 
-export const realClock: Clock = { now: () => Date.now() }
+export const realClock: Clock = { now: () => Date.now(), offsetMin: () => -new Date().getTimezoneOffset() }
 
 export interface EngineRuntime {
   def: GameDefinition

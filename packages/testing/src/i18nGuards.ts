@@ -76,6 +76,10 @@ export interface I18nGuardOptions<S extends object> {
   en: S
   /** Absolute paths of source files to scan for module-scope `t.` reads. */
   files: readonly string[]
+  /** Engine strings: game keys must not shadow them (spread order would silently override). */
+  engine?: object
+  /** Keys of the game part (top level) to check against `engine`. */
+  gameKeys?: readonly string[]
   /** Runtime check: switch to pseudo strings, collect every visible text from data modules. */
   stale?: { set: (s: S) => void; restore: () => void; probe: () => readonly string[] }
 }
@@ -91,6 +95,13 @@ export function describeI18nGuards<S extends object>(o: I18nGuardOptions<S>): vo
       }
       expect(bad).toEqual([])
     })
+    if (o.engine && o.gameKeys) {
+      const engine = o.engine
+      const keys = o.gameKeys
+      it('Spieltexte überschreiben keine Engine-Texte', () => {
+        expect(keys.filter((k) => k in engine)).toEqual([])
+      })
+    }
     it('gleiche Schlüssel in beiden Sprachen', () => {
       expect(leaves(o.en).map(([k]) => k).sort()).toEqual(leaves(o.de).map(([k]) => k).sort())
     })

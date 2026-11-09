@@ -220,8 +220,10 @@ function runAction(def: GameDefinition, d: Draft, ctx: Ctx, req: DispatchRequest
   const m = moduleById(def, req.module)
   const fn = m?.actions?.[req.type]
   if (!m || !fn) return false
+  const w = worldOf(def, d)
+  for (const g of def.modules) if (g.guard && !g.guard(d.modules[g.id], req, w)) return false
   const before = d.modules[m.id]
-  const r = fn(before, req.payload, ctx, worldOf(def, d))
+  const r = fn(before, req.payload, ctx, w)
   if (r === before) return false
   return applyResult(def, d, m.id, r, jobs)
 }

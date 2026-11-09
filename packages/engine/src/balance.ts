@@ -45,7 +45,7 @@ export function defaultBalance(metaLayer: string): BalanceConfig {
     milestones: { levels: [25, 50, 100, 150, 200, 300, 400, 500, 750, 1000], factor: 2 },
     offline: { softHours: 8, hardHours: 24, decay: 0.5, minClaimMs: 15_000 },
     branches: { maxRank: 5, efficiencyPerRank: 0.04, capacityPerRank: 0.03, costFactor: 2.2, costGrowth: 1.5, capacityCostMult: 1.15, minCost: 25 },
-    progression: { maxLevel: 40, xpPerUpgrade: 8, xpBase: 40, xpLinear: 25, xpQuad: 8, multPerLevel: 0.005, multCapLevels: 24 },
+    progression: { maxLevel: 40, xpPerUpgrade: 8, xpBase: 40, xpLinear: 25, xpQuad: 8, multPerLevel: 0.005, multCapLevels: 24, xpPerPrestige: 150, xpOfflineFactor: 0.85, xpOfflineCap: 80 },
     metaShop: {
       layer: metaLayer,
       perProducerLevel: 800,
