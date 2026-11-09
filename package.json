@@ -1,0 +1,42 @@
+{
+  "name": "idle-engine-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "games/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @game/lichtwarte",
+    "dev:vorlage": "npm run dev -w @game/vorlage",
+    "build": "npm run typecheck",
+    "preview": "vite preview --outDir dist --port 4173",
+    "test": "vitest run",
+    "lint": "oxlint --deny-warnings",
+    "typecheck": "tsc -b",
+    "e2e": "node tools/e2e/run-all.mjs",
+    "balance": "node tools/balance/run.mjs",
+    "screens": "node tools/e2e/screens.mjs",
+    "art:update": "node tools/e2e/art.mjs --update",
+    "ids:update": "node tools/ids-update.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "axe-core": "^4.14.0",
+    "oxlint": "^1.92.0",
+    "playwright": "1.63.0",
+    "rolldown": "^1.2.16",
+    "typescript": "~7.0.2",
+    "vite": "^8.3.6",
+    "vite-plugin-pwa": "^2.0.0",
+    "vitest": "^5.1.0"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  }
+}

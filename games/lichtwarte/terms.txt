@@ -1,0 +1,30 @@
+# Spielbegriffe von Lichtwarte. Sie dürfen in packages/ (Engine) nie vorkommen.
+# Ein Begriff pro Zeile, ganzes Wort, Groß-/Kleinschreibung beachtet.
+Lichtwarte
+Beaconwatch
+Glimmer
+glimmer
+Runensplitter
+Rune Shards
+Mondperlen
+Moonpearls
+Nachtsilber
+Nightsilver
+Ahnenlicht
+Ancestral Light
+Mondwende
+Moonturn
+Lange Nacht
+Long Night
+Zeitalter
+Wächterrang
+Warden Rank
+Funkenruf
+Spark Call
+Turmwarte
+Talkarte
+Chronik
+Kräuterkate
+Sternwarte
+Greifenhorst
+Runenhalle

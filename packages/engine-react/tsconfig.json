@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../.tsbuild/engine-react", "tsBuildInfoFile": "../../.tsbuild/engine-react.tsbuildinfo",
+    "rootDir": "src",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"]
+  },
+  "include": ["src"],
+  "references": [{ "path": "../engine" }]
+}

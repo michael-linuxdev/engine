@@ -1,0 +1,8 @@
+node_modules/
+dist/
+games/*/dist/
+.tsbuild/
+*.tsbuildinfo
+e2e-screens/
+tools/e2e/art-diff/
+.vite/

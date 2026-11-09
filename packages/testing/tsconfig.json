@@ -1,0 +1,6 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": { "outDir": "../../.tsbuild/testing", "tsBuildInfoFile": "../../.tsbuild/testing.tsbuildinfo", "rootDir": "src", "types": ["node"] },
+  "include": ["src"],
+  "references": [{ "path": "../engine" }]
+}

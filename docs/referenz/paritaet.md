@@ -1,0 +1,97 @@
+# Parität mit dem Referenz-Spiel
+
+Referenz: `michael-linuxdev/idlegame` @ `a187dc9` (nur gelesen). Gezählt am 2026-11-09 aus den Daten-Arrays in `src/`. Die Mengen sind **Mindestmengen** für Lichtwarte.
+
+Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `im Spiel` (Daten + Texte + UI in `games/lichtwarte`) · `getestet` (E2E/Balance deckt es ab).
+
+## Kern und Prestige
+
+| System | Referenz-Datei(en) | Engine-Modul | Fantasy-Entsprechung | Mindestmenge | Status |
+|---|---|---|---|---|---|
+| Erzeuger | `generators.ts`, `state/buy.ts`, `state/garden.ts` | `producers` | 10 Bauwerke (Kräuterkate … Sternwarte) | 10 Erzeuger, 10 Meilensteine (×2), Tore bei Prestige 1/2/4/6/9/12 | im Spiel |
+| Mengenkauf ×1/×10/×max | `state/garden.ts` | `producers` (`quote`, `maxAffordable`) | — | 3 Modi | im Spiel |
+| Ausbaustufen-Grafik | `theme/tiers.ts` | `art-kit` (`tierFor`) | 4 Stufen je Bauwerk | 5 Stufen × 10 (Ziel 4–5) | im Spiel (Stufe 1–4) |
+| Zweige | `branches.ts` | `branches` | Effizienz / Fassung | 2 Arten × 5 Ränge × 10 = 100 Ränge | Engine fertig |
+| Spieler-Level | `progression.ts` | `progression` | Wächterrang | 40 Stufen, 7 Belohnungen, +0,5 %/Stufe bis +12 % | im Spiel |
+| Prestige 1 | `economy.ts` | `prestige` Schicht 0 | Mondwende → Runensplitter | Probe-Schwelle, √-Auszahlung, ≥ 3 Erzeuger ab Lauf 2 | im Spiel |
+| Prestige 2 | `longLoop.ts` | `prestige` Schicht 1 | Lange Nacht → Nachtsilber | 4 Gegenstände / 41 Ränge, 3 Tage Ruhezeit | Engine fertig (Laden: P10) |
+| Prestige 3 | `generations.ts` | `prestige` Schicht 2 | Zeitalter → Ahnenlicht | 5 Gegenstände (ohne Deckel) | Engine fertig (Laden: P10) |
+| Meta-Laden | `truhe.ts` | `metaShop` | Archiv der Wächter | **10 Gegenstände, 163 Ränge, 3 Zweige**, Empfehlungs-Band 5 + 2 | im Spiel |
+| Burst-Tap | `state/rewards.ts`, `economy.ts` | `burst` | Funkenruf | 60 s Ertrag, 5 min Aufladung | im Spiel |
+| Helfer-Automatik | `state/garden.ts`, `state/life.ts` | `helper` | Lehrling | Stufen, Regeln (günstigster/bester/alle) | Engine fertig |
+| Offline | `state/offline.ts`, `economy.ts` | `offline` | Rückkehr-Korb | 8 h voll, bis 24 h halb | im Spiel |
+| Überraschungs-Sprünge | `surpriseJumps.ts` | `surprises` | Funde | Drossel | im Spiel |
+| Bester Kauf | `bestBuy.ts` | `bestBuy()` | Hinweis der Chronik | 1 | im Spiel |
+| Nächstes Ziel | `nextGoal.ts` | `nextGoal()` | Ziel-Leiste | 1 | im Spiel |
+
+## Bindung (P7)
+
+| System | Referenz-Datei(en) | Engine-Modul | Fantasy-Entsprechung | Mindestmenge | Status |
+|---|---|---|---|---|---|
+| Tägliche Runde | `dailyOps.ts` | `daily` | Wachrunde | 7-Tage-Serie, Einfrieren statt Verfall, 3 Rückkehr-Stufen | offen |
+| Tagesziele | `quests.ts` | `quests` | Aufträge | 6 Vorlagen, 3 je Tag | offen |
+| Erfolge | `achievements.ts` | `achievements` | Taten | **10** | offen |
+| Herausforderungen | `challenges.ts` | `challenges` | Prüfungen | **3** (+3 % je) | offen |
+| Wochenend-Event | `events.ts`, `state/events.ts` | `weekendEvent` | Marktnacht | 1 (Fr 18 Uhr bis So, ×1,25) | offen |
+| Blitz-Event | `flashEvent.ts` | `flash` | Sternfenster | 1 Art (18 min, ×1,15) | offen |
+| Kalender-Feste | `fests.ts`, `state/fest.ts` | `calendarFests` | Lichterfeste | **9** (4 große, 5 kleine), Fest-Laden 6/8 Zeilen | offen |
+| Glücksrad | `gardenLife.ts` | `wheel` | Schicksalsrad → eigener Name nötig | 4 Arten auf 6 Feldern | offen |
+| Freischalt-Liste | `featureUnlocks.ts` | `featureUnlocks` | — | **9** Systeme | offen |
+| Hinweise | `hints.ts` | `hints` | Randnotizen der Chronik | **16** | offen |
+| FTUE | `ftue.ts` | `ftue` | Erste Wache | **6 Schritte** | im Spiel (Grundform) |
+| Benachrichtigungen | `notify.ts` | engine-react | — | 1 Stelle | offen |
+
+## Sammeln und Welt (P8)
+
+| System | Referenz-Datei(en) | Engine-Modul | Fantasy-Entsprechung | Mindestmenge | Status |
+|---|---|---|---|---|---|
+| Sammelbuch-Sorten | `gardenLife.ts` (`VARIETIES`) | `collections` | Bestiarium & Kräuterkunde | **37** (24 + 13 Fest), 3 Seltenheiten | offen |
+| Sammel-Übersicht | `collections.ts` | `collections` | — | 6 Kategorien | offen |
+| Kombinieren | `crossing.ts` | `combine` | Alchemie | **12** Ergebnisse, 4 h | offen |
+| Besucher | `residents.ts` | `visitors` | Talgäste | **12** Arten | offen |
+| Deko | `decor.ts` | `decor` | Banner & Steine | **16** Teile (10 + 6 exklusiv), **8** Plätze | offen |
+| Album | `album.ts` | `seasonAlbum` | Jahreskreis-Folio | **12** Ziele je Jahreszeit (48/Jahr) | offen |
+| Karten nach Prestige | `seasonCards.ts` | `layerCards` | Sternbilder | **12** (9 + 3), 1 aus 3 | offen |
+| Entscheidungs-Ereignis | `weatherEvents.ts`, `gardenLife.ts` | `choiceEvents` | Omen | 4 Wetterarten, 3 Ereignisse × 2 Optionen | offen |
+| Großprojekte | `projects.ts` | `projects` | Großwerke | **6 × 3 = 18 Stufen** | offen |
+| Stimmungen | `theme/art/mood.ts`, `theme/ambient.ts` | `art-kit` (`moodFor`) | Tag/Abend/Nacht × 4 Jahreszeiten | 16 Zustände | im Spiel (Tag/Abend/Nacht) |
+
+## Lande (P9)
+
+| System | Referenz-Datei(en) | Engine-Modul | Fantasy-Entsprechung | Mindestmenge | Status |
+|---|---|---|---|---|---|
+| Regionen | `chapters.ts`, `state/chapters.ts`, `chapterPlan.ts` | `regions` | Lande | **34** ausgearbeitet (inkl. Hauptkarte), 50 geplant, je 10 Bereiche, Pflege 2 Arten × 10 Ränge | offen (Plan in `docs/spiele/lichtwarte/regionen.md`) |
+
+## Erzählung (P5/P10)
+
+| System | Referenz-Datei(en) | Engine-Modul | Fantasy-Entsprechung | Mindestmenge | Status |
+|---|---|---|---|---|---|
+| Briefe | `notebook.ts` | `narrative` | Chronik | **20** | im Spiel (Einstieg: 4) |
+| Rückkehr-Brief | `story/ComebackLetter.tsx` | `narrative` | Rückkehr-Seite | 1 (≥ 48 h) | offen |
+| Zeremonie | `story/SeasonCeremony.tsx` | ui-kit | Mondwende-Zeremonie | 1 (3 Phasen) | im Spiel (Grundform) |
+
+## Markt, Plattform, Ton (P11/P12)
+
+| System | Referenz-Datei(en) | Engine-Modul | Fantasy-Entsprechung | Mindestmenge | Status |
+|---|---|---|---|---|---|
+| Markt-Angebote | `monetization.ts` | `market` | Markt | **7** Angebote (Attrappen) | offen |
+| Kosmetik | `monetization.ts` | `market` | Talstile | **8** (4 + 4 Fest) | offen |
+| Werbung (Attrappe) | `monetization.ts` | `market` | — | 2 Wahlen, Sperre 30/60 s | offen |
+| Premium-Woche | `monetization.ts` | `market` | Festwoche | **5** Stufen | offen |
+| Zeitsprung | `monetization.ts` | `market` | — | **2**, Tageskontingent 6 h | offen |
+| Testgeld | `testWallet.ts` | `testWallet` | — | 7 Preise, 20 €/Monat | offen |
+| Clan | `ClanPanel`, `vereinMult` | `clan` | Zirkel | Boost ×1,1–×1,25 | offen |
+| Playtest-Log | `playtestCore.ts`, `playtestLog.ts` | engine-react | — | **40** Ereignistypen, 48 h roh, Minutenzähler | offen (Engine liefert `playtestEvents`) |
+| Ton-Effekte | `sound.ts` | engine-react | — | **8** | offen |
+| Ambiente | `ambience.ts` | engine-react | Wind, Feuer, Wasser, Nacht | **3** (Ziel 4) | offen |
+| Install-Gate, Testphase, Prefs, Overlays, Speicher-Sperre, Sicherungscode, Datei-Speichern | `installGate.ts`, `testPhase.ts`, `prefs.ts`, `overlays.ts`, `saveGuard.ts`, `backup.ts`, `saveFile.ts` | engine-react / ui-kit / engine | — | je 1 | im Spiel |
+
+## Qualität
+
+| Bereich | Referenz | Ziel | Stand |
+|---|---|---|---|
+| UI-Komponenten | 58 Dateien | ≥ 54 Komponenten | siehe `ROADMAP.md` |
+| Testdateien | 53 | ≥ 53 | siehe `ROADMAP.md` |
+| E2E | smoke de/en, art (43 Bilder), axe, screens | dto. je Spiel | siehe `ROADMAP.md` |
+| Texte | ~3.100 je Sprache | ≥ 3.100 | siehe `ROADMAP.md` |
+| Umfang | 52.534 Zeilen TS/TSX | ≥ 52.000 | siehe `ROADMAP.md` |

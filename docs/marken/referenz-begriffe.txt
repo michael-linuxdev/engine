@@ -1,0 +1,22 @@
+# Begriffe des Referenz-Spiels (Garten-Thema). Sie dürfen in packages/, games/ und tools/
+# nicht vorkommen: Code wird nur neutralisiert übernommen (Prompt Abschnitt 2.3).
+# Ein Begriff pro Zeile, ganzes Wort, Groß-/Kleinschreibung beachtet.
+Ernte
+ernte
+Erbstück
+Erbstücke
+erbstuecke
+Saisonende
+saisonenden
+Truhe
+truhe
+Gartenjahr
+Oma
+Jonas
+Ilse
+Beet
+Gießen
+Gemüsebeet
+gemuesebeet
+Kleingartenverein
+Schrebergarten

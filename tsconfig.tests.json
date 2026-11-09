@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": ".tsbuild/tests",
+    "tsBuildInfoFile": ".tsbuild/tests.tsbuildinfo",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": ["node", "vite/client"]
+  },
+  "include": ["packages/*/test", "games/*/test", "tests", "tools/**/*.ts", "vitest.config.ts"],
+  "references": [
+    { "path": "./packages/engine" },
+    { "path": "./packages/testing" }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../.tsbuild/engine", "tsBuildInfoFile": "../../.tsbuild/engine.tsbuildinfo",
+    "rootDir": "src",
+    "lib": ["ES2023"],
+    "types": []
+  },
+  "include": ["src"]
+}

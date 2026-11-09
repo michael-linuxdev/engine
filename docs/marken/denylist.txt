@@ -1,0 +1,107 @@
+# Denylist für den Namens-Wächter (packages/testing/src/nameGuard.ts, tests/names.test.ts).
+# Ein Eintrag pro Zeile, Regex erlaubt. Standard: Groß-/Kleinschreibung egal.
+# Präfix "cs:" = Groß-/Kleinschreibung beachten (für Wörter, die klein ein normales Wort sind).
+# "## @kategorie" beginnt eine Kategorie. Diese Datei selbst wird nicht durchsucht.
+
+## @own
+# Eigene frühere Projekte und Domains
+Gartenerbe
+Heirloom Garden
+TurmFarm
+Tokenhalle
+MeinHafen
+Orbit Rack
+Orbital Claim
+Ash Dominion
+Fantasy-Festung
+micana
+einbuergerung
+
+## @games
+# Spiele und Franchises samt Wortschöpfungen
+Warcraft
+Azeroth
+Hearthstone
+Diablo
+Elder Scrolls
+Skyrim
+Tamriel
+Daedra
+Dwemer
+Witcher
+Dungeons\s*&\s*Dragons
+cs:\bD&D\b
+Forgotten Realms
+Faer[uû]n
+cs:\bBeholders?\b
+Mind Flayer
+Illithid
+Owlbear
+Displacer Beast
+Githyanki
+Warhammer
+Age of Sigmar
+Skaven
+Magic: The Gathering
+Planeswalker
+Final Fantasy
+Chocobo
+Moogle
+Zelda
+Hyrule
+Triforce
+Pok[eé]mon
+Dark Souls
+Elden Ring
+Dragon Age
+Runescape
+League of Legends
+Genshin
+Clash of Clans
+Clash Royale
+Raid: Shadow Legends
+AFK Arena
+Idle Heroes
+Clicker Heroes
+Cookie Clicker
+AdVenture Capitalist
+Realm Grinder
+Melvor
+Antimatter Dimensions
+
+## @shows
+# Geschützte Show-Formate
+Wheel of Fortune
+Glücksrad
+
+## @media
+# Bücher, Filme, Serien und ihre Wortschöpfungen
+Lord of the Rings
+Herr der Ringe
+Middle-earth
+Mittelerde
+Hobbit
+Mithrill?
+Balrog
+Nazg[uû]l
+cs:\bUruk
+cs:\bEnts?\b
+Palant[ií]r
+Narnia
+Hogwarts
+Muggle
+Game of Thrones
+Westeros
+Adamantium
+Vibranium
+
+## @companies
+# Unternehmen und Plattform-Marken als Spielinhalt
+Disney
+Pixar
+cs:\bMarvel\b
+Nintendo
+Blizzard Entertainment
+cs:\bBlizzard\b
+Bethesda
+Wizards of the Coast

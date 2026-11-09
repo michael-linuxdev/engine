@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../.tsbuild/ui-kit", "tsBuildInfoFile": "../../.tsbuild/ui-kit.tsbuildinfo",
+    "rootDir": "src",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"]
+  },
+  "include": ["src"],
+  "references": [{ "path": "../engine" }, { "path": "../engine-react" }, { "path": "../art-kit" }]
+}
