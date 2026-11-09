@@ -1,0 +1,72 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Nur veröffentlichen, was alle Prüfungen besteht
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - name: Install Chromium for E2E
+        run: npx playwright install --with-deps chromium
+      - name: E2E
+        run: npm run e2e
+      - name: Verify Pages artifact
+        run: |
+          set -euo pipefail
+          echo 'engine.micana.de' > dist/CNAME
+          test -f dist/index.html
+          test -f dist/vorlage/index.html
+          grep -q 'assets/' dist/vorlage/index.html
+          ! grep -q '/src/main.tsx' dist/vorlage/index.html
+          test -f dist/vorlage/manifest.webmanifest
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      # Eigene Domain setzen (best effort; sonst in Settings → Pages eintragen)
+      - name: Attach custom domain
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api repos/${{ github.repository }}/pages -X PUT --input - <<'JSON'
+          {
+            "cname": "engine.micana.de",
+            "build_type": "workflow",
+            "https_enforced": true
+          }
+          JSON
+          gh api repos/${{ github.repository }}/pages --jq '{cname,html_url,build_type,https_enforced}'

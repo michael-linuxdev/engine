@@ -19,5 +19,16 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+      - name: Install Chromium for E2E
+        run: npx playwright install --with-deps chromium
+      - name: E2E (smoke de/en, axe; je Spiel)
+        run: npm run e2e
+      - name: Upload E2E screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-screens
+          path: e2e-screens
+          if-no-files-found: ignore
       - name: Balance-Smoke (Vorlage, engaged, 2 h)
         run: SUMMARY=1 npm run -s balance -- vorlage engaged 2

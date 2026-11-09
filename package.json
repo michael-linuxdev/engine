@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "npm run dev -w @game/lichtwarte",
     "dev:vorlage": "npm run dev -w @game/vorlage",
-    "build": "npm run typecheck",
+    "build": "npm run typecheck && npm run build -w @game/vorlage && node tools/pages/assemble.mjs",
     "preview": "vite preview --outDir dist --port 4173",
     "test": "vitest run",
     "lint": "oxlint --deny-warnings",
