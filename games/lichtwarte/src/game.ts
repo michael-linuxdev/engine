@@ -5,11 +5,12 @@
  * Inhalts-IDs sind stabil und stehen in ids.lock.json — nie ändern, nur anhängen.
  */
 import {
-  achievementsModule, calendarFestsModule, challengesModule, choiceEventsModule, collectionsModule, combineModule, dailyModule, decorModule, layerCardsModule, projectsModule, seasonAlbumModule, visitorsModule, defaultBalance, featureUnlocksModule, flashModule, questsModule, standardModules,
+  achievementsModule, calendarFestsModule, challengesModule, choiceEventsModule, collectionsModule, combineModule, dailyModule, regionsModule, decorModule, layerCardsModule, projectsModule, seasonAlbumModule, visitorsModule, defaultBalance, featureUnlocksModule, flashModule, questsModule, standardModules,
   weekendModule, wheelModule, type GameDefinition, type GateAtom, type MetaItemDef, type ProducerDef,
 } from '@engine/core'
 import { BRAND } from './brand'
 import { DAILY, DEEDS, FEATURES, FESTIVALS, MARKET_NIGHT, QUESTS, STAR_WHEEL, STAR_WINDOW, TRIALS } from './content/live'
+import { REALMS } from './content/realms'
 import { ALCHEMY, COLLECTION, CONSTELLATIONS, DECOR, FOLIO, GREAT_WORKS, GUESTS, OMENS, WORLD_FEATURES } from './content/world'
 
 export const PRODUCER_IDS = [
@@ -183,6 +184,8 @@ function liveModules() {
     layerCardsModule(CONSTELLATIONS),
     choiceEventsModule(OMENS),
     projectsModule(GREAT_WORKS),
+    // P9 Lande
+    regionsModule(REALMS),
   ]
 }
 
@@ -203,6 +206,8 @@ export const extraIds = {
   constellations: CONSTELLATIONS.cards.map((c) => c.id),
   omens: OMENS.list.map((o) => o.id),
   greatWorks: GREAT_WORKS.map((p) => p.id),
+  realms: REALMS.regions.map((r) => r.id),
+  realmAreas: REALMS.regions.flatMap((r) => r.areas.map((a) => a.id)),
 }
 
 /** Zielkorridore für den Simulator (CHECK=1), begründet in docs/spiele/lichtwarte/balance.md. */

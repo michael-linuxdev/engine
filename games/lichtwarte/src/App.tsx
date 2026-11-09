@@ -11,6 +11,7 @@ import { DAILY } from './content/live'
 import { Notices } from './story/Notices'
 import { WatchView } from './story/Watch'
 import { WorldTab } from './story/WorldTab'
+import { RealmsTab } from './story/RealmsTab'
 import { ftueSteps } from './content/ftue'
 import { CURRENCY, game } from './game'
 import { chronicleRead, ftue, i18n, labels, prefs, rt, t, tabsSeen } from './runtime'
@@ -153,6 +154,7 @@ export function App() {
       tabs={[
         ...(isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, badge: watchBadge(world) }, view: <WatchView /> }] : []),
         ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab }, view: <WorldTab /> }] : []),
+        ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab }, view: <RealmsTab /> }] : []),
       ]}
       notice={<NoticeArea onEvents={() => setTab('watch')} />}
       tab={tab}

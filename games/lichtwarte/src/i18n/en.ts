@@ -1,5 +1,6 @@
 import { engineEn } from '@engine/ui/i18n/en.ts'
 import { BRAND } from '../brand'
+import { realmsEn } from './realms.en'
 import type { Strings } from './de'
 
 export const stringsEn: Strings = {
@@ -319,5 +320,6 @@ export const stringsEn: Strings = {
       skyGarden: { name: 'Sky Garden', blurb: 'A garden on the highest hill.' },
     },
   },
+  realms: realmsEn,
   effectLabels: { archive: 'Archive' },
 }

@@ -60,7 +60,7 @@ Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `i
 
 | System | Referenz-Datei(en) | Engine-Modul | Fantasy-Entsprechung | Mindestmenge | Status |
 |---|---|---|---|---|---|
-| Regionen | `chapters.ts`, `state/chapters.ts`, `chapterPlan.ts` | `regions` | Lande | **34** ausgearbeitet (inkl. Hauptkarte), 50 geplant, je 10 Bereiche, Pflege 2 Arten × 10 Ränge | offen (Plan in `docs/spiele/lichtwarte/regionen.md`) |
+| Regionen | `chapters.ts`, `state/chapters.ts`, `chapterPlan.ts` | `regions` | Lande | **34** ausgearbeitet (inkl. Hauptkarte), 50 geplant, je 10 Bereiche, Pflege 2 Arten × 10 Ränge | im Spiel (12 von 34: Hauptkarte + Welle 1; Plan für 50) |
 
 ## Erzählung (P5/P10)
 

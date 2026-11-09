@@ -133,6 +133,21 @@ export const GAMES = [
       assert((await r.evaluate(() => window.__engine.get().modules.choiceEvents.active)) === true, 'Omen gewählt')
       await r.getByTestId('tab-play').click()
       assert((await r.locator('[data-decor="blueBanner"]').count()) === 1, 'Banner auf der Talkarte')
+
+      // Lande: nach der ersten Langen Nacht öffnet sich Moorgrund
+      await r.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        const layers = s.modules.prestige.layers.map((l, i) => (i === 1 ? { count: 1, runEarned: 0, sinceReset: 1 } : l))
+        rt.replace({ ...s, modules: { ...s.modules, prestige: { layers } } })
+        rt.dispatch('producers', 'buy', { id: 'kraeuterkate', count: 1 })
+      })
+      await r.getByTestId('tab-realms').click()
+      await r.getByTestId('realm-open-moorgrund').click()
+      await r.getByTestId('realm-sheet').getByText(T.realms.lands.moorgrund.areas.boardwalk, { exact: true }).waitFor()
+      await r.getByTestId('area-buy-moorgrund_boardwalk').click()
+      assert((await r.evaluate(() => window.__engine.get().modules.regions.regions.moorgrund.owned.moorgrund_boardwalk)) === 1, 'Land: erster Bereich gebaut')
+      await r.keyboard.press('Escape')
       if (errs.length) throw new Error(errs.join('\n'))
       await w.close()
     },
