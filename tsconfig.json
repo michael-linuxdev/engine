@@ -1,8 +1,17 @@
 {
   "files": [],
   "references": [
-    { "path": "./packages/engine" },
-    { "path": "./packages/testing" },
-    { "path": "./tsconfig.tests.json" }
+    {
+      "path": "./packages/engine"
+    },
+    {
+      "path": "./packages/testing"
+    },
+    {
+      "path": "./tsconfig.tests.json"
+    },
+    {
+      "path": "./games/_vorlage"
+    }
   ]
 }

@@ -274,6 +274,8 @@ export interface GameDefinition {
   levelRewards: readonly LevelReward[]
   modules: readonly AnyModule[]
   balance: BalanceConfig
+  /** Primary currency at the very start and minimum after every prestige (so the first buy is always possible). */
+  startPrimary: number
   /** Seed for a brand-new save (the UI may mix in the clock). */
   seed?: number
 }

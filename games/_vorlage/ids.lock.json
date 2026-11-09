@@ -1,0 +1,32 @@
+{
+  "modules": [
+    "branches",
+    "burst",
+    "helper",
+    "metaShop",
+    "offline",
+    "prestige",
+    "producers",
+    "progression",
+    "surprises",
+    "wallet"
+  ],
+  "currencies": [
+    "coins",
+    "gems",
+    "meta"
+  ],
+  "producers": [
+    "p1",
+    "p2",
+    "p3"
+  ],
+  "prestigeLayers": [
+    "reset"
+  ],
+  "metaShop": [
+    "boost",
+    "discount",
+    "head"
+  ]
+}
