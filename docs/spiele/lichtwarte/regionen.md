@@ -5,7 +5,7 @@ Engine-Modul `regions` (P9): eigene Unterwirtschaft mit eigener Währung, 10 Ber
 - `parseRegions` füllt neue Lande automatisch auf.
 - Größen-Test: 50 voll ausgebaute Lande < 100 KB.
 
-**Wellen:** Welle 1 = Lande 2–12 (fertig), Welle 2 = Lande 13–23, Welle 3 = Lande 24–34 (Parität). Lande 35–50 sind geplant und folgen später. Jede Welle bringt Grafik, Figur, Texte de/en, Chronik-Seiten und ein Großwerk über mehrere Lande.
+**Wellen:** Welle 1 = Lande 2–12, Welle 2 = Lande 13–23, Welle 3 = Lande 24–34 (Parität). Alle drei sind fertig. Lande 35–50 sind geplant und folgen später. Jede Welle bringt Grafik, Figur, Texte de/en, Chronik-Seiten und ein Großwerk über mehrere Lande.
 
 **Namen sind Entwürfe (Status ungeprüft).** Erst beim Ausarbeiten einer Welle kommen sie in `names.ts` und `docs/marken/pruefung.md`, jeweils nach einer Websuche. Figuren tragen gewöhnliche Vornamen.
 
@@ -23,28 +23,28 @@ Engine-Modul `regions` (P9): eigene Unterwirtschaft mit eigener Währung, 10 Ber
 | 10 | `salzquelle` | Salzquelle | Saltspring | Salzkristall | Siederin Hedda | Salinen | Welle 1 ✓ |
 | 11 | `windmark` | Windmark | Windmark | Windhauch | Müllerin Edda | Windmühlen auf der Höhe | Welle 1 ✓ |
 | 12 | `sternweiher` | Sternweiher | Star Pond | Spiegellicht | Sternseher Arvid | Spiegelnde Teiche | Welle 1 ✓ |
-| 13 | `nebelpass` | Nebelpass | Mist Pass | Passglimmer | Säumer Jorin | Bogen I: Über den Pass | Welle 2 |
-| 14 | `hochalm` | Hochalm | High Pasture | Almtau | Sennerin Gesa | Almen und Glocken | Welle 2 |
-| 15 | `gletscherblick` | Gletscherblick | Glacier View | Eislicht | Bergführer Halvar | Eis und Spalten | Welle 2 |
-| 16 | `tannengrat` | Tannengrat | Firridge | Harzglanz | Flößerin Mette | Flöße und Holz | Welle 2 |
-| 17 | `murmelstein` | Murmelstein | Marmot Rock | Steinsalz | Hirte Tamme | Murmeltiere und Weiden | Welle 2 |
-| 18 | `kristallgrotte` | Kristallgrotte | Crystal Grotto | Grottenlicht | Höhlenmalerin Liv | Bogen I Ende: Leuchtende Grotte | Welle 2 |
-| 19 | `hangdorf` | Hangdorf | Hillside Hamlet | Dorfglut | Schulzin Frauke | Ein Dorf am Hang | Welle 2 |
-| 20 | `auenland` | Talauen | Water Meadows | Auentau | Hirtin Telse | Flussauen | Welle 2 |
-| 21 | `muehlenbach` | Mühlenbach | Millbrook | Mehlglanz | Bäcker Ubbo | Bogen II: Handwerk | Welle 2 |
-| 22 | `toepferwinkel` | Töpferwinkel | Potter's Nook | Tonglanz | Töpferin Rieke | Lehm und Brennöfen | Welle 2 |
-| 23 | `glaserhuette` | Glaserhütte | Glassworks | Glasfunken | Glasbläser Detlev | Bunte Scheiben | Welle 2 |
-| 24 | `weberdorf` | Weberdorf | Weavers' Village | Garnlicht | Weberin Almut | Webstühle | Welle 3 |
-| 25 | `faerberbach` | Färberbach | Dyers' Brook | Farbtropfen | Färber Kalle | Bunte Bäche | Welle 3 |
-| 26 | `glockengiesserei` | Glockengießerei | Bell Foundry | Glockenklang | Gießerin Wanda | Glocken für das Tal | Welle 3 |
-| 27 | `papiermuehle` | Papiermühle | Paper Mill | Bütten | Papiermacher Eike | Bücher der Chronik | Welle 3 |
-| 28 | `uhrmacherturm` | Uhrmacherturm | Clockmaker's Tower | Zahnradglanz | Uhrmacherin Hiltrud | Zeit und Räder | Welle 3 |
-| 29 | `brueckenstadt` | Brückenstadt | Bridgetown | Brückenzoll | Brückenmeister Gerd | Viele Brücken | Welle 3 |
-| 30 | `markthafen` | Markthafen | Market Harbour | Hafenlicht | Hafenmeisterin Ylva | Bogen II Ende: Markt am Wasser | Welle 3 |
-| 31 | `leuchtfeuer` | Leuchtfeuerküste | Beacon Coast | Küstenglanz | Feuerwärter Hinnerk | Bogen III: Die Küste | Welle 3 |
-| 32 | `muschelbucht` | Muschelbucht | Shell Bay | Perlmutt | Taucherin Okka | Muscheln und Riffe | Welle 3 |
-| 33 | `duenenland` | Dünenland | Dunelands | Sandglas | Strandvogt Fokko | Dünen und Strandhafer | Welle 3 |
-| 34 | `seehundbank` | Seehundsbank | Seal Bank | Gischt | Wattführerin Kea | Watt und Seehunde | Welle 3 |
+| 13 | `nebelpass` | Nebelpass | Mist Pass | Passglimmer | Säumer Jorin | Bogen I: Über den Pass | Welle 2 ✓ |
+| 14 | `hochalm` | Hochalm | High Pasture | Almtau | Sennerin Gesa | Almen und Glocken | Welle 2 ✓ |
+| 15 | `gletscherblick` | Gletscherblick | Glacier View | Eislicht | Bergführer Halvar | Eis und Spalten | Welle 2 ✓ |
+| 16 | `tannengrat` | Tannengrat | Firridge | Harzglanz | Flößerin Mette | Flöße und Holz | Welle 2 ✓ |
+| 17 | `murmelstein` | Murmelstein | Marmot Rock | Steinsalz | Hirte Tamme | Murmeltiere und Weiden | Welle 2 ✓ |
+| 18 | `kristallgrotte` | Kristallgrotte | Crystal Grotto | Grottenlicht | Höhlenmalerin Liv | Bogen I Ende: Leuchtende Grotte | Welle 2 ✓ |
+| 19 | `hangdorf` | Hangdorf | Hillside Hamlet | Dorfglut | Schulzin Frauke | Ein Dorf am Hang | Welle 2 ✓ |
+| 20 | `talauen` | Talauen | Water Meadows | Auentau | Hirtin Telse | Flussauen | Welle 2 ✓ |
+| 21 | `muehlenbach` | Mühlenbach | Millbrook | Mehlglanz | Bäcker Ubbo | Bogen II: Handwerk | Welle 2 ✓ |
+| 22 | `toepferwinkel` | Töpferwinkel | Potter's Nook | Tonglanz | Töpferin Rieke | Lehm und Brennöfen | Welle 2 ✓ |
+| 23 | `glaserhuette` | Glaserhütte | Glassworks | Glasfunken | Glasbläser Detlev | Bunte Scheiben | Welle 2 ✓ |
+| 24 | `weberdorf` | Weberdorf | Weavers' Village | Garnlicht | Weberin Almut | Webstühle | Welle 3 ✓ |
+| 25 | `faerberbach` | Färberbach | Dyers' Brook | Farbtropfen | Färber Kalle | Bunte Bäche | Welle 3 ✓ |
+| 26 | `glockengiesserei` | Glockengießerei | Bell Foundry | Glockenklang | Gießerin Wanda | Glocken für das Tal | Welle 3 ✓ |
+| 27 | `papiermuehle` | Papiermühle | Paper Mill | Bütten | Papiermacher Eike | Bücher der Chronik | Welle 3 ✓ |
+| 28 | `uhrmacherturm` | Uhrmacherturm | Clockmaker's Tower | Zahnradglanz | Uhrmacherin Hiltrud | Zeit und Räder | Welle 3 ✓ |
+| 29 | `brueckenstadt` | Brückenstadt | Bridgetown | Brückenzoll | Brückenmeister Gerd | Viele Brücken | Welle 3 ✓ |
+| 30 | `markthafen` | Markthafen | Market Harbour | Hafenlicht | Hafenmeisterin Ylva | Bogen II Ende: Markt am Wasser | Welle 3 ✓ |
+| 31 | `leuchtfeuer` | Leuchtfeuerküste | Beacon Coast | Küstenglanz | Feuerwärter Hinnerk | Bogen III: Die Küste | Welle 3 ✓ |
+| 32 | `muschelbucht` | Muschelbucht | Shell Bay | Perlmutt | Taucherin Okka | Muscheln und Riffe | Welle 3 ✓ |
+| 33 | `duenenland` | Dünenland | Dunelands | Sandglas | Strandvogt Fokko | Dünen und Strandhafer | Welle 3 ✓ |
+| 34 | `seehundbank` | Seehundsbank | Seal Bank | Gischt | Wattführerin Kea | Watt und Seehunde | Welle 3 ✓ |
 | 35 | `sturmkap` | Sturmkap | Storm Cape | Sturmfunken | Lotse Reimer | Wind und Wellen | später |
 | 36 | `nordlichtinsel` | Nordlichtinsel | Northlight Isle | Polarschimmer | Sternfischerin Inga | Nordlichter | später |
 | 37 | `bernsteinstrand` | Bernsteinstrand | Amber Strand | Bernstein | Sammler Momme | Bernstein im Sand | später |
@@ -73,7 +73,14 @@ Engine-Modul `regions` (P9): eigene Unterwirtschaft mit eigener Währung, 10 Ber
 | IV | 41–49 | Die alten Höfe und der Weg nach oben |
 | Finale | 50 | Die Himmelswarte |
 
-## Freischaltung (Vorschlag, an der Referenz orientiert)
+## Freischaltung und Taktung (umgesetzt)
+
+- **Land 2:** nach der ersten Langen Nacht (oder nach 20 Mondwenden).
+- **Jedes weitere Land:** wenn im vorigen Land der 8. Bereich auf Stufe 25 steht.
+- **Kosten:** Spätere Lande sind teurer (`REALM_TUNING.landGrowth = 1,15` je Land).
+- **Simulator (regular):** Land 2 an Tag 8, die Lande 3–10 bis Tag 20, danach alle zwei bis drei Tage. Die späte Taktung wird mit P10 überprüft.
+
+## Freischaltung (ursprünglicher Vorschlag)
 
 - Land 2 nach der ersten Langen Nacht, Land 3 nach dem ersten Zeitalter.
 - Lande 4–12: Zeitalter-Fortschritt und Land davor mit 8 Bereichen.

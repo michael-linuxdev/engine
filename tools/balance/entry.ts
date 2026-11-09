@@ -2,7 +2,7 @@
 import { overridesFromEnv, withOverrides, type GameDefinition } from '@engine/core'
 import type { SimResult } from './sim'
 
-export { formatResult, simulate } from './sim'
+export { formatResult, registerRegions, simulate } from './sim'
 
 export function withEnv(def: GameDefinition, env: Record<string, string | undefined>): GameDefinition {
   const o = overridesFromEnv(env)

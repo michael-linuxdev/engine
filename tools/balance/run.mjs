@@ -15,6 +15,7 @@ const entry = 'node_modules/.cache/sim-entry.ts'
 writeFileSync(entry, `export * from '../../tools/balance/entry.ts'\nexport * as game from '../../games/${dir}/src/game.ts'\n`)
 const sim = await loadTs(entry)
 const def = sim.withEnv(sim.game.game, process.env)
+if (sim.game.REALMS) sim.registerRegions(def, sim.game.REALMS.regions)
 const r = sim.simulate(def, { profile, hours: Number(hours) })
 console.log(`${slug} · ${profile} · ${hours} h`)
 console.log(sim.formatResult(r, !!process.env.SUMMARY))

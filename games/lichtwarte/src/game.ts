@@ -11,6 +11,8 @@ import {
 import { BRAND } from './brand'
 import { DAILY, DEEDS, FEATURES, FESTIVALS, MARKET_NIGHT, QUESTS, STAR_WHEEL, STAR_WINDOW, TRIALS } from './content/live'
 import { REALMS } from './content/realms'
+
+export { REALMS }
 import { ALCHEMY, COLLECTION, CONSTELLATIONS, DECOR, FOLIO, GREAT_WORKS, GUESTS, OMENS, WORLD_FEATURES } from './content/world'
 
 export const PRODUCER_IDS = [
