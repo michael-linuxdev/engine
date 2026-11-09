@@ -1,0 +1,21 @@
+{
+  "note": "Werte, die nach dem Laden gelten müssen. Nie anpassen, außer eine Migration verschiebt ein Feld (dann Pfad ändern, Wert behalten).",
+  "values": {
+    "core.primary": 39782.246000000094,
+    "core.primaryRun": 649242.2460000039,
+    "core.primaryLifetime": 9159047.427000057,
+    "core.lastSeen": 1794224400000,
+    "core.rng": "f3363056",
+    "modules.producers.owned.p1": 38,
+    "modules.producers.owned.p2": 33,
+    "modules.producers.owned.p3": 30,
+    "modules.prestige.layers.0.count": 2,
+    "modules.metaShop.ranks.boost": 2,
+    "modules.metaShop.ranks.discount": 1,
+    "modules.metaShop.ranks.head": 1,
+    "modules.wallet.balances.meta": 15,
+    "modules.wallet.balances.gems": 5,
+    "modules.progression.xp": 2512,
+    "modules.offline.pending.gained": 38523859.199999996
+  }
+}

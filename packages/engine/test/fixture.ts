@@ -37,6 +37,7 @@ export function testGame(over: Partial<GameDefinition> = {}): GameDefinition {
     levelRewards: [{ level: 2, grant: [{ currency: 'gem', amount: 7 }] }],
     modules: standardModules(),
     balance,
+    startPrimary: 0,
     seed: 42,
     ...over,
   }

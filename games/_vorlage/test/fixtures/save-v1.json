@@ -1,0 +1,112 @@
+{
+  "format": "engine-save",
+  "engineVersion": 1,
+  "game": "vorlage",
+  "contentVersion": 1,
+  "savedAt": 1794224400000,
+  "core": {
+    "primary": 39782.246000000094,
+    "primaryRun": 649242.2460000039,
+    "primaryLifetime": 9159047.427000057,
+    "lastSeen": 1794224400000,
+    "createdAt": 1794211200000,
+    "rng": "f3363056"
+  },
+  "modules": {
+    "wallet": {
+      "v": 1,
+      "data": {
+        "balances": {
+          "meta": 15,
+          "gems": 5
+        },
+        "earned": {
+          "meta": 41,
+          "gems": 5
+        }
+      }
+    },
+    "producers": {
+      "v": 1,
+      "data": {
+        "owned": {
+          "p1": 38,
+          "p2": 33,
+          "p3": 30
+        }
+      }
+    },
+    "branches": {
+      "v": 1,
+      "data": {
+        "ranks": {}
+      }
+    },
+    "progression": {
+      "v": 1,
+      "data": {
+        "xp": 2512,
+        "rewarded": [
+          3
+        ]
+      }
+    },
+    "prestige": {
+      "v": 1,
+      "data": {
+        "layers": [
+          {
+            "count": 2,
+            "runEarned": 649242.2460000039,
+            "sinceReset": 2
+          }
+        ]
+      }
+    },
+    "metaShop": {
+      "v": 1,
+      "data": {
+        "ranks": {
+          "boost": 2,
+          "discount": 1,
+          "head": 1
+        }
+      }
+    },
+    "offline": {
+      "v": 1,
+      "data": {
+        "pending": {
+          "gained": 38523859.199999996,
+          "elapsedMs": 10800000,
+          "capped": false,
+          "at": 1794224400000
+        },
+        "claims": 0
+      }
+    },
+    "burst": {
+      "v": 1,
+      "data": {
+        "charges": 3,
+        "nextAt": 0,
+        "uses": 8
+      }
+    },
+    "helper": {
+      "v": 1,
+      "data": {
+        "rank": 0,
+        "rule": "cheapest",
+        "bought": 0
+      }
+    },
+    "surprises": {
+      "v": 1,
+      "data": {
+        "found": 10,
+        "lastAt": 1794213537000
+      }
+    }
+  }
+}

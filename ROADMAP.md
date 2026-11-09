@@ -8,8 +8,8 @@ Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtw
 |---|---|---|
 | P0 | Fundament | fertig |
 | P1 | Engine-Kern | fertig |
-| P2 | Speichern | in Arbeit |
-| P3 | Prestige und Meta | offen |
+| P2 | Speichern | fertig |
+| P3 | Prestige und Meta | in Arbeit |
 | P4 | React, UI-Kit, i18n | offen |
 | P5 | Lichtwarte: spielbarer Kern | offen |
 | P6 | Balance-Pass 1 | offen |
@@ -41,10 +41,10 @@ Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtw
 
 ## P2 — Speichern
 
-- [ ] Hülle, Modul-Ausschnitte, drei Migrationsketten, tolerante Parser, Vorwärts-Toleranz
-- [ ] Speicher-Sperre, Sicherungscode mit Prüfsumme, Datei-Adapter
-- [ ] Wächter: Abdeckung, Fixtures, Größe, Fuzz, Determinismus, ID-Sperre
-- [ ] `games/_vorlage/test/fixtures/save-v1.json`
+- [x] Hülle, Modul-Ausschnitte, drei Migrationsketten, tolerante Parser, Vorwärts-Toleranz
+- [x] Speicher-Sperre, Sicherungscode mit Prüfsumme, Datei-Adapter
+- [x] Wächter: Abdeckung, Fixtures, Größe, Fuzz, Determinismus, ID-Sperre
+- [x] `games/_vorlage/test/fixtures/save-v1.json`
 
 ## P3 — Prestige und Meta
 

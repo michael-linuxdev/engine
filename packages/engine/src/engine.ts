@@ -244,7 +244,7 @@ function prestigeDraft(def: GameDefinition, d: Draft, ctx: Ctx, layer: string, j
   const owner = def.modules.find((m) => m.prestigePayout)
   const payout = owner?.prestigePayout?.(d.modules[owner.id], layer, before) ?? 0
   if (!(payout > 0)) return false
-  const startPrimary = Math.max(0, before.value('start.primary', 0))
+  const startPrimary = Math.max(def.startPrimary, before.value('start.primary', 0))
   const modules: Record<string, unknown> = { ...d.modules }
   for (const m of def.modules) {
     const rule = ruleFor<unknown>(m, layer)
@@ -287,7 +287,7 @@ export function createState(def: GameDefinition, clock: Clock, seed = def.seed ?
   const ctx: Ctx = { clock, rng }
   const modules: Record<string, unknown> = {}
   for (const m of def.modules) modules[m.id] = m.init(ctx, def)
-  const core = { ...createCore(now, seed), rng: rngToString(rng.state()) }
+  const core = { ...createCore(now, seed), primary: Math.max(0, def.startPrimary), rng: rngToString(rng.state()) }
   return { core, modules, extras: emptyExtras() }
 }
 

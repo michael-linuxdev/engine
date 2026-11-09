@@ -41,5 +41,6 @@ export const game: GameDefinition = {
   levelRewards: [{ level: 3, grant: [{ currency: 'gems', amount: 5 }] }],
   modules: standardModules(),
   balance,
+  startPrimary: 15,
   seed: 1,
 }
