@@ -48,6 +48,17 @@ Der Store-Start ist gesperrt, solange ein Name nicht `frei` ist (`DISTRIBUTION =
 | festLantern | Laternenherbst | Lantern Autumn | Fest | 2026-11-09 | Websuche | „Lantern Moon (Festival)“ ist ein traditioneller Festname → ersetzt | ungeprüft |
 | festMistMoon | Nebelmond | Mist Moon | Fest | 2026-11-09 | — | Gattungswörter | ungeprüft |
 | festLongLight | Fest des langen Lichts | Feast of the Long Light | Fest | 2026-11-09 | — | Gattungswörter (Wintersonnenwende, ohne religiösen Bezug) | ungeprüft |
+| festWeek | Festwoche | Festival Week | System | 2026-11-10 | Websuche | Gattungsausdruck (Festwoche einer Stadt). Kein Spiel- oder Markentreffer für „Festival Week Plus“. | ungeprüft |
+| wardenCircle | Wächterzirkel | Warden Circle | System | 2026-11-10 | Websuche | Kein Spieltitel „Warden Circle“ gefunden. Nur „Warden Defense“, „The Warden’s Rite“ (verschieden). | ungeprüft |
+| lampOil | Leuchtöl | Lamp Oil | Gegenstand | 2026-11-10 | Websuche | Gattungswort | ungeprüft |
+| styleDuskBlue | Dämmerblau | Dusk Blue | Gegenstand | 2026-11-10 | Websuche | Farbname, Gattungswort | ungeprüft |
+| styleEmberRed | Glutrot | Ember Red | Gegenstand | 2026-11-10 | Websuche | Farbname, Gattungswort | ungeprüft |
+| styleIceBlue | Eisblau | Ice Blue | Gegenstand | 2026-11-10 | Websuche | Farbname, Gattungswort | ungeprüft |
+| styleAmber | Bernstein | Amber | Gegenstand | 2026-11-10 | Websuche | Gattungswort (Material, Farbe) | ungeprüft |
+| styleBudWreath | Knospenkranz | Bud Wreath | Gegenstand | 2026-11-10 | Websuche | Kein Treffer als Spielgegenstand | ungeprüft |
+| styleSolsticeSheen | Sonnwendschein | Solstice Sheen | Gegenstand | 2026-11-10 | Websuche | Kein Treffer. **Statt „Mittsommerkrone/Midsummer Crown“**, das ein Gegenstand in Valheim ist. | ungeprüft |
+| styleLanternParade | Laternenzug | Lantern Parade | Gegenstand | 2026-11-10 | Websuche | Gattungsausdruck (Brauch). Kein Spielgegenstand. | ungeprüft |
+| styleStarOfLights | Lichterstern | Star of Lights | Gegenstand | 2026-11-10 | Websuche | Kein Treffer als Spielgegenstand | ungeprüft |
 
 ## Beschreibende Gattungsnamen (ohne Einzelzeile)
 
@@ -73,3 +84,4 @@ Die folgenden Inhalte tragen beschreibende Namen aus Gattungswörtern, zum Beisp
 | Ancestral Light | zu nah an „Ancient Light“ (Sky: Children of the Light) |
 | Schicksalsrad / Wheel of Fortune | geschütztes TV-Format → Sternenrad / Star Wheel |
 | Laternenmond / Lantern Moon | traditioneller Festname (Mondfest) → Laternenherbst / Lantern Autumn |
+| Mittsommerkrone / Midsummer Crown | Gegenstand in Valheim → Sonnwendschein / Solstice Sheen |

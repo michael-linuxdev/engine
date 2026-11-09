@@ -56,3 +56,18 @@ Englisch ist gleichwertig, keine wörtliche Übersetzung: gleicher Ton (warm, kn
 | greifenhorst | Greifenhorst | Griffin Roost |
 | runenhalle | Runenhalle | Rune Hall |
 | sternwarte | Sternwarte | Observatory |
+
+## Markt (P11)
+
+| Deutsch | English |
+|---|---|
+| Markt | Market |
+| Tagesgeschenk | Daily gift |
+| Bonus-Video | Bonus video |
+| Festwoche / Festwoche Plus | Festival Week / Festival Week Plus |
+| Zeitsprung: Kurze Stunde, Lange Wache | Time skip: Short Hour, Long Watch |
+| Leuchtöl | Lamp Oil |
+| Wächterzirkel | Warden Circle |
+| Talstile: Dämmerblau, Glutrot, Eisblau, Bernstein | Valley styles: Dusk Blue, Ember Red, Ice Blue, Amber |
+| Fest-Stile: Knospenkranz, Sonnwendschein, Laternenzug, Lichterstern | Fest styles: Bud Wreath, Solstice Sheen, Lantern Parade, Star of Lights |
+| Testgeld / Testkauf | Test money / test purchase |

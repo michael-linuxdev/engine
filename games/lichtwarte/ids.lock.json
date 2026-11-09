@@ -14,6 +14,7 @@
     "flash",
     "helper",
     "layerCards",
+    "market",
     "metaShop",
     "offline",
     "prestige",
@@ -146,6 +147,7 @@
     "greatWorks",
     "guests",
     "herbal",
+    "market",
     "omens",
     "realms",
     "trials",
@@ -656,5 +658,32 @@
     "windmark_weathervane",
     "windmark_windChimes",
     "windmark_windWheel"
+  ],
+  "cosmetics": [
+    "amber",
+    "budWreath",
+    "duskBlue",
+    "emberRed",
+    "iceBlue",
+    "lanternParade",
+    "solsticeSheen",
+    "starOfLights"
+  ],
+  "offers": [
+    "festWeekPlus",
+    "pebbles150",
+    "pebbles50",
+    "pebbles500",
+    "removeAds",
+    "starterBundle",
+    "stylePack"
+  ],
+  "skips": [
+    "longWatch",
+    "shortHour"
+  ],
+  "adChoices": [
+    "glimmer",
+    "pebbles"
   ]
 }
