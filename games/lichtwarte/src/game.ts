@@ -98,9 +98,33 @@ export const archive: MetaItemDef[] = [
   { id: 'stackedWood', currency: shards, branch: 'setout', maxRank: 1, cost: { base: 60, growth: 1 }, effects: [{ target: 'start.producer:holzlager', kind: 'add', perRank: 1 }], unlock: { tip: 'free' } },
   { id: 'travelPurse', currency: shards, branch: 'setout', maxRank: 12, cost: { base: 20, growth: 1.36 }, effects: [{ target: 'start.primary', kind: 'add', perRank: 80 }], unlock: { tip: 'immediate', offset: 3_000 } },
   { id: 'foundationStone', currency: shards, branch: 'setout', maxRank: 10, cost: { base: 45, growth: 1.38 }, effects: [{ target: 'start.producer:kraeuterkate', kind: 'add', perRank: 1 }], unlock: { offset: 22_000, producersOnline: 1 } },
+  // Laden der Langen Nacht (Nachttau): 4 Gegenstände, 41 Ränge (wie die Referenz)
+  { id: 'deepFoundations', currency: CURRENCY.nightDew, branch: 'night', maxRank: 20, cost: { base: 3, growth: 1.25 }, effects: [{ target: 'rate:*', kind: 'mulLinear', perRank: 0.1 }], unlock: { tip: 'free' } },
+  {
+    id: 'weatherShutters',
+    currency: CURRENCY.nightDew,
+    branch: 'night',
+    maxRank: 8,
+    cost: { base: 4, growth: 1.4 },
+    effects: [
+      { target: 'offline.softHours', kind: 'add', perRank: 1 },
+      { target: 'offline.hardHours', kind: 'add', perRank: 2 },
+    ],
+    unlock: { tip: 'free' },
+  },
+  { id: 'larder', currency: CURRENCY.nightDew, branch: 'night', maxRank: 10, cost: { base: 5, growth: 1.3 }, effects: [{ target: `prestige.payout:${LAYER.moonturn}`, kind: 'mulLinear', perRank: 0.1 }], unlock: { tip: 'free' } },
+  { id: 'wardenLore', currency: CURRENCY.nightDew, branch: 'night', maxRank: 3, cost: { base: 12, growth: 2 }, effects: [{ target: 'cost:*', kind: 'mulCompound', perRank: 0.9 }], unlock: { tip: 'free' } },
+  // Laden des Zeitalters (Ahnenlicht): 5 Gegenstände ohne echten Deckel (wie die Referenz)
+  { id: 'lineage', currency: CURRENCY.forebearLight, branch: 'ages', maxRank: 99, cost: { base: 1, growth: 1.15 }, effects: [{ target: 'rate:*', kind: 'mulLinear', perRank: 0.15 }], unlock: { tip: 'free' } },
+  { id: 'starLore', currency: CURRENCY.forebearLight, branch: 'ages', maxRank: 99, cost: { base: 1, growth: 1.15 }, effects: [{ target: 'rate:sternwarte', kind: 'mulLinear', perRank: 0.25 }], unlock: { tip: 'free' } },
+  { id: 'nightRoots', currency: CURRENCY.forebearLight, branch: 'ages', maxRank: 99, cost: { base: 2, growth: 1.2 }, effects: [{ target: `prestige.payout:${LAYER.longNight}`, kind: 'mulLinear', perRank: 0.1 }], unlock: { tip: 'free' } },
+  { id: 'hearthRecipe', currency: CURRENCY.forebearLight, branch: 'ages', maxRank: 99, cost: { base: 1, growth: 1.2 }, effects: [{ target: 'burst.seconds', kind: 'mulLinear', perRank: 0.1 }], unlock: { tip: 'free' } },
+  { id: 'deftHand', currency: CURRENCY.forebearLight, branch: 'ages', maxRank: 99, cost: { base: 2, growth: 1.25 }, effects: [{ target: 'cost:*', kind: 'mulCompound', perRank: 0.97 }], unlock: { tip: 'free' } },
 ]
 
 const balance = defaultBalance(LAYER.moonturn)
+// Rückkehr-Brief: nach mindestens 48 Stunden Abwesenheit ein Geschenk
+balance.offline = { ...balance.offline, comebackMs: 48 * 3600_000, comebackGrant: [{ currency: CURRENCY.glowPebbles, amount: 20 }] }
 balance.helper = {
   ranks: [
     { cost: { currency: CURRENCY.glowPebbles, amount: 30 }, intervalMs: 20_000 },
@@ -136,12 +160,13 @@ export const game: GameDefinition = {
       currency: CURRENCY.nightDew,
       gate: { base: 6e14, growth: 6, knee: 8, lateGrowth: 1.5 },
       payout: { base: 5, growth: 1.08 },
-      minimum: { lowerRuns: 12 },
+      // Nach jeder Langen Nacht drei Tage Ruhe (wie die Referenz)
+      minimum: { lowerRuns: 12, restMs: 3 * 86_400_000 },
     },
     {
       id: LAYER.ages,
       currency: CURRENCY.forebearLight,
-      gate: { base: 1e24, growth: 10, knee: 6, lateGrowth: 2 },
+      gate: { base: 5e16, growth: 10, knee: 6, lateGrowth: 2 },
       payout: { base: 3, growth: 1.1 },
       minimum: { lowerRuns: 3 },
     },
@@ -225,4 +250,6 @@ export const balanceTargets = {
     { label: 'Alle 10 Bauwerke um Tag 5 ± 1', kind: 'unlock', id: 'sternwarte', clock: 'wall', min: (4 - 1) * 1440, max: (6 - 1) * 1440 },
     { label: 'Lange Nacht um Tag 9 ± 2', kind: 'prestige', id: LAYER.longNight, nth: 1, clock: 'wall', min: (7 - 1) * 1440, max: (11 - 1) * 1440 },
   ],
+  /** Langer Lauf (35 Tage): erstes Zeitalter nach drei bis fünf Wochen. */
+  regularLong: [{ label: 'Erstes Zeitalter um Tag 28 ± 7', kind: 'prestige', id: LAYER.ages, nth: 1, clock: 'wall', min: (21 - 1) * 1440, max: (35 - 1) * 1440 }],
 } as const

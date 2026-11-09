@@ -56,6 +56,7 @@ export const engineEn: EngineStrings = {
     blockedEarned: 'Threshold not reached yet',
     blockedProducers: (n) => `Get ${n} producers running first`,
     blockedLower: (n, layer) => `First ${n}× ${layer}`,
+    blockedRest: (time) => `Resting: ${time} left`,
     resetInfo: 'Resets this run. Everything bought in the shop stays.',
     count: (n) => `So far: ${n}`,
   },

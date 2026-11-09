@@ -55,15 +55,24 @@
   ],
   "metaShop": [
     "builderChalk",
+    "deepFoundations",
+    "deftHand",
     "foundationStone",
+    "hearthRecipe",
     "hourglass",
+    "larder",
+    "lineage",
     "nightCandle",
+    "nightRoots",
     "oldLantern",
     "sparkBell",
     "stackedWood",
     "starChart",
+    "starLore",
     "travelPurse",
-    "wardenCloak"
+    "wardenCloak",
+    "wardenLore",
+    "weatherShutters"
   ],
   "quests": [
     "build25",

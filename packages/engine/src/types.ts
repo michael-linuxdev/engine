@@ -67,6 +67,8 @@ export interface PrestigeLayerDef {
     producersFromCount?: number
     /** Runs of the next lower layer since the last reset of this one. */
     lowerRuns?: number
+    /** Rest period after a run of this layer (ms, measured on the game clock). */
+    restMs?: number
   }
 }
 
@@ -204,7 +206,15 @@ export interface BalanceConfig {
   /** Real-time gaps longer than this are handled as offline time. */
   maxCatchupMs: number
   milestones: { levels: readonly number[]; factor: number }
-  offline: { softHours: number; hardHours: number; decay: number; minClaimMs: number }
+  offline: {
+    softHours: number
+    hardHours: number
+    decay: number
+    minClaimMs: number
+    /** Away at least this long → comeback gift on claim (optional). */
+    comebackMs?: number
+    comebackGrant?: readonly Amount[]
+  }
   branches: { maxRank: number; efficiencyPerRank: number; capacityPerRank: number; costFactor: number; costGrowth: number; capacityCostMult: number; minCost: number }
   progression: {
     maxLevel: number

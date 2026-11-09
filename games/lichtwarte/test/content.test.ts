@@ -9,21 +9,29 @@ import { DISTRIBUTION } from '../src/distribution'
 import { game, PRODUCER_IDS } from '../src/game'
 import { BUILDINGS } from '../src/art/registry'
 import { SLOTS } from '../src/scene/slots'
+import { CHRONICLE } from '../src/content/chronicle'
 
 const GAME = join(__dirname, '..')
 const ROOT = join(GAME, '..', '..')
 const read = (rel: string) => readFileSync(join(ROOT, rel), 'utf8')
 
 describe('Spiel: Inhalt', () => {
-  it('10 Bauwerke mit Grafik und Platz, 3 Schichten, Archiv mit 10 Gegenständen / 163 Rängen', () => {
+  it('10 Bauwerke mit Grafik und Platz, 3 Schichten, Archiv 10/163, Läden der Schichten 2/3', () => {
     expect(game.producers.map((p) => p.id)).toEqual([...PRODUCER_IDS])
     for (const id of PRODUCER_IDS) {
       expect(BUILDINGS[id], id).toBeDefined()
       expect(SLOTS.find((s) => s.id === id), id).toBeDefined()
     }
     expect(game.prestigeLayers).toHaveLength(3)
-    expect(game.metaShop).toHaveLength(10)
-    expect(game.metaShop.reduce((a, m) => a + m.maxRank, 0)).toBe(163)
+    expect(CHRONICLE).toHaveLength(20)
+    const archive = game.metaShop.filter((m) => m.currency === 'runeShards')
+    expect(archive).toHaveLength(10)
+    expect(archive.reduce((a, m) => a + m.maxRank, 0)).toBe(163)
+    // Lange Nacht: 4 Gegenstände / 41 Ränge, Zeitalter: 5 Gegenstände (wie die Referenz)
+    const night = game.metaShop.filter((m) => m.currency === 'nightDew')
+    expect(night).toHaveLength(4)
+    expect(night.reduce((a, m) => a + m.maxRank, 0)).toBe(41)
+    expect(game.metaShop.filter((m) => m.currency === 'forebearLight')).toHaveLength(5)
   })
 })
 

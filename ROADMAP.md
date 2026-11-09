@@ -2,8 +2,8 @@
 
 Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtwarte** (Arbeitstitel), ein gemütliches Fantasy-Idle-Spiel. Es soll mindestens die Tiefe, Systeme, Inhalte und Qualitätssicherung des Referenz-Spiels erreichen (`docs/referenz/paritaet.md`).
 
-**Paritäts-Fortschritt (2026-11-10): 74 %** der Systeme aus `paritaet.md`. 37 von 52 Zeilen sind `im Spiel`/`getestet`, 3 sind `Engine fertig`. Gezählt wird `im Spiel`/`getestet` voll, `Engine fertig` halb.
-Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 34/34 ✓, Chronik 6/20, Taten 12/10 ✓, Feste 9/9 ✓, Sammlung 49/37 ✓.
+**Paritäts-Fortschritt (2026-11-10): 78 %** der Systeme aus `paritaet.md`. 40 von 52 Zeilen sind `im Spiel`/`getestet`, 1 sind `Engine fertig`. Gezählt wird `im Spiel`/`getestet` voll, `Engine fertig` halb.
+Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 34/34 ✓, Chronik 20/20 ✓, Taten 12/10 ✓, Feste 9/9 ✓, Sammlung 49/37 ✓.
 
 **Web-Fassung:** GitHub Pages, Deploy bei Push auf `main`. Das Spiel liegt unter `/`, die Vorlage unter `/vorlage/`. Die eigene Domain ist in `.github/workflows/deploy-pages.yml` eingetragen.
 
@@ -19,7 +19,7 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 | P7 | Bindung | fertig |
 | P8 | Sammeln und Welt | fertig |
 | P9 | Lande, Wellen 1–3 (… bis ≥ 34) | fertig (34/34; Lande 35–50 geplant) |
-| P10 | Lange Nacht und Zeitalter | offen |
+| P10 | Lange Nacht und Zeitalter | fertig |
 | P11 | Markt-Attrappen, Testgeld, Festwoche, Talstile, Zirkel | offen |
 | P12 | Ton, Ambiente, Playtest-Log, Store-Vorbereitung | offen |
 
@@ -114,7 +114,10 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 
 ## P10 — Lange Nacht und Zeitalter
 
-- [ ] Läden der Schichten 2/3 (≥ 4 bzw. 5 Gegenstände), Ruhezeit, Zeremonien, Chronik-Briefe (gesamt ≥ 20), Rückkehr-Brief
+- [x] Laden der Langen Nacht: 4 Gegenstände, 41 Ränge. Laden des Zeitalters: 5 Gegenstände ohne echten Deckel. Beide Zweige erscheinen erst, wenn es ihre Währung schon gab.
+- [x] Engine: Ruhezeit je Schicht (`minimum.restMs`, Lange Nacht: 3 Tage) und Rückkehr-Geschenk ab 48 h (`offline.comebackMs`)
+- [x] Chronik mit 20 Seiten (Bauwerke 5–10, Mondwenden 3/5/10, Lehrling, Lange Nacht, Lande, Zeitalter), Rückkehr-Brief. Die Zeremonie läuft für jede Schicht.
+- [x] Taktung bei regular: Lange Nacht an Tag 8, erstes Zeitalter an Tag 28 (Tempo-Test über 35 Tage). Die Mauer-Prüfung läuft getrennt für Tal und Lande.
 
 ## P11 — Markt (Attrappen)
 

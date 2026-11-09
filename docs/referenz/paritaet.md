@@ -14,8 +14,8 @@ Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `i
 | Zweige | `branches.ts` | `branches` | Effizienz / Fassung | 2 Arten × 5 Ränge × 10 = 100 Ränge | im Spiel |
 | Spieler-Level | `progression.ts` | `progression` | Wächterrang | 40 Stufen, 7 Belohnungen, +0,5 %/Stufe bis +12 % | im Spiel |
 | Prestige 1 | `economy.ts` | `prestige` Schicht 0 | Mondwende → Runensplitter | Probe-Schwelle, √-Auszahlung, ≥ 3 Erzeuger ab Lauf 2 | getestet (smoke, Balance-CI) |
-| Prestige 2 | `longLoop.ts` | `prestige` Schicht 1 | Lange Nacht → Nachttau | 4 Gegenstände / 41 Ränge, 3 Tage Ruhezeit | Engine fertig (Laden, Ruhezeit: P10) |
-| Prestige 3 | `generations.ts` | `prestige` Schicht 2 | Zeitalter → Ahnenlicht | 5 Gegenstände (ohne Deckel) | Engine fertig (Laden: P10) |
+| Prestige 2 | `longLoop.ts` | `prestige` Schicht 1 | Lange Nacht → Nachttau | 4 Gegenstände / 41 Ränge, 3 Tage Ruhezeit | getestet (4/41, 3 Tage Ruhe, Tempo-Test) |
+| Prestige 3 | `generations.ts` | `prestige` Schicht 2 | Zeitalter → Ahnenlicht | 5 Gegenstände (ohne Deckel) | getestet (5, erstes Zeitalter an Tag 28) |
 | Meta-Laden | `truhe.ts` | `metaShop` | Archiv der Wächter | **10 Gegenstände, 163 Ränge, 3 Zweige**, Empfehlungs-Band 5 + 2 | im Spiel |
 | Burst-Tap | `state/rewards.ts`, `economy.ts` | `burst` | Funkenruf | 60 s Ertrag, 5 min Aufladung | im Spiel |
 | Helfer-Automatik | `state/garden.ts`, `state/life.ts` | `helper` | Lehrling | Stufen, Regeln (günstigster/bester/alle) | Engine fertig |
@@ -66,9 +66,9 @@ Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `i
 
 | System | Referenz-Datei(en) | Engine-Modul | Fantasy-Entsprechung | Mindestmenge | Status |
 |---|---|---|---|---|---|
-| Briefe | `notebook.ts` | `narrative` (vorerst Spiel + `createSeen`) | Chronik | **20** | im Spiel (6 von 20) |
-| Rückkehr-Brief | `story/ComebackLetter.tsx` | `narrative` | Rückkehr-Seite | 1 (≥ 48 h) | offen |
-| Zeremonie | `story/SeasonCeremony.tsx` | ui-kit | Mondwende-Zeremonie | 1 (3 Phasen) | im Spiel (Grundform) |
+| Briefe | `notebook.ts` | `narrative` (vorerst Spiel + `createSeen`) | Chronik | **20** | im Spiel (20) |
+| Rückkehr-Brief | `story/ComebackLetter.tsx` | `offline` (`comebackMs`) | Rückkehr-Seite | 1 (≥ 48 h) | getestet (48 h, 20 Lichtkiesel) |
+| Zeremonie | `story/SeasonCeremony.tsx` | ui-kit | Mondwende-Zeremonie | 1 (3 Phasen) | getestet (Zeremonie → Chronik → Sternenrad → Sternbild) |
 
 ## Markt, Plattform, Ton (P11/P12)
 

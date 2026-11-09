@@ -1,5 +1,6 @@
-import { useStore } from '@engine/react'
-import { Sheet } from '@engine/ui'
+import { MODULE, type OfflineState } from '@engine/core'
+import { useEngine, useStore } from '@engine/react'
+import { Sheet, useUi } from '@engine/ui'
 import { chronicleRead, t } from '../runtime'
 import { useChronicle } from './useChronicle'
 
@@ -27,5 +28,21 @@ export function ChronicleSheet({ open, onClose }: { open: boolean; onClose: () =
         )
       })}
     </Sheet>
+  )
+}
+
+/** Rückkehr-Brief im Willkommen-Fenster (ab 48 h Abwesenheit, mit Geschenk beim Einsammeln). */
+export function ComebackLetter() {
+  const ui = useUi()
+  const { world } = useEngine(ui.rt)
+  const pending = world.get<OfflineState>(MODULE.offline)?.pending
+  const min = world.def.balance.offline.comebackMs ?? Infinity
+  if (!pending || pending.elapsedMs < min) return null
+  return (
+    <article className="lw-page" data-testid="comeback-letter">
+      <h3 className="ek-h3">{t.chronicle.comeback.title}</h3>
+      <p>{t.chronicle.comeback.body}</p>
+      <p className="lw-signature">{t.chronicle.signature}</p>
+    </article>
   )
 }

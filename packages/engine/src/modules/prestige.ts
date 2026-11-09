@@ -4,7 +4,7 @@
  */
 import { gateAt, rawPayout } from '../prestige'
 import { act } from '../result'
-import { isRecord, parseInt0, parseNum } from '../state'
+import { isRecord, parseInt0, parseNum, parseTime } from '../state'
 import type { EngineModule, GameDefinition, StateView, WorldView } from '../types'
 import { MODULE } from './ids'
 import { producersOnline } from './producers'
@@ -16,15 +16,17 @@ export interface LayerState {
   runEarned: number
   /** Runs of this layer since the last reset of a higher layer (gate exponent). */
   sinceReset: number
+  /** Time of the last run of this layer (0 = never), for rest periods. */
+  lastAt: number
 }
 
 export interface PrestigeState {
   layers: LayerState[]
 }
 
-export type PrestigeBlock = 'earned' | 'producers' | 'lowerRuns' | 'unknown' | null
+export type PrestigeBlock = 'earned' | 'producers' | 'lowerRuns' | 'rest' | 'unknown' | null
 
-const emptyLayer = (): LayerState => ({ count: 0, runEarned: 0, sinceReset: 0 })
+const emptyLayer = (): LayerState => ({ count: 0, runEarned: 0, sinceReset: 0, lastAt: 0 })
 
 export function layerIndex(def: GameDefinition, layer: string): number {
   return def.prestigeLayers.findIndex((l) => l.id === layer)
@@ -53,12 +55,14 @@ export interface LayerStatus {
   block: PrestigeBlock
   /** 0…1 toward the gate. */
   ratio: number
+  /** Rest left (ms) when blocked by a rest period. */
+  restLeft: number
 }
 
 export function layerStatus(world: WorldView, layer: string): LayerStatus {
   const k = layerIndex(world.def, layer)
   const l = world.def.prestigeLayers[k]
-  if (!l) return { layer, index: -1, earned: 0, gate: 0, probe: false, payout: 0, block: 'unknown', ratio: 0 }
+  if (!l) return { layer, index: -1, earned: 0, gate: 0, probe: false, payout: 0, block: 'unknown', ratio: 0, restLeft: 0 }
   const s = prestigeState(world).layers[k] ?? emptyLayer()
   const probe = isProbe(world, k)
   const gate = gateAt(l, s.sinceReset, probe)
@@ -70,7 +74,10 @@ export function layerStatus(world: WorldView, layer: string): LayerStatus {
   if (earned < gate || payout <= 0) block = 'earned'
   else if (min.producersOnline && s.count >= (min.producersFromCount ?? 0) && producersOnline(world) < min.producersOnline) block = 'producers'
   else if (min.lowerRuns && k > 0 && (prestigeState(world).layers[k - 1]?.sinceReset ?? 0) < min.lowerRuns) block = 'lowerRuns'
-  return { layer, index: k, earned, gate, probe, payout, block, ratio: gate > 0 ? Math.min(1, earned / gate) : 1 }
+  // Rest period: measured against the last simulated time (core.lastSeen ≈ now)
+  const restLeft = min.restMs && s.lastAt > 0 ? Math.max(0, s.lastAt + min.restMs - world.core.lastSeen) : 0
+  if (block === null && restLeft > 0) block = 'rest'
+  return { layer, index: k, earned, gate, probe, payout, block, ratio: gate > 0 ? Math.min(1, earned / gate) : 1, restLeft }
 }
 
 export function prestigeModule(): EngineModule<PrestigeState> {
@@ -85,16 +92,16 @@ export function prestigeModule(): EngineModule<PrestigeState> {
           const x = arr[i]
           if (!isRecord(x)) return emptyLayer()
           const count = parseInt0(x.count)
-          return { count, runEarned: parseNum(x.runEarned), sinceReset: Math.min(count, parseInt0(x.sinceReset)) }
+          return { count, runEarned: parseNum(x.runEarned), sinceReset: Math.min(count, parseInt0(x.sinceReset)), lastAt: parseTime(x.lastAt, 0) }
         }),
       }
     },
-    resetOn: (s, layer, _ctx, world) => {
+    resetOn: (s, layer, ctx, world) => {
       const k = layerIndex(world.def, layer)
       return {
         layers: s.layers.map((l, j) => {
           if (j > k) return l
-          if (j === k) return { count: l.count + 1, runEarned: 0, sinceReset: l.sinceReset + 1 }
+          if (j === k) return { count: l.count + 1, runEarned: 0, sinceReset: l.sinceReset + 1, lastAt: ctx.clock.now() }
           return { ...l, runEarned: 0, sinceReset: 0 }
         }),
       }
@@ -117,6 +124,6 @@ export function prestigeModule(): EngineModule<PrestigeState> {
       },
     },
     playtestEvents: ['prestige.performed'],
-    sample: (_ctx, def) => ({ layers: def.prestigeLayers.map((_, i) => ({ count: 5 - i, runEarned: 1e6 * (i + 1), sinceReset: 2 })) }),
+    sample: (_ctx, def) => ({ layers: def.prestigeLayers.map((_, i) => ({ count: 5 - i, runEarned: 1e6 * (i + 1), sinceReset: 2, lastAt: 1_800_000_000_000 - i })) }),
   }
 }
