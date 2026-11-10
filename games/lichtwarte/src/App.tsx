@@ -200,6 +200,7 @@ export function App() {
         return true
       }}
       welcomeArt={<ComebackLetter />}
+      installArt={<img src="./icons/icon-192.png" alt="" width={72} height={72} className="lw-install-icon" />}
       tab={tab}
       onTab={(id) => {
         setTab(id)

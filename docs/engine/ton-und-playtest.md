@@ -17,7 +17,7 @@
 
 ## Playtest-Log (`createPlaytestLog`)
 
-- **Opt-in**, nur lokal, nichts wird gesendet. In der Testphase setzt der Testphasen-Hinweis den Schalter. Abschalten geht in den Einstellungen.
+- Nur lokal, nichts wird gesendet. Ohne Angabe ist das Log aus (Opt-in). Ein Spiel in der Testphase schaltet es mit `defaultOn: true` **standardmäßig ein** (Lichtwarte tut das); die eigene Wahl in den Einstellungen gilt danach immer. Der Testphasen-Hinweis der installierten App erklärt die Aufzeichnung und lässt sie abwählen.
 - **Was aufgezeichnet wird:** Engine-Ereignisse, die ein Modul in `playtestEvents` nennt, die Kern-Ereignisse (`CORE_PLAYTEST_EVENTS`) und App-Ereignisse (`app.tab`, `app.language`, `app.ad`, `app.testPurchase`, `app.error`).
 - **Aufbewahrung:**
   - Roh-Ereignisse bleiben 48 h (höchstens 3000).

@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
+import { encodeBackup } from '@engine/core'
 import {
-  currentInstallEnv, readJson, shouldShowInstallGate, shouldShowTestPhase, usePrefs, useRuntimeLoop, writeKey,
+  currentInstallEnv, installSkippedRecently, readJson, readKey, shouldShowInstallGate, shouldShowTestPhase, usePrefs, useRuntimeLoop, writeKey,
   type Distribution, type EngineRuntime, type I18n, type PlaytestLog, type PrefsStore,
 } from '@engine/react'
 import { UiProvider, type UiLabels } from '../context'
@@ -62,7 +63,7 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
   const [ownTab, setTab] = useState('play')
   const tab = p.tab ?? ownTab
   const [overlay, setOverlay] = useState<string | null>(null)
-  const [flags, setFlags] = useState(() => readJson<{ installSkipped?: boolean; testPhaseOk?: boolean; record?: boolean }>(flagsKey(p.rt), {}))
+  const [flags, setFlags] = useState(() => readJson<{ installSkippedAt?: number; testPhaseOk?: boolean; record?: boolean }>(flagsKey(p.rt), {}))
   const saveFlags = (f: typeof flags) => {
     setFlags(f)
     writeKey(flagsKey(p.rt), JSON.stringify(f))
@@ -75,7 +76,19 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
     document.documentElement.classList.toggle('ek-reduced-motion', prefs.reducedMotion)
   }, [prefs.fontScale, prefs.reducedMotion])
   const env = currentInstallEnv()
-  const gate = !flags.installSkipped && shouldShowInstallGate(p.distribution, env)
+  // "Continue in the browser" holds for six hours, then the gate returns
+  const [startedAt] = useState(() => Date.now())
+  const gate = !installSkippedRecently(flags.installSkippedAt, startedAt) && shouldShowInstallGate(p.distribution, env)
+  /** Backup code to carry browser progress into the installed app (only once something was earned). */
+  const carryCode = () => {
+    p.rt.save()
+    const data: Record<string, string> = {}
+    for (const k of p.backup.keys) {
+      const v = readKey(k)
+      if (v) data[k] = v
+    }
+    return encodeBackup(p.backup.prefix, p.rt.def.id, data, p.rt.clock.now())
+  }
   const testPhase = !gate && shouldShowTestPhase(p.testPhase, !!flags.testPhaseOk, env)
   const t = p.i18n.t
   const items: NavItem[] = [
@@ -104,7 +117,7 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
           void p.i18n.setLocale(l, { persist: true })
         }} open={setOverlay}>
         {gate ? (
-          <InstallGate title={p.title()} art={p.installArt} onSkip={() => saveFlags({ ...flags, installSkipped: true })} />
+          <InstallGate title={p.title()} art={p.installArt} onSkip={() => saveFlags({ ...flags, installSkippedAt: Date.now() })} carryCode={p.rt.get().core.primaryLifetime > 0 ? carryCode : undefined} />
         ) : (
           <div className={['ek-app', p.className ?? ''].join(' ').trim()} data-locale={locale} data-tab={tab}>
             <SaveGuardBanner />

@@ -52,6 +52,10 @@ body {
 .lw-icon {
   display: block;
 }
+.lw-install-icon {
+  border-radius: 18px;
+  box-shadow: 0 6px 18px rgb(23 32 64 / 0.35);
+}
 
 /* Leiste unten: Nachtblau, das aktive Zeichen leuchtet golden */
 .lw-app .ek-tabbar {

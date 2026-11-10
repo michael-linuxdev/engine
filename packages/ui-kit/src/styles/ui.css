@@ -678,3 +678,31 @@ body {
   flex-direction: column;
   gap: var(--space-2);
 }
+
+/* Install gate: scrolls from the top, cards left-aligned */
+.ek-install {
+  justify-content: flex-start;
+  padding-top: calc(var(--space-5) + env(safe-area-inset-top));
+}
+.ek-install__card {
+  width: 100%;
+  max-width: 32rem;
+  text-align: left;
+}
+.ek-install .ek-steps {
+  width: 100%;
+  margin: 0;
+  padding-left: 1.4em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.ek-install__share {
+  display: inline-block;
+  vertical-align: -3px;
+  margin: 0 2px;
+}
+.ek-install__note {
+  max-width: 32rem;
+  overflow-wrap: anywhere;
+}

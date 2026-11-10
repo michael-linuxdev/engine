@@ -1,5 +1,7 @@
 /**
- * Opt-in playtest log: local only, off by default, nothing is sent.
+ * Playtest log: local only, nothing is sent. Off by default; a game in its
+ * test phase may switch it on by default (`defaultOn`) — the player's own
+ * choice in the settings always wins.
  * Storage: two localStorage keys (closed days rarely, the running day + raw
  * rest every 12 s). If space runs short the raw rest is halved first; the
  * save always wins. Engine events are recorded automatically when a module
@@ -22,6 +24,8 @@ export interface PlaytestOptions {
   /** Small progress snapshot, stored once per flush on the running day. */
   snapshot?: () => Record<string, number | string>
   now?: () => number
+  /** Record unless the player switched it off (test phase). Default: off until switched on. */
+  defaultOn?: boolean
 }
 
 export interface PlaytestLog {
@@ -61,7 +65,8 @@ export function createPlaytestLog(o: PlaytestOptions): PlaytestLog {
   const KEY_DAYS = `${o.gameId}-playtest-days-v1`
   const KEY_LIVE = `${o.gameId}-playtest-live-v1`
   const high = new Set(o.highFrequency ?? [])
-  const enabled = createStore(readKey(KEY_ON) === '1')
+  const stored = readKey(KEY_ON)
+  const enabled = createStore(stored === '1' || (stored === null && o.defaultOn === true))
   let log: LogState | null = null
   let daysWritten = -1
   let dirty = false
