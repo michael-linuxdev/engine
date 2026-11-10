@@ -82,3 +82,23 @@ describe('playtest log (browser)', () => {
     expect(again.count()).toBe(0)
   })
 })
+
+describe('playtest log: default in the test phase', () => {
+  const mem = new Map<string, string>()
+  beforeEach(() => {
+    mem.clear()
+    ;(globalThis as { localStorage?: unknown }).localStorage = {
+      getItem: (k: string) => mem.get(k) ?? null,
+      setItem: (k: string, v: string) => void mem.set(k, v),
+      removeItem: (k: string) => void mem.delete(k),
+    }
+  })
+  it('`defaultOn` records from the first start; switching it off sticks', () => {
+    const log = createPlaytestLog({ gameId: 'g', version: '1', now: () => T, defaultOn: true })
+    expect(log.enabled.get()).toBe(true)
+    log.record('app.tab', { tab: 'x' })
+    expect(log.count()).toBeGreaterThan(0)
+    log.setEnabled(false)
+    expect(createPlaytestLog({ gameId: 'g', version: '1', now: () => T, defaultOn: true }).enabled.get()).toBe(false)
+  })
+})

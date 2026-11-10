@@ -194,6 +194,8 @@ try {
     const { ctx, p } = await page(browser, null)
     await p.goto(URL + '?installGate=1')
     await p.getByTestId('install-gate').waitFor()
+    // Schritt-Anleitung passend zum Browser, Hinweis kommt nach „Im Browser weiter“ nicht sofort wieder
+    assert((await p.getByTestId('install-steps').locator('li').count()) >= 2, 'Install-Gate zeigt eine Schritt-Anleitung')
     await p.getByTestId('install-skip').click()
     await p.getByTestId('hud-amount').waitFor()
     await ctx.close()

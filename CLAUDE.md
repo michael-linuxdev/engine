@@ -43,7 +43,8 @@ Kurz und verbindlich. Hintergrund: `docs/adr/`, Engine-Handbuch: `docs/engine/`.
 ## Web-Fassung vs. Store-Fassung
 
 - `games/<spiel>/src/distribution.ts`: `DISTRIBUTION: 'web' | 'store'`, `TEST_PHASE`.
-- Ein Handy oder Tablet im Browser zeigt „Zuerst die App installieren“. Die installierte App zeigt in der Testphase beim ersten Start den Hinweis zur Aufzeichnung.
+- Ein Handy oder Tablet im Browser zeigt „Zuerst die App installieren“ mit der Schritt-Anleitung für den erkannten Browser. „Im Browser weiter“ gilt 6 Stunden. Die installierte App zeigt in der Testphase beim ersten Start den Hinweis zur Aufzeichnung.
+- In der Testphase ist das Playtest-Log standardmäßig an (`defaultOn`), abschaltbar in den Einstellungen.
 - **Vor dem Store-Start:** `'store'` und `TEST_PHASE = false` setzen. Der Test schlägt fehl, sobald eine Store-Hülle im Spielordner liegt und das noch nicht gesetzt ist. Der Store-Start ist außerdem gesperrt, solange ein Eigenname `ungeprüft` ist.
 
 ## Checks

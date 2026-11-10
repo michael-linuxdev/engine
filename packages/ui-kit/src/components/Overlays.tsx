@@ -1,6 +1,6 @@
-import { Component, useState, type ErrorInfo, type ReactNode } from 'react'
+import { Component, useEffect, useRef, useState, type ErrorInfo, type ReactNode } from 'react'
 import { explain, MODULE, primaryCurrency, type OfflineState, type SaveBlock } from '@engine/core'
-import { useEngine, useSaveBlock } from '@engine/react'
+import { copyText, detectPlatform, installStepsKey, useEngine, useSaveBlock } from '@engine/react'
 import { useUi } from '../useUi'
 import type { EngineStrings } from '../i18n/de'
 import { Button } from './Button'
@@ -84,25 +84,123 @@ export function SaveGuardBanner() {
   )
 }
 
-/** Full-screen "install the app first" for phones/tablets in the browser. */
-export function InstallGate({ title, onSkip, art, onInstall }: { title: string; onSkip: () => void; art?: ReactNode; onInstall?: () => void }) {
-  const { t } = useUi()
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
+}
+
+/** Instruction text with the share icon in place of `{S}`. */
+function StepText({ text, label }: { text: string; label: string }) {
+  const parts = text.split('{S}')
   return (
-    <div className="ek-fullscreen" role="dialog" aria-modal="true" aria-labelledby="ek-install-title" data-testid="install-gate">
+    <>
+      {parts.map((part, i) => (
+        <span key={i}>
+          {part}
+          {i < parts.length - 1 ? (
+            <svg className="ek-install__share" viewBox="0 0 24 24" width="18" height="18" role="img" aria-label={label}>
+              <path d="M12 3v12M8 7l4-4 4 4M5 12v8h14v-8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          ) : null}
+        </span>
+      ))}
+    </>
+  )
+}
+
+/**
+ * Full-screen "install the app first" for phones/tablets in the browser:
+ * step-by-step instructions for the detected browser, the native install
+ * prompt where the browser offers one, and the backup code to carry
+ * progress over (`carryCode`, only passed when there is progress).
+ */
+export function InstallGate({ title, onSkip, art, carryCode }: { title: string; onSkip: () => void; art?: ReactNode; carryCode?: () => string }) {
+  const { t } = useUi()
+  const [platform] = useState(() => detectPlatform(typeof navigator === 'undefined' ? '' : navigator.userAgent, typeof navigator === 'undefined' ? 0 : navigator.maxTouchPoints))
+  const [canNative, setCanNative] = useState(false)
+  const [note, setNote] = useState<string | null>(null)
+  const deferred = useRef<BeforeInstallPromptEvent | null>(null)
+  useEffect(() => {
+    const onPrompt = (e: Event) => {
+      e.preventDefault()
+      deferred.current = e as BeforeInstallPromptEvent
+      setCanNative(true)
+    }
+    window.addEventListener('beforeinstallprompt', onPrompt)
+    window.addEventListener('appinstalled', onSkip)
+    return () => {
+      window.removeEventListener('beforeinstallprompt', onPrompt)
+      window.removeEventListener('appinstalled', onSkip)
+    }
+  }, [onSkip])
+  const g = t.install
+  // On a desktop (forced by ?installGate=1) the Android/Chrome steps are the closest match
+  const steps = g.steps[installStepsKey(platform.os === 'desktop' ? 'android' : platform.os, platform.os === 'desktop' ? 'chrome' : platform.browser)]
+  const nativeInstall = async () => {
+    const evt = deferred.current
+    if (!evt) return
+    await evt.prompt()
+    const r = await evt.userChoice
+    deferred.current = null
+    setCanNative(false)
+    if (r.outcome === 'accepted') onSkip()
+  }
+  const copy = async (text: string, ok: string) => setNote((await copyText(text)) ? ok : text)
+  return (
+    <div className="ek-fullscreen ek-install" role="dialog" aria-modal="true" aria-labelledby="ek-install-title" data-testid="install-gate">
       {art}
       <p className="ek-muted">{title}</p>
       <h1 id="ek-install-title" className="ek-h1">
-        {t.install.title}
+        {g.title}
       </h1>
-      <p>{t.install.body}</p>
-      <ul className="ek-steps">
-        <li>{t.install.ios}</li>
-        <li>{t.install.android}</li>
+      <p>{g.body}</p>
+      <section className="ek-card ek-install__card">
+        <h2 className="ek-h3">{g.howTo}</h2>
+        <p className="ek-muted" data-testid="install-detected">
+          {g.detected(g.os[platform.os], g.browser[platform.browser])}
+        </p>
+        {canNative ? (
+          <Button data-testid="install-native" onClick={() => void nativeInstall()}>
+            {g.install}
+          </Button>
+        ) : null}
+        <ol className="ek-steps" data-testid="install-steps">
+          {steps.map((step, i) => (
+            <li key={i}>
+              <StepText text={step} label={g.share} />
+            </li>
+          ))}
+        </ol>
+        {platform.browser === 'inapp' || platform.browser === 'other' ? (
+          <Button variant="secondary" size="small" onClick={() => void copy(location.origin + location.pathname, g.urlCopied)}>
+            {g.copyUrl}
+          </Button>
+        ) : null}
+      </section>
+      <ul className="ek-steps ek-install__why">
+        {g.why.map((w, i) => (
+          <li key={i}>{w}</li>
+        ))}
       </ul>
-      {onInstall ? <Button onClick={onInstall}>{t.install.install}</Button> : null}
+      {platform.os === 'ios' && platform.browser !== 'inapp' ? <p className="ek-note">{g.iosWarning}</p> : null}
+      {carryCode ? (
+        <section className="ek-card ek-install__card" data-testid="install-carry">
+          <h2 className="ek-h3">{g.carryTitle}</h2>
+          <p>{g.carryBody}</p>
+          <Button variant="secondary" size="small" onClick={() => void copy(carryCode(), g.carryCopied)}>
+            {g.carryCopy}
+          </Button>
+        </section>
+      ) : null}
+      {note ? (
+        <p className="ek-note ek-install__note" role="status">
+          {note}
+        </p>
+      ) : null}
       <Button variant="ghost" data-testid="install-skip" onClick={onSkip}>
-        {t.install.skip}
+        {g.skip}
       </Button>
+      <p className="ek-muted">{g.skipNote}</p>
     </div>
   )
 }

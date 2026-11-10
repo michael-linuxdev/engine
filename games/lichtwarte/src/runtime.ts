@@ -45,10 +45,11 @@ declare const __APP_VERSION__: string
 export const sfx = createSfx(prefs, SFX, SFX_VIBRATE)
 export const ambience = createAmbience(prefs, AMBIENCE, () => ambienceMix(currentMood(), currentWeather()))
 
-/** Playtest-Log (nur Testphase, opt-in): Ausbauen und Funkenruf nur als Minutenzähler. */
+/** Playtest-Log (nur Testphase, standardmäßig an, in den Einstellungen abschaltbar): Ausbauen und Funkenruf nur als Minutenzähler. */
 export const playtest = TEST_PHASE
   ? createPlaytestLog({
       gameId: game.id,
+      defaultOn: true,
       version: typeof __APP_VERSION__ === 'string' ? __APP_VERSION__ : 'dev',
       highFrequency: ['producer.bought', 'burst.used', 'surprise.found', 'primary.gained'],
       snapshot: () => {
