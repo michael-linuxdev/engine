@@ -26,6 +26,8 @@ export interface GameShellProps<S extends EngineStrings> {
   hud: ReactNode
   /** Extra tabs (id → view) after play/prestige/shop. */
   tabs?: { item: NavItem; view: ReactNode }[]
+  /** Icons for the built-in tabs (`play`, `prestige`, `shop`) and the menu button (`menu`). */
+  navIcons?: Partial<Record<'play' | 'prestige' | 'shop' | 'menu', ReactNode>>
   /** Extra menu entries before save/settings/legal. */
   menu?: MenuItem[]
   /** Shop: which meta branches to show (default: all). */
@@ -77,9 +79,9 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
   const testPhase = !gate && shouldShowTestPhase(p.testPhase, !!flags.testPhaseOk, env)
   const t = p.i18n.t
   const items: NavItem[] = [
-    { id: 'play', label: t.nav.play },
-    { id: 'prestige', label: t.nav.prestige },
-    { id: 'shop', label: t.nav.shop },
+    { id: 'play', label: t.nav.play, icon: p.navIcons?.play },
+    { id: 'prestige', label: t.nav.prestige, icon: p.navIcons?.prestige },
+    { id: 'shop', label: t.nav.shop, icon: p.navIcons?.shop },
     ...(p.tabs ?? []).map((x) => x.item),
   ]
   const menu: MenuItem[] = [
@@ -104,7 +106,7 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
         {gate ? (
           <InstallGate title={p.title()} art={p.installArt} onSkip={() => saveFlags({ ...flags, installSkipped: true })} />
         ) : (
-          <div className={['ek-app', p.className ?? ''].join(' ').trim()} data-locale={locale}>
+          <div className={['ek-app', p.className ?? ''].join(' ').trim()} data-locale={locale} data-tab={tab}>
             <SaveGuardBanner />
             {p.hud}
             {p.notice}
@@ -120,6 +122,7 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
                 playtest?.record('app.tab', { tab: id })
               }}
               menu={menu}
+              menuIcon={p.navIcons?.menu}
             />
             {testPhase ? <TestPhaseNotice onDone={(record) => {
                   saveFlags({ ...flags, testPhaseOk: true, record })

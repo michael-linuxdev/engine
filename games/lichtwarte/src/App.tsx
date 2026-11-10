@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { DAILY_ID, dailyStatus, isFeatureOpen, localDayKey, MODULE, QUESTS_ID, type DailyState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
 import { connectSfx, currentStep, useEngine, useStore, useSteps } from '@engine/react'
-import { BurstButton, CardPicker, FtueCoach, GameShell, Hud, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
+import { CardPicker, FtueCoach, GameShell, Hud, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
 import { BuildingArt } from './art/Building'
+import { IconArchive, IconBook, IconLantern, IconLeaf, IconMap, IconMenu, IconMoon, IconPouch, IconTower } from './art/icons'
+import { SparkDock } from './scene/SparkDock'
 import { TIER_LEVELS } from './art/registry'
 import { DISTRIBUTION, TEST_PHASE } from './distribution'
 import { CHRONICLE } from './content/chronicle'
@@ -21,6 +23,7 @@ import { IMPRINT, PRIVACY_PAGE } from './legal'
 import { ValleyMap } from './scene/ValleyMap'
 import { currentMood } from './scene/mood'
 import { Ceremony } from './story/Ceremony'
+import { Intro } from './story/Intro'
 import { ChronicleSheet, ComebackLetter } from './story/Chronicle'
 import { useChronicle } from './story/useChronicle'
 
@@ -38,10 +41,17 @@ function watchBadge(w: WorldView): boolean {
   return (!!d && dailyStatus(d, localDayKey(rt.clock), DAILY).canClaim) || (q?.active.some((x) => !x.claimed && x.progress >= x.goal) ?? false)
 }
 
+/** Gerätemerker „Prolog gesehen“ (steht neben den gelesenen Chronik-Seiten). */
+const PROLOGUE = 'prologue'
+
 const steps = ftueSteps((id) => chronicleRead.has(id), (id) => tabsSeen.has(id))
 
 function Play({ onOpen }: { onOpen: (id: string) => void }) {
-  return <ValleyMap onOpen={onOpen} />
+  return (
+    <ValleyMap onOpen={onOpen}>
+      <SparkDock />
+    </ValleyMap>
+  )
 }
 
 function ProducerArt({ p }: { p: ProducerDef }) {
@@ -49,7 +59,7 @@ function ProducerArt({ p }: { p: ProducerDef }) {
   const { world } = useEngine(ui.rt)
   const level = (world.get<{ owned: Record<string, number> }>(MODULE.producers)?.owned[p.id] ?? 0)
   return (
-    <svg className="lw-upgrade-art" viewBox="-48 -112 96 118" role="img" aria-label={ui.labels.producer(p.id).name}>
+    <svg className="lw-upgrade-art" viewBox="-42 -84 84 92" role="img" aria-label={ui.labels.producer(p.id).name}>
       <BuildingArt id={p.id} tier={Math.max(1, tierFor(level, TIER_LEVELS))} m={currentMood()} />
     </svg>
   )
@@ -62,9 +72,13 @@ function useCoachActive(): boolean {
   return currentStep(steps, ftue, world) !== null
 }
 
-function NoticeArea({ onEvents }: { onEvents: () => void }) {
+function NoticeArea({ onEvents, compact }: { onEvents: () => void; compact: boolean }) {
   const active = useCoachActive()
-  return <Notices coach={active ? <Coach /> : null} onEvents={onEvents} />
+  return (
+    <div className="lw-notices">
+      <Notices coach={active ? <Coach /> : null} onEvents={onEvents} compact={compact} />
+    </div>
+  )
 }
 
 function Coach() {
@@ -89,15 +103,18 @@ function GameOverlays({ selected, onClose, chronicleOpen, setChronicle, ceremony
 }) {
   const { unread } = useChronicle()
   const p = game.producers.find((x) => x.id === selected) ?? null
-  // Erster Start: die erste Chronik-Seite öffnet sich von selbst.
+  const read = useStore(chronicleRead)
+  // Erster Start: erst der Prolog, dann öffnet sich die erste Chronik-Seite von selbst.
+  const intro = !read.includes('welcome') && !read.includes(PROLOGUE)
   useEffect(() => {
-    if (unread.some((e) => e.id === 'welcome')) setChronicle(true)
-  }, [unread, setChronicle])
+    if (!intro && unread.some((e) => e.id === 'welcome')) setChronicle(true)
+  }, [intro, unread, setChronicle])
   const ldef = ceremony ? game.prestigeLayers.find((l) => l.id === ceremony.layer) : null
   return (
     <>
       <UpgradeSheet p={p} open={!!p} onClose={onClose} art={p ? <ProducerArt p={p} /> : null} note={p ? (t.producers as Record<string, { note: string }>)[p.id]?.note : undefined} />
       <ChronicleSheet open={chronicleOpen} onClose={() => setChronicle(false)} />
+      {intro ? <Intro onDone={() => chronicleRead.add(PROLOGUE)} /> : null}
       {ceremony && ldef ? (
         <Ceremony
           layer={ceremony.layer}
@@ -145,7 +162,13 @@ export function App() {
         <Hud
           primaryId={CURRENCY.glimmer}
           icon={<span className="lw-glimmer-icon" />}
-          extra={<BurstButton label={t.play.burst} />}
+          extra={
+            <button type="button" className="lw-hud-btn" data-testid="hud-chronicle" onClick={() => setChronicle(true)}>
+              <IconBook />
+              <span>{t.chronicle.menu}</span>
+              {unread ? <span className="ek-badge" aria-label={t.chronicle.unread} /> : null}
+            </button>
+          }
           goalText={(g) =>
             g.kind === 'unlock'
               ? t.play.goalUnlock(labels.producer(g.id).name)
@@ -160,14 +183,15 @@ export function App() {
         />
       }
       play={<Play onOpen={setSelected} />}
+      navIcons={{ play: <IconTower />, prestige: <IconMoon />, shop: <IconArchive />, menu: <IconMenu /> }}
       menu={[{ id: 'chronicle', label: t.chronicle.menu, onSelect: () => setChronicle(true), badge: unread }]}
       tabs={[
-        ...(isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, badge: watchBadge(world) }, view: <WatchView /> }] : []),
-        ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab }, view: <WorldTab /> }] : []),
-        ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab }, view: <RealmsTab /> }] : []),
-        ...(isFeatureOpen(world, 'market') ? [{ item: { id: 'market', label: t.trade.tab }, view: <MarketTab /> }] : []),
+        ...(isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, icon: <IconLantern />, badge: watchBadge(world) }, view: <WatchView /> }] : []),
+        ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab, icon: <IconLeaf /> }, view: <WorldTab /> }] : []),
+        ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab, icon: <IconMap /> }, view: <RealmsTab /> }] : []),
+        ...(isFeatureOpen(world, 'market') ? [{ item: { id: 'market', label: t.trade.tab, icon: <IconPouch /> }, view: <MarketTab /> }] : []),
       ]}
-      notice={<NoticeArea onEvents={() => setTab('watch')} />}
+      notice={<NoticeArea onEvents={() => setTab('watch')} compact={tab === 'play'} />}
       metaBranchVisible={(b) => {
         // Läden der Langen Nacht und des Zeitalters erst zeigen, wenn es ihre Währung schon gab
         const earned = (rt.get().modules.wallet as { earned: Record<string, number> }).earned

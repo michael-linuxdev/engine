@@ -56,13 +56,54 @@ export const SKY: Record<Daypart, [string, string]> = {
   night: ['#1f2a4a', '#3b3f6b'],
 }
 
-/** Licht-Überzug je Tageszeit (Farbe, Deckkraft). */
+/** Himmel in drei Stufen (Zenit, Mitte, Horizont) für die Talkarte. */
+export const SKY3: Record<Daypart, [string, string, string]> = {
+  dawn: ['#7d86b5', '#f0b9a0', '#fbe6c3'],
+  day: ['#7fb9da', '#bfe0ea', '#f2f4dc'],
+  evening: ['#3c3a6e', '#b8627a', '#f3a765'],
+  night: ['#0b1130', '#1c2752', '#3a4478'],
+}
+
+/** Bergketten je Tageszeit: fern, mittel, nah (Luftperspektive). */
+export const RANGES: Record<Daypart, [string, string, string]> = {
+  dawn: ['#d3b3bd', '#b295ae', '#8c7c9e'],
+  day: ['#b4c3d9', '#93a3c0', '#7686a3'],
+  evening: ['#96749c', '#70598b', '#544674'],
+  night: ['#2f3a6c', '#262f5c', '#1d2449'],
+}
+
+/** Wolken je Tageszeit: Fläche, Schattenkante. */
+export const CLOUD: Record<Daypart, [string, string]> = {
+  dawn: ['#fff3e2', '#f1c2b0'],
+  day: ['#ffffff', '#d5e6ee'],
+  evening: ['#f7c79f', '#a8607c'],
+  night: ['#4a5488', '#2a3364'],
+}
+
+/** Gestirn: Scheibe, Hof. */
+export const ORB: Record<Daypart, [string, string]> = {
+  dawn: ['#fff0c9', '#ffc98f'],
+  day: ['#fffbe6', '#fff1b8'],
+  evening: ['#ffd9a0', '#ff9f43'],
+  night: ['#f6f1dc', '#cfd8ff'],
+}
+
+/** Licht-Überzug je Tageszeit (Farbe, Deckkraft). Liegt nur über dem Land, nie über dem Himmel. */
 export const SHADE: Record<Daypart, [string, number]> = {
   dawn: ['#f2b28a', 0.12],
   day: ['#ffffff', 0],
-  evening: ['#5a2e3a', 0.2],
-  night: ['#141a33', 0.46],
+  evening: ['#4a2a4a', 0.24],
+  night: ['#101736', 0.52],
 }
+
+/** Weg durchs Tal: Rand, Fläche, Mittelspur. */
+export const TRAIL = ['#a8895a', '#e2cf9f', '#f1e3bd'] as const
+
+/** Figuren (Lehrling, Talgäste). */
+export const FIGURE = { skin: '#f0c9a0', hair: '#7a4a2a', cloak: '#3f6e8c', hood: '#2c4f6b', fox: '#d9772f', foxLight: '#f6e3c8', owl: '#8c7558', wisp: '#bff3e6' } as const
+
+/** Leuchtfeuer der Warte und Funken. */
+export const BEACON = { core: '#fffbe6', warm: '#ffd27a', hot: '#ff9f43', cold: '#cfd8ff' } as const
 
 /** Boden je Jahreszeit: [Hügel fern, Hügel nah, Wiese]. */
 export const GROUND: Record<Season, [string, string, string]> = {

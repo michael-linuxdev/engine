@@ -5,6 +5,7 @@
 import { engineDe } from '@engine/ui'
 import { BRAND } from '../brand'
 import { realmsDe } from './realms.de'
+import { storyDe } from './story.de'
 
 export const gameDe = {
   app: {
@@ -70,36 +71,9 @@ export const gameDe = {
     slotLevel: (n: string) => `Stufe ${n}`,
     open: (name: string) => `${name} öffnen`,
   },
-  chronicle: {
-    menu: 'Chronik',
-    title: 'Chronik der Wächterin',
-    unread: 'Neue Seite',
-    empty: 'Noch steht nichts darin.',
-    signature: '— Alwine',
-    comeback: { title: 'Da bist du ja', body: 'Lange nichts gehört. Die Warte hat geglimmt, ich habe aufgepasst. Hier, für den Weg: ein paar Lichtkiesel.' },
-    entries: {
-      welcome: { title: 'Für wen auch immer', body: 'Wenn du das liest, hast du den Schlüssel gefunden. Die Warte ist alt, das Tal ist müde, und ich bin es auch. Fang bei der Kräuterkate an. Das Licht kommt nicht auf einmal, aber es kommt — sogar, wenn du schläfst.' },
-      firstBuild: { title: 'Der erste Funke', body: 'Siehst du das Glimmen über der Kate? So hat es bei mir auch angefangen. Ruf die Funken ruhig, wenn du ungeduldig bist. Sie mögen das.' },
-      holzlager: { title: 'Holz für den Winter', body: 'Mit dem Holzlager wird aus einem Häuschen ein Anfang. Bau weiter, aber vergiss nicht hinzusehen: Das Tal verändert sich mit jedem Balken.' },
-      steinbruch: { title: 'Stein auf Stein', body: 'Der Berg gibt nicht gern, aber er gibt. Aus diesen Steinen stand einmal die ganze Warte. Sie wird wieder stehen.' },
-      moonturnReady: { title: 'Wenn der Mond sich dreht', body: 'Die erste Mondwende ist nah. Hab keine Angst davor. Was du baust, vergeht — was du lernst, bleibt im Archiv. Danach geht alles leichter.' },
-      afterMoonturn: { title: 'Das Archiv', body: 'Im Archiv der Wächter liegt, was wir über die Jahre bewahrt haben. Nimm dir, was du brauchst. Jede Wache fügt etwas hinzu, auch deine.' },
-      schmiede: { title: 'Feuer und Eisen', body: 'Die Schmiede glüht wieder. Ich habe ihr Klingen jahrelang vermisst. Hör hin: Das ist das Herz der Warte.' },
-      kartenstube: { title: 'Karten', body: 'In der Kartenstube liegen Wege, die niemand mehr gegangen ist. Vielleicht gehst du sie eines Tages.' },
-      alchemistenturm: { title: 'Bunte Flammen', body: 'Wenn der Alchemistenturm raucht, halte Abstand und sei neugierig. Meistens gleichzeitig.' },
-      greifenhorst: { title: 'Die Greife kehren zurück', body: 'Sie haben gewartet, bis jemand den Horst wieder herrichtet. Sei freundlich zu ihnen, sie vergessen nichts.' },
-      runenhalle: { title: 'Alte Zeichen', body: 'In der Runenhalle sprechen die Steine leise. Wenn du still bist, verstehst du ein Wort oder zwei.' },
-      sternwarte: { title: 'Die Kuppel brennt', body: 'Die Sternwarte leuchtet wieder. Jetzt sieht man die Warte vom ganzen Tal aus. Ich bin stolz auf dich.' },
-      moonturn3: { title: 'Drei Monde', body: 'Du hast es gemerkt: Jede Mondwende geht ein Stück leichter. So ist es gedacht.' },
-      moonturn5: { title: 'Fünf Monde', body: 'Fünf Mondwenden. Die Leute im Tal fragen schon nach dir. Sie sagen „die neue Wächterin“, und es klingt nett.' },
-      moonturn10: { title: 'Zehn Monde', body: 'Zehn. Ich habe damals länger gebraucht. Mach eine Pause, wenn du magst — die Warte glimmt auch ohne dich.' },
-      apprentice: { title: 'Ein Lehrling', body: 'Fenno ist ein guter Junge. Er redet zu viel und arbeitet zu schnell, aber er meint es ernst.' },
-      longNight: { title: 'Die Lange Nacht', body: 'Du hast die Lange Nacht überstanden. Danach ist alles anders und alles gleich. Der Nachttau zeigt dir, was bleibt.' },
-      firstRealm: { title: 'Hinter dem Tal', body: 'Hinter dem Moor beginnt ein anderes Land. Ragna wartet schon. Grüß sie von mir, sie wird schimpfen.' },
-      fiveRealms: { title: 'Viele Lande', body: 'Fünf Lande hängen jetzt an deinem Licht. Vergiss die Warte nicht, wenn du unterwegs bist.' },
-      ages: { title: 'Ein neues Zeitalter', body: 'Du gibst die Wacht weiter, so wie ich sie dir gegeben habe. Das Ahnenlicht bleibt. Danke.' },
-    },
-  },
+  intro: storyDe.intro,
+  chronicle: storyDe.chronicle,
+  fenno: storyDe.fenno,
   ftue: {
     skip: 'Überspringen',
     next: 'Weiter',
@@ -112,11 +86,7 @@ export const gameDe = {
       prestige: { title: 'Die Mondwende', body: 'Unter „Neubeginn“ siehst du, wie nah die erste Mondwende ist.' },
     },
   },
-  ceremony: {
-    title: (layer: string) => `${layer}`,
-    body: (amount: string, currency: string) => `Das Tal ruht. Im Archiv liegen jetzt ${amount} ${currency} mehr.`,
-    cta: 'Ein neuer Morgen',
-  },
+  ceremony: storyDe.ceremony,
   watch: {
     tab: 'Wacht',
     titles: {

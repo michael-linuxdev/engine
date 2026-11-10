@@ -9,7 +9,7 @@ Mindestmengen nach `docs/referenz/paritaet.md`. Der Stand je Phase steht in `ROA
 | Lange-Nacht-Laden | ≥ 4 Gegenstände, ≥ 41 Ränge | Tiefe Fundamente, Wetterläden, Vorratskammer, Wächterwissen | P10 |
 | Zeitalter-Laden | ≥ 5 Gegenstände | Ahnenreihe, Gartenkunst der Alten*, Wurzelsteine, Hausrezept*, Geschickte Hand (*Namen prüfen) | P10 |
 | Wächterrang | 40 Ränge, ≥ 7 Belohnungen | Lichtkiesel, Glimmer, Runensplitter, Talstile | P5 (7 Belohnungen) ✓ |
-| Chronik | ≥ 20 Seiten | 6 im Spiel (Einstieg). Dazu Bauwerk-Seiten für die Bauwerke 5–10, Mondwende 2/3/5/7/10/14, Lange Nacht, Lehrling ×3, Rückkehr-Brief | P5 (6) / P10 |
+| Chronik | ≥ 20 Seiten | 27 Seiten in fünf Kapiteln (`welt.md`), dazu Prolog, Rückkehr-Brief und Zeremonien je Schicht | P5 / P10 / P13 |
 | Einstieg | 6 Schritte | Willkommen, Kräuterkate, Funkenruf, Freilegen, Abwesenheit, Mondwende | P5 ✓ |
 | Hinweise | ≥ 16 | Randnotizen der Chronik | P7 |
 | Taten | ≥ 10 | Erste Kate, 100 Stufen, Erste Mondwende, Funkenregen … | P7 |

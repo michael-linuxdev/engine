@@ -17,7 +17,7 @@ export interface MenuItem {
 }
 
 /** Bottom tab bar plus a menu button that opens a menu sheet. */
-export function AppNav({ items, active, onChange, menu }: { items: NavItem[]; active: string; onChange: (id: string) => void; menu: MenuItem[] }) {
+export function AppNav({ items, active, onChange, menu, menuIcon }: { items: NavItem[]; active: string; onChange: (id: string) => void; menu: MenuItem[]; menuIcon?: ReactNode }) {
   const { t } = useUi()
   const [open, setOpen] = useState(false)
   return (
@@ -38,7 +38,7 @@ export function AppNav({ items, active, onChange, menu }: { items: NavItem[]; ac
           </button>
         ))}
         <button type="button" className="ek-tab" data-testid="menu" aria-haspopup="dialog" onClick={() => setOpen(true)}>
-          <span className="ek-tab__icon" aria-hidden="true">☰</span>
+          <span className="ek-tab__icon" aria-hidden="true">{menuIcon ?? '☰'}</span>
           <span className="ek-tab__label">{t.nav.menu}</span>
           {menu.some((m) => m.badge) ? <span className="ek-badge" aria-label={t.common.new} /> : null}
         </button>
