@@ -8,3 +8,4 @@
 | [migrationen.md](migrationen.md) | Drei Migrationsketten, Fixtures, ID-Sperre |
 | [prestige.md](prestige.md) | N Prestige-Schichten, Meta-Laden |
 | [neues-spiel.md](neues-spiel.md) | Ein neues Spiel anlegen, Schritt für Schritt an `games/_vorlage` |
+| [ton-und-playtest.md](ton-und-playtest.md) | Ton, Umgebungsklang, Playtest-Log, Markt und Testgeld |

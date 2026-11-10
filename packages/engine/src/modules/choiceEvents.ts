@@ -26,6 +26,8 @@ export interface ChoiceConfig {
   daily: number
   /** Earliest hour of the local day. */
   fromHour: number
+  /** Optional: the game picks the day's event (e.g. from its weather); '' = none. Replaces the daily roll. */
+  pick?: (day: string) => string
 }
 
 export interface ChoiceState {
@@ -66,7 +68,9 @@ export function choiceEventsModule(cfg: ChoiceConfig): EngineModule<ChoiceState>
       const hour = new Date(now + (ctx.clock.offsetMin?.() ?? 0) * 60_000).getUTCHours()
       if (day !== s.day && hour >= cfg.fromHour) {
         const h = hashKey(`choice:${day}`)
-        const pending = (h % 1000) / 1000 < cfg.daily && cfg.list.length ? cfg.list[(h >>> 10) % cfg.list.length].id : ''
+        const picked = cfg.pick?.(day)
+        const pending =
+          picked !== undefined ? (byId.has(picked) ? picked : '') : (h % 1000) / 1000 < cfg.daily && cfg.list.length ? cfg.list[(h >>> 10) % cfg.list.length].id : ''
         next = { ...next, day, pending }
         if (pending) return act(next, { events: [{ type: 'choice.offered', id: pending }] })
       }

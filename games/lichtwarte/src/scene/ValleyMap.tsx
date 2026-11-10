@@ -10,22 +10,28 @@ import { useUi } from '@engine/ui'
 import { Backdrop, Shade, Snow } from '../art/Backdrop'
 import { BuildingArt } from '../art/Building'
 import { DecorArt } from '../art/decor'
+import { WeatherLayer } from '../art/weather'
 import { TIER_LEVELS } from '../art/registry'
 import { game } from '../game'
 import { t } from '../runtime'
 import { currentMood } from './mood'
+import { currentWeather } from './weather'
 import { BUILD_SCALE, DECOR_SLOTS, MAP_CROP, MAP_H, MAP_W, SLOTS, slotView } from './slots'
 
 export function ValleyMap({ onOpen }: { onOpen: (id: string) => void }) {
   const ui = useUi()
   const { world } = useEngine(ui.rt)
   const [mood, setMood] = useState(currentMood)
+  const [weather, setWeather] = useState(currentWeather)
   useEffect(() => {
-    const id = setInterval(() => setMood(currentMood()), 60_000)
+    const id = setInterval(() => {
+      setMood(currentMood())
+      setWeather(currentWeather())
+    }, 60_000)
     return () => clearInterval(id)
   }, [])
   return (
-    <section className="lw-map" style={{ aspectRatio: `${MAP_W} / ${MAP_H - MAP_CROP}` }} aria-label={t.play.map} data-mood={`${mood.daypart}-${mood.season}`} data-style={world.get<MarketState>(MARKET_ID)?.equipped ?? 'duskBlue'}>
+    <section className="lw-map" style={{ aspectRatio: `${MAP_W} / ${MAP_H - MAP_CROP}` }} aria-label={t.play.map} data-mood={`${mood.daypart}-${mood.season}`} data-weather={weather} data-style={world.get<MarketState>(MARKET_ID)?.equipped ?? 'duskBlue'}>
       <svg className="lw-map__svg" viewBox={`0 ${MAP_CROP} ${MAP_W} ${MAP_H - MAP_CROP}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label={t.play.map} data-testid="valley-svg">
         <Backdrop m={mood} />
         {SLOTS.map((s, i) => {
@@ -46,6 +52,7 @@ export function ValleyMap({ onOpen }: { onOpen: (id: string) => void }) {
           ) : null,
         )}
         <Snow m={mood} />
+        <WeatherLayer w={weather} />
         <Shade m={mood} />
       </svg>
       {SLOTS.map((s) => {

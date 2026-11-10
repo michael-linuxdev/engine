@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import {
   currentInstallEnv, readJson, shouldShowInstallGate, shouldShowTestPhase, usePrefs, useRuntimeLoop, writeKey,
-  type Distribution, type EngineRuntime, type I18n, type PrefsStore,
+  type Distribution, type EngineRuntime, type I18n, type PlaytestLog, type PrefsStore,
 } from '@engine/react'
 import { UiProvider, type UiLabels } from '../context'
 import type { EngineStrings } from '../i18n/de'
@@ -45,6 +45,8 @@ export interface GameShellProps<S extends EngineStrings> {
   /** Controlled active tab (optional; otherwise the shell keeps its own). */
   tab?: string
   className?: string
+  /** Opt-in playtest log (test phase): settings toggle, export, test-phase notice. */
+  playtest?: PlaytestLog
 }
 
 const flagsKey = (rt: EngineRuntime) => `${rt.def.id}-device-v1`
@@ -62,6 +64,8 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
     writeKey(flagsKey(p.rt), JSON.stringify(f))
   }
   useEffect(() => p.openRef?.(setOverlay), [p])
+  const playtest = p.playtest
+  useEffect(() => playtest?.attach(p.rt), [playtest, p.rt])
   useEffect(() => {
     document.documentElement.style.setProperty('--font-scale', String(prefs.fontScale))
     document.documentElement.classList.toggle('ek-reduced-motion', prefs.reducedMotion)
@@ -91,7 +95,10 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
   const close = () => setOverlay(null)
   return (
     <ErrorBoundary strings={() => t}>
-      <UiProvider t={t} locale={locale} labels={p.labels} prefs={p.prefs} rt={p.rt} setLocale={(l) => void p.i18n.setLocale(l, { persist: true })} open={setOverlay}>
+      <UiProvider t={t} locale={locale} labels={p.labels} prefs={p.prefs} rt={p.rt} setLocale={(l) => {
+          playtest?.record('app.language', { to: l })
+          void p.i18n.setLocale(l, { persist: true })
+        }} open={setOverlay}>
         {gate ? (
           <InstallGate title={p.title()} art={p.installArt} onSkip={() => saveFlags({ ...flags, installSkipped: true })} />
         ) : (
@@ -108,12 +115,16 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
               onChange={(id) => {
                 setTab(id)
                 p.onTab?.(id)
+                playtest?.record('app.tab', { tab: id })
               }}
               menu={menu}
             />
-            {testPhase ? <TestPhaseNotice onDone={(record) => saveFlags({ ...flags, testPhaseOk: true, record })} /> : <WelcomeBack art={p.welcomeArt} />}
+            {testPhase ? <TestPhaseNotice onDone={(record) => {
+                  saveFlags({ ...flags, testPhaseOk: true, record })
+                  playtest?.setEnabled(record)
+                }} /> : <WelcomeBack art={p.welcomeArt} />}
             <SaveSheet open={overlay === 'save'} onClose={close} prefix={p.backup.prefix} app={p.rt.def.id} keys={p.backup.keys} fileName={p.backup.fileName} />
-            <SettingsSheet open={overlay === 'settings'} onClose={close} version={p.version} />
+            <SettingsSheet open={overlay === 'settings'} onClose={close} version={p.version} playtest={playtest} />
             <LegalSheet open={overlay === 'legal'} onClose={close} />
             <MultSheet open={overlay === 'mult'} onClose={close} />
             {p.overlays}

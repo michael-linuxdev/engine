@@ -2,7 +2,7 @@
 
 Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtwarte** (Arbeitstitel), ein gemütliches Fantasy-Idle-Spiel. Es soll mindestens die Tiefe, Systeme, Inhalte und Qualitätssicherung des Referenz-Spiels erreichen (`docs/referenz/paritaet.md`).
 
-**Paritäts-Fortschritt (2026-11-10): 91 %** der Systeme aus `paritaet.md`. 47 von 52 Zeilen sind `im Spiel`/`getestet`, 1 sind `Engine fertig`. Gezählt wird `im Spiel`/`getestet` voll, `Engine fertig` halb.
+**Paritäts-Fortschritt (2026-11-10): 97 %** der Systeme aus `paritaet.md`. 50 von 52 Zeilen sind `im Spiel`/`getestet`, 1 sind `Engine fertig`. Gezählt wird `im Spiel`/`getestet` voll, `Engine fertig` halb.
 Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 34/34 ✓, Chronik 20/20 ✓, Taten 12/10 ✓, Feste 9/9 ✓, Sammlung 49/37 ✓.
 
 **Web-Fassung:** GitHub Pages, Deploy bei Push auf `main`. Das Spiel liegt unter `/`, die Vorlage unter `/vorlage/`. Die eigene Domain ist in `.github/workflows/deploy-pages.yml` eingetragen.
@@ -21,7 +21,7 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 | P9 | Lande, Wellen 1–3 (… bis ≥ 34) | fertig (34/34; Lande 35–50 geplant) |
 | P10 | Lange Nacht und Zeitalter | fertig |
 | P11 | Markt-Attrappen, Testgeld, Festwoche, Talstile, Zirkel | fertig |
-| P12 | Ton, Ambiente, Playtest-Log, Store-Vorbereitung | offen |
+| P12 | Ton, Ambiente, Playtest-Log, Store-Vorbereitung | in Arbeit (Ton, Log, Wetter fertig) |
 
 ---
 
@@ -127,7 +127,7 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 
 ## P12 — Ton, Ambiente, Playtest-Log, Store
 
-- [ ] 8 Effekte, 4 Ambiente-Schichten, Playtest-Log (opt-in, 48 h roh, Minutenzähler, Export)
+- [x] 8 Effekte, 4 Ambiente-Schichten (Wind, Feuer, Wasser, Nacht), Playtest-Log (opt-in, 48 h roh, Minutenzähler, Tage, Export). Dazu 4 Wetterarten mit Kartenschicht und Omen nach Wetter (`docs/engine/ton-und-playtest.md`).
 - [ ] App-Icons, Store-Texte de/en, Store-Screenshots, Rechtstexte
 - [ ] Alle Eigennamen `frei`, `DISTRIBUTION`/`TEST_PHASE` geprüft
 

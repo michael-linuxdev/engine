@@ -52,7 +52,7 @@ Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `i
 | Deko | `decor.ts` | `decor` | Banner & Steine | **16** Teile (10 + 6 exklusiv), **8** Plätze | getestet (16, 8 Plätze, auf der Talkarte) |
 | Album | `album.ts` | `seasonAlbum` | Jahreskreis-Folio | **12** Ziele je Jahreszeit (48/Jahr) | im Spiel (12 × 4) |
 | Karten nach Prestige | `seasonCards.ts` | `layerCards` | Sternbilder | **12** (9 + 3), 1 aus 3 | im Spiel (12) |
-| Entscheidungs-Ereignis | `weatherEvents.ts`, `gardenLife.ts` | `choiceEvents` | Omen | 4 Wetterarten, 3 Ereignisse × 2 Optionen | getestet (3 × 2; Wetterarten offen) |
+| Entscheidungs-Ereignis | `weatherEvents.ts`, `gardenLife.ts` | `choiceEvents` (`pick`) | Omen nach Wetter | 4 Wetterarten, 3 Ereignisse × 2 Optionen | getestet (4 Wetterarten mit Kartenschicht, 3 × 2) |
 | Großprojekte | `projects.ts` | `projects` | Großwerke | **6 × 3 = 18 Stufen** | im Spiel (6 × 3) |
 | Stimmungen | `theme/art/mood.ts`, `theme/ambient.ts` | `art-kit` (`moodAt`) | Morgen/Tag/Abend/Nacht × 4 Jahreszeiten | 16 Zustände | getestet (16 im Spiel, 4 im Pixelvergleich) |
 
@@ -81,9 +81,9 @@ Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `i
 | Zeitsprung | `monetization.ts` | `market` | Kurze Stunde, Lange Wache | **2**, Tageskontingent 6 h | getestet (2, 6 h) |
 | Testgeld | `testWallet.ts` | engine-react `createTestWallet` | — | 7 Preise, 20 €/Monat | getestet (7 Preise, 20 €, Monatswechsel, E2E-Testkauf) |
 | Clan | `ClanPanel`, `vereinMult` | `market` (circle) | Wächterzirkel | Boost ×1,1–×1,25 | getestet (×1,1 + 0,05 bis ×1,25) |
-| Playtest-Log | `playtestCore.ts`, `playtestLog.ts` | engine-react | — | **40** Ereignistypen, 48 h roh, Minutenzähler | offen (Engine liefert `playtestEvents`) |
-| Ton-Effekte | `sound.ts` | engine-react | — | **8** | offen |
-| Ambiente | `ambience.ts` | engine-react | Wind, Feuer, Wasser, Nacht | **3** (Ziel 4) | offen |
+| Playtest-Log | `playtestCore.ts`, `playtestLog.ts` | engine-react `createPlaytestLog` | — | **40** Ereignistypen, 48 h roh, Minutenzähler | getestet (alle `playtestEvents` der Module + Kern + App, 48 h, Minutenzähler, Tage, Export, E2E) |
+| Ton-Effekte | `sound.ts` | engine-react `createSfx` | — | **8** | getestet (8 Rezepte, Ereignis-Zuordnung) |
+| Ambiente | `ambience.ts` | engine-react `createAmbience` | Wind, Feuer, Wasser, Nacht | **3** (Ziel 4) | getestet (4 Schichten, Mischung nach Stimmung und Wetter) |
 | Install-Gate, Testphase, Prefs, Overlays, Speicher-Sperre, Sicherungscode, Datei-Speichern | `installGate.ts`, `testPhase.ts`, `prefs.ts`, `overlays.ts`, `saveGuard.ts`, `backup.ts`, `saveFile.ts` | engine-react / ui-kit / engine | — | je 1 | im Spiel |
 
 ## Qualität

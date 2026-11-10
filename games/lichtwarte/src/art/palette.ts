@@ -91,3 +91,18 @@ export function windowColor(m: Mood): string {
 export function isDark(m: Mood): boolean {
   return m.daypart === 'night' || m.daypart === 'evening'
 }
+
+/** Wetterschicht der Karte (art/weather.tsx). */
+export const WEATHER_TINT = { rain: '#c9dcf0', mist: '#eef1f4', leaf: '#c98a3c', shadow: '#000000' } as const
+
+/** Talstile (Markt): Himmel und Licht für die Vorschau. */
+export const STYLE_TINT: Readonly<Record<string, readonly [string, string]>> = {
+  duskBlue: ['#2b3a67', '#f2c46d'],
+  emberRed: ['#5a2a2a', '#ff9a5a'],
+  iceBlue: ['#2c4f6b', '#cfeaff'],
+  amber: ['#5b4220', '#ffcf6e'],
+  budWreath: ['#3d5a3a', '#f7b6c8'],
+  solsticeSheen: ['#2f5b6b', '#ffe38a'],
+  lanternParade: ['#4a2f52', '#ffb35c'],
+  starOfLights: ['#1f2a4d', '#fff1b8'],
+}

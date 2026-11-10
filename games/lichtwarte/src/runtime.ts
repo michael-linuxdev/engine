@@ -1,5 +1,10 @@
 /** Laufzeit: Engine, Geräte-Einstellungen, Sprache, Gerätemerker (Chronik, Einstieg). */
-import { createI18n, createPrefs, createRuntime, createSeen, createSteps, createTestWallet } from '@engine/react'
+import { createAmbience, createI18n, createPlaytestLog, createPrefs, createRuntime, createSeen, createSfx, createSteps, createTestWallet } from '@engine/react'
+import { AMBIENCE, ambienceMix } from './audio/ambience'
+import { SFX, SFX_VIBRATE } from './audio/sfx'
+import { TEST_PHASE } from './distribution'
+import { currentMood } from './scene/mood'
+import { currentWeather } from './scene/weather'
 import type { UiLabels } from '@engine/ui'
 import { TEST_BUDGET_CENTS, TEST_WALLET_ENABLED } from './content/market'
 import { game } from './game'
@@ -33,6 +38,26 @@ export const ftue = createSteps(STORAGE.ftue)
 /** Testgeld (nur Testphase, eigener Schlüssel, nicht im Spielstand). */
 export const testWallet = TEST_WALLET_ENABLED ? createTestWallet(game.id, TEST_BUDGET_CENTS, () => rt.clock.now()) : null
 if (typeof window !== 'undefined') (window as unknown as { __engine?: unknown }).__engine = rt
+
+declare const __APP_VERSION__: string
+
+/** Ton-Effekte und Umgebungsklang (Geräte-Einstellungen „Ton“, „Umgebungsklang“). */
+export const sfx = createSfx(prefs, SFX, SFX_VIBRATE)
+export const ambience = createAmbience(prefs, AMBIENCE, () => ambienceMix(currentMood(), currentWeather()))
+
+/** Playtest-Log (nur Testphase, opt-in): Ausbauen und Funkenruf nur als Minutenzähler. */
+export const playtest = TEST_PHASE
+  ? createPlaytestLog({
+      gameId: game.id,
+      version: typeof __APP_VERSION__ === 'string' ? __APP_VERSION__ : 'dev',
+      highFrequency: ['producer.bought', 'burst.used', 'surprise.found', 'primary.gained'],
+      snapshot: () => {
+        const s = rt.get()
+        const layers = (s.modules.prestige as { layers: { count: number }[] }).layers
+        return { primary: Number(s.core.primary.toPrecision(3)), turns: layers[0]?.count ?? 0, nights: layers[1]?.count ?? 0, ages: layers[2]?.count ?? 0 }
+      },
+    })
+  : undefined
 
 type Keyed<T> = Record<string, T>
 

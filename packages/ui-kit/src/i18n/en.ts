@@ -124,6 +124,11 @@ export const engineEn: EngineStrings = {
     numbersScientific: 'Scientific (1.2e6)',
     on: 'On',
     off: 'Off',
+    playtestTitle: 'Test phase',
+    playtest: 'Record play history',
+    playtestHint: 'Only on this device, no personal data. Nothing is sent. You can share the file yourself.',
+    playtestExport: (n) => `Share recording (${n} entries)`,
+    playtestExported: 'Recording saved.',
     version: (v) => `Version ${v}`,
   },
   install: {

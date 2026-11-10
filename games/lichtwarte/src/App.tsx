@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { DAILY_ID, dailyStatus, isFeatureOpen, localDayKey, MODULE, QUESTS_ID, type DailyState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
-import { currentStep, useEngine, useStore, useSteps } from '@engine/react'
+import { connectSfx, currentStep, useEngine, useStore, useSteps } from '@engine/react'
 import { BurstButton, CardPicker, FtueCoach, GameShell, Hud, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
 import { BuildingArt } from './art/Building'
@@ -15,7 +15,8 @@ import { RealmsTab } from './story/RealmsTab'
 import { MarketTab } from './story/MarketTab'
 import { ftueSteps } from './content/ftue'
 import { CURRENCY, game } from './game'
-import { chronicleRead, ftue, i18n, labels, prefs, rt, t, tabsSeen } from './runtime'
+import { ambience, chronicleRead, ftue, i18n, labels, playtest, prefs, rt, sfx, t, tabsSeen } from './runtime'
+import { SFX_EVENTS } from './audio/sfx'
 import { ValleyMap } from './scene/ValleyMap'
 import { currentMood } from './scene/mood'
 import { Ceremony } from './story/Ceremony'
@@ -120,6 +121,11 @@ export function App() {
   const read = useStore(chronicleRead)
   const { world } = useEngine(rt)
   const unread = CHRONICLE.some((e) => e.open(world) && !read.includes(e.id))
+  useEffect(() => connectSfx(rt, sfx, SFX_EVENTS), [])
+  useEffect(() => ambience.attach(), [])
+  useEffect(() => {
+    if (chronicleOpen) sfx.play('letter')
+  }, [chronicleOpen])
   return (
     <GameShell
       rt={rt}
@@ -127,6 +133,7 @@ export function App() {
       prefs={prefs}
       labels={labels}
       className="lw-app"
+      playtest={playtest}
       title={() => t.app.title}
       distribution={DISTRIBUTION}
       testPhase={TEST_PHASE}

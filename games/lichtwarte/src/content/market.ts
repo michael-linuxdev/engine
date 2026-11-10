@@ -87,15 +87,3 @@ export const MARKET: MarketConfig = {
   boost: { cost: 45, mult: 1.15, durationMs: 30 * 60_000 },
   circle: { cost: 60, mult: 1.1, step: 0.05, max: 1.25, durationMs: 60 * 60_000 },
 }
-
-/** Farben der Talstile (Vorschau und Tönung der Karte). */
-export const STYLE_TINT: Readonly<Record<string, readonly [string, string]>> = {
-  duskBlue: ['#2b3a67', '#f2c46d'],
-  emberRed: ['#5a2a2a', '#ff9a5a'],
-  iceBlue: ['#2c4f6b', '#cfeaff'],
-  amber: ['#5b4220', '#ffcf6e'],
-  budWreath: ['#3d5a3a', '#f7b6c8'],
-  solsticeSheen: ['#2f5b6b', '#ffe38a'],
-  lanternParade: ['#4a2f52', '#ffb35c'],
-  starOfLights: ['#1f2a4d', '#fff1b8'],
-}
