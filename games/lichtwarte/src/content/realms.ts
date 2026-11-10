@@ -48,13 +48,20 @@ export const REALM_AREAS: Record<RealmId, readonly string[]> = {
   seehundbank: ['mudflatPath', 'sealBank', 'tideHouse', 'wormFlats', 'priel', 'lookoutPost', 'sealNursery', 'driftMarkers', 'shellRidge', 'tideBeacon'],
 }
 
-/** Bereichs-Leiter eines Landes; spätere Lande sind teurer (Stellschrauben: REALM_TUNING). */
-export const REALM_TUNING = { costBase: 10, costStep: 10, costScale: 1.17, rateStep: 4.5, landGrowth: 1.15, openLevel: 25 }
+/**
+ * Bereichs-Leiter eines Landes; spätere Lande sind teurer (Stellschrauben: REALM_TUNING).
+ * Späte Taktung: ab `lateFrom` (Index 12 = Land 14) wächst auch der Ertrag, sonst lägen
+ * zwischen zwei Landen bald über zehn Tage. `lateYieldGrowth` liegt knapp unter
+ * `landGrowth`: Die Abstände wachsen nur noch von zwei auf drei Tage.
+ * Lande vor `lateFrom` bleiben unverändert (frühe Taktung bis Tag 35).
+ */
+export const REALM_TUNING = { costBase: 10, costStep: 10, costScale: 1.17, rateStep: 4.5, landGrowth: 1.15, openLevel: 25, lateFrom: 12, lateYield: 1.75, lateYieldGrowth: 1.145 }
+const lateYield = (land: number) => (land < REALM_TUNING.lateFrom ? 1 : REALM_TUNING.lateYield * Math.pow(REALM_TUNING.lateYieldGrowth, land - REALM_TUNING.lateFrom))
 const ladder = (id: string, k: number, land: number): ProducerDef => ({
   id,
   baseCost: Math.round(REALM_TUNING.costBase * Math.pow(REALM_TUNING.costStep, k) * Math.pow(REALM_TUNING.landGrowth, land)),
   costScale: REALM_TUNING.costScale,
-  baseRate: Math.pow(REALM_TUNING.rateStep, k),
+  baseRate: Math.pow(REALM_TUNING.rateStep, k) * lateYield(land),
 })
 
 const longNights = (w: WorldView) => prestigeState(w).layers[1]?.count ?? 0
