@@ -45,14 +45,18 @@ export function createSteps(key: string): StepsStore {
   }
 }
 
-/** Current step (marks finished ones as completed on the way). */
+/**
+ * Current step. Finished ones are marked as completed on the way — after the
+ * current call stack, because this runs during a React render and a store
+ * update there would re-render another component mid-render.
+ */
 export function currentStep<W>(steps: readonly StepDef<W>[], store: StepsStore, world: W): StepDef<W> | null {
   const s = store.get()
   if (s.dismissed) return null
   for (const step of steps) {
     if (s.completed.includes(step.id)) continue
     if (step.done(world)) {
-      store.complete(step.id)
+      queueMicrotask(() => store.complete(step.id))
       continue
     }
     return step

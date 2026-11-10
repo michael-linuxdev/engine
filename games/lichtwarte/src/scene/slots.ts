@@ -16,7 +16,7 @@ export const SLOTS: (Slot & { id: ProducerId })[] = [
 ]
 
 /** Bauwerke auf der Karte größer als im Ausbau-Fenster (Fußpunkt bleibt). */
-export const BUILD_SCALE = 1.5
+export const BUILD_SCALE = 1.26
 
 export const MAP_W = 360
 export const MAP_H = 640

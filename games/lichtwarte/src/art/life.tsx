@@ -110,6 +110,36 @@ export function ApprenticeOnTrail({ m, minute }: { m: Mood; minute: number }) {
   )
 }
 
+/**
+ * Alwine auf der Bank vor der Kräuterkate: Mit dem ersten Zeitalter kommt sie den Weg
+ * herunter und bleibt — „diesmal bin ich der Gast“ (Chronik, Seite „Ein neues Zeitalter“).
+ */
+export function AlwineOnBench({ m }: { m: Mood }) {
+  return (
+    <g data-figure="alwine">
+      <ellipse cx={0} cy={0.5} rx={13} ry={2.2} fill={P.outline} opacity={0.2} />
+      {/* Bank */}
+      <path d="M-11 0 v-6 M11 0 v-6" stroke={P.woodDark} strokeWidth={1.6} strokeLinecap="round" />
+      <rect x={-12.5} y={-8} width={25} height={2.6} rx={1} fill={P.woodLight} {...fine} />
+      <path d="M-11 -8 v-9 M11 -8 v-9 M-11 -14 h22" fill="none" stroke={P.woodDark} strokeWidth={1.4} strokeLinecap="round" />
+      {/* Alwine: Rock, Schultertuch, grauer Dutt, Becher */}
+      <path d="M-6 -1 q-1 -6 1 -8 h7 q2 2 1 8 z" fill={P.slate} {...fine} />
+      <path d="M-3.5 0 v-2 M1.5 0 v-2" stroke={P.outline} strokeWidth={1.6} strokeLinecap="round" />
+      <path d="M-5.5 -8 q-1 -8 4 -9 q5 1 4.5 9 z" fill={P.clothViolet} {...fine} />
+      <path d="M-5 -12 q4 3 8.5 0" fill="none" stroke={P.blossom} strokeWidth={1.2} strokeLinecap="round" />
+      <circle cx={-0.8} cy={-19.5} r={3.8} fill={FIGURE.skin} {...fine} />
+      <path d="M-4.8 -19.5 q-0.3 -5 4 -5 q4.4 0 4 5 q-1.6 -2.4 -4 -2.4 q-2.6 0 -4 2.4 z" fill={P.stoneLight} {...fine} />
+      <circle cx={-0.8} cy={-25} r={1.8} fill={P.stoneLight} {...fine} />
+      <circle cx={-2.2} cy={-19.2} r={0.55} fill={P.outline} />
+      <circle cx={0.8} cy={-19.2} r={0.55} fill={P.outline} />
+      <path d="M-1.8 -17.4 q1.1 1 2.2 0" fill="none" stroke={P.outline} strokeWidth={0.6} strokeLinecap="round" />
+      <path d="M2.5 -11 l3.5 1.5" stroke={P.outline} strokeWidth={1.2} strokeLinecap="round" />
+      <rect x={5.5} y={-11.5} width={3} height={3.2} rx={0.6} fill={P.paper} {...fine} />
+      <path className="lw-smoke" d="M7 -13 q-1.5 -2 0 -4" fill="none" stroke={isDark(m) ? P.stoneLight : P.white} strokeWidth={0.9} strokeLinecap="round" opacity={0.8} />
+    </g>
+  )
+}
+
 function Fox() {
   return (
     <g>

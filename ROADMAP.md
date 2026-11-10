@@ -22,7 +22,7 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 | P10 | Lange Nacht und Zeitalter | fertig |
 | P11 | Markt-Attrappen, Testgeld, Festwoche, Talstile, Zirkel | fertig |
 | P12 | Ton, Ambiente, Playtest-Log, Store-Vorbereitung | fertig (offen: Markenprüfung, Impressum) |
-| P13 | Atmosphäre und Erzählung (Karte, Oberfläche, Chronik, Zeremonien) | fertig (offen: Feinschliff der einzelnen Bauwerke) |
+| P13 | Atmosphäre und Erzählung (Karte, Oberfläche, Chronik, Zeremonien, Bauwerke, Lande-Bilder) | fertig |
 
 ---
 
@@ -142,7 +142,11 @@ Ziel: Das Spiel soll der Referenz in Erzählung, Grafik und Stimmung überlegen 
 - [x] **Oberfläche:** Nachtblau, Pergament, Laternengold; Zeichen in der Leiste (`navIcons` in der Hülle); Schrift Alegreya (OFL, `docs/lizenzen.md`); Schilder zeigen, was sich gerade leisten lässt.
 - [x] **Erzählung:** Prolog, Chronik als Buch mit 27 Seiten in fünf Kapiteln und Bildern, Briefe von Alwine, Zeremonien als Vollbild je Schicht, 16 Sätze von Fenno. Bogen: `docs/spiele/lichtwarte/welt.md`.
 - [x] **Klang:** fünfte Ambiente-Schicht „Windspiel“ (Fünftonleiter, keine feste Melodie).
-- [ ] Feinschliff der zehn Bauwerke je Stufe (eigene Details statt nur gemeinsamer Bausteine), Lande-Bilder im neuen Stil, Figur für Alwine auf der Bank nach dem ersten Zeitalter.
+- [x] **Bauwerke je Stufe neu gezeichnet:** Jede der vier Stufen ist sichtbar mehr Bauwerk (Anbau, Hof, Kran, Kuppel, Lichter), nicht nur ein Zusatz.
+- [x] **Lande-Bilder im Stil der Talkarte:** Himmel in drei Stufen, Gestirn, je Land anders geschnittene Bergketten, abends Lasur und das Feuer des Landes.
+- [x] **Alwine auf der Bank** vor der Kräuterkate, sobald das erste Zeitalter begonnen hat.
+- [x] **Installationsanleitung je Browser** beim Start im Browser (Handy/Tablet), „Im Browser weiter“ gilt 6 Stunden. **Playtest-Log** in der Testphase standardmäßig an.
+- [ ] Bewusst zurückgestellt (Entscheidung Michael, 2026-11-10): echte Werbung und Käufe (brauchen Store-Hülle und Konten), Benachrichtigungen, Impressum und Markenprüfung.
 
 ---
 
