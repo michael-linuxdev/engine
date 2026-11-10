@@ -19,6 +19,9 @@
     "balance": "node tools/balance/run.mjs",
     "screens": "node tools/e2e/screens.mjs",
     "art:update": "node tools/e2e/art.mjs --update",
+    "store:icons": "node tools/store/icons.mjs",
+    "store:shots": "node tools/store/shots.mjs",
+    "store:check": "node tools/store/check.mjs",
     "ids:update": "node tools/ids-update.mjs"
   },
   "devDependencies": {

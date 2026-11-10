@@ -157,6 +157,14 @@ export const engineEn: EngineStrings = {
     privacy: 'The game stores your progress only on this device (localStorage). There are no accounts, no ad trackers and nothing is sent to a server.',
     imprintTitle: 'Legal notice (Impressum)',
     imprintMissing: 'The legal notice will follow before the store launch.',
+    privacyItems: [
+      'Progress and settings are stored only on this device (localStorage). There are no accounts and no server.',
+      'No advertising or analytics services, no third-party cookies, no tracking.',
+      'Play recording (test phase): optional and can be switched off. It stays on the device until you share it yourself as a file. Content: game events and times, no personal data.',
+      'Test money (test phase): nothing is charged. Only the total of test purchases is counted on the device.',
+      'Deleting: clearing the browser\'s site data or uninstalling the app removes all data.',
+    ],
+    privacyPage: 'Privacy policy as a page',
   },
   live: {
     claim: 'Collect',

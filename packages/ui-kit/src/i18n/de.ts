@@ -159,6 +159,14 @@ export const engineDe = {
     privacy: 'Das Spiel speichert deinen Fortschritt nur auf diesem Gerät (localStorage). Es gibt keine Konten, keine Werbe-Tracker und keinen Versand an Server.',
     imprintTitle: 'Impressum',
     imprintMissing: 'Das Impressum folgt vor dem Store-Start.',
+    privacyItems: [
+      'Spielstand und Einstellungen liegen nur auf diesem Gerät (localStorage). Es gibt keine Konten und keinen Server.',
+      'Keine Werbe- oder Analyse-Dienste, keine Cookies von Dritten, kein Tracking.',
+      'Spielaufzeichnung (Testphase): freiwillig und abschaltbar. Sie bleibt auf dem Gerät, bis du sie selbst als Datei teilst. Inhalt: Spielereignisse und Zeiten, keine persönlichen Daten.',
+      'Testgeld (Testphase): Es wird nichts abgebucht. Nur die Summe der Testkäufe wird auf dem Gerät gezählt.',
+      'Löschen: Über die Browser- oder App-Einstellungen („Websitedaten löschen“ bzw. App deinstallieren) verschwinden alle Daten.',
+    ],
+    privacyPage: 'Datenschutzerklärung als Seite',
   },
   live: {
     claim: 'Einsammeln',

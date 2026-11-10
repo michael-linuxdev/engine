@@ -47,6 +47,8 @@ export interface GameShellProps<S extends EngineStrings> {
   className?: string
   /** Opt-in playtest log (test phase): settings toggle, export, test-phase notice. */
   playtest?: PlaytestLog
+  /** Legal: imprint text (missing → notice) and a static privacy page. */
+  legal?: { imprint?: () => string | undefined; privacyUrl?: string }
 }
 
 const flagsKey = (rt: EngineRuntime) => `${rt.def.id}-device-v1`
@@ -125,7 +127,7 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
                 }} /> : <WelcomeBack art={p.welcomeArt} />}
             <SaveSheet open={overlay === 'save'} onClose={close} prefix={p.backup.prefix} app={p.rt.def.id} keys={p.backup.keys} fileName={p.backup.fileName} />
             <SettingsSheet open={overlay === 'settings'} onClose={close} version={p.version} playtest={playtest} />
-            <LegalSheet open={overlay === 'legal'} onClose={close} />
+            <LegalSheet open={overlay === 'legal'} onClose={close} imprint={p.legal?.imprint?.()} privacyUrl={p.legal?.privacyUrl} />
             <MultSheet open={overlay === 'mult'} onClose={close} />
             {p.overlays}
           </div>

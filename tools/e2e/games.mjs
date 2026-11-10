@@ -44,6 +44,9 @@ export const GAMES = [
     },
     /** Spielspezifisch: Chronik beim ersten Start, geführter Einstieg, Talkarte. */
     extraSmoke: async ({ browser, phone, URL, T, assert }) => {
+      // Datenschutz-Seite für den Store (beim Build erzeugt) und Link im Spiel
+      const privacy = await fetch(new globalThis.URL('datenschutz.html', URL))
+      assert(privacy.ok && (await privacy.text()).includes('<section lang="en">'), 'Datenschutz-Seite ausgeliefert')
       // Frischer Start ohne übersprungene Einstiegsfenster
       const fresh = await browser.newContext(phone)
       const q = await fresh.newPage()
@@ -192,6 +195,10 @@ export const GAMES = [
       await r.getByTestId('menu').click()
       await r.getByTestId('menu-settings').click()
       assert(await r.getByTestId('playtest-export').isEnabled(), 'Playtest-Export möglich')
+      await r.keyboard.press('Escape')
+      await r.getByTestId('menu').click()
+      await r.getByTestId('menu-legal').click()
+      assert((await r.getByTestId('legal-sheet').locator('a[href$="datenschutz.html"]').count()) === 1, 'Rechtliches verlinkt die Datenschutz-Seite')
       await r.keyboard.press('Escape')
       if (errs.length) throw new Error(errs.join('\n'))
       await w.close()

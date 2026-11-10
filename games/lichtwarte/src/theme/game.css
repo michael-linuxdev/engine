@@ -54,7 +54,9 @@
 }
 .lw-slot__name {
   font-weight: 700;
-  overflow-wrap: anywhere;
+  /* Lange Namen (Alchemistenturm) mit Trennstrich statt mitten im Wort brechen */
+  hyphens: auto;
+  overflow-wrap: break-word;
   text-align: center;
 }
 .lw-slot__level {

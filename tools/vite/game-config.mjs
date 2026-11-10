@@ -15,16 +15,23 @@ function buildVersion() {
   }
 }
 
-/** @param {{ name: string, shortName?: string, description: string, themeColor: string, background: string, icons?: object[], port?: number }} o */
+/** @param {{ name: string, shortName?: string, description: string, themeColor: string, background: string, icons?: object[], port?: number, extraFiles?: () => Record<string, string> }} o */
 export function gameConfig(o) {
   return {
     base: './',
     define: { __APP_VERSION__: JSON.stringify(buildVersion()) },
     plugins: [
       react(),
+      // Extra files generated at build time (e.g. the privacy page for the store listing)
+      {
+        name: 'game-extra-files',
+        generateBundle() {
+          for (const [fileName, source] of Object.entries(o.extraFiles?.() ?? {})) this.emitFile({ type: 'asset', fileName, source })
+        },
+      },
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['icon.svg'],
+        includeAssets: ['icon.svg', 'icons/*.png'],
         manifest: {
           name: o.name,
           short_name: o.shortName ?? o.name,
@@ -38,7 +45,8 @@ export function gameConfig(o) {
           scope: './',
           icons: o.icons ?? [{ src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' }],
         },
-        workbox: { globPatterns: ['**/*.{js,css,html,svg,png,woff2}'] },
+        // Store graphics (1024 px) do not belong in the offline cache
+        workbox: { globPatterns: ['**/*.{js,css,html,svg,png,woff2}'], globIgnores: ['**/icons/store-*.png'] },
       }),
     ],
     server: { host: true, port: o.port ?? 5173 },
