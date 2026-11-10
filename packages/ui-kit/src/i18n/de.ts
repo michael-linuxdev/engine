@@ -126,6 +126,11 @@ export const engineDe = {
     numbersScientific: 'Wissenschaftlich (1,2e6)',
     on: 'An',
     off: 'Aus',
+    playtestTitle: 'Testphase',
+    playtest: 'Spielverlauf aufzeichnen',
+    playtestHint: 'Nur auf diesem Gerät, ohne persönliche Daten. Nichts wird gesendet. Du kannst die Datei selbst teilen.',
+    playtestExport: (n: string) => `Aufzeichnung teilen (${n} Einträge)`,
+    playtestExported: 'Aufzeichnung gespeichert.',
     version: (v: string) => `Version ${v}`,
   },
   install: {

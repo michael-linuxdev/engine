@@ -121,6 +121,17 @@ describe('layer cards', () => {
 })
 
 describe('choice events and projects', () => {
+  it('a game pick (weather) decides the day\'s event instead of the roll', () => {
+    const storm = { id: 'storm', safe: { cost: { currency: 'gem', amount: 1 }, buff: { target: 'income', mult: 1.1, durationMs: 1 } }, risk: { win: { target: 'income', mult: 1.2, durationMs: 1 }, lose: { target: 'income', mult: 0.8, durationMs: 1 }, chance: 0.5 } }
+    const make = (pick: (day: string) => string) => testGame({ modules: [...standardModules(), choiceEventsModule({ list: [storm], daily: 1, fromHour: 0, pick })] })
+    for (const [pick, want] of [[() => 'storm', 'storm'], [() => '', ''], [() => 'unknown', '']] as const) {
+      const def = make(pick)
+      const clock = createManualClock(T0)
+      const s = tick(def, createState(def, clock), 250, clock).state
+      expect((s.modules.choiceEvents as { pending: string }).pending).toBe(want)
+    }
+  })
+
   it('daily offer, safe option costs and buffs for a while', () => {
     const def = game()
     let { s, clock } = start(def)

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { decodeBackup, encodeBackup } from '@engine/core'
-import { browserFiles, copyText, readKey, usePrefs, writeKey, type Prefs } from '@engine/react'
+import { browserFiles, copyText, readKey, usePrefs, useStore, writeKey, type PlaytestLog, type Prefs } from '@engine/react'
 import { useUi } from '../useUi'
 import { Button } from './Button'
 import { Sheet } from './Sheet'
@@ -86,7 +86,34 @@ function Toggle({ label, value, onChange, testId }: { label: string; value: bool
 }
 
 /** Device settings (prefs, never in the save). */
-export function SettingsSheet({ open, onClose, version }: { open: boolean; onClose: () => void; version: string }) {
+/** Playtest log: on/off and export (only when the game passes a log). */
+function PlaytestBlock({ log }: { log: PlaytestLog }) {
+  const ui = useUi()
+  const on = useStore(log.enabled)
+  const [msg, setMsg] = useState('')
+  const s = ui.t.settings
+  return (
+    <>
+      <h3 className="ek-h3">{s.playtestTitle}</h3>
+      <Toggle label={s.playtest} value={on} onChange={(v) => log.setEnabled(v)} testId="pref-playtest" />
+      <p className="ek-muted">{s.playtestHint}</p>
+      <Button
+        variant="secondary"
+        data-testid="playtest-export"
+        disabled={log.count() === 0}
+        onClick={async () => {
+          const r = await browserFiles.save(log.fileName(), log.exportText(), 'application/x-ndjson')
+          setMsg(r === 'cancelled' ? '' : s.playtestExported)
+        }}
+      >
+        {s.playtestExport(ui.fmt(log.count()))}
+      </Button>
+      {msg ? <p role="status">{msg}</p> : null}
+    </>
+  )
+}
+
+export function SettingsSheet({ open, onClose, version, playtest }: { open: boolean; onClose: () => void; version: string; playtest?: PlaytestLog }) {
   const ui = useUi()
   const p: Prefs = usePrefs(ui.prefs)
   const s = ui.t.settings
@@ -126,6 +153,7 @@ export function SettingsSheet({ open, onClose, version }: { open: boolean; onClo
       <Toggle label={s.reducedMotion} value={p.reducedMotion} onChange={(v) => ui.prefs.update({ reducedMotion: v })} testId="pref-motion" />
       <Toggle label={s.sound} value={p.sound} onChange={(v) => ui.prefs.update({ sound: v })} testId="pref-sound" />
       <Toggle label={s.ambient} value={p.ambient} onChange={(v) => ui.prefs.update({ ambient: v })} testId="pref-ambient" />
+      {playtest ? <PlaytestBlock log={playtest} /> : null}
       <p className="ek-muted">{s.version(version)}</p>
     </Sheet>
   )

@@ -111,3 +111,13 @@
 @media (prefers-reduced-motion: no-preference) {
   .lw-map__svg { transition: filter 0.6s ease; }
 }
+
+/* Wetter (scene/weather.ts): sanfte Bewegung, aus bei „Bewegung reduzieren“ */
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.ek-reduced-motion) .lw-weather--rain { animation: lw-rain 0.9s linear infinite; }
+  :root:not(.ek-reduced-motion) .lw-weather--mist { animation: lw-mist 18s ease-in-out infinite alternate; }
+  :root:not(.ek-reduced-motion) .lw-weather--wind { animation: lw-wind 7s linear infinite; }
+}
+@keyframes lw-rain { from { transform: translate(0, -16px); } to { transform: translate(5px, 0); } }
+@keyframes lw-mist { from { transform: translateX(-12px); } to { transform: translateX(12px); } }
+@keyframes lw-wind { from { transform: translate(-30px, 6px); } to { transform: translate(30px, -6px); } }

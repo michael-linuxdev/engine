@@ -8,6 +8,7 @@ import {
   type AlbumConfig, type CardConfig, type ChoiceConfig, type CollectionConfig, type CollectionEntry, type CombineConfig, type DecorConfig,
   type FeatureDef, type ProjectDef, type VisitorConfig, type WorldView,
 } from '@engine/core'
+import { omenFor } from '../scene/weather'
 import { CURRENCY, LAYER } from '../ids'
 
 const pebbles = (amount: number) => ({ currency: CURRENCY.glowPebbles, amount })
@@ -168,6 +169,8 @@ export const CONSTELLATIONS: CardConfig = {
 export const OMENS: ChoiceConfig = {
   daily: 0.6,
   fromHour: 8,
+  // Das Wetter des Tages entscheidet (scene/weather.ts); daily gilt nur ohne pick.
+  pick: omenFor,
   list: [
     { id: 'stormNight', safe: { cost: pebbles(5), buff: { target: 'income', mult: 1.1, durationMs: 4 * 3600_000 } }, risk: { win: { target: 'income', mult: 1.2, durationMs: 2 * 3600_000 }, lose: { target: 'income', mult: 0.75, durationMs: 2 * 3600_000 }, chance: 0.5 } },
     { id: 'drySummer', safe: { cost: pebbles(5), buff: { target: 'income', mult: 1.1, durationMs: 4 * 3600_000 } }, risk: { win: { target: 'income', mult: 1.2, durationMs: 2 * 3600_000 }, lose: { target: 'income', mult: 0.7, durationMs: 2 * 3600_000 }, chance: 0.5 } },

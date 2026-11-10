@@ -11,7 +11,8 @@ import { game, PRODUCER_IDS } from '../src/game'
 import { BUILDINGS } from '../src/art/registry'
 import { SLOTS } from '../src/scene/slots'
 import { CHRONICLE } from '../src/content/chronicle'
-import { MARKET, OFFER_PRICES, STORE_ENABLED, STYLE_TINT, TEST_WALLET_ENABLED } from '../src/content/market'
+import { MARKET, OFFER_PRICES, STORE_ENABLED, TEST_WALLET_ENABLED } from '../src/content/market'
+import { STYLE_TINT } from '../src/art/palette'
 import { TEST_PHASE } from '../src/distribution'
 
 const GAME = join(__dirname, '..')

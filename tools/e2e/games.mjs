@@ -113,7 +113,8 @@ export const GAMES = [
             wallet: { ...s.modules.wallet, balances: { ...s.modules.wallet.balances, glowPebbles: 500, runeShards: 500 } },
             collections: { found: { moonsage: 1, dewcup: 1 } },
             visitors: { ...s.modules.visitors, current: 'fox', until: Date.now() + 60_000 },
-            choiceEvents: { ...s.modules.choiceEvents, day: 'x', pending: 'stormNight' },
+            // Tag = heute, sonst wählt der nächste Takt das Omen neu (nach dem Wetter)
+            choiceEvents: { ...s.modules.choiceEvents, day: (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}` })(), pending: 'stormNight' },
           },
         })
         rt.dispatch('producers', 'buy', { id: 'kraeuterkate', count: 1 })
@@ -177,6 +178,21 @@ export const GAMES = [
       assert((await r.getByTestId('wallet').getAttribute('data-spent')) === '99', 'Testgeld: 0,99 € gebucht')
       await r.getByTestId('tab-play').click()
       assert((await r.locator('.lw-map[data-style="emberRed"]').count()) === 1, 'Talstil auf der Karte')
+
+      // Playtest-Log: in den Einstellungen einschalten, Tab-Wechsel landet im Log, Export-Knopf aktiv
+      await r.getByTestId('menu').click()
+      await r.getByTestId('menu-settings').click()
+      await r.getByTestId('pref-playtest').check()
+      await r.keyboard.press('Escape')
+      await r.getByTestId('tab-market').click()
+      await r.getByTestId('tab-play').click()
+      await r.evaluate(() => window.dispatchEvent(new Event('pagehide')))
+      const live = await r.evaluate(() => localStorage.getItem('lichtwarte-playtest-live-v1') ?? '')
+      assert(live.includes('app.tab') && live.includes('session.start'), 'Playtest-Log zeichnet auf')
+      await r.getByTestId('menu').click()
+      await r.getByTestId('menu-settings').click()
+      assert(await r.getByTestId('playtest-export').isEnabled(), 'Playtest-Export möglich')
+      await r.keyboard.press('Escape')
       if (errs.length) throw new Error(errs.join('\n'))
       await w.close()
     },

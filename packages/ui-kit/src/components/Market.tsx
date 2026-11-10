@@ -38,6 +38,8 @@ export interface MarketProps {
   styleArt?: (id: string) => ReactNode
   /** Called for every test purchase decision (playtest log). */
   onTestPurchase?: (offer: string, cents: number, ok: boolean) => void
+  /** Called when a bonus video starts (playtest log). */
+  onAd?: (choice: string, seconds: number) => void
 }
 
 function usePrice() {
@@ -124,7 +126,7 @@ function GiftCard({ cfg, s }: { cfg: MarketConfig; s: MarketState }) {
   )
 }
 
-function AdCard({ cfg, s, adSeconds, wallet }: MarketProps & { s: MarketState }) {
+function AdCard({ cfg, s, adSeconds, wallet, onAd }: MarketProps & { s: MarketState }) {
   const ui = useUi()
   const { dispatch } = useEngine(ui.rt)
   const reward = useRewardText()
@@ -138,7 +140,11 @@ function AdCard({ cfg, s, adSeconds, wallet }: MarketProps & { s: MarketState })
       ) : (
         <div className="ek-row-actions">
           {cfg.ad.choices.map((c) => (
-            <Button key={c.id} size="small" data-testid={`ad-${c.id}`} title={ui.labels.content(`adChoice.${c.id}`).blurb} disabled={wait > 0 || !!running} onClick={() => setRunning({ choice: c.id, seconds: adSeconds() })}>
+            <Button key={c.id} size="small" data-testid={`ad-${c.id}`} title={ui.labels.content(`adChoice.${c.id}`).blurb} disabled={wait > 0 || !!running} onClick={() => {
+                const seconds = adSeconds()
+                onAd?.(c.id, seconds)
+                setRunning({ choice: c.id, seconds })
+              }}>
               {ui.t.market.adWatch(reward(c))}
             </Button>
           ))}
