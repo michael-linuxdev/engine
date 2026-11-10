@@ -1,7 +1,8 @@
 /** Kleine Landschaft je Land (Übersicht, Land-Fenster, ?artsheet). viewBox 0 0 120 90. */
 import type { Mood } from '@engine/art'
+import { seeded, vary } from '@engine/art'
 import { Glow, Tree } from './parts'
-import { FOLIAGE, GROUND, isDark, MOUNTAIN, P, SKY } from './palette'
+import { BEACON, FOLIAGE, GROUND, isDark, ORB, P, RANGES, SHADE, SKY3 } from './palette'
 import { STROKE } from './stroke'
 
 const line = { stroke: P.outline, strokeWidth: STROKE.fine, strokeLinejoin: 'round' as const }
@@ -330,24 +331,72 @@ function Landmark({ id, m }: { id: string; m: Mood }) {
   }
 }
 
+/**
+ * Rahmen jedes Lande-Bilds im Stil der Talkarte: Himmel in drei Stufen, Gestirn mit Hof,
+ * zwei Bergketten (je Land anders geschnitten), Boden mit Lichtkante, abends die Lasur
+ * und darüber das Feuer des Landes — jedes Land hütet sein eigenes.
+ */
 export function RealmArt({ id, m }: { id: string; m: Mood }) {
-  const [top, bottom] = SKY[m.daypart]
+  const [top, mid, low] = SKY3[m.daypart]
   const [far, near] = GROUND[m.season]
-  const gid = `realm-sky-${id}-${m.daypart}`
+  const [rFar, rMid] = RANGES[m.daypart]
+  const [disc, halo] = ORB[m.daypart]
+  const [shade, alpha] = SHADE[m.daypart]
+  const uid = `realm-${id}-${m.daypart}-${m.season}`
+  const rnd = seeded(`realm-${id}`)
+  const peaks = (base: number, amp: number) => {
+    let d = `M0 ${base}`
+    for (let x = 0; x <= 120; x += 20) d += ` L${x + 10} ${base - vary(rnd, amp * 0.4, amp)} L${x + 20} ${base - vary(rnd, 0, amp * 0.3)}`
+    return `${d} V90 H0 Z`
+  }
+  const dark = isDark(m)
+  const ox = 22 + vary(rnd, 0, 76)
+  const fx = 96 - vary(rnd, 0, 8)
   return (
     <svg viewBox="0 0 120 90" role="img" aria-hidden="true">
       <defs>
-        <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={`${uid}-sky`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor={top} />
-          <stop offset="1" stopColor={bottom} />
+          <stop offset="0.45" stopColor={mid} />
+          <stop offset="0.7" stopColor={low} />
         </linearGradient>
+        <radialGradient id={`${uid}-halo`}>
+          <stop offset="0" stopColor={halo} stopOpacity="0.7" />
+          <stop offset="1" stopColor={halo} stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id={`${uid}-fire`}>
+          <stop offset="0" stopColor={BEACON.core} stopOpacity="0.95" />
+          <stop offset="0.4" stopColor={BEACON.warm} stopOpacity="0.5" />
+          <stop offset="1" stopColor={BEACON.hot} stopOpacity="0" />
+        </radialGradient>
+        <clipPath id={`${uid}-clip`}>
+          <rect x={1} y={1} width={118} height={88} rx={9} />
+        </clipPath>
       </defs>
-      <rect x={0} y={0} width={120} height={90} fill={`url(#${gid})`} />
-      <polygon points="0,52 30,30 60,46 90,26 120,48 120,90 0,90" fill={MOUNTAIN[1]} />
-      <path d="M0 60 Q60 48 120 60 V90 H0 Z" fill={far} />
-      <path d="M0 74 Q60 66 120 74 V90 H0 Z" fill={near} />
-      <Landmark id={id} m={m} />
-      {isDark(m) ? <Glow x={100} y={20} r={10} m={m} /> : null}
+      <g clipPath={`url(#${uid}-clip)`}>
+        <rect x={0} y={0} width={120} height={90} fill={`url(#${uid}-sky)`} />
+        {m.daypart === 'night' ? (
+          <g fill={P.glowSoft}>
+            {Array.from({ length: 12 }, (_, i) => (
+              <circle key={i} cx={vary(rnd, 3, 117)} cy={vary(rnd, 3, 34)} r={i % 4 === 0 ? 1 : 0.6} />
+            ))}
+          </g>
+        ) : null}
+        <circle cx={ox} cy={16} r={15} fill={`url(#${uid}-halo)`} />
+        <circle cx={ox} cy={16} r={5} fill={disc} />
+        <path d={peaks(50, 24)} fill={rFar} />
+        <path d={peaks(56, 16)} fill={rMid} />
+        <path d="M0 60 Q60 48 120 60 V90 H0 Z" fill={far} />
+        <path d="M0 61 Q60 49 120 61" fill="none" stroke={P.white} strokeWidth={1.4} opacity={0.18} />
+        <path d="M0 74 Q60 66 120 74 V90 H0 Z" fill={near} />
+        <Landmark id={id} m={m} />
+        {alpha > 0 ? <rect x={0} y={44} width={120} height={46} fill={shade} opacity={alpha * 0.75} /> : null}
+        {/* Das Feuer des Landes */}
+        <path d={`M${fx - 2.5} 72 h5 l-1 -3 h-3 z`} fill={P.metal} stroke={P.outline} strokeWidth={0.6} />
+        <path d={`M${fx - 1.6} 69 q1.6 -5 3.2 0 z`} fill={P.glowHot} />
+        <circle cx={fx} cy={67} r={dark ? 13 : 6} fill={`url(#${uid}-fire)`} opacity={dark ? 0.95 : 0.6} />
+      </g>
+      <rect x={1} y={1} width={118} height={88} rx={9} fill="none" stroke={P.outline} strokeWidth={STROKE.main} />
     </svg>
   )
 }

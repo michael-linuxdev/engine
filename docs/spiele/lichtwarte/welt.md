@@ -45,7 +45,7 @@ Texte: `games/lichtwarte/src/i18n/story.de.ts` / `story.en.ts`. Bedingungen und 
 
 | Figur | Rolle | Status |
 |---|---|---|
-| Alwine | Frühere Wächterin, Stimme der Chronik und der Briefe. Kehrt mit dem ersten Zeitalter zurück. | im Spiel |
+| Alwine | Frühere Wächterin, Stimme der Chronik und der Briefe. Kehrt mit dem ersten Zeitalter zurück und sitzt dann auf der Bank vor der Kräuterkate (`AlwineOnBench`). | im Spiel |
 | Fenno | Lehrling, die Helfer-Automatik (Maßfigur der Grafik, 24 Einheiten hoch). Geht auf der Karte den Weg ab und spricht. | im Spiel |
 | Ragna | Moorhüterin im ersten Land; Alwines erste Station | im Spiel |
 | Talgäste | Greif, Kobold, Irrlicht, Fuchs, Igel, Eule … Der Gast steht auf der Karte am Weg. | im Spiel |

@@ -17,7 +17,7 @@ export function ArtSheetPage({ only }: { only: string | null }) {
             id: 'map',
             viewBox: `0 0 ${MAP_W} ${MAP_H}`,
             render: (m) => (
-              <g>
+              <g style={{ clipPath: `path('M0 0 H${MAP_W} V${MAP_H} H0 Z')` }}>
                 <Backdrop m={m} id={`${m.daypart}-${m.season}`} />
                 <Snow m={m} />
                 <Foreground m={m} />
@@ -31,7 +31,7 @@ export function ArtSheetPage({ only }: { only: string | null }) {
             id: `map-${w}`,
             viewBox: `0 0 ${MAP_W} ${MAP_H}`,
             render: (m: Mood) => (
-              <g>
+              <g style={{ clipPath: `path('M0 0 H${MAP_W} V${MAP_H} H0 Z')` }}>
                 <Backdrop m={m} id={`${w}-${m.daypart}-${m.season}`} />
                 <WeatherLayer w={w} />
               </g>

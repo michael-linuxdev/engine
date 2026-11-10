@@ -14,8 +14,8 @@
 ## Technik
 
 - **Palette:** `games/lichtwarte/src/art/palette.ts` ist die einzige Datei mit Farbwerten. `hex-allow.json` listet sie, und der Test verbietet jede andere Farbe in `art/`, `scene/` und dem App-Icon.
-- **Bauwerke:** `art/buildings.tsx`, je Stufe 1–4. Stufe 0 ist Wildnis (`parts.tsx` → `Wilds`). Die Stufen gelten ab Level 1/10/25/50 (`art/registry.ts`).
-- **Maßtabelle:** Fußpunkt (0, 0). Ein Bauwerk ist etwa 50 breit und 30–100 hoch. Die Lehrlingsfigur ist 24 hoch und damit das Maß. Auf der Karte gilt Maßstab ×1,5 und Tiefe 0,82–1,08.
+- **Bauwerke:** `art/buildings.tsx`, je Stufe 1–4. Jede Stufe ist sichtbar mehr Bauwerk (Breite bis etwa 64, Höhe bis etwa 84). Stufe 0 ist Wildnis (`parts.tsx` → `Wilds`). Die Stufen gelten ab Level 1/10/25/50 (`art/registry.ts`).
+- **Maßtabelle:** Fußpunkt (0, 0). Ein Bauwerk ist etwa 50 breit und 30–100 hoch. Die Lehrlingsfigur ist 24 hoch und damit das Maß. Auf der Karte gilt Maßstab ×1,26 und Tiefe 0,82–1,08.
 - **Talkarte:** `scene/ValleyMap.tsx`. Die SVG-Szene ist 360 × 640 und füllt den Bildschirm. Die Bühne hängt am unteren Rand: Hohe Bildschirme zeigen mehr Himmel, niedrige schneiden oben Himmel ab, nie ein Bauwerk. Kopfzeile und Hinweise schweben über der Karte, der Funkenruf ist der runde Knopf unten in der Mitte. Darüber liegen HTML-Knöpfe je Platz (Tastatur, Screenreader, ≥ 44 px).
 - **Weg und Warte:** Der Weg schlängelt sich vom Tor hinauf zur Warte (`trailX`), mit einem Abzweig und einer Laterne je Bauwerk (`LANTERNS`).
 - **Variation:** mit Seed (`@engine/art` → `seeded`), gleich auf jedem Gerät.

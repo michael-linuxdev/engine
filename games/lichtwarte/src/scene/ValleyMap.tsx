@@ -12,7 +12,7 @@ import { useUi } from '@engine/ui'
 import { Backdrop, Foreground, Lights, Shade, Snow } from '../art/Backdrop'
 import { BuildingArt } from '../art/Building'
 import { DecorArt } from '../art/decor'
-import { ApprenticeOnTrail, Birds, Butterflies, Fireflies, GuestArt, Motes } from '../art/life'
+import { AlwineOnBench, ApprenticeOnTrail, Birds, Butterflies, Fireflies, GuestArt, Motes } from '../art/life'
 import { SKY3 } from '../art/palette'
 import { WeatherLayer } from '../art/weather'
 import { TIER_LEVELS } from '../art/registry'
@@ -44,6 +44,8 @@ export function ValleyMap({ onOpen, children }: { onOpen: (id: string) => void; 
   const visitors = world.get<VisitorsState>(VISITORS_ID)
   const guest = visitors?.current && visitors.until > state.core.lastSeen ? visitors.current : null
   const helper = (world.get<HelperState>(MODULE.helper)?.rank ?? 0) >= 1
+  // Nach dem ersten Zeitalter sitzt Alwine auf der Bank vor der Kräuterkate
+  const alwine = (prestigeState(world).layers[2]?.count ?? 0) >= 1
   const money = state.core.primary
   return (
     <section className="lw-map" style={{ background: SKY3[mood.daypart][0] }} aria-label={t.play.map} data-mood={`${mood.daypart}-${mood.season}`} data-weather={weather} data-style={world.get<MarketState>(MARKET_ID)?.equipped ?? 'duskBlue'}>
@@ -69,6 +71,11 @@ export function ValleyMap({ onOpen, children }: { onOpen: (id: string) => void; 
               </g>
             )
           })}
+          {alwine ? (
+            <g transform={`translate(${(SLOTS[0].x / 100) * MAP_W + 32} ${(SLOTS[0].y / 100) * MAP_H + 44}) scale(1.3)`}>
+              <AlwineOnBench m={mood} />
+            </g>
+          ) : null}
           {helper ? <ApprenticeOnTrail m={mood} minute={minute} /> : null}
           {guest ? (
             <g transform={`translate(${trailX(596) + 22} 598) scale(1.25)`}>
