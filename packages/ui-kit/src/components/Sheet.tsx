@@ -68,7 +68,10 @@ export function Sheet({ open, title, onClose, children, className, testId, foote
             ×
           </button>
         </header>
-        <div className="ek-sheet__body">{children}</div>
+        {/* Scrollable content must be reachable by keyboard (axe: scrollable-region-focusable) */}
+        <div className="ek-sheet__body" role="region" aria-labelledby={id} tabIndex={0}>
+          {children}
+        </div>
         {footer ? <footer className="ek-sheet__foot">{footer}</footer> : null}
       </div>
     </div>

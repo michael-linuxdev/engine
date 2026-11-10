@@ -17,6 +17,7 @@ import { ftueSteps } from './content/ftue'
 import { CURRENCY, game } from './game'
 import { ambience, chronicleRead, ftue, i18n, labels, playtest, prefs, rt, sfx, t, tabsSeen } from './runtime'
 import { SFX_EVENTS } from './audio/sfx'
+import { IMPRINT, PRIVACY_PAGE } from './legal'
 import { ValleyMap } from './scene/ValleyMap'
 import { currentMood } from './scene/mood'
 import { Ceremony } from './story/Ceremony'
@@ -134,6 +135,7 @@ export function App() {
       labels={labels}
       className="lw-app"
       playtest={playtest}
+      legal={{ imprint: () => IMPRINT?.[i18n.getLocale() === 'en' ? 'en' : 'de'], privacyUrl: `./${PRIVACY_PAGE}` }}
       title={() => t.app.title}
       distribution={DISTRIBUTION}
       testPhase={TEST_PHASE}

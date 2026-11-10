@@ -159,12 +159,24 @@ export function SettingsSheet({ open, onClose, version, playtest }: { open: bool
   )
 }
 
-export function LegalSheet({ open, onClose, imprint }: { open: boolean; onClose: () => void; imprint?: string }) {
+export function LegalSheet({ open, onClose, imprint, privacyUrl }: { open: boolean; onClose: () => void; imprint?: string; privacyUrl?: string }) {
   const { t } = useUi()
   return (
     <Sheet open={open} title={t.legal.title} onClose={onClose} testId="legal-sheet">
       <h3 className="ek-h3">{t.legal.privacyTitle}</h3>
       <p>{t.legal.privacy}</p>
+      <ul className="ek-legal-list">
+        {t.legal.privacyItems.map((x) => (
+          <li key={x}>{x}</li>
+        ))}
+      </ul>
+      {privacyUrl ? (
+        <p>
+          <a href={privacyUrl} target="_blank" rel="noopener">
+            {t.legal.privacyPage}
+          </a>
+        </p>
+      ) : null}
       <h3 className="ek-h3">{t.legal.imprintTitle}</h3>
       <p>{imprint ?? t.legal.imprintMissing}</p>
     </Sheet>

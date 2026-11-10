@@ -21,7 +21,7 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 | P9 | Lande, Wellen 1–3 (… bis ≥ 34) | fertig (34/34; Lande 35–50 geplant) |
 | P10 | Lange Nacht und Zeitalter | fertig |
 | P11 | Markt-Attrappen, Testgeld, Festwoche, Talstile, Zirkel | fertig |
-| P12 | Ton, Ambiente, Playtest-Log, Store-Vorbereitung | in Arbeit (Ton, Log, Wetter fertig) |
+| P12 | Ton, Ambiente, Playtest-Log, Store-Vorbereitung | fertig (offen: Markenprüfung, Impressum) |
 
 ---
 
@@ -128,8 +128,8 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 ## P12 — Ton, Ambiente, Playtest-Log, Store
 
 - [x] 8 Effekte, 4 Ambiente-Schichten (Wind, Feuer, Wasser, Nacht), Playtest-Log (opt-in, 48 h roh, Minutenzähler, Tage, Export). Dazu 4 Wetterarten mit Kartenschicht und Omen nach Wetter (`docs/engine/ton-und-playtest.md`).
-- [ ] App-Icons, Store-Texte de/en, Store-Screenshots, Rechtstexte
-- [ ] Alle Eigennamen `frei`, `DISTRIBUTION`/`TEST_PHASE` geprüft
+- [x] App-Icons (SVG → alle PNG-Größen), Store-Texte de/en mit Längen-Test, Store-Screenshots (`npm run store:shots`), Datenschutz im Spiel und als Seite, Store-Prüfung (`npm run store:check`). Details: `docs/spiele/lichtwarte/store.md`.
+- [ ] Alle Eigennamen `frei` (Markenregister-Prüfung durch Michael), Impressum. `DISTRIBUTION`/`TEST_PHASE` sind geprüft: Der Test erzwingt den Wechsel, sobald eine Store-Hülle im Spielordner liegt.
 
 ---
 
@@ -137,7 +137,7 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 
 1. **Arbeitstitel:** Das Spiel hat einen deutschen und einen englischen Titel (`games/lichtwarte/src/brand.ts`). Die Websuche ergab keinen Treffer als Spiel oder App. Die Markenprüfung (DPMA/EUIPO/…) steht für alle Eigennamen aus (`docs/marken/pruefung.md`).
 2. **Stichtag** für „Spielstände gehen nie verloren“ in `CLAUDE.md` eintragen.
-3. **Rechtliches:** Impressum-Angaben fehlen (P12).
+3. **Rechtliches:** Die Impressum-Angaben fehlen noch (`games/lichtwarte/src/legal.ts`). Die Datenschutz-Texte sind fertig.
 4. **Mondwende-Tore der Bauwerke 5–10** (Annahme, „mach wie du denkst“): gezählt als abgeschlossene Mondwenden. Nach P6 gilt 1/2/3/5/8/12, das trifft „alle Bauwerke um Tag 5“.
 5. **Lange Nacht** (Annahme): Runensplitter und Archiv bleiben erhalten. Nur das Zeitalter setzt Nachttau zurück.
 6. **Schriften** (Annahme): weiter Systemschriften, keine gebündelte Schrift. Eine OFL-Schrift kann in P12 dazukommen, eingetragen in `docs/lizenzen.md`.

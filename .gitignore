@@ -6,3 +6,4 @@ games/*/dist/
 e2e-screens/
 tools/e2e/art-diff/
 .vite/
+store-shots/
