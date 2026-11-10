@@ -53,6 +53,11 @@ export const GAMES = [
       const errs = []
       q.on('pageerror', (e) => errs.push(e.message))
       await q.goto(URL + '?installGate=0')
+      // Prolog (nur beim allerersten Start), danach schlägt sich die Chronik von selbst auf
+      await q.getByTestId('intro').waitFor({ timeout: 10_000 })
+      assert((await q.getByTestId('intro').innerText()).includes(T.intro.l1), 'Prolog beim ersten Start')
+      await q.getByTestId('intro-start').click()
+      await q.getByTestId('intro').waitFor({ state: 'detached' })
       await q.getByTestId('chronicle').waitFor({ timeout: 10_000 })
       assert(await q.getByText(T.chronicle.entries.welcome.title).isVisible(), 'erste Chronik-Seite öffnet sich')
       await q.keyboard.press('Escape')

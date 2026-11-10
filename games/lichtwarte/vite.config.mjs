@@ -6,7 +6,7 @@ import { privacyHtml } from '../../packages/ui-kit/src/legalPage.ts'
 import { engineDe } from '../../packages/ui-kit/src/i18n/de.ts'
 import { engineEn } from '../../packages/ui-kit/src/i18n/en.ts'
 
-export default defineConfig(gameConfig({ name: BRAND.de, shortName: BRAND.de, description: `Gemütliches Fantasy-Idle-Spiel · Cosy fantasy idle game (${BRAND.en})`, themeColor: '#2f4f66', background: '#efe6d6', port: 5173,
+export default defineConfig(gameConfig({ name: BRAND.de, shortName: BRAND.de, description: `Gemütliches Fantasy-Idle-Spiel · Cosy fantasy idle game (${BRAND.en})`, themeColor: '#172040', background: '#efe6d6', port: 5173,
   // Datenschutz-Seite für die Store-Angabe, aus denselben Texten wie im Spiel
   extraFiles: () => ({ [PRIVACY_PAGE]: privacyHtml({ title: { de: BRAND.de, en: BRAND.en }, de: engineDe.legal, en: engineEn.legal, imprint: IMPRINT }) }),
   icons: [

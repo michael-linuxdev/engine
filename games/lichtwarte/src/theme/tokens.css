@@ -5,7 +5,7 @@
   --surface-2: #ebdfca;
   --ink: #2b211c;
   --ink-muted: #5a4a3f;
-  --accent: #2f4f66;
+  --accent: #2a4560;
   --on-accent: #fff9ee;
   --accent-2: #8a4b23;
   --danger: #8f2a22;
@@ -13,10 +13,22 @@
   --line: #cdbca1;
   --focus: #1d5d9b;
   --shadow: 0 8px 28px rgb(43 33 28 / 0.25);
-  --font-display: Georgia, 'Palatino Linotype', 'Book Antiqua', serif;
+  --font-display: 'Alegreya Variable', Georgia, 'Palatino Linotype', 'Book Antiqua', serif;
   --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --radius-m: 12px;
   --radius-l: 20px;
   --map-ink: #2b211c;
   --plaque: #fbf6ec;
+
+  /* Eigene Töne des Spiels: Nachtblau der Warte, Laternengold, Pergament */
+  --night: #172040;
+  --night-2: #25325c;
+  --on-night: #f3ead6;
+  --on-night-muted: #b9bfd6;
+  --gold: #e9b95a;
+  --gold-deep: #a66d1c;
+  --parchment: #fbf1da;
+  --parchment-edge: #e6d3ab;
+  --ember: #ff9f43;
+  --tabbar-h: 62px;
 }

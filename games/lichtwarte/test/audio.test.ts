@@ -1,4 +1,4 @@
-/** Ton (8 Effekte), Umgebungsklang (4 Schichten), Wetter (4 Arten) und Omen. */
+/** Ton (8 Effekte), Umgebungsklang (5 Schichten), Wetter (4 Arten) und Omen. */
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
@@ -30,8 +30,8 @@ describe('Ton', () => {
       expect(known.has(type), type).toBe(true)
     }
   })
-  it('4 Ambiente-Schichten (Wind, Feuer, Wasser, Nacht), Pegel 0–1 in jeder Stimmung', () => {
-    expect(AMBIENCE.map((l) => l.id)).toEqual(['wind', 'fire', 'water', 'night'])
+  it('5 Ambiente-Schichten (Wind, Feuer, Wasser, Nacht, Windspiel), Pegel 0–1 in jeder Stimmung', () => {
+    expect(AMBIENCE.map((l) => l.id)).toEqual(['wind', 'fire', 'water', 'night', 'chimes'])
     for (const l of AMBIENCE) for (const r of l.sporadic?.recipes ?? []) expect(recipeProblems(r), l.id).toEqual([])
     for (const daypart of ['dawn', 'day', 'evening', 'night'] as const)
       for (const season of ['winter', 'spring', 'summer', 'autumn'] as const)

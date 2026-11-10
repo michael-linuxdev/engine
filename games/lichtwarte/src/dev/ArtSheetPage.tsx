@@ -1,7 +1,7 @@
 /** ?artsheet — alle Grafiken in vier Stimmungen (Pixelvergleich tools/e2e/art.mjs). ?artsheet=map nur die Talkarte. */
 import { ArtSheet, type Mood } from '@engine/art'
 import { ART_ENTRIES, SHEET_MOODS } from './artEntries'
-import { Backdrop, Shade, Snow } from '../art/Backdrop'
+import { Backdrop, Foreground, Lights, Shade, Snow } from '../art/Backdrop'
 import { MAP_H, MAP_W } from '../scene/slots'
 import { WeatherLayer } from '../art/weather'
 import { WEATHERS } from '../scene/weather'
@@ -20,7 +20,9 @@ export function ArtSheetPage({ only }: { only: string | null }) {
               <g>
                 <Backdrop m={m} id={`${m.daypart}-${m.season}`} />
                 <Snow m={m} />
-                <Shade m={m} />
+                <Foreground m={m} />
+                <Shade m={m} id={`${m.daypart}-${m.season}`} />
+                <Lights m={m} id={`${m.daypart}-${m.season}`} />
               </g>
             ),
           },

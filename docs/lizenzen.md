@@ -8,7 +8,9 @@ Erlaubt sind nur Schriften unter der SIL Open Font License (OFL 1.1). Jede verwe
 
 | Schrift | Lizenz | Quelle | Verwendet in |
 |---|---|---|---|
-| *(keine; die Spiele nutzen bewusst Systemschriften: `Georgia`/`serif` und `system-ui`)* | — | — | — |
+| Alegreya (variabel, lateinischer Schnitt, aufrecht und kursiv) | OFL 1.1 | npm `@fontsource-variable/alegreya` (Huerta Tipográfica) | Lichtwarte: Überschriften, Schilder, Chronik (`games/lichtwarte/src/theme/fonts.css`) |
+
+Fließtext der Bedienung bleibt die Systemschrift (`system-ui`). Die Vorlage nutzt nur Systemschriften.
 
 ## Abhängigkeiten (npm)
 

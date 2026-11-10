@@ -66,7 +66,7 @@ Status: `offen` · `Engine fertig` (Mechanik + Tests in `packages/engine`) · `i
 
 | System | Referenz-Datei(en) | Engine-Modul | Fantasy-Entsprechung | Mindestmenge | Status |
 |---|---|---|---|---|---|
-| Briefe | `notebook.ts` | `narrative` (vorerst Spiel + `createSeen`) | Chronik | **20** | im Spiel (20) |
+| Briefe | `notebook.ts` | `narrative` (vorerst Spiel + `createSeen`) | Chronik als Buch, 5 Kapitel | **20** | im Spiel (27) |
 | Rückkehr-Brief | `story/ComebackLetter.tsx` | `offline` (`comebackMs`) | Rückkehr-Seite | 1 (≥ 48 h) | getestet (48 h, 20 Lichtkiesel) |
 | Zeremonie | `story/SeasonCeremony.tsx` | ui-kit | Mondwende-Zeremonie | 1 (3 Phasen) | getestet (Zeremonie → Chronik → Sternenrad → Sternbild) |
 

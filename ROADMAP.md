@@ -3,7 +3,7 @@
 Ziel: eine wiederverwendbare Idle-Engine für mehrere Spiele und darauf **Lichtwarte** (Arbeitstitel), ein gemütliches Fantasy-Idle-Spiel. Es soll mindestens die Tiefe, Systeme, Inhalte und Qualitätssicherung des Referenz-Spiels erreichen (`docs/referenz/paritaet.md`).
 
 **Paritäts-Fortschritt (2026-11-10): 97 %** der Systeme aus `paritaet.md`. 50 von 52 Zeilen sind `im Spiel`/`getestet`, 1 sind `Engine fertig`. Gezählt wird `im Spiel`/`getestet` voll, `Engine fertig` halb.
-Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 34/34 ✓, Chronik 20/20 ✓, Taten 12/10 ✓, Feste 9/9 ✓, Sammlung 49/37 ✓.
+Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 34/34 ✓, Chronik 27/20 ✓, Taten 12/10 ✓, Feste 9/9 ✓, Sammlung 49/37 ✓.
 
 **Web-Fassung:** GitHub Pages, Deploy bei Push auf `main`. Das Spiel liegt unter `/`, die Vorlage unter `/vorlage/`. Die eigene Domain ist in `.github/workflows/deploy-pages.yml` eingetragen.
 
@@ -22,6 +22,7 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 | P10 | Lange Nacht und Zeitalter | fertig |
 | P11 | Markt-Attrappen, Testgeld, Festwoche, Talstile, Zirkel | fertig |
 | P12 | Ton, Ambiente, Playtest-Log, Store-Vorbereitung | fertig (offen: Markenprüfung, Impressum) |
+| P13 | Atmosphäre und Erzählung (Karte, Oberfläche, Chronik, Zeremonien) | fertig (offen: Feinschliff der einzelnen Bauwerke) |
 
 ---
 
@@ -131,6 +132,18 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 - [x] App-Icons (SVG → alle PNG-Größen), Store-Texte de/en mit Längen-Test, Store-Screenshots (`npm run store:shots`), Datenschutz im Spiel und als Seite, Store-Prüfung (`npm run store:check`). Details: `docs/spiele/lichtwarte/store.md`.
 - [ ] Alle Eigennamen `frei` (Markenregister-Prüfung durch Michael), Impressum. `DISTRIBUTION`/`TEST_PHASE` sind geprüft: Der Test erzwingt den Wechsel, sobald eine Store-Hülle im Spielordner liegt.
 
+## P13 — Atmosphäre und Erzählung
+
+Ziel: Das Spiel soll der Referenz in Erzählung, Grafik und Stimmung überlegen sein, nicht nur ebenbürtig in den Systemen.
+
+- [x] **Talkarte bildschirmfüllend:** Himmel mit Gestirn, Sternen, Wolken und Polarlicht, drei Bergketten, Bach mit Wasserfall, geschwungener Weg hinauf zur Warte. Kopfzeile und Hinweise schweben, Funkenruf als runder Knopf unten. Omen und Talgast klappen auf der Karte erst beim Antippen auf.
+- [x] **Die Karte erzählt:** eine Laterne je stehendem Bauwerk, das Leuchtfeuer der Warte wächst mit. Nachts liegen die Lichter über der Lasur.
+- [x] **Leben:** Glühwürmchen, Vögel, Falter, Rauch, Banner, Bach, Glimmer über den Bauwerken, Fenno auf dem Weg mit Sprechblase, Talgast auf der Karte. Alles ruht bei „Bewegung reduzieren“.
+- [x] **Oberfläche:** Nachtblau, Pergament, Laternengold; Zeichen in der Leiste (`navIcons` in der Hülle); Schrift Alegreya (OFL, `docs/lizenzen.md`); Schilder zeigen, was sich gerade leisten lässt.
+- [x] **Erzählung:** Prolog, Chronik als Buch mit 27 Seiten in fünf Kapiteln und Bildern, Briefe von Alwine, Zeremonien als Vollbild je Schicht, 16 Sätze von Fenno. Bogen: `docs/spiele/lichtwarte/welt.md`.
+- [x] **Klang:** fünfte Ambiente-Schicht „Windspiel“ (Fünftonleiter, keine feste Melodie).
+- [ ] Feinschliff der zehn Bauwerke je Stufe (eigene Details statt nur gemeinsamer Bausteine), Lande-Bilder im neuen Stil, Figur für Alwine auf der Bank nach dem ersten Zeitalter.
+
 ---
 
 ## Offene Fragen an Michael
@@ -140,4 +153,4 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 3. **Rechtliches:** Die Impressum-Angaben fehlen noch (`games/lichtwarte/src/legal.ts`). Die Datenschutz-Texte sind fertig.
 4. **Mondwende-Tore der Bauwerke 5–10** (Annahme, „mach wie du denkst“): gezählt als abgeschlossene Mondwenden. Nach P6 gilt 1/2/3/5/8/12, das trifft „alle Bauwerke um Tag 5“.
 5. **Lange Nacht** (Annahme): Runensplitter und Archiv bleiben erhalten. Nur das Zeitalter setzt Nachttau zurück.
-6. **Schriften** (Annahme): weiter Systemschriften, keine gebündelte Schrift. Eine OFL-Schrift kann in P12 dazukommen, eingetragen in `docs/lizenzen.md`.
+6. **Schriften:** Seit P13 ist Alegreya (OFL) gebündelt, eingetragen in `docs/lizenzen.md`. Fließtext bleibt Systemschrift.

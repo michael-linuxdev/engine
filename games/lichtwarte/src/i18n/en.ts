@@ -1,6 +1,7 @@
 import { engineEn } from '@engine/ui/i18n/en.ts'
 import { BRAND } from '../brand'
 import { realmsEn } from './realms.en'
+import { storyEn } from './story.en'
 import type { Strings } from './de'
 
 export const stringsEn: Strings = {
@@ -68,36 +69,9 @@ export const stringsEn: Strings = {
     slotLevel: (n) => `Level ${n}`,
     open: (name) => `Open ${name}`,
   },
-  chronicle: {
-    menu: 'Chronicle',
-    title: "The Warden's Chronicle",
-    unread: 'New page',
-    empty: 'Nothing written yet.',
-    signature: '— Alwine',
-    comeback: { title: 'There you are', body: 'Not a word for so long. The watch kept glowing, I kept an eye on it. Here, for the road: a few Glowpebbles.' },
-    entries: {
-      welcome: { title: 'For whoever finds this', body: 'If you are reading this, you found the key. The watch is old, the valley is tired, and so am I. Start with the herb cottage. The light does not come all at once, but it comes — even while you sleep.' },
-      firstBuild: { title: 'The first spark', body: 'Do you see the glimmer above the cottage? That is how it began for me too. Call the sparks whenever you are impatient. They like that.' },
-      holzlager: { title: 'Wood for the winter', body: 'With the woodshed a little house becomes a beginning. Keep building, but do look around: the valley changes with every beam.' },
-      steinbruch: { title: 'Stone on stone', body: 'The mountain does not give gladly, but it gives. The whole watch once stood on these stones. It will stand again.' },
-      moonturnReady: { title: 'When the moon turns', body: 'The first Moonturn is near. Do not be afraid of it. What you build will pass — what you learn stays in the archive. After that, everything is easier.' },
-      afterMoonturn: { title: 'The archive', body: "In the Wardens' Archive lies what we kept over the years. Take what you need. Every watch adds something, yours too." },
-      schmiede: { title: 'Fire and iron', body: 'The forge glows again. I missed its ringing for years. Listen: that is the heart of the watch.' },
-      kartenstube: { title: 'Maps', body: 'In the map room lie paths nobody has walked in a long time. Perhaps you will, one day.' },
-      alchemistenturm: { title: 'Coloured flames', body: 'When the alchemist\'s tower smokes, keep your distance and stay curious. Usually both at once.' },
-      greifenhorst: { title: 'The griffins return', body: 'They waited until someone repaired the roost. Be kind to them, they forget nothing.' },
-      runenhalle: { title: 'Old signs', body: 'In the rune hall the stones speak softly. If you are quiet, you understand a word or two.' },
-      sternwarte: { title: 'The dome burns', body: 'The observatory shines again. Now the watch can be seen from the whole valley. I am proud of you.' },
-      moonturn3: { title: 'Three moons', body: 'You noticed: every Moonturn is a little easier. That is how it is meant to be.' },
-      moonturn5: { title: 'Five moons', body: 'Five Moonturns. People in the valley already ask about you. They say "the new warden", and it sounds kind.' },
-      moonturn10: { title: 'Ten moons', body: 'Ten. It took me longer back then. Take a break if you like — the watch glows without you too.' },
-      apprentice: { title: 'An apprentice', body: 'Fenno is a good lad. He talks too much and works too fast, but he means well.' },
-      longNight: { title: 'The Long Night', body: 'You came through the Long Night. Afterwards everything is different and everything is the same. The Nightdew shows you what stays.' },
-      firstRealm: { title: 'Beyond the valley', body: 'Beyond the bog another land begins. Ragna is waiting. Greet her from me, she will grumble.' },
-      fiveRealms: { title: 'Many realms', body: 'Five realms now hang on your light. Do not forget the watch while you travel.' },
-      ages: { title: 'A new age', body: 'You pass the watch on, as I passed it to you. The Forebear Light stays. Thank you.' },
-    },
-  },
+  intro: storyEn.intro,
+  chronicle: storyEn.chronicle,
+  fenno: storyEn.fenno,
   ftue: {
     skip: 'Skip',
     next: 'Next',
@@ -110,11 +84,7 @@ export const stringsEn: Strings = {
       prestige: { title: 'The Moonturn', body: 'Under “New start” you can see how close the first Moonturn is.' },
     },
   },
-  ceremony: {
-    title: (layer) => `${layer}`,
-    body: (amount, currency) => `The valley rests. The archive now holds ${amount} more ${currency}.`,
-    cta: 'A new morning',
-  },
+  ceremony: storyEn.ceremony,
   watch: {
     tab: 'Watch',
     titles: {
