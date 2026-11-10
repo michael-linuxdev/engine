@@ -167,7 +167,8 @@ export const game: GameDefinition = {
     {
       id: LAYER.ages,
       currency: CURRENCY.forebearLight,
-      gate: { base: 5e16, growth: 10, knee: 6, lateGrowth: 2 },
+      // Wachstum 3 (vorher 10): das zweite Zeitalter kommt bei regular um Tag 47 statt Tag 71 (späte Taktung, balance.md)
+      gate: { base: 5e16, growth: 3, knee: 6, lateGrowth: 2 },
       payout: { base: 3, growth: 1.1 },
       minimum: { lowerRuns: 3 },
     },
@@ -258,4 +259,24 @@ export const balanceTargets = {
   ],
   /** Langer Lauf (35 Tage): erstes Zeitalter nach drei bis fünf Wochen. */
   regularLong: [{ label: 'Erstes Zeitalter um Tag 28 ± 7', kind: 'prestige', id: LAYER.ages, nth: 1, clock: 'wall', min: (21 - 1) * 1440, max: (35 - 1) * 1440 }],
+  /** Späte Taktung (90 Tage): zweites Zeitalter deutlich vor Tag 60, drittes vor Tag 90. */
+  regularLate: [
+    { label: 'Zweites Zeitalter um Tag 47 ± 8', kind: 'prestige', id: LAYER.ages, nth: 2, clock: 'wall', min: (39 - 1) * 1440, max: (55 - 1) * 1440 },
+    { label: 'Drittes Zeitalter um Tag 80 ± 10', kind: 'prestige', id: LAYER.ages, nth: 3, clock: 'wall', min: (70 - 1) * 1440, max: (90 - 1) * 1440 },
+  ],
+} as const
+
+/**
+ * Späte Taktung der Lande bei regular (Tag 35 bis Tag 90), begründet in balance.md.
+ * Lande zählen mit der Talkarte (Land 1), Stichzeit ist das Ende des Tages.
+ */
+export const lateTargets = {
+  /** Offene Lande am Ende von Tag 60: nicht zu wenige, aber auch nicht schon fast alle. */
+  landsDay60: { min: 22, max: 27 },
+  /** Offene Lande am Ende von Tag 90 (von 34). */
+  landsDay90: { min: 30 },
+  /** Das letzte Land öffnet sich nicht vor diesem Tag, sonst fehlen danach die Ziele. */
+  lastLandNotBeforeDay: 75,
+  /** Längste Zeit ohne neues Land oder Zeitalter zwischen Tag 35 und Tag 90, in Tagen. */
+  maxGapDays: 4,
 } as const

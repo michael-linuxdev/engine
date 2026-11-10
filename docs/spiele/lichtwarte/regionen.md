@@ -77,8 +77,8 @@ Engine-Modul `regions` (P9): eigene Unterwirtschaft mit eigener Währung, 10 Ber
 
 - **Land 2:** nach der ersten Langen Nacht (oder nach 20 Mondwenden).
 - **Jedes weitere Land:** wenn im vorigen Land der 8. Bereich auf Stufe 25 steht.
-- **Kosten:** Spätere Lande sind teurer (`REALM_TUNING.landGrowth = 1,15` je Land).
-- **Simulator (regular):** Land 2 an Tag 8, die Lande 3–10 bis Tag 20, danach alle zwei bis drei Tage. Die späte Taktung wird mit P10 überprüft.
+- **Kosten:** Spätere Lande sind teurer (`REALM_TUNING.landGrowth = 1,15` je Land). Ab Land 14 steigt auch der Ertrag (`lateYield`, `lateYieldGrowth`).
+- **Simulator (regular):** Land 2 an Tag 8, die Lande 3–10 bis Tag 20, danach alle zwei bis drei Tage, Land 34 an Tag 90. Messwerte und Korridore der späten Taktung: `balance.md`.
 
 ## Freischaltung (ursprünglicher Vorschlag)
 

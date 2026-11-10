@@ -63,3 +63,32 @@ export function checkWalls(r: SimResult, factor = 3, floorMin = 10, untilMin = I
   }
   return fails
 }
+
+/**
+ * Late pacing: the largest wall-clock gap (minutes) between two NEW goals up
+ * to `untilMin`, looking only at gaps that end after `fromMin`. Goals here: a
+ * region opening, the first run of each prestige layer and every run of the
+ * layers in `everyRun` (rare top-layer resets). The stretch from the last goal
+ * to `untilMin` counts as a gap too, so running out of content early shows up.
+ */
+export function largestGoalGap(r: SimResult, fromMin: number, untilMin: number, everyRun: readonly string[] = []): { gap: number; from: number; to: number } {
+  const seen = new Set<string>()
+  const at: number[] = []
+  for (const e of r.events) {
+    if (e.at > untilMin) break
+    if (e.kind === 'region') at.push(e.at)
+    else if (e.kind === 'prestige' && (everyRun.includes(e.id) || !seen.has(e.id))) {
+      seen.add(e.id)
+      at.push(e.at)
+    }
+  }
+  at.push(untilMin)
+  let best = { gap: 0, from: fromMin, to: fromMin }
+  for (let i = 1; i < at.length; i++) {
+    if (at[i] <= fromMin) continue
+    // A gap that straddles `fromMin` counts in full: the wait is felt as a whole.
+    const gap = at[i] - at[i - 1]
+    if (gap > best.gap) best = { gap, from: at[i - 1], to: at[i] }
+  }
+  return best
+}

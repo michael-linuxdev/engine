@@ -14,8 +14,8 @@
  * (or right away for a probe run).
  */
 import {
-  applyOffline, bestBuy, canBuyMeta, createManualClock, createState, dispatch, layerStatus, metaCost, payoutAtGate, prestigeState, rankOf, tick,
-  view, type EngineState, type GameDefinition,
+  applyOffline, bestBuy, bulkCost, canBuyMeta, createManualClock, createState, dispatch, layerStatus, metaCost, payoutAtGate, prestigeState, rankOf, tick,
+  view, type EngineState, type GameDefinition, type ProducerDef,
 } from '@engine/core'
 
 export type Profile = 'engaged' | 'regular' | 'casual'
@@ -62,11 +62,34 @@ function isPlaying(profile: Profile, minuteOfDay: number, minuteSinceStart: numb
   return minuteSinceStart % s.every < s.len
 }
 
-const regionDefs = new WeakMap<GameDefinition, readonly { id: string; areas: readonly { id: string }[] }[]>()
+/** A region as the simulator sees it; with cost data the buy loop can skip hopeless attempts. */
+interface SimRegion {
+  id: string
+  areas: readonly ({ id: string } & Partial<ProducerDef>)[]
+}
+interface SimRegionSlice {
+  open: boolean
+  owned?: Record<string, number>
+  balance?: number
+  thrift?: number
+}
+
+const regionDefs = new WeakMap<GameDefinition, readonly SimRegion[]>()
 
 /** Let the simulator know the region list (the module keeps it private). */
-export function registerRegions(def: GameDefinition, regions: readonly { id: string; areas: readonly { id: string }[] }[]): void {
+export function registerRegions(def: GameDefinition, regions: readonly SimRegion[]): void {
   regionDefs.set(def, regions)
+}
+
+/**
+ * Speed only (long runs with many open regions): true when a single level of
+ * this area certainly costs more than the region's balance, so the dispatch
+ * would be refused anyway. Uses the engine's own cost formula; without cost
+ * data or with a cost discount (thrift) it never skips.
+ */
+function tooExpensive(a: SimRegion['areas'][number], r: SimRegionSlice): boolean {
+  if (a.baseCost === undefined || a.costScale === undefined || a.baseRate === undefined || r.thrift !== 0 || r.balance === undefined || !r.owned) return false
+  return bulkCost(a as ProducerDef, r.owned[a.id] ?? 0, 1) > r.balance
 }
 
 export function simulate(def: GameDefinition, opts: SimOptions): SimResult {
@@ -114,7 +137,8 @@ export function simulate(def: GameDefinition, opts: SimOptions): SimResult {
     }
     act('helper', 'upgrade')
     // Lande: in jedem offenen Land so viel wie möglich ausbauen (günstigste offene Bereiche)
-    const regions = (s.modules.regions as { regions?: Record<string, { open: boolean }> } | undefined)?.regions
+    const slices = () => (s.modules.regions as { regions?: Record<string, SimRegionSlice> } | undefined)?.regions
+    const regions = slices()
     if (regions) {
       for (const [id, r] of Object.entries(regions)) {
         if (!r.open) continue
@@ -122,7 +146,11 @@ export function simulate(def: GameDefinition, opts: SimOptions): SimResult {
         if (!rdef) continue
         for (let i = 0; i < 40; i++) {
           let bought = false
-          for (const a of rdef.areas) if (act('regions', 'buy', { region: id, area: a.id, count: 1 })) bought = true
+          for (const a of rdef.areas) {
+            const now = slices()?.[id]
+            if (now && tooExpensive(a, now)) continue
+            if (act('regions', 'buy', { region: id, area: a.id, count: 1 })) bought = true
+          }
           if (!bought) break
         }
         act('regions', 'care', { region: id, kind: 'grow' })
