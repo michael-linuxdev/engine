@@ -1,18 +1,35 @@
 import { Component, useEffect, useRef, useState, type ErrorInfo, type ReactNode } from 'react'
-import { explain, MODULE, primaryCurrency, type OfflineState, type SaveBlock } from '@engine/core'
+import { explain, isUnlocked, MODULE, primaryCurrency, quote, type OfflineState, type SaveBlock } from '@engine/core'
 import { copyText, detectPlatform, installStepsKey, useEngine, useSaveBlock } from '@engine/react'
 import { useUi } from '../useUi'
 import type { EngineStrings } from '../i18n/de'
 import { Button } from './Button'
 import { Sheet } from './Sheet'
+import { WELCOME_FROM_MS } from '../welcome'
 
-/** Return summary ("offline basket"): shown while the offline module holds a pending basket. */
-export function WelcomeBack({ art }: { art?: ReactNode }) {
+/** Affordable buildings offered in the welcome window. */
+const WELCOME_PICKS = 3
+
+/**
+ * Welcome back: time away, income, what the player can afford right now (tap = collect and open it),
+ * and "later". After a short absence there is no window: the basket stays for a collect button of the game.
+ */
+export function WelcomeBack({ art, extra, fromMs = WELCOME_FROM_MS, onPick }: { art?: ReactNode; /** Shown below the income (e.g. what got ready meanwhile). */ extra?: ReactNode; fromMs?: number; onPick?: (producer: string) => void }) {
   const ui = useUi()
   const { world, dispatch } = useEngine(ui.rt)
   const pending = world.get<OfflineState>(MODULE.offline)?.pending
-  if (!pending) return null
+  const [later, setLater] = useState(0)
+  if (!pending || pending.elapsedMs < fromMs || later === pending.at) return null
   const claim = () => dispatch(MODULE.offline, 'claim')
+  const money = world.balance(primaryCurrency(world.def)) + pending.gained
+  const picks = onPick
+    ? world.def.producers
+        .filter((p) => isUnlocked(world, p))
+        .map((p) => ({ id: p.id, cost: quote(world, p.id, 1).cost }))
+        .filter((x) => x.cost <= money)
+        .sort((a, b) => b.cost - a.cost)
+        .slice(0, WELCOME_PICKS)
+    : []
   return (
     <Sheet open title={ui.t.welcome.title} onClose={claim} testId="welcome-back">
       {art}
@@ -21,9 +38,30 @@ export function WelcomeBack({ art }: { art?: ReactNode }) {
         {ui.t.welcome.gained(ui.fmt(pending.gained))} {ui.labels.currency(primaryCurrency(world.def))}
       </p>
       {pending.capped ? <p className="ek-muted">{ui.t.welcome.capped}</p> : null}
-      <Button data-testid="welcome-claim" onClick={claim}>
-        {ui.t.welcome.claim}
-      </Button>
+      {extra}
+      {picks.length ? (
+        <div className="ek-welcome-picks" data-testid="welcome-picks">
+          <p className="ek-muted">{ui.t.welcome.afford}</p>
+          <div className="ek-row-actions">
+            {picks.map((x) => (
+              <Button key={x.id} size="small" variant="secondary" data-testid={`welcome-pick-${x.id}`} onClick={() => {
+                  claim()
+                  onPick?.(x.id)
+                }}>
+                {ui.labels.producer(x.id).name}
+              </Button>
+            ))}
+          </div>
+        </div>
+      ) : null}
+      <div className="ek-row-actions">
+        <Button data-testid="welcome-claim" onClick={claim}>
+          {ui.t.welcome.claim}
+        </Button>
+        <Button variant="ghost" data-testid="welcome-later" onClick={() => setLater(pending.at)}>
+          {ui.t.welcome.later}
+        </Button>
+      </div>
     </Sheet>
   )
 }

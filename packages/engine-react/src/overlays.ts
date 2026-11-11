@@ -7,7 +7,7 @@
  * the next in the same render must not race `history.back()` against
  * `pushState()` (that used to navigate away from the page).
  */
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useSyncExternalStore } from 'react'
 
 interface Entry {
   id: number
@@ -15,6 +15,8 @@ interface Entry {
 }
 
 const stack: Entry[] = []
+const listeners = new Set<() => void>()
+const changed = () => listeners.forEach((l) => l())
 let nextId = 1
 let installed = false
 let hasEntry = false
@@ -67,6 +69,18 @@ export function openOverlayCount(): number {
   return stack.length
 }
 
+/** True while any overlay (sheet, dialog) is open; lets hints wait until the screen is free. */
+export function useOverlayOpen(): boolean {
+  return useSyncExternalStore(
+    (cb) => {
+      listeners.add(cb)
+      return () => listeners.delete(cb)
+    },
+    () => stack.length > 0,
+    () => false,
+  )
+}
+
 /** Register an open overlay; `onClose` is called on Escape/back. */
 export function useOverlay(open: boolean, onClose: () => void): void {
   const closeRef = useRef(onClose)
@@ -78,10 +92,12 @@ export function useOverlay(open: boolean, onClose: () => void): void {
     install()
     const entry: Entry = { id: nextId++, close: () => closeRef.current() }
     stack.push(entry)
+    changed()
     sync()
     return () => {
       const i = stack.indexOf(entry)
       if (i >= 0) stack.splice(i, 1)
+      changed()
       sync()
     }
   }, [open])

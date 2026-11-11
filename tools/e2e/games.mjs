@@ -84,6 +84,10 @@ export const GAMES = [
       await q.getByTestId('chronicle').waitFor({ state: 'detached' })
       await q.getByTestId('ftue').waitFor()
       assert((await q.getByTestId('ftue').innerText()).includes(T.ftue.steps.build.title), 'Einstieg: Schritt Kräuterkate')
+      // Der Einstieg nennt den Schritt, hebt sein Ziel hervor und bietet die Aktion als Knopf an
+      assert((await q.getByTestId('ftue-step').innerText()).includes('2'), 'Einstieg: „Schritt 2 von 6“')
+      assert(await q.getByTestId('slot-kraeuterkate').evaluate((el) => el.classList.contains('ek-coach-target')), 'Einstieg: Ziel ist hervorgehoben')
+      assert((await q.getByTestId('ftue-act').innerText()) === T.ftue.act.build, 'Einstieg: Aktions-Knopf')
       await q.getByTestId('slot-kraeuterkate').click()
       await q.getByTestId('upgrade-sheet').waitFor()
       await q.getByTestId('buy-kraeuterkate').click()
@@ -257,6 +261,17 @@ export const GAMES = [
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
       await r.getByTestId('upgrade-sheet').waitFor({ state: 'detached' })
 
+      // Kurze Abwesenheit (unter 5 Minuten): kein Fenster, nur ein Einsammeln-Knopf auf der Karte
+      await r.getByTestId('tab-play').click()
+      await r.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        rt.replace({ ...s, modules: { ...s.modules, offline: { pending: { gained: 500, elapsedMs: 60_000, capped: false, at: Date.now() }, claims: 0 } } })
+      })
+      await r.getByTestId('map-collect').waitFor()
+      assert((await r.getByTestId('welcome-back').count()) === 0, 'Rückkehr: unter 5 Minuten kein Fenster')
+      await r.getByTestId('map-collect').click()
+      assert((await r.evaluate(() => window.__engine.get().modules.offline.pending)) === null, 'Rückkehr: Knopf auf der Karte sammelt ein')
       // Rückkehr-Brief nach 50 Stunden: Brief + Geschenk (20 Lichtkiesel)
       const pebblesBefore = await r.evaluate(() => window.__engine.get().modules.wallet.balances.glowPebbles)
       await r.evaluate(() => {

@@ -41,7 +41,7 @@ const BURST_DOTS = Array.from({ length: 12 }, (_, i) => {
 
 export interface MapExtras {
   /** „Heute“-Knopf unten links: bündelt das Tägliche; `dot` = dort wartet etwas. */
-  today?: { dot: boolean; onOpen: () => void }
+  today?: { dot: boolean; onOpen: () => void; /** Wartender Ertrag: Der Knopf sammelt ihn ein. */ collect?: number }
   /** Ein Brief wartet: Umschlag am Fuß der Warte. */
   letter?: { onOpen: () => void }
 }
@@ -250,9 +250,9 @@ export function ValleyMap({ onOpen, children, today, letter }: { onOpen: (id: st
           </button>
         ) : null}
         {today ? (
-          <button type="button" className="lw-today" data-testid="map-today" onClick={today.onOpen}>
+          <button type="button" className={`lw-today${today.collect ? ' lw-today--collect' : ''}`} data-testid={today.collect ? 'map-collect' : 'map-today'} onClick={today.onOpen}>
             <IconLantern />
-            <span>{t.play.today}</span>
+            <span>{today.collect ? t.play.collect(ui.fmt(today.collect)) : t.play.today}</span>
             {today.dot ? <span className="ek-badge" aria-label={ui.t.common.ready} /> : null}
           </button>
         ) : null}

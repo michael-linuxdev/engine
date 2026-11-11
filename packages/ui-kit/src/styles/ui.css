@@ -1256,3 +1256,41 @@ html:has(.ek-app) body {
   width: 100%;
   height: 100%;
 }
+
+/* Coach: step counter, action row, highlighted target, place at the bottom when it would cover the target */
+.ek-coach__step {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+.ek-coach__actions {
+  justify-content: flex-end;
+}
+.ek-coach--low {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + var(--space-2));
+  z-index: 6;
+}
+.ek-coach-target {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 3px;
+  border-radius: var(--radius-m);
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.ek-reduced-motion) .ek-coach-target {
+    animation: ek-target 1.2s ease-in-out infinite;
+  }
+}
+@keyframes ek-target {
+  0%,
+  100% {
+    outline-offset: 2px;
+  }
+  50% {
+    outline-offset: 7px;
+  }
+}
+.ek-welcome-picks {
+  margin: var(--space-2) 0;
+}

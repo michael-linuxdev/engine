@@ -4,8 +4,9 @@
  */
 import { useState, type ReactNode } from 'react'
 import { CHOICES_ID, isFeatureOpen, layerForecast, layerStatus, type ChoiceState } from '@engine/core'
-import { pickHint, useEngine, useStore } from '@engine/react'
+import { pickHint, useEngine, useOverlayOpen, useStore } from '@engine/react'
 import { ChoiceNotice, EventPills, HintBubble, useUi, type Pill } from '@engine/ui'
+import { OMENS } from '../content/world'
 import { game } from '../game'
 import { HINTS } from '../content/live'
 import { hintsSeen, t } from '../runtime'
@@ -22,11 +23,24 @@ export function Notices({ coach, onEvents, onPrestige, compact = false }: { coac
   const ui = useUi()
   const { world } = useEngine(ui.rt)
   useStore(hintsSeen)
+  // Solange ein Fenster offen ist, warten Omen und Randnotizen (der Einstieg bleibt)
+  const busy = useOverlayOpen()
+  // Was ein Omen für diesen Stand bedeutet: die Folge in Glimmer je Sekunde
+  const omenText = (id: string, o: 'safe' | 'risk') => {
+    const base = t.world.omens[id as keyof typeof t.world.omens][o]
+    const c = OMENS.list.find((x) => x.id === id)
+    const rate = world.rate()
+    if (!c || rate <= 0) return base
+    const per = (mult: number) => ui.t.common.perSecond(`${mult >= 1 ? '+' : '−'}${ui.fmt(Math.abs(rate * (mult - 1)))}`)
+    if (o === 'safe') return c.safe.buff.target === 'income' ? `${base} ${t.world.omenNow(per(c.safe.buff.mult))}` : base
+    return c.risk.win.target === 'income' ? `${base} ${t.world.omenNowRisk(per(c.risk.win.mult), per(c.risk.lose.mult))}` : base
+  }
   const omen = isFeatureOpen(world, 'omens') && !!world.get<ChoiceState>(CHOICES_ID)?.pending
   let notice: ReactNode = null
   if (coach) notice = coach
+  else if (busy) notice = null
   else if (omen && compact && expanded !== 'omen') notice = <Chip id="omen" text={`${ui.labels.content('title.omens').name}: ${ui.labels.content(`omen.${world.get<ChoiceState>(CHOICES_ID)?.pending}`).name}`} onOpen={setExpanded} />
-  else if (omen) notice = <ChoiceNotice option={(id, o) => t.world.omens[id as keyof typeof t.world.omens][o]} />
+  else if (omen) notice = <ChoiceNotice option={omenText} />
   else {
     const hint = pickHint(HINTS, (id) => hintsSeen.has(id), world)
     const text = hint ? ui.labels.content(`hint.${hint.id}`) : null

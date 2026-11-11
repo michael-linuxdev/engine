@@ -90,6 +90,8 @@ export const engineEn: EngineStrings = {
     noneAffordable: 'Nothing affordable right now',
   },
   welcome: {
+    afford: 'You can afford these now:',
+    later: 'Later',
     title: 'Welcome back',
     away: (time) => `You were away for ${time}.`,
     gained: (amount) => `Meanwhile: +${amount}`,
@@ -215,6 +217,7 @@ export const engineEn: EngineStrings = {
     privacyPage: 'Privacy policy as a page',
   },
   live: {
+    coachStep: (n: string, total: string) => `Step ${n} of ${total}`,
     morePills: (n: string) => `${n} more`,
     claim: 'Collect',
     claimed: 'Collected',

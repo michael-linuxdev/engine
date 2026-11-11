@@ -77,8 +77,8 @@ Ausbau-Karte (klein, hell, Ladebalken am Knopf, „Noch … fehlt“, Ertragsvor
 
 | # | Referenz | Lichtwarte | Wirkung |
 |---|---|---|---|
-| 7.1 | Das Willkommens-Fenster kommt erst ab 5 Minuten. Darunter liegt nur ein Einsammeln-Knopf auf der Karte. | Das Fenster kommt schon ab 15 Sekunden. | A |
-| 7.2 | Das Fenster zeigt, was inzwischen fertig ist, bis zu drei jetzt bezahlbare Bereiche zum Antippen und „Später“. | Nur Dauer und Ertrag. | B |
+| 7.1 | Das Willkommens-Fenster kommt erst ab 5 Minuten. Darunter liegt nur ein Einsammeln-Knopf auf der Karte. | Das Fenster kommt schon ab 15 Sekunden. | erledigt |
+| 7.2 | Das Fenster zeigt, was inzwischen fertig ist, bis zu drei jetzt bezahlbare Bereiche zum Antippen und „Später“. | Nur Dauer und Ertrag. | erledigt |
 
 ## 8. Tägliches (Wacht)
 
@@ -112,9 +112,9 @@ Ausbau-Karte (klein, hell, Ladebalken am Knopf, „Noch … fehlt“, Ertragsvor
 
 | # | Referenz | Lichtwarte | Wirkung |
 |---|---|---|---|
-| 11.1 | Der Einstieg hebt sein Ziel hervor (Platz, Tab, Knopf), zeigt „Schritt 2 von 6“, hat einen Aktions-Knopf und weicht dem Ziel aus. | Titel, Text, „Überspringen“. | A |
-| 11.2 | Hinweise warten, solange ein Fenster, eine Meldung oder die Zeremonie läuft, und stehen neben dem, was sie erklären. | Eine Marke unter der Kopfzeile, ohne Rücksicht auf Laufendes. | C |
-| 11.3 | Omen nennen die Folge in Ertrag für diesen Stand und melden danach das Ergebnis. | Nur Faktoren („×1,2 oder ×0,75“), keine Ergebnis-Meldung. | B |
+| 11.1 | Der Einstieg hebt sein Ziel hervor (Platz, Tab, Knopf), zeigt „Schritt 2 von 6“, hat einen Aktions-Knopf und weicht dem Ziel aus. | Titel, Text, „Überspringen“. | erledigt |
+| 11.2 | Hinweise warten, solange ein Fenster, eine Meldung oder die Zeremonie läuft, und stehen neben dem, was sie erklären. | Eine Marke unter der Kopfzeile, ohne Rücksicht auf Laufendes. | teils: Hinweise warten, solange ein Fenster offen ist; sie stehen weiter unter der Kopfzeile |
+| 11.3 | Omen nennen die Folge in Ertrag für diesen Stand und melden danach das Ergebnis. | Nur Faktoren („×1,2 oder ×0,75“), keine Ergebnis-Meldung. | erledigt |
 
 ## 12. Sichern und Erinnern
 

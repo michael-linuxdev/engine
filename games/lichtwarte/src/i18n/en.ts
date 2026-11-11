@@ -59,6 +59,7 @@ export const stringsEn: Strings = {
   },
   branches: { glow: 'Glow', watch: 'Watch', setout: 'Setting out', night: 'Long Night', ages: 'Ages' },
   play: {
+    collect: (amount: string) => `+${amount}`,
     best: 'Best buy',
     toStar: (n: string) => `${n} to ★`,
     nextUp: (pct: string) => `Up next, ${pct} % reached`,
@@ -79,6 +80,7 @@ export const stringsEn: Strings = {
   chronicle: storyEn.chronicle,
   fenno: storyEn.fenno,
   ftue: {
+    act: { welcome: 'Open the chronicle', build: 'Open the herb cottage', unlock: 'Open the woodshed', prestige: 'To the Moonturn' },
     skip: 'Skip',
     next: 'Next',
     steps: {
@@ -87,7 +89,7 @@ export const stringsEn: Strings = {
       burst: { title: 'Spark Call', body: 'Call the sparks: they bring Glimmer right away.' },
       unlock: { title: 'Clear the wilds', body: 'With enough Glimmer you clear the woodshed.' },
       offline: { title: 'Even while you are away', body: 'The watch keeps glowing. Come back later and collect.' },
-      prestige: { title: 'The Moonturn', body: 'Under “New start” you can see how close the first Moonturn is.' },
+      prestige: { title: 'The Moonturn', body: 'Under “Moonturn” you can see how close the first Moonturn is.' },
     },
   },
   ceremony: storyEn.ceremony,
@@ -176,6 +178,8 @@ export const stringsEn: Strings = {
     },
   },
   world: {
+    omenNow: (per: string) => `For you right now: ${per}.`,
+    omenNowRisk: (win: string, lose: string) => `For you right now: ${win} or ${lose}.`,
     tab: 'Collection',
     visitorHere: (name) => `${name} is visiting!`,
     guestThanks: (name, gift) => `${name}: ${gift}`,

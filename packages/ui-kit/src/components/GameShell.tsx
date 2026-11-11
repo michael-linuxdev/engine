@@ -56,6 +56,10 @@ export interface GameShellProps<S extends EngineStrings> {
   onPrestige?: (layer: string, payout: number) => void
   installArt?: ReactNode
   welcomeArt?: ReactNode
+  /** Shown in the welcome window below the income (what got ready meanwhile). */
+  welcomeExtra?: ReactNode
+  /** The player picked an affordable building in the welcome window. */
+  onWelcomePick?: (producer: string) => void
   prestigeArt?: (layer: string) => ReactNode
   /** Open a named overlay from outside (FTUE …). */
   openRef?: (open: (id: string) => void) => void
@@ -167,7 +171,7 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
             {testPhase ? <TestPhaseNotice onDone={(record) => {
                   saveFlags({ ...flags, testPhaseOk: true, record })
                   playtest?.setEnabled(record)
-                }} /> : <WelcomeBack art={p.welcomeArt} />}
+                }} /> : <WelcomeBack art={p.welcomeArt} extra={p.welcomeExtra} onPick={p.onWelcomePick} />}
             <SaveSheet open={overlay === 'save'} onClose={close} prefix={p.backup.prefix} app={p.rt.def.id} keys={p.backup.keys} fileName={p.backup.fileName} />
             <SettingsSheet open={overlay === 'settings'} onClose={close} version={p.version} playtest={playtest} />
             <LegalSheet open={overlay === 'legal'} onClose={close} imprint={p.legal?.imprint?.()} privacyUrl={p.legal?.privacyUrl} />
