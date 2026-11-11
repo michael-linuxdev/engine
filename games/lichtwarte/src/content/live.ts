@@ -137,10 +137,12 @@ export const STAR_WHEEL: WheelConfig = {
 /** Systeme öffnen sich nach und nach (bleiben offen). */
 export const FEATURES: FeatureDef[] = [
   { id: 'watch', when: (w) => ownedOf(w, 'kraeuterkate') >= 10 },
-  { id: 'events', when: (w) => turns(w) >= 1 },
-  { id: 'festivals', when: (w) => turns(w) >= 1 },
+  // Gestaffelt: etwa ein neues System je Mondwende statt sechs auf einmal (Lückenliste 1.2).
+  // Bereits freigeschaltete Systeme bleiben bestehenden Spielständen erhalten (die Liste ist gespeichert).
+  { id: 'events', when: (w) => turns(w) >= 2 },
+  { id: 'festivals', when: (w) => turns(w) >= 3 },
   { id: 'wheel', when: (w) => turns(w) >= 1 },
-  { id: 'trials', when: (w) => turns(w) >= 5 },
+  { id: 'trials', when: (w) => turns(w) >= 6 },
   // Der Markt steht von Anfang an offen (wie in der Referenz): Tagesgeschenk, Stile und Testgeld sollen sofort zu finden sein
   { id: 'market', when: () => true },
 ]

@@ -10,7 +10,8 @@ import type { EngineStrings } from './i18n/de'
 export interface UiLabels {
   currency(id: string): string
   producer(id: string): { name: string; blurb: string }
-  layer(id: string): { name: string; action: string; blurb: string }
+  /** `keeps` / `loses`: short lists of what a run of this layer leaves and takes (optional). */
+  layer(id: string): { name: string; action: string; blurb: string; keeps?: readonly string[]; loses?: readonly string[] }
   metaItem(id: string): { name: string; blurb: string; effect(rank: number): string }
   metaBranch(id: string): string
   /** Effect breakdown label for a labelKey (fallback: the key). */

@@ -13,11 +13,11 @@ Ausbau-Karte (klein, hell, Ladebalken am Knopf, „Noch … fehlt“, Ertragsvor
 
 | # | Referenz | Lichtwarte | Wirkung |
 |---|---|---|---|
-| 1.1 | Immer genau 4 Tabs. Neue Systeme kommen als Kachel ins Menü, mit „Neu“ bis zum ersten Öffnen. | Die Leiste wächst auf bis zu 8 Knöpfe (Archiv, Wacht, Tal, Lande kommen dazu). Kein „Neu“. | A |
-| 1.2 | Etwa ein neues System je Sitzung. | Nach der ersten Mondwende öffnen sechs Systeme auf einmal. | A |
-| 1.3 | Der Neubeginn-Tab enthält alles dazu: Fortschritt, Helfer, Meta-Laden, Herausforderungen, höhere Schichten, mit Sprungknöpfen und fester Leiste für den Knopf. | Neubeginn zeigt nur die Schichten. Archiv ist ein eigener Tab, Prüfungen stehen in der Wacht. | A |
-| 1.4 | Menü oben „Bald fertig“ (laufende Zeiten), dann Kacheln der Systeme, darunter ruhige Zeilen (Sichern, Rechtliches, Einstellungen). | Vier Kacheln: Chronik, Sichern, Einstellungen, Rechtliches. | B |
-| 1.5 | Tabs heißen in der Sprache des Spiels. | „Spiel“ und „Neubeginn“ sind Engine-Wörter. | C |
+| 1.1 | Immer genau 4 Tabs. Neue Systeme kommen als Kachel ins Menü, mit „Neu“ bis zum ersten Öffnen. | Die Leiste wächst auf bis zu 8 Knöpfe (Archiv, Wacht, Tal, Lande kommen dazu). Kein „Neu“. | erledigt |
+| 1.2 | Etwa ein neues System je Sitzung. | Nach der ersten Mondwende öffnen sechs Systeme auf einmal. | erledigt |
+| 1.3 | Der Neubeginn-Tab enthält alles dazu: Fortschritt, Helfer, Meta-Laden, Herausforderungen, höhere Schichten, mit Sprungknöpfen und fester Leiste für den Knopf. | Neubeginn zeigt nur die Schichten. Archiv ist ein eigener Tab, Prüfungen stehen in der Wacht. | erledigt |
+| 1.4 | Menü oben „Bald fertig“ (laufende Zeiten), dann Kacheln der Systeme, darunter ruhige Zeilen (Sichern, Rechtliches, Einstellungen). | Vier Kacheln: Chronik, Sichern, Einstellungen, Rechtliches. | erledigt |
+| 1.5 | Tabs heißen in der Sprache des Spiels. | „Spiel“ und „Neubeginn“ sind Engine-Wörter. | erledigt |
 
 ## 2. Talkarte
 
@@ -66,12 +66,12 @@ Ausbau-Karte (klein, hell, Ladebalken am Knopf, „Noch … fehlt“, Ertragsvor
 
 | # | Referenz | Lichtwarte | Wirkung |
 |---|---|---|---|
-| 6.1 | Vor dem Knopf: Zeit bis zur Schwelle, „in 10 Minuten wären es Y“, Kästen „Bleibt“ und „Geht“. Der Knopf nennt den Lohn. | Balken, Lohn, ein allgemeiner Satz. Tester der Referenz öffneten den Tab 15-mal ohne Abschluss, bevor es die Vorschau gab. | A |
-| 6.2 | Punkt am Tab, wenn bereit oder im Meta-Laden etwas kaufbar ist. | Fehlt. | B |
-| 6.3 | Höhere Schichten erst nach zweitem Tippen. | Lange Nacht und Zeitalter starten beim ersten Tipp. | B |
+| 6.1 | Vor dem Knopf: Zeit bis zur Schwelle, „in 10 Minuten wären es Y“, Kästen „Bleibt“ und „Geht“. Der Knopf nennt den Lohn. | Balken, Lohn, ein allgemeiner Satz. Tester der Referenz öffneten den Tab 15-mal ohne Abschluss, bevor es die Vorschau gab. | erledigt |
+| 6.2 | Punkt am Tab, wenn bereit oder im Meta-Laden etwas kaufbar ist. | Fehlt. | erledigt |
+| 6.3 | Höhere Schichten erst nach zweitem Tippen. | Lange Nacht und Zeitalter starten beim ersten Tipp. | erledigt |
 | 6.4 | Zeremonie in drei Phasen; die letzte nennt Lohn und „neu frei“, das Glücksrad läuft darin mit. Danach öffnet sich das empfohlene erste Bauwerk. | Szene, danach nacheinander drei Fenster (Chronik, Sternenrad, Sternbild). Kein „neu frei“, kein Einstieg danach. | B |
 | 6.5 | Jahreskarten zeigen je Karte, was sie für **diesen** Garten bringt, und es gibt „ohne Karte weiter“. | Sternbilder ohne Vorschau. Wer das Fenster schließt, bekommt ungefragt das erste. | B |
-| 6.6 | Meta-Laden: Text über die ganze Breite, Knopf darunter rechts; bei Rang 0 „Noch nicht gekauft“; das nächste freischaltbare Teil oben mit Balken. | Text und Knopf nebeneinander; bei Rang 0 steht „+0 % Glimmer“. | C |
+| 6.6 | Meta-Laden: Text über die ganze Breite, Knopf darunter rechts; bei Rang 0 „Noch nicht gekauft“; das nächste freischaltbare Teil oben mit Balken. | Text und Knopf nebeneinander; bei Rang 0 steht „+0 % Glimmer“. | erledigt |
 
 ## 7. Rückkehr
 

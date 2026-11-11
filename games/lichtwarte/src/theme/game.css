@@ -1055,3 +1055,23 @@ body {
   background: var(--gold);
   box-shadow: 0 0 12px 4px var(--gold);
 }
+
+/* Menü: „Bald fertig“ über den Kacheln */
+.lw-soon {
+  margin-bottom: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-m);
+  background: var(--parchment-edge);
+}
+.lw-soon ul {
+  margin: var(--space-1) 0 0;
+  padding-left: 1.1em;
+}
+
+/* Menü: ruhige Zeilen (Sichern, Einstellungen, Rechtliches) mit kleinem, dunklem Zeichen */
+.lw-app .ek-menu--rows .ek-menu__icon .lw-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--gold-deep);
+  filter: none;
+}

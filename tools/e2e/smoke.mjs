@@ -23,6 +23,8 @@ const E = B.E
 const server = await serve('dist', 4300 + Math.floor(Math.random() * 400))
 const URL = server.url + G.path
 const errors = []
+/** Label of the play tab: the game's own word if it has one. */
+const playLabel = (S) => S.app?.tabPlay ?? S.nav.play
 const phone = { ...devices['iPhone 13'], reducedMotion: 'reduce', locale: lang === 'en' ? 'en-US' : 'de-DE' }
 
 /** Gespeicherter Stand für einen Abschnitt (Spielstand per localStorage vor dem Laden). */
@@ -151,7 +153,9 @@ try {
     if (G.afterPrestige) await G.afterPrestige(p)
     const count = await p.evaluate(() => window.__engine.get().modules.prestige.layers[0].count)
     assert(count === 1, 'Prestige gezählt')
-    await p.getByTestId('tab-shop').click()
+    // The meta shop is its own tab or a section of the new-beginning tab
+    if (await p.getByTestId('tab-shop').count()) await p.getByTestId('tab-shop').click()
+    else await p.getByTestId('tab-prestige').click()
     const item = def.metaShop.find((i) => i.unlock?.tip)
     const metaBtn = p.getByTestId(`meta-buy-${item.id}`)
     assert(await metaBtn.isEnabled(), `Meta-Gegenstand ${item.id} kaufbar`)
@@ -188,17 +192,17 @@ try {
   {
     const { ctx, p } = await page(browser, null)
     await p.goto(URL + '?installGate=0')
-    assert((await p.getByTestId('tab-play').innerText()).includes(T.nav.play), 'Startsprache folgt dem Browser')
+    assert((await p.getByTestId('tab-play').innerText()).includes(playLabel(T)), 'Startsprache folgt dem Browser')
     await p.getByTestId('menu').click()
     await p.getByTestId('menu-settings').click()
     await p.getByTestId(`lang-${lang === 'en' ? 'de' : 'en'}`).click()
     await p.keyboard.press('Escape')
-    await p.getByTestId('tab-play').getByText(other.nav.play).waitFor()
+    await p.getByTestId('tab-play').getByText(playLabel(other)).waitFor()
     assert(await p.evaluate(() => document.documentElement.lang) === (lang === 'en' ? 'de' : 'en'), 'html lang wechselt live')
     await p.reload()
-    await p.getByTestId('tab-play').getByText(other.nav.play).waitFor()
+    await p.getByTestId('tab-play').getByText(playLabel(other)).waitFor()
     await p.goto(URL + `?installGate=0&lang=${lang}`)
-    await p.getByTestId('tab-play').getByText(T.nav.play).waitFor()
+    await p.getByTestId('tab-play').getByText(playLabel(T)).waitFor()
     // 6 — Escape schließt das oberste Fenster
     await p.getByTestId('menu').click()
     await p.getByTestId('menu-sheet').waitFor()
