@@ -8,8 +8,8 @@ import { realmsEn } from '../src/i18n/realms.en'
 import { registerRegions, simulate } from '../../../tools/balance/sim'
 
 describe('Lande', () => {
-  it('74 Lande (+ Talkarte = 75) mit je 10 Bereichen und Texten de/en', () => {
-    expect(REALM_IDS).toHaveLength(74)
+  it('99 Lande (+ Talkarte = 100) mit je 10 Bereichen und Texten de/en', () => {
+    expect(REALM_IDS).toHaveLength(99)
     for (const id of REALM_IDS) {
       expect(REALM_AREAS[id]).toHaveLength(10)
       for (const a of REALM_AREAS[id]) {

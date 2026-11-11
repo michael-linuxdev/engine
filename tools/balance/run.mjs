@@ -1,6 +1,8 @@
 /**
  * npm run balance -- <spiel> <profil> <stunden>
  *   SUMMARY=1  gekürzte Ausgabe + Zusammenfassung
+ *   PLAY=1     das Spiel spielt seine eigenen Systeme mit (export `simPlay` aus src/game.ts); ändert die Taktung,
+ *              deshalb nicht zusammen mit CHECK
  *   CHECK=1    Zielkorridore des Spiels prüfen (export `balanceTargets` aus src/game.ts)
  *   BAL_<pfad>=<wert>  Stellschraube überschreiben, Punkt als __ (BAL_offline__softHours=10)
  */
@@ -16,7 +18,8 @@ writeFileSync(entry, `export * from '../../tools/balance/entry.ts'\nexport * as 
 const sim = await loadTs(entry)
 const def = sim.withEnv(sim.game.game, process.env)
 if (sim.game.REALMS) sim.registerRegions(def, sim.game.REALMS.regions)
-const r = sim.simulate(def, { profile, hours: Number(hours) })
+const play = process.env.PLAY && sim.game.simPlay ? sim.game.simPlay() : undefined
+const r = sim.simulate(def, { profile, hours: Number(hours), play })
 console.log(`${slug} · ${profile} · ${hours} h`)
 console.log(sim.formatResult(r, !!process.env.SUMMARY))
 if (process.env.CHECK) {

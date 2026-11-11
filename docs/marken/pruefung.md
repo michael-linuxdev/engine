@@ -39,6 +39,7 @@ Der Store-Start ist gesperrt, solange ein Name nicht `frei` ist (`DISTRIBUTION =
 | starWindow | Sternfenster | Star Window | System | 2026-11-09 | Websuche | Websuche: kein Treffer | ungeprüft |
 | starWheel | Sternenrad | Star Wheel | System | 2026-11-09 | Websuche | Websuche: kein Spiel; ersetzt das geschützte TV-Format für das Rad | ungeprüft |
 | fireRoad | Feuerstraße | Road of Fires | System | 2026-11-11 | Websuche | „Feuerstraße“: kein Spiel, keine Marke gefunden. Englisch nicht „Fire Road“ (kleines Tower-Defense-Spiel auf Steam und ein Browser-Läufer dieses Namens); „Road of Fires“: kein Treffer. | ungeprüft |
+| skyChart | Himmelskarte | Sky Chart | System | 2026-11-11 | Websuche | Gattungswort (Sternkarte). Kommt als Beschreibung vieler Sternen-Apps vor, kein Spiel dieses Namens gefunden. | ungeprüft |
 | festivalsOfLight | Lichterfeste | Festivals of Light | System | 2026-11-09 | — | Gattungsausdruck; kein Bezug zu einem bestimmten religiösen Fest | ungeprüft |
 | festHoarfrost | Raureifnächte | Hoarfrost Nights | Fest | 2026-11-09 | — | Gattungswörter | ungeprüft |
 | festSnowdrop | Schneeglöckchentage | Snowdrop Days | Fest | 2026-11-09 | — | Gattungswörter | ungeprüft |

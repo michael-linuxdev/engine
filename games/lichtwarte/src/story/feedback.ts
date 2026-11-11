@@ -89,6 +89,8 @@ export const feedback: FeedbackMap = (e: EngineEvent, ui) => {
       const def = FIRE_ROAD.list.find((l) => l.id === str(e.id))
       return def ? toast(t.fx.linkLit(name(`realm.${def.a}`), name(`realm.${def.b}`))) : null
     }
+    case 'chart.completed':
+      return toast(t.fx.chartDone(name(`chart.${str(e.group)}`)))
     case 'weekly.claimed':
       return toast(t.fx.weekly)
     default:

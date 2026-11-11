@@ -15,7 +15,7 @@
  */
 import {
   applyOffline, bestBuy, bulkCost, canBuyMeta, createManualClock, createState, dispatch, layerStatus, metaCost, payoutAtGate, prestigeState, rankOf, tick,
-  view, type EngineState, type GameDefinition, type ProducerDef,
+  view, type EngineState, type GameDefinition, type ProducerDef, type WorldView,
 } from '@engine/core'
 
 export type Profile = 'engaged' | 'regular' | 'casual'
@@ -29,6 +29,8 @@ export interface SimOptions {
   prestigeAt?: number
   /** Decision interval while playing (ms). */
   stepMs?: number
+  /** The game's own decisions, run after the generic ones on every active step. */
+  play?: (api: SimApi) => void
 }
 
 export interface SimEvent {
@@ -36,7 +38,8 @@ export interface SimEvent {
   at: number
   /** Active minutes played until then. */
   active: number
-  kind: 'unlock' | 'prestige' | 'level' | 'region'
+  /** `extra`: recorded by the game's own play function (pages, links, voyages …). */
+  kind: 'unlock' | 'prestige' | 'level' | 'region' | 'extra'
   id: string
   detail?: string
 }
@@ -90,6 +93,17 @@ export function registerRegions(def: GameDefinition, regions: readonly SimRegion
 function tooExpensive(a: SimRegion['areas'][number], r: SimRegionSlice): boolean {
   if (a.baseCost === undefined || a.costScale === undefined || a.baseRate === undefined || r.thrift !== 0 || r.balance === undefined || !r.owned) return false
   return bulkCost(a as ProducerDef, r.owned[a.id] ?? 0, 1) > r.balance
+}
+
+/** What a game's own play function may do each active step (systems the generic loop does not know). */
+export interface SimApi {
+  act: (module: string, type: string, payload?: unknown) => boolean
+  state: () => EngineState
+  world: () => WorldView
+  /** Record an `extra` event (shown in the log, usable for gap checks). */
+  record: (id: string, detail?: string) => void
+  /** Wall-clock minutes since the start. */
+  minutes: () => number
 }
 
 export function simulate(def: GameDefinition, opts: SimOptions): SimResult {
@@ -171,6 +185,7 @@ export function simulate(def: GameDefinition, opts: SimOptions): SimResult {
         break
       }
     }
+    opts.play?.({ act, state: () => s, world: () => view(def, s), record: (id, detail) => record('extra', id, detail), minutes })
     for (const p of def.producers) {
       const n = (s.modules.producers as { owned: Record<string, number> }).owned[p.id] ?? 0
       if (n > 0 && !seen.has(p.id)) {

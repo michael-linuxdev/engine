@@ -8,7 +8,10 @@ import { REALM_IDS } from '../content/realms'
 
 /** Die Hochlande (Welle 5, ab Land 51) bekommen einen eigenen Rahmen: steile Gipfel mit Schnee, Wolkenband, steiniger Boden. */
 const HIGHLAND_FROM = 49
-const HIGHLANDS: ReadonlySet<string> = new Set(REALM_IDS.slice(HIGHLAND_FROM))
+const COAST_FROM = 74
+const HIGHLANDS: ReadonlySet<string> = new Set(REALM_IDS.slice(HIGHLAND_FROM, COAST_FROM))
+/** Die Fernen Küsten (Welle 6, ab Land 76): Meer bis zum Horizont, ferne Landzungen, Sandstrand. */
+const COASTS: ReadonlySet<string> = new Set(REALM_IDS.slice(COAST_FROM))
 
 const line = { stroke: P.outline, strokeWidth: STROKE.fine, strokeLinejoin: 'round' as const }
 
@@ -766,6 +769,273 @@ function Landmark({ id, m }: { id: string; m: Mood }) {
           <path d="M22 66 v16 M26 66 v16" stroke={P.woodDark} strokeWidth={STROKE.fine} />
         </g>
       )
+    // ── Welle 6 (76–100): die Fernen Küsten ──
+    case 'langerAbstieg':
+      return (
+        <g>
+          <path d="M0 40 L70 88 H0 Z" fill={P.stone} {...line} />
+          <path d="M6 48 l18 8 l-12 8 l22 8 l-14 8 l20 6" fill="none" stroke={P.paper} strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M30 70 h8 v-4 h-8 z M38 66 l2 -3 M32 70 v3 M36 70 v3" fill={P.woodLight} {...line} />
+        </g>
+      )
+    case 'tropfenderWald':
+      return (
+        <g>
+          {[[18, 82, 30], [38, 84, 36], [60, 82, 32], [80, 85, 28]].map(([x, y, h]) => (
+            <g key={x}>
+              <path d={`M${x} ${y} v-${h}`} stroke={P.woodDark} strokeWidth={3} />
+              <ellipse cx={x} cy={y - h} rx={13} ry={9} fill={P.grassDark} {...line} />
+              <path d={`M${x - 6} ${y - h + 8} v5 M${x + 5} ${y - h + 8} v7`} stroke={P.waterLight} strokeWidth={1.2} strokeLinecap="round" />
+            </g>
+          ))}
+          <ellipse cx={50} cy={50} rx={46} ry={5} fill={P.mist} opacity={0.5} />
+        </g>
+      )
+    case 'salzterrassen':
+      return (
+        <g>
+          {[0, 1, 2, 3].map((i) => (
+            <g key={i}>
+              <path d={`M${10 + i * 6} ${84 - i * 7} h${70 - i * 4} l4 -5 h-${70 - i * 4} z`} fill={P.waterLight} opacity={0.85} {...line} />
+            </g>
+          ))}
+          {[[30, 60], [44, 58], [58, 60]].map(([x, y]) => (
+            <path key={x} d={`M${x - 4} ${y} l4 -7 l4 7 z`} fill={P.white} {...line} />
+          ))}
+        </g>
+      )
+    case 'gezeitenmuehle':
+      return (
+        <g>
+          <rect x={30} y={52} width={30} height={26} fill={P.stoneLight} {...line} />
+          <polygon points="27,52 45,40 63,52" fill={P.roof} {...line} />
+          <circle cx={66} cy={72} r={10} fill="none" stroke={P.woodDark} strokeWidth={STROKE.main} />
+          <path d="M66 62 v20 M56 72 h20 M59 65 l14 14 M73 65 l-14 14" stroke={P.woodDark} strokeWidth={STROKE.fine} />
+          <rect x={40} y={60} width={7} height={8} fill={P.windowDark} {...line} />
+        </g>
+      )
+    case 'weisseKlippen':
+      return (
+        <g>
+          <path d="M0 86 V46 l20 -6 l14 4 l10 -6 l14 6 l6 42 z" fill={P.white} {...line} />
+          <path d="M10 56 h30 M6 68 h44 M14 78 h40" stroke={P.snowShade} strokeWidth={1} />
+          <path d="M70 86 l2 -16 l4 -2 l3 18 z" fill={P.white} {...line} />
+        </g>
+      )
+    case 'bootsfriedhof':
+      return (
+        <g>
+          <path d="M16 80 q18 10 40 0 l-4 -8 h-32 z" fill={P.woodDark} {...line} />
+          {[24, 30, 36, 42, 48].map((x) => (
+            <path key={x} d={`M${x} 72 q2 -12 0 -16`} fill="none" stroke={P.woodLight} strokeWidth={STROKE.fine * 1.5} />
+          ))}
+          <path d="M60 84 l18 -10 l4 4 l-16 10 z" fill={P.woodLight} {...line} />
+          <rect x={68} y={60} width={5} height={7} fill={P.glow} {...line} />
+        </g>
+      )
+    case 'lotsenturm':
+      return (
+        <g>
+          <path d="M50 84 l2 -40 h8 l2 40 z" fill={P.white} {...line} />
+          <path d="M50 70 h12 M51 56 h10" stroke={P.ember} strokeWidth={4} />
+          <rect x={48} y={38} width={16} height={6} fill={P.metal} {...line} />
+          <polygon points="48,38 56,30 64,38" fill={P.roofDark} {...line} />
+          <path d="M64 41 l14 -3" stroke={P.woodDark} strokeWidth={STROKE.fine * 1.5} />
+        </g>
+      )
+    case 'seegraswiesen':
+      return (
+        <g>
+          <path d="M0 76 Q60 68 120 78 V90 H0 Z" fill={P.grassDark} opacity={0.8} />
+          {[14, 26, 38, 50, 62, 74].map((x, i) => (
+            <path key={x} d={`M${x} ${82 - (i % 2) * 2} q-3 -8 0 -12 M${x + 3} ${82 - (i % 2) * 2} q3 -7 1 -11`} fill="none" stroke={P.grassLight} strokeWidth={1.4} strokeLinecap="round" />
+          ))}
+          <path d="M44 66 h16 v-8 h-16 z M42 58 h20 l-3 -5 h-14 z M46 66 v8 M58 66 v8" fill={P.thatch} {...line} />
+        </g>
+      )
+    case 'glockentonne':
+      return (
+        <g>
+          <path d="M44 76 l4 -10 h12 l4 10 z" fill={P.ember} {...line} />
+          <path d="M48 66 l6 -18 l6 18" fill="none" stroke={P.metal} strokeWidth={STROKE.main} />
+          <path d="M51 56 q3 -4 6 0 v5 h-6 z" fill={P.glow} {...line} />
+          <path d="M34 78 q10 -4 20 0 t20 0" fill="none" stroke={P.white} strokeWidth={1.4} opacity={0.8} />
+        </g>
+      )
+    case 'netzmacherdorf':
+      return (
+        <g>
+          <rect x={14} y={62} width={18} height={16} fill={P.woodLight} {...line} />
+          <polygon points="12,62 23,53 34,62" fill={P.roofDark} {...line} />
+          <rect x={64} y={60} width={18} height={18} fill={P.woodLight} {...line} />
+          <polygon points="62,60 73,51 84,60" fill={P.roof} {...line} />
+          <path d="M32 58 q16 12 32 0" fill="none" stroke={P.woodDark} strokeWidth={STROKE.fine} />
+          <path d="M34 60 l6 12 M40 63 l4 10 M46 64 l2 10 M52 63 l-2 10 M58 61 l-4 12 M36 66 h22 M39 71 h16" stroke={P.thatchDark} strokeWidth={0.8} />
+        </g>
+      )
+    case 'sturmhafen':
+      return (
+        <g>
+          <path d="M6 74 h44 v6 h-44 z M50 74 q10 -12 26 -12 v6 q-12 0 -20 12 z" fill={P.stoneDark} {...line} />
+          <path d="M24 72 l2 -16 h3 l2 16 z" fill={P.woodDark} {...line} />
+          <path d="M27 56 l10 6 l-10 4 z" fill={P.paper} {...line} />
+          <path d="M14 84 q6 -5 12 0 t12 0 t12 0" fill="none" stroke={P.white} strokeWidth={1.4} opacity={0.8} />
+        </g>
+      )
+    case 'leuchtschiff':
+      return (
+        <g>
+          <path d="M20 76 q30 12 62 0 l-6 -9 h-50 z" fill={P.ember} {...line} />
+          <path d="M50 67 v-30" stroke={P.woodDark} strokeWidth={STROKE.main} />
+          <rect x={46} y={32} width={8} height={7} fill={P.glowHot} {...line} />
+          <circle cx={50} cy={35} r={10} fill={P.glowSoft} opacity={0.4} />
+          <rect x={36} y={60} width={12} height={7} fill={P.white} {...line} />
+        </g>
+      )
+    case 'muschelkalkofen':
+      return (
+        <g>
+          <path d="M34 82 v-18 q0 -16 16 -16 q16 0 16 16 v18 z" fill={P.white} {...line} />
+          <path d="M44 82 v-10 q6 -8 12 0 v10 z" fill={P.windowDark} {...line} />
+          <path d="M46 80 q4 -8 8 0 z" fill={P.glowHot} />
+          <circle cx={50} cy={76} r={8} fill={P.glowSoft} opacity={0.4} />
+          <ellipse cx={22} cy={82} rx={10} ry={4} fill={P.paper} {...line} />
+          <path d="M50 46 q-3 -6 1 -10" fill="none" stroke={P.mist} strokeWidth={1.8} strokeLinecap="round" />
+        </g>
+      )
+    case 'wattenweg':
+      return (
+        <g>
+          <path d="M0 74 Q60 68 120 76 V90 H0 Z" fill={P.stone} opacity={0.5} />
+          {[14, 30, 46, 62, 78].map((x, i) => (
+            <g key={x}>
+              <path d={`M${x} ${84 - i * 2} v-12`} stroke={P.woodDark} strokeWidth={STROKE.fine * 1.5} />
+              <path d={`M${x} ${72 - i * 2} l-3 -4 M${x} ${72 - i * 2} l3 -4 M${x} ${72 - i * 2} v-5`} stroke={P.thatchDark} strokeWidth={0.9} />
+            </g>
+          ))}
+          <path d="M8 86 q40 -8 80 -12" fill="none" stroke={P.paper} strokeWidth={1.4} strokeDasharray="2 3" />
+        </g>
+      )
+    case 'vogelinsel':
+      return (
+        <g>
+          <path d="M22 80 q8 -22 26 -24 q20 2 28 24 z" fill={P.stone} {...line} />
+          <rect x={44} y={50} width={10} height={8} fill={P.woodLight} {...line} />
+          <polygon points="42,50 49,44 56,50" fill={P.roofDark} {...line} />
+          {[[30, 36], [44, 30], [62, 34], [74, 42], [20, 46]].map(([x, y]) => (
+            <path key={x} d={`M${x - 4} ${y} q2 -3 4 0 q2 -3 4 0`} fill="none" stroke={P.outline} strokeWidth={1.2} strokeLinecap="round" />
+          ))}
+        </g>
+      )
+    case 'versunkenesDorf':
+      return (
+        <g>
+          <path d="M0 76 Q60 70 120 78 V90 H0 Z" fill={P.stone} opacity={0.45} />
+          <path d="M46 80 v-26 h10 v26 z" fill={P.stoneLight} {...line} />
+          <polygon points="45,54 51,40 57,54" fill={P.slate} {...line} />
+          <path d="M49 64 h4 v6 h-4 z" fill={P.windowDark} {...line} />
+          <path d="M20 80 h14 M66 82 h18 M26 80 v-4 M72 82 v-5" stroke={P.stoneDark} strokeWidth={STROKE.fine * 1.5} />
+        </g>
+      )
+    case 'hausDerSeekarten':
+      return (
+        <g>
+          <rect x={26} y={50} width={44} height={30} fill={P.woodLight} {...line} />
+          <polygon points="23,50 48,36 73,50" fill={P.slate} {...line} />
+          <rect x={34} y={58} width={28} height={16} fill={P.paper} {...line} />
+          <path d="M38 70 q6 -8 10 -2 t10 -4" fill="none" stroke={P.clothBlue} strokeWidth={1.2} />
+          {[[40, 62], [50, 66], [57, 61]].map(([x, y]) => (
+            <circle key={x} cx={x} cy={y} r={1.2} fill={P.ember} />
+          ))}
+        </g>
+      )
+    case 'walknochenbogen':
+      return (
+        <g>
+          <path d="M34 84 q2 -44 22 -46" fill="none" stroke={P.white} strokeWidth={5} strokeLinecap="round" />
+          <path d="M78 84 q-2 -44 -22 -46" fill="none" stroke={P.white} strokeWidth={5} strokeLinecap="round" />
+          <path d="M34 84 q2 -44 22 -46 M78 84 q-2 -44 -22 -46" fill="none" stroke={P.outline} strokeWidth={0.8} />
+          <path d="M20 86 h72" stroke={P.thatchDark} strokeWidth={1.2} strokeDasharray="3 4" />
+        </g>
+      )
+    case 'strandDerLichter':
+      return (
+        <g>
+          <path d="M0 70 Q60 62 120 72 V90 H0 Z" fill={P.windowDark} opacity={0.6} />
+          {Array.from({ length: 22 }, (_, i) => (
+            <circle key={i} cx={8 + ((i * 37) % 104)} cy={70 + ((i * 13) % 16)} r={i % 3 === 0 ? 1.4 : 0.9} fill={i % 2 ? P.glowSoft : P.waterLight} />
+          ))}
+          <path d="M40 78 q10 5 22 0 l-2 -4 h-18 z" fill={P.woodDark} {...line} />
+        </g>
+      )
+    case 'kompassrose':
+      return (
+        <g>
+          <ellipse cx={52} cy={76} rx={36} ry={10} fill={P.stoneLight} {...line} />
+          <path d="M52 66 l3 10 l-3 10 l-3 -10 z M22 76 l30 -3 l30 3 l-30 3 z" fill={P.stoneDark} stroke={P.outline} strokeWidth={0.6} />
+          <path d="M52 66 l3 10 h-6 z" fill={P.glow} stroke={P.outline} strokeWidth={0.6} />
+          <path d="M30 70 l22 6 M74 70 l-22 6 M30 82 l22 -6 M74 82 l-22 -6" stroke={P.metal} strokeWidth={1} />
+        </g>
+      )
+    case 'nebelhornfelsen':
+      return (
+        <g>
+          <path d="M26 86 q0 -40 26 -44 q22 4 24 44 z" fill={P.stoneDark} {...line} />
+          <ellipse cx={52} cy={62} rx={8} ry={6} fill={P.windowDark} {...line} />
+          <path d="M62 60 q10 -4 18 0 M64 66 q10 -2 20 2" fill="none" stroke={P.white} strokeWidth={1.4} opacity={0.75} strokeLinecap="round" />
+          <ellipse cx={86} cy={62} rx={16} ry={4} fill={P.mist} opacity={0.6} />
+        </g>
+      )
+    case 'flaschenpostbucht':
+      return (
+        <g>
+          <path d="M0 78 Q40 66 90 80 V90 H0 Z" fill={P.paper} opacity={0.55} />
+          {[[24, 80, -20], [44, 76, 15], [62, 82, -35]].map(([x, y, r]) => (
+            <g key={x} transform={`translate(${x} ${y}) rotate(${r})`}>
+              <path d="M-3 0 v-8 q0 -2 1.5 -3 v-3 h3 v3 q1.5 1 1.5 3 v8 z" fill={P.grassLight} opacity={0.85} stroke={P.outline} strokeWidth={0.7} />
+              <rect x={-1.5} y={-7} width={3} height={5} fill={P.paper} />
+            </g>
+          ))}
+          <path d="M70 60 v20 M64 64 h14" stroke={P.woodDark} strokeWidth={STROKE.fine * 1.5} />
+          <path d="M66 64 v7 h3 v-7 M72 64 v9 h3 v-9" fill={P.paper} stroke={P.outline} strokeWidth={0.6} />
+        </g>
+      )
+    case 'alteSternwarte':
+      return (
+        <g>
+          <rect x={36} y={60} width={32} height={22} fill={P.stoneLight} {...line} />
+          <path d="M34 60 q18 -26 36 0 z" fill={P.grass} {...line} />
+          <path d="M52 47 v13" stroke={P.outline} strokeWidth={2.4} />
+          <path d="M52 50 l16 -12" stroke={P.metal} strokeWidth={3.4} strokeLinecap="round" />
+          <rect x={48} y={68} width={8} height={14} fill={P.windowDark} {...line} />
+          <path d="M80 28 l1.2 2.6 l2.8 .5 l-2 2 l.5 2.8 l-2.5 -1.4 l-2.5 1.4 l.5 -2.8 l-2 -2 l2.8 -.5 z" fill={P.glowSoft} />
+        </g>
+      )
+    case 'langerDamm':
+      return (
+        <g>
+          <path d="M0 84 L96 62 l2 4 L0 90 Z" fill={P.stone} {...line} />
+          {[16, 36, 56, 76, 94].map((x, i) => (
+            <g key={x}>
+              <path d={`M${x} ${80 - i * 4.4} v-9`} stroke={P.woodDark} strokeWidth={STROKE.fine * 1.5} />
+              <circle cx={x} cy={70 - i * 4.4} r={1.8} fill={P.glowHot} />
+              <circle cx={x} cy={70 - i * 4.4} r={4.5} fill={P.glowSoft} opacity={0.35} />
+            </g>
+          ))}
+        </g>
+      )
+    case 'warteDerVierStrahlen':
+      return (
+        <g>
+          <path d="M50 84 l3 -36 h10 l3 36 z" fill={P.stoneLight} {...line} />
+          <path d="M49 48 h18 l-2 -7 h-14 z" fill={P.stone} {...line} />
+          <polygon points="51,41 58,32 65,41" fill={P.roof} {...line} />
+          <path d="M58 44 l-34 -10 M58 44 l34 -10 M58 44 l-36 6 M58 44 l36 6" stroke={P.glowSoft} strokeWidth={2.2} opacity={0.55} strokeLinecap="round" />
+          <circle cx={58} cy={44} r={3.5} fill={P.glowHot} />
+          <circle cx={58} cy={44} r={9} fill={P.glowSoft} opacity={0.45} />
+          <rect x={55} y={72} width={6} height={12} fill={P.windowDark} {...line} />
+        </g>
+      )
     default:
       return null
   }
@@ -790,6 +1060,7 @@ export function RealmArt({ id, m }: { id: string; m: Mood }) {
     return `${d} V90 H0 Z`
   }
   const high = HIGHLANDS.has(id)
+  const coast = COASTS.has(id)
   // Hochland: wenige hohe, spitze Gipfel; die Schneekappe folgt derselben Spitze
   const crags = (() => {
     let far = 'M0 52'
@@ -839,7 +1110,19 @@ export function RealmArt({ id, m }: { id: string; m: Mood }) {
         ) : null}
         <circle cx={ox} cy={16} r={15} fill={`url(#${uid}-halo)`} />
         <circle cx={ox} cy={16} r={5} fill={disc} />
-        {high ? (
+        {coast ? (
+          <>
+            <path d={`M0 52 L${20 + vary(rnd, 0, 10)} 46 L${48 + vary(rnd, 0, 8)} 52 Z`} fill={rFar} />
+            <path d={`M${70 + vary(rnd, 0, 10)} 52 L${98 + vary(rnd, 0, 8)} 45 L120 49 V52 Z`} fill={rMid} />
+            <rect x={0} y={52} width={120} height={18} fill={P.water} />
+            <rect x={0} y={52} width={120} height={18} fill={top} opacity={0.35} />
+            <path d="M0 53 H120" stroke={P.white} strokeWidth={1} opacity={0.35} />
+            <path d="M14 58 h18 M52 61 h26 M86 57 h16 M30 65 h20 M74 66 h22" stroke={P.white} strokeWidth={1} opacity={0.35} strokeLinecap="round" />
+            <path d="M0 70 Q60 64 120 72 V90 H0 Z" fill={near} />
+            <path d="M0 70 Q60 64 120 72 V90 H0 Z" fill={P.paper} opacity={0.45} />
+            <path d="M0 70 Q60 64 120 72" fill="none" stroke={P.white} strokeWidth={1.6} opacity={0.5} />
+          </>
+        ) : high ? (
           <>
             <path d={crags.far} fill={rFar} />
             <path d={crags.caps} fill={P.snow} opacity={0.9} />

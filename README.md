@@ -9,7 +9,7 @@ Plan und Stand: [`ROADMAP.md`](./ROADMAP.md) · Arbeitsregeln: [`CLAUDE.md`](./C
 | Pfad | Inhalt |
 |---|---|
 | `packages/engine` (`@engine/core`) | Reines TypeScript: Zustand, Formeln, Module, Effekt-Pipeline, Speicherformat mit Migrationen, Takt. Kein React, kein DOM, keine Systemuhr, kein `Math.random`. |
-| `packages/engine/src/modules/` | Engine-Module mit eigenem Speicher-Ausschnitt: `wallet`, `producers`, `branches`, `progression`, `prestige` (N Schichten), `metaShop`, `offline`, `burst`, `helper`, `surprises` |
+| `packages/engine/src/modules/` | Engine-Module mit eigenem Speicher-Ausschnitt: `wallet`, `producers`, `branches`, `progression`, `prestige` (N Schichten), `metaShop`, `offline`, `burst`, `helper`, `surprises`, dazu Welt- und Langzeit-Module wie `regions`, `voyages`, `links` (Kette von Verbindungen) und `chart` (Karte aus Gruppen von Feldern) |
 | `packages/engine-react` (`@engine/react`) | Runtime/`useEngine` (Laden, Takt, Speichern), i18n-Laufzeit, Prefs, Overlay-Stapel, Install-Gate, Testphase, Datei-Speichern, Einstiegs-Schritte |
 | `packages/ui-kit` (`@engine/ui`) | Neutrale Komponenten (`GameShell`, HUD, Ausbau, Prestige, Meta-Laden, Sicherung, Einstellungen …), Token-Vertrag `styles/tokens.css`, Engine-Texte de/en |
 | `packages/art-kit` (`@engine/art`) | SVG-Werkzeug: Raster, `Place`, Seed-Variation, Stilregeln, Stimmungen, Ausbaustufen, `ArtSheet` |

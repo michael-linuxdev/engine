@@ -1532,3 +1532,19 @@ html:has(.ek-app) body {
   font-weight: 400;
   font-size: 0.9em;
 }
+
+/* Chart: picture of the group beside its name and progress */
+.ek-chart__head {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+.ek-chart__art {
+  flex: none;
+  width: 96px;
+}
+.ek-chart__art svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}

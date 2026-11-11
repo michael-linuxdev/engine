@@ -114,52 +114,13 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 - [x] Späte Taktung bei regular (Tag 35–90): gemessen und nachgestellt. Ab Land 14 steigt der Ertrag der Lande mit (`lateYield`, `lateYieldGrowth`), die Zeitalter-Schwelle wächst mit 3 statt 10. Vorher lagen ab Land 15 sieben bis elf Tage zwischen zwei Landen, und das zweite Zeitalter kam an Tag 71. Jetzt: alle zwei bis drei Tage ein Land, Land 34 an Tag 90, Zeitalter an Tag 28/47/80, kein Loch über 3,5 Tage. Test: `tools/balance/late.test.ts`, Werte: `docs/spiele/lichtwarte/balance.md`.
 - [x] **Ausbauen ohne ×10/Max:** eine Stufe je Tippen, gedrückt Halten baut Stufe um Stufe weiter (Ausbau-Fenster und Lande). Engine: `repeat` am Knopf, `buyModes`/`max` abschaltbar.
 - [x] **Menüs spieliger:** Fenster mit Banner-Kopf, dicke goldene Knöpfe mit Druckpunkt, Pergament-Tafeln, Stufen-Plakette, Wert-Tafeln, Rang-Rauten, Menü als Kacheln mit Zeichen.
-- [ ] Lande 35–50 (Plan: `docs/spiele/lichtwarte/regionen.md`). Bei regular ist Land 34 an Tag 90 offen; danach fehlen neue Lande.
-
-## P10 — Lange Nacht und Zeitalter
-
-- [x] Laden der Langen Nacht: 4 Gegenstände, 41 Ränge. Laden des Zeitalters: 5 Gegenstände ohne echten Deckel. Beide Zweige erscheinen erst, wenn es ihre Währung schon gab.
-- [x] Engine: Ruhezeit je Schicht (`minimum.restMs`, Lange Nacht: 3 Tage) und Rückkehr-Geschenk ab 48 h (`offline.comebackMs`)
-- [x] Chronik mit 20 Seiten (Bauwerke 5–10, Mondwenden 3/5/10, Lehrling, Lange Nacht, Lande, Zeitalter), Rückkehr-Brief. Die Zeremonie läuft für jede Schicht.
-- [x] Taktung bei regular: Lange Nacht an Tag 8, erstes Zeitalter an Tag 28 (Tempo-Test über 35 Tage). Die Mauer-Prüfung läuft getrennt für Tal und Lande.
-
-## P11 — Markt (Attrappen)
-
-- [x] Engine-Modul `market`: 7 Angebote, 8 Talstile (4 + 4 Fest), Bonus-Video mit Pause, Festwoche (5 Stufen, frei + Plus), Zeitsprung (6 h am Tag), Tagesgeschenk, Leuchtöl, Wächterzirkel (×1,1 bis ×1,25). Echtgeld ist aus (`STORE_ENABLED = false`).
-- [x] Testgeld (engine-react `createTestWallet`): 20 € im Monat, eigener Schlüssel, nicht im Spielstand. Das Bonus-Video sperrt in der Testphase 30 oder 60 s.
-- [x] Markt-Tab ab der ersten Mondwende. Talstile tönen die Karte. Preise und Senken: `docs/spiele/lichtwarte/markt.md`.
-
-## P12 — Ton, Ambiente, Playtest-Log, Store
-
-- [x] 8 Effekte, 4 Ambiente-Schichten (Wind, Feuer, Wasser, Nacht), Playtest-Log (opt-in, 48 h roh, Minutenzähler, Tage, Export). Dazu 4 Wetterarten mit Kartenschicht und Omen nach Wetter (`docs/engine/ton-und-playtest.md`).
-- [x] App-Icons (SVG → alle PNG-Größen), Store-Texte de/en mit Längen-Test, Store-Screenshots (`npm run store:shots`), Datenschutz im Spiel und als Seite, Store-Prüfung (`npm run store:check`). Details: `docs/spiele/lichtwarte/store.md`.
-- [ ] Alle Eigennamen `frei` (Markenregister-Prüfung durch Michael), Impressum. `DISTRIBUTION`/`TEST_PHASE` sind geprüft: Der Test erzwingt den Wechsel, sobald eine Store-Hülle im Spielordner liegt.
-
-## P13 — Atmosphäre und Erzählung
-
-Ziel: Das Spiel soll der Referenz in Erzählung, Grafik und Stimmung überlegen sein, nicht nur ebenbürtig in den Systemen.
-
-- [x] **Talkarte bildschirmfüllend:** Himmel mit Gestirn, Sternen, Wolken und Polarlicht, drei Bergketten, Bach mit Wasserfall, geschwungener Weg hinauf zur Warte. Kopfzeile und Hinweise schweben, Funkenruf als runder Knopf unten. Omen und Talgast klappen auf der Karte erst beim Antippen auf.
-- [x] **Die Karte erzählt:** eine Laterne je stehendem Bauwerk, das Leuchtfeuer der Warte wächst mit. Nachts liegen die Lichter über der Lasur.
-- [x] **Leben:** Glühwürmchen, Vögel, Falter, Rauch, Banner, Bach, Glimmer über den Bauwerken, Fenno auf dem Weg mit Sprechblase, Talgast auf der Karte. Alles ruht bei „Bewegung reduzieren“.
-- [x] **Oberfläche:** Nachtblau, Pergament, Laternengold; Zeichen in der Leiste (`navIcons` in der Hülle); Schrift Alegreya (OFL, `docs/lizenzen.md`); Schilder zeigen, was sich gerade leisten lässt.
-- [x] **Erzählung:** Prolog, Chronik als Buch mit 27 Seiten in fünf Kapiteln und Bildern, Briefe von Alwine, Zeremonien als Vollbild je Schicht, 16 Sätze von Fenno. Bogen: `docs/spiele/lichtwarte/welt.md`.
-- [x] **Klang:** fünfte Ambiente-Schicht „Windspiel“ (Fünftonleiter, keine feste Melodie).
-- [x] **Bauwerke je Stufe neu gezeichnet:** Jede der vier Stufen ist sichtbar mehr Bauwerk (Anbau, Hof, Kran, Kuppel, Lichter), nicht nur ein Zusatz.
-- [x] **Lande-Bilder im Stil der Talkarte:** Himmel in drei Stufen, Gestirn, je Land anders geschnittene Bergketten, abends Lasur und das Feuer des Landes.
-- [x] **Alwine auf der Bank** vor der Kräuterkate, sobald das erste Zeitalter begonnen hat.
-- [x] **Installationsanleitung je Browser** beim Start im Browser (Handy/Tablet), „Im Browser weiter“ gilt 6 Stunden. **Playtest-Log** in der Testphase standardmäßig an.
-- [ ] Bewusst zurückgestellt (Entscheidung Michael, 2026-11-10): echte Werbung und Käufe (brauchen Store-Hülle und Konten), Benachrichtigungen, Impressum und Markenprüfung.
-
-## P14 — Langzeit (Ziel: Jahre statt Monate)
-
-Fester Inhalt trägt etwa 90 Tage. Für mehr braucht es Ziele ohne nahes Ende und regelmäßigen Nachschub.
-
-- [x] **Meisterschaft der Lande:** drei Sterne je Land nach dem schwächsten Bereich (Stufe 25 / 50 / 100), je Stern +5 % Ertrag im Land und 5 Lichtkiesel, vier Taten. Engine: `mastery` im Regionen-Modul, berechnet statt gespeichert.
-- [x] **Meilensteine der Schichten:** Mondwende (ab 1.000), Lange Nacht (ab 15), Zeitalter (ab dem 2.) mit Belohnung und dauerhaftem Bonus, sichtbar im Neubeginn-Tab und in der Zeremonie. Engine: `milestones` je Schicht, berechnet statt gespeichert.
-- [ ] Lande 35–50 (Plan: `docs/spiele/lichtwarte/regionen.md`).
-- [ ] Jahrgänge für die Lichterfeste, Sammlungen erweitern, ein neues Chronik-Kapitel je Quartal.
-- [ ] Messung nach Tag 90 (wann fallen dritte Sterne und spätere Meilensteine wirklich?).
+- [x] **Lande 35–50** (Welle 4), Fernfahrten und Kapitel 6 der Chronik: Jahr 1 reicht bis Tag 138.
+- [x] **Jahr 2:** 25 Hochlande (Tag 141 bis 467), Feuerstraße (Engine-Modul `links`), Buch 2 „Der Weg der Feuer“ (40 Seiten), Fest-Jahrgang 2.
+- [x] **Jahr 3:** 25 Ferne Küsten, Himmelskarte (Engine-Modul `chart`), Buch 3 „Die tiefe Zeit“ (40 Seiten), Fest-Jahrgang 3.
+- [x] **Messung mit mitgespielten Systemen** (`PLAY=1`): Seiten, Feuerstraße, Festmarken, Lichtkiesel. Zahlen in `docs/spiele/lichtwarte/fuenf-jahre.md`.
+- [ ] Jahr 4 „Die Lehrlinge“ (Wächterschule) und Jahr 5 „Das große Licht“ (Großes Leuchtfeuer).
+- [ ] Festmarken: Sie fließen weit über jeden Preis (Entscheidung offen: weniger je Mondwende oder höhere Preise).
+- [ ] Jahr 3 messen (Taktung der Küstenlande, Nachttau für die Himmelskarte).
 
 ---
 

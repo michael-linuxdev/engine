@@ -146,9 +146,9 @@ export function ChronicleSheet({ open, onClose }: { open: boolean; onClose: () =
         </nav>
       }
     >
-      <article key={e.id} className={`lw-page lw-page--${voice}`} data-testid={`chronicle-${e.id}`}>
+      <article key={e.id} className={`lw-page lw-page--${voice === 'letterFenno' ? 'letter' : voice}`} data-testid={`chronicle-${e.id}`}>
         <p className="lw-page__chapter">
-          {voice === 'letter' ? t.chronicle.letter : chapterLabel(e.chapter)}
+          {voice === 'letter' ? t.chronicle.letter : voice === 'letterFenno' ? t.chronicle.letterFenno : chapterLabel(e.chapter)}
           {fresh.includes(e.id) ? <span className="ek-badge ek-badge--inline">{t.chronicle.unread}</span> : null}
         </p>
         <PageArt art={e.art} uid={e.id} />
@@ -158,7 +158,7 @@ export function ChronicleSheet({ open, onClose }: { open: boolean; onClose: () =
             {para}
           </p>
         ))}
-        <p className="lw-signature">{voice === 'you' ? t.chronicle.signatureYou : t.chronicle.signature}</p>
+        <p className="lw-signature">{voice === 'you' ? t.chronicle.signatureYou : voice === 'letterFenno' ? t.chronicle.signatureFenno : t.chronicle.signature}</p>
       </article>
     </Sheet>
   )
@@ -185,6 +185,12 @@ function clueText(c: Clue): string {
       return t.chronicle.clue.road(String(c.n))
     case 'chain':
       return t.chronicle.clue.chain(String(c.n))
+    case 'coasts':
+      return t.chronicle.clue.coasts(String(c.n))
+    case 'sky':
+      return t.chronicle.clue.sky(String(c.n))
+    case 'constellations':
+      return t.chronicle.clue.constellations(String(c.n))
   }
 }
 

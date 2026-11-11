@@ -34,3 +34,5 @@ Alwine
 Fenno
 Feuerstraße
 Road of Fires
+Himmelskarte
+Sky Chart

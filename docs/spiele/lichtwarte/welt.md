@@ -88,3 +88,21 @@ Frage des Buchs: **Wer hat die anderen Feuer entzündet?** 40 Seiten in fünf Ka
 **Stimmen:** Seiten aus den Hochlanden schreibt Alwine (Chronik oder Brief). Seiten vom Turm (Fenno, die Kette von unten) schreibt die Wacht selbst.
 
 **Wie die Seiten aufgehen:** 25 mit je einem Hochland, 10 mit Stufen der Feuerstraße (1, 3, 8, 12, 16, 22, 28, 36, 45, 60), 5 mit der längsten Kette (3, 8, 13, 18, 24). Im Inhaltsverzeichnis steht Buch 2 bis zum ersten Hochland nur als eine Zeile.
+
+## Buch 3 · Die tiefe Zeit (Jahr 3)
+
+Frage des Buchs: **Was sah die Sternwarte, bevor die Sterne fehlten?** 40 Seiten in fünf Kapiteln, Deutsch und Englisch.
+
+| Kapitel | Inhalt |
+|---|---|
+| 1 · Der andere Hang | Alwine und Fenno steigen jenseits der Ersten Warte ab. Die Wacht bleibt und beginnt in der Sternwarte eine Himmelskarte. Am Rand steht ein „Stern“, der im Wind flackert. |
+| 2 · Lichter am Wasser | An der Küste: dreihundert Laternen, die niemand anzündet, eine Liste erloschener Feuer. Die alte Karte der Sternwarte hat am Rand einen Kranz gelber Sterne. |
+| 3 · Zwei Listen | Die flackernden Sterne stehen nicht am Himmel, sondern hinter dem Grat: Es sind die Feuer der Küste. Was vor einer Langen Nacht „fehlt“, sind keine Sterne. |
+| 4 · Die tiefe Zeit | Die Seekarten zeigen die Küste über Jahrhunderte: Die Feuer werden weniger und wieder mehr, als atme sie. Ein Zeitalter ist ein Atemzug. Die älteste Karte zeigt einen geschlossenen Ring. |
+| 5 · Vier Strahlen | Die Laterne mit vier Strahlen meint vier Feuer, die nie ausgehen dürfen; das vierte ist unser Tal. In der Warte der vier Strahlen hält ein Mädchen in Fennos Alter das Feuer allein. |
+
+**Antwort:** Nachbarn. Die „Sterne am Rand“ waren immer die Lichter anderer Wachten; die Lange Nacht ist der Moment, in dem zu viele davon erloschen sind. Aufbruch für Buch 4 („Die Lehrlinge“): Alwine und Fenno bleiben den Winter über und lehren das Mädchen.
+
+**Stimmen:** Briefe von Alwine, Briefe von Fenno (neu, eigene Unterschrift), Seiten der Wacht aus der Sternwarte.
+
+**Wie die Seiten aufgehen:** 25 mit je einem Küstenland, 8 mit Sternen der Himmelskarte (1, 4, 8, 13, 19, 26, 34, 43), 7 mit vollständigen Sternbildern (1, 2, 3, 5, 7, 9, 12). Die Zahlen in den Texten folgen diesen Schwellen.
