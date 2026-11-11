@@ -238,5 +238,7 @@ export const WORLD_FEATURES: FeatureDef[] = [
   { id: 'greatWorks', when: (w) => turns(w) >= 7 },
   // Fernfahrten: sobald die Greife Briefe tragen (wie die Chronik-Seite „Ein Brief aus dem Moor“)
   { id: 'voyages', when: (w) => ownedOf(w, 'greifenhorst') >= 10 },
+  // Jahr 2: Die Feuerstraße öffnet sich mit dem ersten Hochland
+  { id: 'fireRoad', when: (w) => !!w.get<RegionsState | undefined>(REGIONS_ID)?.regions.hohesMoor?.open },
   { id: 'realms', when: (w) => Object.values(w.get<RegionsState | undefined>(REGIONS_ID)?.regions ?? {}).some((r) => r.open) },
 ]

@@ -38,6 +38,7 @@ Der Store-Start ist gesperrt, solange ein Name nicht `frei` ist (`DISTRIBUTION =
 | marketNight | Marktnacht | Market Night | System | 2026-11-09 | Websuche | Websuche: kein Spiel dieses Namens; ähnlich ein Steam-Idle mit „night market“ (anderer Name) | ungeprüft |
 | starWindow | Sternfenster | Star Window | System | 2026-11-09 | Websuche | Websuche: kein Treffer | ungeprüft |
 | starWheel | Sternenrad | Star Wheel | System | 2026-11-09 | Websuche | Websuche: kein Spiel; ersetzt das geschützte TV-Format für das Rad | ungeprüft |
+| fireRoad | Feuerstraße | Road of Fires | System | 2026-11-11 | Websuche | „Feuerstraße“: kein Spiel, keine Marke gefunden. Englisch nicht „Fire Road“ (kleines Tower-Defense-Spiel auf Steam und ein Browser-Läufer dieses Namens); „Road of Fires“: kein Treffer. | ungeprüft |
 | festivalsOfLight | Lichterfeste | Festivals of Light | System | 2026-11-09 | — | Gattungsausdruck; kein Bezug zu einem bestimmten religiösen Fest | ungeprüft |
 | festHoarfrost | Raureifnächte | Hoarfrost Nights | Fest | 2026-11-09 | — | Gattungswörter | ungeprüft |
 | festSnowdrop | Schneeglöckchentage | Snowdrop Days | Fest | 2026-11-09 | — | Gattungswörter | ungeprüft |
@@ -82,6 +83,7 @@ Die folgenden Inhalte tragen beschreibende Namen aus Gattungswörtern, zum Beisp
 | Nachtsilber / Nightsilver | „Nightsilver Woods“ (Dota 2) |
 | Mondperlen / Moonpearls | „Moon Pearls“ (Gegenstand in Bayonetta 3) |
 | Ancestral Light | zu nah an „Ancient Light“ (Sky: Children of the Light) |
+| Fire Road | Spieltitel (Tower Defense auf Steam, Browser-Läufer) → Road of Fires |
 | Schicksalsrad / Wheel of Fortune | geschütztes TV-Format → Sternenrad / Star Wheel |
 | Laternenmond / Lantern Moon | traditioneller Festname (Mondfest) → Laternenherbst / Lantern Autumn |
 | Mittsommerkrone / Midsummer Crown | Gegenstand in Valheim → Sonnwendschein / Solstice Sheen |

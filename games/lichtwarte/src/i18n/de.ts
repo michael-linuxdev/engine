@@ -217,6 +217,7 @@ export const gameDe = {
     pickCard: 'Wähle ein Sternbild',
     unknown: 'Noch nicht gefunden',
     titles: {
+      links: { name: 'Feuerstraße', blurb: 'Verbinde benachbarte Lande. Jedes Feuer dazwischen braucht Sterne auf beiden Seiten und stärkt die ganze Kette.' },
       voyages: { name: 'Fernfahrten', blurb: 'Die Greife fliegen in ferne Lande. Schick einen los und hol später ab, was er mitbringt.' },
       collection: { name: 'Bestiarium & Kräuterkunde', blurb: 'Was du im Tal findest. Jeder Fund macht die Warte ein wenig heller.' },
       alchemy: { name: 'Alchemie', blurb: 'Zwei Funde in den Kessel, ein paar Stunden Geduld.' },
@@ -369,6 +370,7 @@ export const gameDe = {
     },
   },
   fx: {
+    linkLit: (a: string, b: string) => `Feuerstraße: ${a} ↔ ${b}`,
     voyageBack: (name: string) => `Der Greif ist zurück: ${name}`,
     weekly: 'Wochenplan geschafft: Bonus eingesammelt',
     spent: (amount: string) => `−${amount}`,

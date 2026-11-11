@@ -4,6 +4,7 @@
  */
 import type { EngineEvent } from '@engine/core'
 import type { FeedbackItem, FeedbackMap } from '@engine/ui'
+import { FIRE_ROAD } from '../content/fireRoad'
 import { OMENS } from '../content/world'
 import { CURRENCY, game } from '../game'
 import { t } from '../runtime'
@@ -84,6 +85,10 @@ export const feedback: FeedbackMap = (e: EngineEvent, ui) => {
       return toast(t.fx.window)
     case 'voyage.returned':
       return toast(t.fx.voyageBack(name(`voyage.${str(e.id)}`)))
+    case 'link.lit': {
+      const def = FIRE_ROAD.list.find((l) => l.id === str(e.id))
+      return def ? toast(t.fx.linkLit(name(`realm.${def.a}`), name(`realm.${def.b}`))) : null
+    }
     case 'weekly.claimed':
       return toast(t.fx.weekly)
     default:

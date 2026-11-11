@@ -25,15 +25,49 @@ export function Stars({ n, max, testId }: { n: number; max: number; testId?: str
   )
 }
 
-export function RegionsPanel({ cfg, lockedText, art, max = true }: { cfg: RegionConfig; lockedText: (id: string, i: number) => string; art?: (id: string) => ReactNode; /** Show the "max" button per area (default) or one level per tap with press-and-hold. */ max?: boolean }) {
+/** A run of regions shown as one collapsible group (index range in `cfg.regions`, `to` exclusive). Name: `realmGroup.<id>`. */
+export interface RegionGroup {
+  id: string
+  from: number
+  to: number
+}
+
+export function RegionsPanel({ cfg, lockedText, art, max = true, groups }: { cfg: RegionConfig; lockedText: (id: string, i: number) => string; art?: (id: string) => ReactNode; /** Show the "max" button per area (default) or one level per tap with press-and-hold. */ max?: boolean; /** Collapsible groups; the newest one with a visible region starts open. */ groups?: readonly RegionGroup[] }) {
   const ui = useUi()
   const { world } = useEngine(ui.rt)
   const s = world.get<RegionsState>(REGIONS_ID)
   const [open, setOpen] = useState<string | null>(null)
+  // Groups the player opened or closed by hand; everything else follows the default (newest open)
+  const [toggled, setToggled] = useState<Readonly<Record<string, boolean>>>({})
   if (!s) return null
   const firstLocked = cfg.regions.findIndex((r) => !s.regions[r.id]?.open)
-  const visible = cfg.regions.filter((r, i) => s.regions[r.id]?.open || i === firstLocked)
+  const isVisible = (i: number) => !!s.regions[cfg.regions[i].id]?.open || i === firstLocked
+  const visible = cfg.regions.filter((_r, i) => isVisible(i))
   const all = totalRegionStars(cfg, s)
+  const row = (r: RegionConfig['regions'][number]) => {
+    const i = cfg.regions.indexOf(r)
+    const st = s.regions[r.id]
+    const l = ui.labels.content(`realm.${r.id}`)
+    const sp = st?.open ? regionStarProgress(cfg, r, st) : null
+    return (
+      <li key={r.id} className={`ek-row${st?.open ? '' : ' is-locked'}`} data-testid={`realm-${r.id}`}>
+        {art ? <div className="ek-row__art">{art(r.id)}</div> : null}
+        <div className="ek-row__main">
+          <strong>
+            {l.name} {sp ? <Stars n={sp.stars} max={sp.max} testId={`stars-${r.id}`} /> : null}
+          </strong>
+          <span className="ek-muted">{st?.open ? ui.t.live.regionRate(ui.fmt(regionRate(cfg, r, st, world)), ui.labels.content(`realmCurrency.${r.id}`).name) : lockedText(r.id, i)}</span>
+        </div>
+        {st?.open ? (
+          <Button size="small" data-testid={`realm-open-${r.id}`} onClick={() => setOpen(r.id)}>
+            {ui.t.live.openRegion}
+          </Button>
+        ) : null}
+      </li>
+    )
+  }
+  const shown = (groups ?? []).filter((g) => cfg.regions.slice(g.from, g.to).some((_r, k) => isVisible(g.from + k)))
+  const newest = shown[shown.length - 1]?.id
   return (
     <section className="ek-panel" aria-label={ui.labels.content('title.realms').name} data-testid="realms">
       {all.total > 0 ? (
@@ -41,29 +75,35 @@ export function RegionsPanel({ cfg, lockedText, art, max = true }: { cfg: Region
           {ui.t.live.starsAll(String(all.have), String(all.total))}
         </p>
       ) : null}
-      <ul className="ek-list">
-        {visible.map((r) => {
-          const i = cfg.regions.indexOf(r)
-          const st = s.regions[r.id]
-          const l = ui.labels.content(`realm.${r.id}`)
+      {shown.length > 1 ? (
+        shown.map((g) => {
+          const inGroup = cfg.regions.slice(g.from, g.to)
+          const rows = inGroup.filter((_r, k) => isVisible(g.from + k))
+          const opened = inGroup.filter((r) => s.regions[r.id]?.open).length
+          const isOpen = toggled[g.id] ?? g.id === newest
           return (
-            <li key={r.id} className={`ek-row${st?.open ? '' : ' is-locked'}`} data-testid={`realm-${r.id}`}>
-              {art ? <div className="ek-row__art">{art(r.id)}</div> : null}
-              <div className="ek-row__main">
-                <strong>
-                  {l.name} {st?.open ? <Stars n={regionStarProgress(cfg, r, st).stars} max={regionStarProgress(cfg, r, st).max} testId={`stars-${r.id}`} /> : null}
-                </strong>
-                <span className="ek-muted">{st?.open ? ui.t.live.regionRate(ui.fmt(regionRate(cfg, r, st, world)), ui.labels.content(`realmCurrency.${r.id}`).name) : lockedText(r.id, i)}</span>
-              </div>
-              {st?.open ? (
-                <Button size="small" data-testid={`realm-open-${r.id}`} onClick={() => setOpen(r.id)}>
-                  {ui.t.live.openRegion}
-                </Button>
-              ) : null}
-            </li>
+            <details
+              key={g.id}
+              className="ek-details ek-region-group"
+              data-testid={`realm-group-${g.id}`}
+              open={isOpen}
+              onToggle={(e) => {
+                const now = e.currentTarget.open
+                if (now !== isOpen) setToggled((t) => ({ ...t, [g.id]: now }))
+              }}
+            >
+              <summary>
+                <span className="ek-details__head">
+                  {ui.labels.content(`realmGroup.${g.id}`).name} · {ui.t.live.regionsOpen(String(opened), String(inGroup.length))}
+                </span>
+              </summary>
+              {isOpen ? <ul className="ek-list">{rows.map(row)}</ul> : null}
+            </details>
           )
-        })}
-      </ul>
+        })
+      ) : (
+        <ul className="ek-list">{visible.map(row)}</ul>
+      )}
       <RegionSheet cfg={cfg} id={open} onClose={() => setOpen(null)} art={art} max={max} />
     </section>
   )

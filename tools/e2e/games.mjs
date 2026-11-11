@@ -354,6 +354,24 @@ export const GAMES = [
       assert((await r.evaluate(() => window.__engine.get().modules.wallet.balances.glowPebbles)) - pebblesBeforeStar >= 5, 'Meisterschaft: Stern belohnt')
       await r.keyboard.press('Escape')
       assert((await r.getByTestId('stars-moorgrund').getAttribute('data-stars')) === '1', 'Meisterschaft: Stern in der Lande-Liste')
+      // Jahr 2: Mit dem ersten Hochland öffnet sich die Feuerstraße; ein Feuer braucht einen Stern auf beiden Seiten
+      await r.evaluate((areas) => {
+        const rt = window.__engine
+        const s = rt.get()
+        const full = (id) => ({ open: true, owned: Object.fromEntries(areas[id].map((a) => [`${id}_${a}`, 25])), balance: 0, grow: 0, thrift: 0, introSeen: true, openedAt: Date.now() })
+        const regions = { ...s.modules.regions.regions, himmelswarte: full('himmelswarte'), hohesMoor: full('hohesMoor') }
+        rt.replace({ ...s, modules: { ...s.modules, regions: { regions }, wallet: { ...s.modules.wallet, balances: { ...s.modules.wallet.balances, glowPebbles: 100 } } } })
+        // Systeme öffnen sich beim nächsten Ereignis
+        rt.dispatch('producers', 'buy', { id: 'kraeuterkate', count: 1 })
+      }, { himmelswarte: Object.keys(T.realms.lands.himmelswarte.areas), hohesMoor: Object.keys(T.realms.lands.hohesMoor.areas) })
+      await r.getByTestId('card-links').waitFor()
+      // Die Lande-Liste ist nach Wellen gegliedert; die neueste steht offen, ältere sind zugeklappt
+      assert(await r.getByTestId('realm-hohesMoor').isVisible(), 'Lande: die neueste Welle steht offen')
+      assert(!(await r.getByTestId('realm-moorgrund').isVisible().catch(() => false)), 'Lande: ältere Wellen sind zugeklappt')
+      await r.getByTestId('link-light-road_hohesMoor').click()
+      assert((await r.getByTestId('link-road_hohesMoor').getAttribute('data-level')) === '1', 'Feuerstraße: erstes Feuer entzündet')
+      assert((await r.getByTestId('links-total').innerText()).includes('3'), 'Feuerstraße: +3 % Ertrag (Stufe und Kette)')
+      assert(await r.getByTestId('link-light-road_hohesMoor').isDisabled(), 'Feuerstraße: Stufe 2 braucht zwei Sterne')
       // Meilensteine der Schichten stehen im Neubeginn-Tab
       await r.getByTestId('tab-prestige').click()
       assert((await r.getByTestId('milestones-ages').getAttribute('data-reached')) === '0', 'Meilensteine des Zeitalters sichtbar')
