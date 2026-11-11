@@ -146,6 +146,34 @@ Daraus umgesetzt (Entscheidung Michael):
 
 Dazu: **Festmarken knapper.** Eine Mondwende gibt 1 statt 15 Marken. Erwartet sind damit 600 bis 1.200 je Fest statt 4.500 bis 14.500; nicht nachgemessen.
 
+## Jahr 4 und 5 (2026-11-11)
+
+Gebaut in zwei Paketen (PR #41 und der folgende):
+
+- **Jahr 4 · Die Lehrlinge:** 25 Inseln, **Wächterschule** (Engine-Modul `stewards`): bis zu 20 Lehrlinge, einer nach dem anderen ausgebildet (200 Lichtkiesel und zwei Tage, jeder weitere 15 % teurer und 12 % länger), dann einem Land zugeteilt, das sie von selbst weiterbauen (ein Schritt alle zehn Minuten, bis zu zwölf Stunden nachgeholt). Ein neu entsandter Lehrling baut sofort einen Schritt. Buch 4 (40 Seiten), Fest-Jahrgang 4 (130 und 200 Festmarken).
+- **Jahr 5 · Das große Licht:** 25 Lande am Rand der Karte, **Großes Leuchtfeuer** (Engine-Modul `monument`): 30 Stufen, für jede gibt jedes Land einmal sechs Stunden seines Ertrags; Stufe n braucht 8 + 3·n Lande, danach ruht der Bau acht Tage. Buch 5 (40 Seiten), Fest-Jahrgang 5 (150 und 230 Festmarken).
+- **Sperre in der Engine:** Schule und Leuchtfeuer prüfen ihre Freischaltung jetzt selbst (`open`). Vorher sperrte nur die Oberfläche; der Simulator bildete an Tag 7 den ersten Lehrling aus.
+
+### Zeitalter: etwa alle fünf Wochen
+
+Entscheidung: Die späte Schwelle wächst mit 1,3 statt 1,35; die ersten vier Zeitalter bleiben, wo sie waren. Gemessen mit `PLAY=1`, Profil „regular“:
+
+| Faktor | Jahr 2 (Abstand in Tagen) | Jahr 3 |
+|---|---|---|
+| 1,35 (vorher) | 31 bis 38 | 36 bis 46 |
+| **1,30 (jetzt)** | 26 bis 32, im Mittel 31 | bis Tag 675: 32, 32, 32, 38 (Lauf noch nicht zu Ende) |
+| 1,25 (Vergleich) | 23 bis 28, im Mittel 25 | bis Tag 620: 25 bis 27 (Lauf noch nicht zu Ende) |
+
+Die Lande fallen bei allen drei Faktoren am selben Tag (Hochlande Tag 140 bis 466, Küsten ab Tag 481): Die Zeitalter verschieben die Lande nicht.
+
+### Festmarken
+
+Entscheidung: knapper. Eine Marke je Mondwende allein reichte nicht: gemessen fielen weiter 4.000 bis 5.900 Marken je Fest an, zwei Drittel davon aus den Funken (rund 40 am Tag). Jetzt zählen Funken nicht mehr, die Wachrunde gibt 5 (vorher 10), ein Auftrag 2 (vorher 5), die Mondwende 1. Nachgemessen: 676 Marken im ersten Fest (36 Tage), hochgerechnet rund 850 für ein Fest von 45 Tagen. Der ganze Fest-Laden kostet im ersten Jahr 375 Marken, mit allen fünf Jahrgängen rund 1.600. Im ersten Jahr reicht es also noch für alles, ab Jahr 3 muss man wählen. Ob das knapp genug ist, zeigt der Testlauf.
+
+### Jahre 4 und 5: Messung
+
+Noch nicht gemessen. Zwei Läufe über 1.825 Tage (Faktor 1,30 und 1,25) sind gestartet; der Simulator spielt jetzt auch Schule und Leuchtfeuer mit und gibt Ereignisse laufend aus (`STREAM=1`). Nachzutragen sind: Taktung der Inseln und der Lande am Rand, wann die Lehrlinge ausgebildet sind (rund 20.500 Lichtkiesel und 144 Tage Ausbildung; an Tag 570 liegen schon rund 40.000 Kiesel ungenutzt, die Zeit ist also die Bremse, nicht der Preis), wie schnell die Stufen des Leuchtfeuers fallen, und wie die Seiten der Bücher 4 und 5 verteilt sind.
+
 ## Was „fünf Jahre“ hier heißt
 
 Maßstab ist eine Spielerin, die täglich kurz spielt (Profil „regular“). Über 1.825 Tage soll gelten:

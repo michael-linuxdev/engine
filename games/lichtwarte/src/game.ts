@@ -182,9 +182,10 @@ export const game: GameDefinition = {
       id: LAYER.ages,
       currency: CURRENCY.forebearLight,
       // Wachstum 3 (vorher 10): das zweite Zeitalter kommt bei regular um Tag 47 statt Tag 71 (späte Taktung, balance.md)
-      // Ab dem vierten Zeitalter wächst die Schwelle flach (Knie 3, danach 1,35): Über fünf Jahre gemessen lagen sonst
+      // Ab dem vierten Zeitalter wächst die Schwelle flach (Knie 3, danach 1,3): Über fünf Jahre gemessen lagen sonst
       // erst Monate, dann über ein Jahr zwischen zwei Zeitaltern (fuenf-jahre.md). Die ersten vier bleiben, wo sie waren.
-      gate: { base: 5e16, growth: 3, knee: 3, lateGrowth: 1.35 },
+      // 1,3 statt 1,35 (Entscheidung 2026-11-11, etwa alle fünf Wochen): in Jahr 2 gemessen 26 bis 32 Tage statt 31 bis 38.
+      gate: { base: 5e16, growth: 3, knee: 3, lateGrowth: 1.3 },
       payout: { base: 3, growth: 1.1 },
       minimum: { lowerRuns: 3 },
       // Jedes Zeitalter bis zum zwölften ist ein Meilenstein, danach in größeren Schritten: ein Ziel ohne nahes Ende.
