@@ -150,9 +150,10 @@ export const FESTIVALS: FestConfig = {
     { id: 'longLight', from: [12, 15], to: [12, 31], major: true },
   ],
   shop: festShops(),
-  // Mondwende: 1 statt 15. Gemessen fielen sonst 4.500 bis 14.500 Marken je Fest an (rund zwölf Mondwenden am Tag),
-  // bei Preisen von 60 bis 170 (fuenf-jahre.md).
-  earn: { 'daily.claimed': 10, 'burst.used': 2, 'prestige.performed': 1, 'quest.claimed': 5 },
+  // Festmarken sollen knapp sein (Entscheidung 2026-11-11). Gemessen (regular) fielen erst 4.500 bis 14.500 je Fest an,
+  // mit Mondwende 1 statt 15 immer noch 4.000 bis 5.700: Zwei Drittel kamen aus den Funken (rund 40 am Tag).
+  // Jetzt zählen Funken nicht mehr, Wachrunde und Aufträge weniger (fuenf-jahre.md).
+  earn: { 'daily.claimed': 5, 'prestige.performed': 1, 'quest.claimed': 2 },
   override: festOverride,
 }
 
