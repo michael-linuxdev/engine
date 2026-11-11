@@ -221,6 +221,16 @@ export const GAMES = [
 
       // Markt: Tagesgeschenk, Talstil kaufen und anlegen, Testkauf mit Testgeld
       await r.getByTestId('tab-market').click()
+      // Die Seite selbst scrollt nie (kein Wandern des Hintergrunds hinter Fenstern); nur die Ansicht scrollt
+      const scroll = await r.evaluate(() => {
+        const main = document.getElementById('main')
+        window.scrollTo(0, 500)
+        main.scrollTop = 300
+        return { page: window.scrollY, pageFits: document.documentElement.scrollHeight <= window.innerHeight, main: main.scrollTop, bodyFixed: getComputedStyle(document.body).position }
+      })
+      assert(scroll.page === 0 && scroll.pageFits && scroll.bodyFixed === 'fixed', `Seite scrollt nicht (${JSON.stringify(scroll)})`)
+      assert(scroll.main > 0, 'die Ansicht selbst scrollt')
+      await r.evaluate(() => (document.getElementById('main').scrollTop = 0))
       await r.getByTestId('card-gift').waitFor()
       const pebbles = () => r.evaluate(() => window.__engine.get().modules.wallet.balances.glowPebbles)
       const p0 = await pebbles()
