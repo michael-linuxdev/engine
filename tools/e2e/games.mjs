@@ -15,6 +15,16 @@ export const GAMES = [
     holdToBuy: true,
     /** axe auch für die Spiel-Fenster. */
     axeExtra: async (p, check) => {
+      // Das Archiv erscheint erst nach der ersten Mondwende: dafür einen solchen Stand setzen
+      await p.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        const layers = s.modules.prestige.layers.map((l, i) => (i === 0 ? { ...l, count: 1, sinceReset: 1 } : l))
+        rt.replace({ ...s, modules: { ...s.modules, prestige: { layers }, wallet: { ...s.modules.wallet, balances: { ...s.modules.wallet.balances, runeShards: 100 }, earned: { ...s.modules.wallet.earned, runeShards: 100 } } } })
+      })
+      await p.getByTestId('tab-shop').click()
+      await check('Archiv')
+      await p.getByTestId('tab-play').click()
       await p.getByTestId('slot-kraeuterkate').click()
       await p.getByTestId('upgrade-sheet').waitFor()
       await check('Ausbau Kräuterkate')
@@ -86,6 +96,16 @@ export const GAMES = [
       assert((await q.getByTestId('gate-all').innerText()).includes(T.layers.moonturn.name), 'Freilegen: die Mondwende steht als Bedingung da')
       await q.keyboard.press('Escape')
       await q.getByTestId('upgrade-sheet').waitFor({ state: 'detached' })
+      // Der Markt ist von Anfang an da, das Archiv erst nach der ersten Mondwende; in den Einstellungen gibt es kein Zahlenformat mehr
+      assert((await q.getByTestId('tab-market').count()) === 1 && (await q.getByTestId('tab-shop').count()) === 0, 'Markt ab Start, Archiv noch nicht')
+      await q.getByTestId('tab-market').click()
+      await q.getByTestId('card-gift').waitFor()
+      await q.getByTestId('tab-play').click()
+      await q.getByTestId('menu').click()
+      await q.getByTestId('menu-settings').click()
+      assert((await q.getByTestId('numbers-scientific').count()) === 0 && (await q.getByTestId('pref-bigtext').count()) === 1, 'Einstellungen aufgeräumt')
+      await q.keyboard.press('Escape')
+      await q.getByTestId('settings-sheet').waitFor({ state: 'detached' })
       // Chronik im Menü
       await q.getByTestId('menu').click()
       await q.getByTestId('menu-chronicle').click()
@@ -149,8 +169,9 @@ export const GAMES = [
       await r.getByTestId('decor-blueBanner').getByRole('button').click()
       await r.getByTestId('decor-slot-0').selectOption('blueBanner')
       assert((await r.evaluate(() => window.__engine.get().modules.decor.placed[0])) === 'blueBanner', 'Banner aufgestellt')
-      await r.getByTestId('visitor-greet').click()
-      assert((await r.evaluate(() => window.__engine.get().modules.visitors.seen.fox)) === 1, 'Talgast begrüßt')
+      // Der Talgast hat keine Meldung mehr: Er wird auf der Karte selbst angetippt (weiter unten)
+      assert((await r.getByTestId('visitor-greet').count()) === 0 && (await r.getByTestId('chip-visitor').count()) === 0, 'keine Meldung zum Talgast')
+      await r.getByTestId('chip-omen').click()
       await r.getByTestId('omen-safe').click()
       assert((await r.evaluate(() => window.__engine.get().modules.choiceEvents.active)) === true, 'Omen gewählt')
       await r.getByTestId('tab-play').click()
@@ -161,8 +182,10 @@ export const GAMES = [
         const s = rt.get()
         rt.replace({ ...s, modules: { ...s.modules, visitors: { ...s.modules.visitors, current: 'fox', until: Date.now() + 60_000, nextAt: 0 } } })
       })
+      assert((await r.locator('[data-guest="fox"]').count()) === 1, 'der Fuchs ist als Fuchs zu sehen')
       await r.getByTestId('guest-greet').click()
-      assert((await r.evaluate(() => window.__engine.get().modules.visitors.seen.fox)) === 2, 'Talgast auf der Karte begrüßt')
+      assert((await r.evaluate(() => window.__engine.get().modules.visitors.seen.fox)) === 1, 'Talgast auf der Karte begrüßt')
+      await r.getByTestId('guest-thanks').waitFor()
       await r.waitForTimeout(600)
       assert((await r.getByTestId('guest-greet').count()) === 0 && (await r.evaluate(() => window.__engine.get().modules.visitors.current)) === '', 'Talgast bleibt nach dem Begrüßen fort')
       // Ausbau-Karte: klein über der Leiste, dunkelt die Kopfzeile nicht ab, Wisch nach unten schließt sie

@@ -35,7 +35,9 @@ try {
     for (const v of r) problems.push(`[${lang}] ${label}: ${v}`)
   }
   await check('Start')
-  for (const tab of ['prestige', 'shop', 'play']) {
+  // Alle Tabs, die es in diesem Stand gibt (ein Spiel kann Tabs erst später zeigen), zuletzt zurück zur Spielansicht
+  const tabs = await p.locator('[data-testid^="tab-"]').evaluateAll((els) => els.map((e) => e.getAttribute('data-testid').slice(4)).filter((x) => x !== 'play'))
+  for (const tab of [...tabs, 'play']) {
     await p.getByTestId(`tab-${tab}`).click()
     await check(`Tab ${tab}`)
   }

@@ -16,6 +16,8 @@ import { AlwineOnBench, ApprenticeOnTrail, Birds, Butterflies, Fireflies, GuestA
 import { SKY3 } from '../art/palette'
 import { WeatherLayer } from '../art/weather'
 import { TIER_LEVELS } from '../art/registry'
+import { GUESTS } from '../content/world'
+import { CURRENCY } from '../ids'
 import { game } from '../game'
 import { t } from '../runtime'
 import { currentMood } from './mood'
@@ -47,6 +49,19 @@ export function ValleyMap({ onOpen, children }: { onOpen: (id: string) => void; 
   // Nach dem ersten Zeitalter sitzt Alwine auf der Bank vor der Kräuterkate
   const alwine = (prestigeState(world).layers[2]?.count ?? 0) >= 1
   const money = state.core.primary
+  // Dank nach dem Begrüßen: kurz als Sprechblase am Platz des Gasts
+  const [thanks, setThanks] = useState<{ key: number; text: string } | null>(null)
+  useEffect(() => {
+    if (!thanks) return
+    const id = setTimeout(() => setThanks(null), 2800)
+    return () => clearTimeout(id)
+  }, [thanks])
+  const greet = (id: string) => {
+    // Was der Gast dalässt, steht in der Blase: beim ersten Mal das Geschenk, sonst ein Schwung Glimmer
+    const first = !(visitors?.seen[id] ?? 0)
+    const gift = first ? GUESTS.firstGift.map((g) => `+${ui.fmt(g.amount)} ${ui.labels.currency(g.currency)}`).join(', ') : `+${ui.fmt(world.rate() * GUESTS.againSeconds)} ${ui.labels.currency(CURRENCY.glimmer)}`
+    if (ui.rt.dispatch(VISITORS_ID, 'greet')) setThanks({ key: Date.now(), text: t.world.guestThanks(ui.labels.content(`guest.${id}`).name, gift) })
+  }
   return (
     <section className="lw-map" style={{ background: SKY3[mood.daypart][0] }} aria-label={t.play.map} data-mood={`${mood.daypart}-${mood.season}`} data-weather={weather} data-style={world.get<MarketState>(MARKET_ID)?.equipped ?? 'duskBlue'}>
       <div className="lw-stage" style={{ aspectRatio: `${MAP_W} / ${MAP_H}` }}>
@@ -138,15 +153,17 @@ export function ValleyMap({ onOpen, children }: { onOpen: (id: string) => void; 
             className="lw-guest-btn"
             style={{ left: `${(GUEST_SPOT.x / MAP_W) * 100}%`, top: `${(GUEST_SPOT.y / MAP_H) * 100}%` }}
             data-testid="guest-greet"
-            onClick={() => ui.rt.dispatch(VISITORS_ID, 'greet')}
+            onClick={() => greet(guest)}
           >
-            <span className="lw-guest-btn__mark" aria-hidden="true">
-              !
-            </span>
             <span className="ek-visually-hidden">
               {t.world.visitorHere(ui.labels.content(`guest.${guest}`).name)} {t.world.greet}
             </span>
           </button>
+        ) : null}
+        {thanks ? (
+          <p key={thanks.key} className="lw-bubble lw-bubble--guest" role="status" data-testid="guest-thanks" style={{ left: `${(GUEST_SPOT.x / MAP_W) * 100}%`, top: `${(GUEST_SPOT.y / MAP_H) * 100}%` }}>
+            {thanks.text}
+          </p>
         ) : null}
         {helper ? <FennoBubble m={mood} w={weather} minute={minute} /> : null}
         {children}

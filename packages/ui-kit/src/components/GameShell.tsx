@@ -29,6 +29,10 @@ export interface GameShellProps<S extends EngineStrings> {
   tabs?: { item: NavItem; view: ReactNode }[]
   /** Icons for the built-in tabs (`play`, `prestige`, `shop`) and the menu button (`menu`). */
   navIcons?: Partial<Record<'play' | 'prestige' | 'shop' | 'menu', ReactNode>>
+  /** Other labels for the built-in tabs (default: the engine's own words). */
+  navLabels?: Partial<Record<'play' | 'prestige' | 'shop', string>>
+  /** Show the meta-shop tab (default: yes). Lets a game hide it until there is something to buy. */
+  shopVisible?: boolean
   /** Icons for the built-in menu entries; with icons the menu shows as tiles. */
   menuIcons?: Partial<Record<'save' | 'settings' | 'legal', ReactNode>>
   /** Extra menu entries before save/settings/legal. */
@@ -73,6 +77,10 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
   useEffect(() => p.openRef?.(setOverlay), [p])
   const playtest = p.playtest
   useEffect(() => playtest?.attach(p.rt), [playtest, p.rt])
+  // The scientific notation is no longer offered: a stored choice falls back to the short form
+  useEffect(() => {
+    if (prefs.numberStyle !== 'compact') p.prefs.update({ numberStyle: 'compact' })
+  }, [prefs.numberStyle, p.prefs])
   useEffect(() => {
     document.documentElement.style.setProperty('--font-scale', String(prefs.fontScale))
     document.documentElement.classList.toggle('ek-reduced-motion', prefs.reducedMotion)
@@ -94,9 +102,9 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
   const testPhase = !gate && shouldShowTestPhase(p.testPhase, !!flags.testPhaseOk, env)
   const t = p.i18n.t
   const items: NavItem[] = [
-    { id: 'play', label: t.nav.play, icon: p.navIcons?.play },
-    { id: 'prestige', label: t.nav.prestige, icon: p.navIcons?.prestige },
-    { id: 'shop', label: t.nav.shop, icon: p.navIcons?.shop },
+    { id: 'play', label: p.navLabels?.play ?? t.nav.play, icon: p.navIcons?.play },
+    { id: 'prestige', label: p.navLabels?.prestige ?? t.nav.prestige, icon: p.navIcons?.prestige },
+    ...(p.shopVisible === false ? [] : [{ id: 'shop', label: p.navLabels?.shop ?? t.nav.shop, icon: p.navIcons?.shop }]),
     ...(p.tabs ?? []).map((x) => x.item),
   ]
   const menu: MenuItem[] = [

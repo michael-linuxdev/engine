@@ -174,6 +174,7 @@ export const gameDe = {
   world: {
     tab: 'Tal',
     visitorHere: (name: string) => `${name} ist zu Besuch!`,
+    guestThanks: (name: string, gift: string) => `${name}: ${gift}`,
     greet: 'Begrüßen',
     pickCard: 'Wähle ein Sternbild',
     unknown: 'Noch nicht gefunden',

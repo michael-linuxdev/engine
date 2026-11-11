@@ -101,13 +101,14 @@ export function MarketPanel(props: MarketProps) {
   if (!s) return null
   return (
     <section className="ek-panel" aria-label={ui.labels.content('title.market').name} data-testid="market-view">
+      {/* What can be bought comes first: the gift, then the offers (with the test wallet), then the looks */}
       <GiftCard cfg={props.cfg} s={s} />
-      <AdCard {...props} s={s} />
-      <PassCard cfg={props.cfg} s={s} />
-      <SkipCard cfg={props.cfg} s={s} />
-      <BoostCard cfg={props.cfg} s={s} />
-      <StylesCard cfg={props.cfg} s={s} styleArt={props.styleArt} />
       <OffersCard {...props} s={s} />
+      <StylesCard cfg={props.cfg} s={s} styleArt={props.styleArt} />
+      <AdCard {...props} s={s} />
+      <BoostCard cfg={props.cfg} s={s} />
+      <SkipCard cfg={props.cfg} s={s} />
+      <PassCard cfg={props.cfg} s={s} />
     </section>
   )
 }

@@ -50,6 +50,7 @@ export const SFX_EVENTS: Readonly<Record<string, string | ((e: EngineEvent) => s
   'prestige.performed': 'turn',
   'offline.comeback': 'letter',
   'region.opened': 'letter',
+  'visitor.greeted': 'chime',
   'region.mastered': 'level',
   'prestige.milestone': 'level',
   'wheel.spun': 'coin',

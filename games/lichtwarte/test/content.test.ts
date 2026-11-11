@@ -12,6 +12,7 @@ import { BUILDINGS } from '../src/art/registry'
 import { SLOTS } from '../src/scene/slots'
 import { CHRONICLE } from '../src/content/chronicle'
 import { MARKET, OFFER_PRICES, STORE_ENABLED, TEST_WALLET_ENABLED } from '../src/content/market'
+import { GUESTS } from '../src/content/world'
 import { STYLE_TINT } from '../src/art/palette'
 import { TEST_PHASE } from '../src/distribution'
 
@@ -48,6 +49,16 @@ describe('Spiel: Talkarte', () => {
     // Schilder ragen nicht über den Rand: außen nur kurze Namen
     for (const s of SLOTS) expect(s.x, s.id).toBeGreaterThanOrEqual(15)
     for (const s of SLOTS) expect(s.x, s.id).toBeLessThanOrEqual(85)
+  })
+})
+
+describe('Spiel: Talgäste', () => {
+  it('jede Art hat ihr eigenes Bild (kein Fuchs für den Steinbock)', () => {
+    const src = read('games/lichtwarte/src/art/life.tsx')
+    const table = src.slice(src.indexOf('const GUESTS'), src.indexOf('export function GuestArt'))
+    const arts = new Map([...table.matchAll(/^  (\w+): (\w+),$/gm)].map((m) => [m[1], m[2]]))
+    for (const g of GUESTS.list) expect(arts.has(g.id), g.id).toBe(true)
+    expect(new Set(arts.values()).size).toBe(arts.size)
   })
 })
 

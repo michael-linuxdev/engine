@@ -172,6 +172,7 @@ export const stringsEn: Strings = {
   world: {
     tab: 'Valley',
     visitorHere: (name) => `${name} is visiting!`,
+    guestThanks: (name, gift) => `${name}: ${gift}`,
     greet: 'Greet',
     pickCard: 'Choose a constellation',
     unknown: 'Not found yet',

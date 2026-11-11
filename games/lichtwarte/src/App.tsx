@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { DAILY_ID, dailyStatus, isFeatureOpen, localDayKey, MODULE, QUESTS_ID, type DailyState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
+import { DAILY_ID, dailyStatus, isFeatureOpen, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
 import { connectSfx, currentStep, useEngine, useStore, useSteps } from '@engine/react'
 import { CardPicker, FtueCoach, GameShell, Hud, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
@@ -187,12 +187,16 @@ export function App() {
       menu={[{ id: 'chronicle', label: t.chronicle.menu, icon: <IconBook />, onSelect: () => setChronicle(true), badge: unread }]}
       menuIcons={{ save: <IconSave />, settings: <IconGear />, legal: <IconScroll /> }}
       tabs={[
+        // Der Markt steht von Anfang an offen (Tagesgeschenk, Stile, Testgeld)
+        { item: { id: 'market', label: t.trade.tab, icon: <IconPouch /> }, view: <MarketTab /> },
         ...(isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, icon: <IconLantern />, badge: watchBadge(world) }, view: <WatchView /> }] : []),
         ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab, icon: <IconLeaf /> }, view: <WorldTab /> }] : []),
         ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab, icon: <IconMap /> }, view: <RealmsTab /> }] : []),
-        ...(isFeatureOpen(world, 'market') ? [{ item: { id: 'market', label: t.trade.tab, icon: <IconPouch /> }, view: <MarketTab /> }] : []),
       ]}
-      notice={<NoticeArea onEvents={() => setTab('watch')} compact={tab === 'play'} />}
+      notice={<NoticeArea onEvents={() => setTab('watch')} compact />}
+      // Das Archiv erscheint erst, wenn es dort etwas zu holen gibt: nach der ersten Mondwende
+      shopVisible={(prestigeState(world).layers[0]?.count ?? 0) >= 1 || ((world.get<{ earned: Record<string, number> }>(MODULE.wallet)?.earned[CURRENCY.runeShards] ?? 0) > 0)}
+      navLabels={{ shop: t.effectLabels.archive }}
       metaBranchVisible={(b) => {
         // Läden der Langen Nacht und des Zeitalters erst zeigen, wenn es ihre Währung schon gab
         const earned = (rt.get().modules.wallet as { earned: Record<string, number> }).earned

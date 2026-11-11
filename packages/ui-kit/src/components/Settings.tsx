@@ -94,7 +94,6 @@ function PlaytestBlock({ log }: { log: PlaytestLog }) {
   const s = ui.t.settings
   return (
     <>
-      <h3 className="ek-h3">{s.playtestTitle}</h3>
       <Toggle label={s.playtest} value={on} onChange={(v) => log.setEnabled(v)} testId="pref-playtest" />
       <p className="ek-muted">{s.playtestHint}</p>
       <Button
@@ -152,6 +151,7 @@ export function SettingsSheet({ open, onClose, version, playtest }: { open: bool
   const s = ui.t.settings
   return (
     <Sheet open={open} title={s.title} onClose={onClose} testId="settings-sheet">
+      {/* Three short groups: display, sound, system. No number format, no font steps. */}
       <h3 className="ek-h3">{s.display}</h3>
       <div className="ek-field" role="radiogroup" aria-label={s.language}>
         <span>{s.language}</span>
@@ -163,29 +163,12 @@ export function SettingsSheet({ open, onClose, version, playtest }: { open: bool
           ))}
         </div>
       </div>
-      <div className="ek-field" role="radiogroup" aria-label={s.fontSize}>
-        <span>{s.fontSize}</span>
-        <div className="ek-segmented">
-          {([1, 1.15, 1.3] as const).map((f, i) => (
-            <button key={f} type="button" role="radio" aria-checked={p.fontScale === f} className={p.fontScale === f ? 'is-active' : ''} onClick={() => ui.prefs.update({ fontScale: f })}>
-              {[s.fontNormal, s.fontLarge, s.fontLarger][i]}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div className="ek-field" role="radiogroup" aria-label={s.numbers}>
-        <span>{s.numbers}</span>
-        <div className="ek-segmented">
-          {(['compact', 'scientific'] as const).map((n) => (
-            <button key={n} type="button" role="radio" aria-checked={p.numberStyle === n} className={p.numberStyle === n ? 'is-active' : ''} data-testid={`numbers-${n}`} onClick={() => ui.prefs.update({ numberStyle: n })}>
-              {n === 'compact' ? s.numbersCompact : s.numbersScientific}
-            </button>
-          ))}
-        </div>
-      </div>
+      <Toggle label={s.bigText} value={p.fontScale > 1} onChange={(v) => ui.prefs.update({ fontScale: v ? 1.15 : 1 })} testId="pref-bigtext" />
       <Toggle label={s.reducedMotion} value={p.reducedMotion} onChange={(v) => ui.prefs.update({ reducedMotion: v })} testId="pref-motion" />
+      <h3 className="ek-h3">{s.soundGroup}</h3>
       <Toggle label={s.sound} value={p.sound} onChange={(v) => ui.prefs.update({ sound: v })} testId="pref-sound" />
       <Toggle label={s.ambient} value={p.ambient} onChange={(v) => ui.prefs.update({ ambient: v })} testId="pref-ambient" />
+      <h3 className="ek-h3">{s.system}</h3>
       {playtest ? <PlaytestBlock log={playtest} /> : null}
       <UpdateBlock version={version} />
     </Sheet>

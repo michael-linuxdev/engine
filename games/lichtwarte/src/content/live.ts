@@ -141,7 +141,8 @@ export const FEATURES: FeatureDef[] = [
   { id: 'festivals', when: (w) => turns(w) >= 1 },
   { id: 'wheel', when: (w) => turns(w) >= 1 },
   { id: 'trials', when: (w) => turns(w) >= 5 },
-  { id: 'market', when: (w) => turns(w) >= 1 },
+  // Der Markt steht von Anfang an offen (wie in der Referenz): Tagesgeschenk, Stile und Testgeld sollen sofort zu finden sein
+  { id: 'market', when: () => true },
 ]
 
 export function featureOpen(w: WorldView, id: string): boolean {
