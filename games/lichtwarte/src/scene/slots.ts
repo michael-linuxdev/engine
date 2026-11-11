@@ -2,17 +2,22 @@
 import type { Slot } from '@engine/art'
 import type { ProducerId } from '../game'
 
+/**
+ * Auf jeder Wegseite wechseln die Plätze zwischen außen und innen. So steht kein Bauwerk
+ * genau über dem nächsten, und kein Schild verdeckt das Bauwerk darunter (Rückmeldung 2026-11-11:
+ * „Steinbruch überlagert Kräuterkate“). Lange Namen stehen innen, damit ihr Schild nicht über den Rand ragt.
+ */
 export const SLOTS: (Slot & { id: ProducerId })[] = [
-  { id: 'kraeuterkate', x: 22, y: 89, scale: 1.08 },
-  { id: 'holzlager', x: 77, y: 86, scale: 1.05 },
-  { id: 'steinbruch', x: 21, y: 79.5, scale: 1 },
-  { id: 'quellschrein', x: 74, y: 75.5, scale: 1 },
-  { id: 'schmiede', x: 29, y: 69.5, scale: 0.95 },
-  { id: 'kartenstube', x: 78, y: 65, scale: 0.94 },
-  { id: 'alchemistenturm', x: 19, y: 59.5, scale: 0.9 },
-  { id: 'greifenhorst', x: 72, y: 55, scale: 0.88 },
-  { id: 'runenhalle', x: 27, y: 49.5, scale: 0.84 },
-  { id: 'sternwarte', x: 79, y: 45.5, scale: 0.82 },
+  { id: 'kraeuterkate', x: 17, y: 90, scale: 1.08 },
+  { id: 'holzlager', x: 83, y: 86.5, scale: 1.05 },
+  { id: 'steinbruch', x: 32, y: 78.7, scale: 1 },
+  { id: 'quellschrein', x: 68, y: 75.2, scale: 1 },
+  { id: 'schmiede', x: 16, y: 67.4, scale: 0.95 },
+  { id: 'kartenstube', x: 83, y: 63.9, scale: 0.94 },
+  { id: 'alchemistenturm', x: 32, y: 56.1, scale: 0.9 },
+  { id: 'greifenhorst', x: 68, y: 52.6, scale: 0.88 },
+  { id: 'runenhalle', x: 17, y: 44.8, scale: 0.84 },
+  { id: 'sternwarte', x: 83, y: 41.3, scale: 0.82 },
 ]
 
 /** Bauwerke auf der Karte größer als im Ausbau-Fenster (Fußpunkt bleibt). */
@@ -60,4 +65,4 @@ export function beaconLevel(built: number, turns: number): number {
 }
 
 /** Wo der Talgast steht: rechts neben dem Funkenruf-Knopf, frei sichtbar und antippbar. */
-export const GUEST_SPOT = { x: 252, y: 614 } as const
+export const GUEST_SPOT = { x: 242, y: 626 } as const

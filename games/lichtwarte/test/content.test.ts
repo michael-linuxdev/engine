@@ -39,6 +39,18 @@ describe('Spiel: Inhalt', () => {
   })
 })
 
+describe('Spiel: Talkarte', () => {
+  it('kein Bauwerk steht genau über dem nächsten: Wer nah darüber liegt, ist seitlich versetzt', () => {
+    // Sonst verdeckt das Schild des oberen Bauwerks das untere (Rückmeldung 2026-11-11)
+    const bad: string[] = []
+    for (const a of SLOTS) for (const b of SLOTS) if (a !== b && b.y > a.y && b.y - a.y < 13 && Math.abs(a.x - b.x) < 12) bad.push(`${a.id} über ${b.id}`)
+    expect(bad).toEqual([])
+    // Schilder ragen nicht über den Rand: außen nur kurze Namen
+    for (const s of SLOTS) expect(s.x, s.id).toBeGreaterThanOrEqual(15)
+    for (const s of SLOTS) expect(s.x, s.id).toBeLessThanOrEqual(85)
+  })
+})
+
 describe('Spiel: Markt (Attrappen)', () => {
   it('7 Angebote mit Preis, 8 Talstile (4 + 4 Fest), Festwoche 5 Stufen, 2 Zeitsprünge mit 6 h am Tag', () => {
     expect(MARKET.offers).toHaveLength(7)
