@@ -7,7 +7,7 @@ import { currentMood } from './scene/mood'
 import { currentWeather } from './scene/weather'
 import type { UiLabels } from '@engine/ui'
 import { TEST_BUDGET_CENTS, TEST_WALLET_ENABLED } from './content/market'
-import { ALCHEMY, COLLECTION, FEST_VARIETIES, FEST_VARIETIES_2, FEST_VARIETIES_3, GUEST_LURE } from './content/world'
+import { ALCHEMY, COLLECTION, FEST_VARIETIES, FEST_VARIETIES_2, FEST_VARIETIES_3, FEST_VARIETIES_4, FEST_VARIETIES_5, GUEST_LURE } from './content/world'
 import { game } from './game'
 import { stringsDe, type Strings } from './i18n/de'
 
@@ -119,7 +119,7 @@ function realmContent(ns: string, rest: string): { name: string; blurb: string }
 function entryHint(id: string): { name: string; blurb: string } {
   const e = COLLECTION.entries.find((x) => x.id === id)
   if (!e) return { name: `entryHint.${id}`, blurb: '' }
-  const fest = Object.entries(FEST_VARIETIES).find(([, ids]) => ids.includes(id))?.[0] ?? Object.entries(FEST_VARIETIES_2).find(([, v]) => v === id)?.[0] ?? Object.entries(FEST_VARIETIES_3).find(([, v]) => v === id)?.[0]
+  const fest = Object.entries(FEST_VARIETIES).find(([, ids]) => ids.includes(id))?.[0] ?? [FEST_VARIETIES_2, FEST_VARIETIES_3, FEST_VARIETIES_4, FEST_VARIETIES_5].flatMap((y) => Object.entries(y)).find(([, v]) => v === id)?.[0]
   const category = (t.world.categories as Keyed<{ name: string }>)[e.category]?.name ?? ''
   const h = t.world.entryHints
   const name = fest ? h.fest((t.watch.fests as Keyed<{ name: string }>)[fest]?.name ?? '') : ALCHEMY.recipes.some((r) => r.result === id) ? h.brew : e.rarity > 0 ? h.rare(category) : h.buy(category)

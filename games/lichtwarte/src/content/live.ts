@@ -11,7 +11,7 @@ import {
 import type { HintDef } from '@engine/react'
 import { CURRENCY, LAYER } from '../ids'
 import { REALMS } from './realms'
-import { FEST_DECOR_2, FEST_DECOR_3, FEST_VARIETIES, FEST_VARIETIES_2, FEST_VARIETIES_3 } from './world'
+import { FEST_DECOR_2, FEST_DECOR_3, FEST_DECOR_4, FEST_DECOR_5, FEST_VARIETIES, FEST_VARIETIES_2, FEST_VARIETIES_3, FEST_VARIETIES_4, FEST_VARIETIES_5 } from './world'
 
 const pebbles = (amount: number) => ({ currency: CURRENCY.glowPebbles, amount })
 const shards = (amount: number) => ({ currency: CURRENCY.runeShards, amount })
@@ -103,6 +103,8 @@ const BASE_SHOP: FestItem[] = [
 const FEST_YEARS = [
   { feature: 'fireRoad', varieties: FEST_VARIETIES_2, decor: FEST_DECOR_2, varietyCost: 90, decorCost: 140 },
   { feature: 'skyChart', varieties: FEST_VARIETIES_3, decor: FEST_DECOR_3, varietyCost: 110, decorCost: 170 },
+  { feature: 'school', varieties: FEST_VARIETIES_4, decor: FEST_DECOR_4, varietyCost: 130, decorCost: 200 },
+  { feature: 'greatBeacon', varieties: FEST_VARIETIES_5, decor: FEST_DECOR_5, varietyCost: 150, decorCost: 230 },
 ]
 
 /** Fest-Laden: Grundangebot plus die Fest-Sorte(n) fürs Bestiarium & Kräuterkunde (P8). */

@@ -3,7 +3,7 @@
  * einem Land zugeteilt. Dort bauen sie von selbst weiter: immer den schwächsten Bereich, den sich das Land
  * leisten kann, auch für die Zeit der Abwesenheit (bis zu zwölf Stunden). IDs gibt es keine; gezählt wird.
  */
-import { areaOpen, bulkCost, regionCostMult, REGIONS_ID, type RegionsState, type StewardsConfig, type WorldView } from '@engine/core'
+import { isFeatureOpen, areaOpen, bulkCost, regionCostMult, REGIONS_ID, type RegionsState, type StewardsConfig, type WorldView } from '@engine/core'
 import { CURRENCY } from '../ids'
 import { realmOpen } from './fireRoad'
 import { REALMS } from './realms'
@@ -45,6 +45,7 @@ export const SCHOOL: StewardsConfig = {
   everyMs: SCHOOL_TUNING.everyMin * 60_000,
   maxSteps: SCHOOL_TUNING.maxSteps,
   perSteward: SCHOOL_TUNING.perSteward,
+  open: (w) => isFeatureOpen(w, 'school'),
   canPost: realmOpen,
   work: (w, place, steps) => {
     const job = stewardJob(w, place, steps)

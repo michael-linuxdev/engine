@@ -3,6 +3,7 @@
  *   SUMMARY=1  gekürzte Ausgabe + Zusammenfassung
  *   PLAY=1     das Spiel spielt seine eigenen Systeme mit (export `simPlay` aus src/game.ts); ändert die Taktung,
  *              deshalb nicht zusammen mit CHECK
+ *   STREAM=1   jedes Ereignis sofort ausgeben (lange Läufe: Das Ergebnis bleibt, auch wenn der Lauf abbricht)
  *   CHECK=1    Zielkorridore des Spiels prüfen (export `balanceTargets` aus src/game.ts)
  *   BAL_<pfad>=<wert>  Stellschraube überschreiben, Punkt als __ (BAL_offline__softHours=10)
  */
@@ -19,7 +20,8 @@ const sim = await loadTs(entry)
 const def = sim.withEnv(sim.game.game, process.env)
 if (sim.game.REALMS) sim.registerRegions(def, sim.game.REALMS.regions)
 const play = process.env.PLAY && sim.game.simPlay ? sim.game.simPlay() : undefined
-const r = sim.simulate(def, { profile, hours: Number(hours), play })
+const onEvent = process.env.STREAM ? (e) => console.log(`Tag ${(e.at / 1440).toFixed(1)}\t${e.kind}\t${e.id}\t${e.detail ?? ''}`) : undefined
+const r = sim.simulate(def, { profile, hours: Number(hours), play, onEvent })
 console.log(`${slug} · ${profile} · ${hours} h`)
 console.log(sim.formatResult(r, !!process.env.SUMMARY))
 if (process.env.CHECK) {

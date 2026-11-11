@@ -17,6 +17,8 @@ export interface MonumentConfig {
   setMs: number
   /** Income added per finished stage (0.03 = +3 %). */
   perStage: number
+  /** Is the whole system open yet? (default: always) */
+  open?: (w: WorldView) => boolean
   /** The payment of one place (follow-up action), or null if the place cannot give right now. */
   pay: (w: WorldView, place: string) => DispatchRequest | null
   /** Event that confirms a payment, and how to read the place from it. */
@@ -52,7 +54,7 @@ export function monumentStatus(cfg: MonumentConfig, s: MonumentState | undefined
 /** Places that could give right now (stage open, not given yet, able to pay). */
 export function monumentGivers(cfg: MonumentConfig, s: MonumentState | undefined, w: WorldView, places: readonly string[], now: number): string[] {
   const st = monumentStatus(cfg, s, now)
-  if (st.done || st.waitMs > 0) return []
+  if (st.done || st.waitMs > 0 || (cfg.open && !cfg.open(w))) return []
   return places.filter((p) => !s?.given.includes(p) && cfg.pay(w, p) !== null)
 }
 

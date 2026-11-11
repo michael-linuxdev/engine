@@ -21,6 +21,8 @@ import {
 export type Profile = 'engaged' | 'regular' | 'casual'
 
 export interface SimOptions {
+  /** Called for every recorded event as it happens (long runs: `STREAM=1`). */
+  onEvent?: (e: SimEvent) => void
   profile: Profile
   hours: number
   /** Start (UTC used as local time). Default: Monday 2026-11-09 08:00. */
@@ -119,7 +121,11 @@ export function simulate(def: GameDefinition, opts: SimOptions): SimResult {
   const end = start + opts.hours * 3_600_000
   let wasPlaying = true
   const minutes = () => (clock.now() - start) / 60_000
-  const record = (kind: SimEvent['kind'], id: string, detail?: string) => events.push({ at: minutes(), active: activeMs / 60_000, kind, id, detail })
+  const record = (kind: SimEvent['kind'], id: string, detail?: string) => {
+    const e: SimEvent = { at: minutes(), active: activeMs / 60_000, kind, id, detail }
+    events.push(e)
+    opts.onEvent?.(e)
+  }
   const levelUps = (events: readonly { type: string; level?: unknown }[]) => {
     for (const e of events) if (e.type === 'level.up') record('level', `rang${Number(e.level)}`)
   }

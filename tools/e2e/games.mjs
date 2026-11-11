@@ -436,6 +436,15 @@ export const GAMES = [
       const given = await r.evaluate(() => window.__engine.get().modules.monument.given.length)
       assert(given >= 3, `Großes Leuchtfeuer: mehrere Lande haben gegeben (${given})`)
       assert(await r.getByTestId('monument-give').isDisabled(), 'Großes Leuchtfeuer: jedes Land gibt nur einmal je Stufe')
+      // Bücher 4 und 5: Die Schulinsel, der erste Lehrling und sein Posten sowie das Offene Meer haben je eine Seite geschrieben
+      await r.getByTestId('hud-chronicle').click()
+      await r.getByTestId('chronicle-contents').click()
+      for (const id of ['isleSchool', 'trainedFirst', 'postedFirst', 'rimOpenSea']) await r.getByTestId(`toc-${id}`).waitFor()
+      assert((await r.getByTestId('toc-locked-stageOne').count()) === 1, 'Chronik: Die Seite der ersten Stufe des Leuchtfeuers ist noch zu')
+      await r.getByTestId('toc-rimOpenSea').click()
+      assert(await r.getByTestId('chronicle-rimOpenSea').getByText(T.chronicle.entries.rimOpenSea.title, { exact: true }).isVisible(), 'Chronik: erste Seite von Buch 5')
+      await r.keyboard.press('Escape')
+      await r.getByTestId('chronicle').waitFor({ state: 'detached' })
       // Meilensteine der Schichten stehen im Neubeginn-Tab
       await r.getByTestId('tab-prestige').click()
       assert((await r.getByTestId('milestones-ages').getAttribute('data-reached')) === '0', 'Meilensteine des Zeitalters sichtbar')

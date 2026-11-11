@@ -24,6 +24,10 @@ const FEST = ['hoarfrostBloom', 'snowdropBell', 'buddingRibbon', 'buddingSeed', 
 const FEST2 = ['hoarfrostFern', 'snowdropLantern', 'buddingWhistle', 'blossomRibbon', 'midsummerWheel', 'fireflyNet', 'lanternKite', 'mistBell', 'longLightWreath'] as const
 /** Fest-Jahrgang 3 (ab den Fernen Küsten). Nur anhängen. */
 const FEST3 = ['hoarfrostShell', 'snowdropBuoy', 'buddingKelp', 'blossomNet', 'midsummerTide', 'fireflySea', 'lanternBoat', 'mistHornShell', 'longLightFourRays'] as const
+/** Fest-Jahrgang 4 (ab den Inseln). Nur anhängen. */
+const FEST4 = ['hoarfrostSlate', 'snowdropChalk', 'buddingApple', 'blossomRope', 'midsummerGlass', 'fireflySigns', 'lanternPlank', 'mistSeal', 'longLightNote'] as const
+/** Fest-Jahrgang 5 (ab dem Rand der Karte). Nur anhängen. */
+const FEST5 = ['hoarfrostRay', 'snowdropStone', 'buddingReed', 'blossomBridge', 'midsummerLamp', 'fireflyChain', 'lanternAnchor', 'mistFlute', 'longLightFifthRay'] as const
 const BREWS = ['glowTea', 'quietTonic', 'brightInk', 'warmSalve', 'starSyrup', 'dewElixir', 'stoneBalm', 'emberDrops', 'mossLamp', 'dawnPowder', 'frostCordial', 'runeDust'] as const
 
 const rarity = (i: number): 0 | 1 | 2 => (i < 5 ? 0 : i < 7 ? 1 : 2)
@@ -37,6 +41,8 @@ export const COLLECTION: CollectionConfig = {
     ...BREWS.map((id): CollectionEntry => ({ id, category: 'brews', rarity: 1, source: 'event' })),
     ...FEST2.map((id): CollectionEntry => ({ id, category: 'festival2', rarity: 1, source: 'event' })),
     ...FEST3.map((id): CollectionEntry => ({ id, category: 'festival3', rarity: 1, source: 'event' })),
+    ...FEST4.map((id): CollectionEntry => ({ id, category: 'festival4', rarity: 1, source: 'event' })),
+    ...FEST5.map((id): CollectionEntry => ({ id, category: 'festival5', rarity: 1, source: 'event' })),
   ],
   chance: [1 / 400, 1 / 2000, 1 / 8000],
   bonus: [0.005, 0.015, 0.03],
@@ -103,6 +109,54 @@ export const FEST_DECOR_3: Record<string, string> = {
   lanternMoon: 'paperBoats',
   mistMoon: 'shellHorn',
   longLight: 'fourRayLamp',
+}
+
+/** Jahrgang 4 (ab der ersten Insel). */
+export const FEST_VARIETIES_4: Record<string, string> = {
+  hoarfrost: 'hoarfrostSlate',
+  snowdrop: 'snowdropChalk',
+  budding: 'buddingApple',
+  blossomRound: 'blossomRope',
+  midsummerGlow: 'midsummerGlass',
+  fireflyNights: 'fireflySigns',
+  lanternMoon: 'lanternPlank',
+  mistMoon: 'mistSeal',
+  longLight: 'longLightNote',
+}
+export const FEST_DECOR_4: Record<string, string> = {
+  hoarfrost: 'frostBench',
+  snowdrop: 'chalkBoard',
+  budding: 'appleSapling',
+  blossomRound: 'ropeWalk',
+  midsummerGlow: 'glassJar',
+  fireflyNights: 'signLantern',
+  lanternMoon: 'smallBoat',
+  mistMoon: 'sealRock',
+  longLight: 'nameStone',
+}
+
+/** Jahrgang 5 (ab dem ersten Land am Rand der Karte). */
+export const FEST_VARIETIES_5: Record<string, string> = {
+  hoarfrost: 'hoarfrostRay',
+  snowdrop: 'snowdropStone',
+  budding: 'buddingReed',
+  blossomRound: 'blossomBridge',
+  midsummerGlow: 'midsummerLamp',
+  fireflyNights: 'fireflyChain',
+  lanternMoon: 'lanternAnchor',
+  mistMoon: 'mistFlute',
+  longLight: 'longLightFifthRay',
+}
+export const FEST_DECOR_5: Record<string, string> = {
+  hoarfrost: 'iceLantern',
+  snowdrop: 'redStone',
+  budding: 'reedRaft',
+  blossomRound: 'grassBridge',
+  midsummerGlow: 'lampTerrace',
+  fireflyNights: 'buoyChain',
+  lanternMoon: 'smallAnchor',
+  mistMoon: 'windPipe',
+  longLight: 'beaconModel',
 }
 
 const PAIRS: [string, string][] = [
@@ -231,6 +285,26 @@ export const DECOR: DecorConfig = {
     { id: 'paperBoats', cost: null, bonus: 0.025 },
     { id: 'shellHorn', cost: null, bonus: 0.025 },
     { id: 'fourRayLamp', cost: null, bonus: 0.025 },
+    // exklusiv: Fest-Jahrgang 4
+    { id: 'frostBench', cost: null, bonus: 0.03 },
+    { id: 'chalkBoard', cost: null, bonus: 0.03 },
+    { id: 'appleSapling', cost: null, bonus: 0.03 },
+    { id: 'ropeWalk', cost: null, bonus: 0.03 },
+    { id: 'glassJar', cost: null, bonus: 0.03 },
+    { id: 'signLantern', cost: null, bonus: 0.03 },
+    { id: 'smallBoat', cost: null, bonus: 0.03 },
+    { id: 'sealRock', cost: null, bonus: 0.03 },
+    { id: 'nameStone', cost: null, bonus: 0.03 },
+    // exklusiv: Fest-Jahrgang 5
+    { id: 'iceLantern', cost: null, bonus: 0.035 },
+    { id: 'redStone', cost: null, bonus: 0.035 },
+    { id: 'reedRaft', cost: null, bonus: 0.035 },
+    { id: 'grassBridge', cost: null, bonus: 0.035 },
+    { id: 'lampTerrace', cost: null, bonus: 0.035 },
+    { id: 'buoyChain', cost: null, bonus: 0.035 },
+    { id: 'smallAnchor', cost: null, bonus: 0.035 },
+    { id: 'windPipe', cost: null, bonus: 0.035 },
+    { id: 'beaconModel', cost: null, bonus: 0.035 },
   ],
 }
 
