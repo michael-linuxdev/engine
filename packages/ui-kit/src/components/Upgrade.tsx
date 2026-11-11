@@ -87,7 +87,7 @@ export function UpgradeSheet({ p, open, onClose, art, note, buyModes = true }: {
   const ui = useUi()
   if (!p) return null
   return (
-    <Sheet open={open} title={ui.labels.producer(p.id).name} onClose={onClose} testId="upgrade-sheet" className="ek-upgrade">
+    <Sheet open={open} title={ui.labels.producer(p.id).name} onClose={onClose} testId="upgrade-sheet" className="ek-upgrade" dim={false}>
       <UpgradeBody p={p} art={art} note={note} buyModes={buyModes} />
     </Sheet>
   )
@@ -101,8 +101,12 @@ function UpgradeBody({ p, art, note, buyModes }: { p: ProducerDef; art?: ReactNo
     const g = gateLines(p.unlock, ui)
     return (
       <div className="ek-stack">
-        {art}
-        <p>{l.blurb}</p>
+        <div className="ek-upgrade__top">
+          <div className="ek-upgrade__hero">{art}</div>
+          <div className="ek-upgrade__info">
+            <span>{l.blurb}</span>
+          </div>
+        </div>
         <h3 className="ek-h3">{ui.t.upgrade.unlockTitle}</h3>
         {g.all.length ? <p>{ui.t.upgrade.gateAll}: {g.all.join(' · ')}</p> : null}
         {g.any.length ? <p>{ui.t.upgrade.gateAny}: {g.any.join(' · ')}</p> : null}
@@ -111,33 +115,33 @@ function UpgradeBody({ p, art, note, buyModes }: { p: ProducerDef; art?: ReactNo
   }
   const branches = world.get<BranchesState>(MODULE.branches)?.ranks[p.id] ?? { efficiency: 0, capacity: 0 }
   const max = world.def.balance.branches.maxRank
+  const milestone = m ? ui.t.upgrade.nextMilestone(String(m.at)) : ui.t.upgrade.allMilestones
   return (
     <div className="ek-stack">
-      <div className="ek-upgrade__hero">
-        {art}
-        <span className="ek-upgrade__badge">
-          <span className="ek-upgrade__badge-label">{ui.t.common.level('').trim()}</span>
-          <strong data-testid="upgrade-level">{level}</strong>
-        </span>
+      {/* Compact like a card over the map: picture with level badge, yield and a short line beside it */}
+      <div className="ek-upgrade__top">
+        <div className="ek-upgrade__hero">
+          {art}
+          <span className="ek-upgrade__badge">
+            <span className="ek-visually-hidden">{ui.t.common.level('').trim()}</span>
+            <strong data-testid="upgrade-level">{level}</strong>
+          </span>
+        </div>
+        <div className="ek-upgrade__info">
+          <strong className="ek-upgrade__rate">{ui.t.common.perSecond(ui.fmt(world.producerRate(p.id)))}</strong>
+          <span className="ek-muted">{note ?? l.blurb}</span>
+        </div>
       </div>
-      <p>{l.blurb}</p>
-      {note ? <blockquote className="ek-quote">{note}</blockquote> : null}
-      <div className="ek-stats">
-        <div className="ek-stat">
-          <span className="ek-stat__label">{ui.t.upgrade.rate}</span>
-          <strong>{ui.t.common.perSecond(ui.fmt(world.producerRate(p.id)))}</strong>
-        </div>
-        <div className="ek-stat">
-          <span className="ek-stat__label">{m ? ui.t.upgrade.nextMilestone(String(m.at)) : ui.t.upgrade.allMilestones}</span>
-          <ProgressBar ratio={m ? Math.max(0, Math.min(1, (level - m.from) / Math.max(1, m.at - m.from))) : 1} label={m ? ui.t.upgrade.nextMilestone(String(m.at)) : ui.t.upgrade.allMilestones} />
-        </div>
+      <div className="ek-upgrade__milestone">
+        <span className="ek-muted">{milestone}</span>
+        <ProgressBar ratio={m ? Math.max(0, Math.min(1, (level - m.from) / Math.max(1, m.at - m.from))) : 1} label={milestone} />
       </div>
       {buyModes ? <BuyModeToggle /> : null}
       <BuyButton p={p} />
       {buyModes ? null : <p className="ek-muted ek-hold-hint">{ui.t.upgrade.holdHint}</p>}
       {level >= 1 ? (
-        <>
-          <h3 className="ek-h3">{ui.t.upgrade.branches}</h3>
+        <details className="ek-details ek-upgrade__branches">
+          <summary data-testid="branches-toggle">{ui.t.upgrade.branches}</summary>
           <div className="ek-grid2">
             {(['efficiency', 'capacity'] as const).map((kind) => {
               const rank = branches[kind]
@@ -155,7 +159,7 @@ function UpgradeBody({ p, art, note, buyModes }: { p: ProducerDef; art?: ReactNo
               )
             })}
           </div>
-        </>
+        </details>
       ) : null}
     </div>
   )

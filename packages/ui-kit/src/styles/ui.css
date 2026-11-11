@@ -724,51 +724,67 @@ body {
   gap: var(--space-1);
 }
 
-/* Upgrade sheet: picture with level badge, stat tiles, rank pips */
+/* Sheet: grip for the swipe-down gesture, optional clear backdrop */
+.ek-sheet {
+  position: relative;
+  transition: transform 0.18s ease-out;
+}
+.ek-sheet__grip {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 40px;
+  height: 4px;
+  margin-left: -20px;
+  border-radius: 999px;
+  background: var(--line);
+  pointer-events: none;
+}
+.ek-sheet-backdrop--clear {
+  background: transparent;
+}
+
+/* Upgrade card: small picture with level badge, yield beside it, milestone bar */
+.ek-upgrade__top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
 .ek-upgrade__hero {
   position: relative;
+  flex: none;
+}
+.ek-upgrade__info {
+  flex: 1;
+  min-width: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 2px;
+  overflow-wrap: anywhere;
+}
+.ek-upgrade__rate {
+  font-size: 1.15rem;
 }
 .ek-upgrade__badge {
   position: absolute;
-  right: 0;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 56px;
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-m);
+  right: -6px;
+  bottom: -6px;
+  min-width: 34px;
+  padding: 2px var(--space-2);
+  border-radius: 999px;
   background: var(--accent);
   color: var(--on-accent);
-  line-height: 1.1;
+  text-align: center;
+  line-height: 1.3;
 }
-.ek-upgrade__badge-label {
-  font-size: 0.72rem;
-}
-.ek-upgrade__badge strong {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-}
-.ek-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-2);
-}
-.ek-stat {
+.ek-upgrade__milestone {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-m);
-  background: var(--surface);
-  overflow-wrap: anywhere;
+  gap: 2px;
+  font-size: 0.86rem;
 }
-.ek-stat__label {
-  color: var(--ink-muted);
-  font-size: 0.82rem;
+.ek-upgrade__branches .ek-grid2 {
+  margin-top: var(--space-2);
 }
 .ek-buy {
   width: 100%;
@@ -802,7 +818,11 @@ body {
 .ek-menu--tiles {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
   gap: var(--space-2);
+}
+.ek-menu--tiles > li {
+  display: flex;
 }
 .ek-menu--tiles .ek-menu__item {
   display: flex;
@@ -810,6 +830,8 @@ body {
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
+  position: relative;
+  flex: 1;
   min-height: 92px;
   text-align: center;
   border: 1px solid var(--line);
@@ -819,4 +841,12 @@ body {
 }
 .ek-menu__icon {
   display: inline-flex;
+}
+
+/* The "new" badge sits in the corner so every tile keeps the same height */
+.ek-menu--tiles .ek-badge--inline {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  margin: 0;
 }

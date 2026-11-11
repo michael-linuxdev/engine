@@ -152,25 +152,92 @@ body {
   box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.4), inset 0 -4px 0 rgb(0 0 0 / 0.18), 0 3px 0 var(--night), 0 0 18px rgb(255 159 67 / 0.45);
 }
 
-/* Ausbau-Fenster: Bild mit Stufen-Plakette, Wert-Tafeln */
+/* Ausbau-Karte: klein über der Leiste, die Talkarte dahinter bleibt hell (Größe wie beim Vorbild) */
+.lw-app .ek-sheet-backdrop--clear {
+  align-items: flex-end;
+  padding: 0 var(--space-2) calc(var(--tabbar-h) + env(safe-area-inset-bottom) + var(--space-2));
+}
+.lw-app .ek-upgrade {
+  max-height: min(56dvh, 470px);
+  border: 2px solid var(--gold-deep);
+  border-bottom-width: 5px;
+  border-radius: 22px;
+  box-shadow: 0 10px 34px rgb(23 32 64 / 0.55);
+  padding-bottom: 0;
+}
+.lw-app .ek-upgrade .ek-sheet__head {
+  padding: var(--space-3) var(--space-2) 0 var(--space-4);
+  background: transparent;
+  border-bottom: none;
+  box-shadow: none;
+}
+.lw-app .ek-upgrade .ek-sheet__title {
+  color: var(--ink);
+  text-shadow: none;
+  font-size: 1.45rem;
+}
+.lw-app .ek-upgrade .ek-sheet__head .ek-icon-btn {
+  background: var(--surface);
+  border-color: var(--parchment-edge);
+  color: var(--ink);
+}
+.lw-app .ek-upgrade .ek-sheet__body {
+  padding: var(--space-2) var(--space-4) var(--space-3);
+  gap: var(--space-2);
+}
+.lw-app .ek-upgrade .ek-stack {
+  gap: var(--space-2);
+}
+.lw-app .ek-upgrade__hero {
+  border: 2px solid var(--parchment-edge);
+  border-bottom-width: 4px;
+  border-radius: 16px;
+  background: radial-gradient(ellipse at 50% 85%, var(--surface-2), var(--surface) 75%);
+}
 .lw-app .ek-upgrade__badge {
-  width: 68px;
-  height: 68px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 999px;
   background: radial-gradient(circle at 35% 30%, var(--gold), var(--gold-deep));
   color: var(--night);
-  border: 3px solid var(--night);
-  box-shadow: 0 3px 0 var(--night), 0 0 16px rgb(255 159 67 / 0.5);
+  border: 2px solid var(--night);
+  box-shadow: 0 2px 0 var(--night);
 }
 .lw-app .ek-upgrade__badge strong {
-  font-size: 1.6rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
   font-variant-numeric: lining-nums;
 }
-.lw-app .ek-stat strong {
+.lw-app .ek-upgrade__rate {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-variant-numeric: lining-nums tabular-nums;
+}
+.lw-app .ek-upgrade__info .ek-muted {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+.lw-app .ek-upgrade__branches {
+  border: 2px dashed var(--parchment-edge);
+  border-radius: var(--radius-m);
+  padding: 0 var(--space-3);
+}
+.lw-app .ek-upgrade__branches[open] {
+  padding-bottom: var(--space-3);
+}
+.lw-app .ek-upgrade__branches summary {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+.lw-app .ek-sheet__grip {
+  background: var(--gold-deep);
+  opacity: 0.6;
 }
 .lw-app .ek-pips i {
   width: 13px;
@@ -803,12 +870,9 @@ body {
 }
 
 .lw-upgrade-art {
-  width: 190px;
-  height: 208px;
-  max-height: 30dvh;
-  align-self: center;
-  border-radius: var(--radius-m);
-  background: radial-gradient(ellipse at 50% 90%, var(--surface-2), transparent 70%);
+  display: block;
+  width: 84px;
+  height: 92px;
 }
 
 /* Talstile (Markt): tönen nur die Karte, nie die Bedienung. Dämmerblau = unverändert. */

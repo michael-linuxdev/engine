@@ -154,6 +154,18 @@ export const GAMES = [
       assert((await r.evaluate(() => window.__engine.get().modules.visitors.seen.fox)) === 2, 'Talgast auf der Karte begrüßt')
       await r.waitForTimeout(600)
       assert((await r.getByTestId('guest-greet').count()) === 0 && (await r.evaluate(() => window.__engine.get().modules.visitors.current)) === '', 'Talgast bleibt nach dem Begrüßen fort')
+      // Ausbau-Karte: klein über der Leiste, dunkelt die Kopfzeile nicht ab, Wisch nach unten schließt sie
+      await r.getByTestId('slot-kraeuterkate').click()
+      const card = await r.getByTestId('upgrade-sheet').boundingBox()
+      const screen = r.viewportSize()
+      assert(card.height <= screen.height * 0.6, `Ausbau-Karte bleibt klein (${Math.round(card.height)} von ${screen.height} px)`)
+      assert((await r.locator('.ek-sheet-backdrop--clear').count()) === 1, 'Ausbau-Karte dunkelt die Talkarte und die Kopfzeile nicht ab')
+      const cdp = await w.newCDPSession(r)
+      const sx = card.x + card.width / 2
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: sx, y: card.y + 20 }] })
+      for (let i = 1; i <= 6; i++) await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: sx, y: card.y + 20 + i * 25 }] })
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
+      await r.getByTestId('upgrade-sheet').waitFor({ state: 'detached' })
 
       // Rückkehr-Brief nach 50 Stunden: Brief + Geschenk (20 Lichtkiesel)
       const pebblesBefore = await r.evaluate(() => window.__engine.get().modules.wallet.balances.glowPebbles)
