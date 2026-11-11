@@ -29,6 +29,8 @@ export interface GameShellProps<S extends EngineStrings> {
   tabs?: { item: NavItem; view: ReactNode }[]
   /** Icons for the built-in tabs (`play`, `prestige`, `shop`) and the menu button (`menu`). */
   navIcons?: Partial<Record<'play' | 'prestige' | 'shop' | 'menu', ReactNode>>
+  /** Icons for the built-in menu entries; with icons the menu shows as tiles. */
+  menuIcons?: Partial<Record<'save' | 'settings' | 'legal', ReactNode>>
   /** Extra menu entries before save/settings/legal. */
   menu?: MenuItem[]
   /** Shop: which meta branches to show (default: all). */
@@ -99,9 +101,9 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
   ]
   const menu: MenuItem[] = [
     ...(p.menu ?? []),
-    { id: 'save', label: t.save.menu, onSelect: () => setOverlay('save') },
-    { id: 'settings', label: t.settings.menu, onSelect: () => setOverlay('settings') },
-    { id: 'legal', label: t.legal.menu, onSelect: () => setOverlay('legal') },
+    { id: 'save', label: t.save.menu, icon: p.menuIcons?.save, onSelect: () => setOverlay('save') },
+    { id: 'settings', label: t.settings.menu, icon: p.menuIcons?.settings, onSelect: () => setOverlay('settings') },
+    { id: 'legal', label: t.legal.menu, icon: p.menuIcons?.legal, onSelect: () => setOverlay('legal') },
   ]
   const views: Record<string, ReactNode> = {
     play: p.play,

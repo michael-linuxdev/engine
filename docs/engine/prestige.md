@@ -53,3 +53,7 @@ Gegenstände sind Daten (`def.metaShop`):
   - `wave2`: ab dem 2. Lauf, einen Rang weniger.
   - `free`: immer offen.
 - **Hilfen für die UI:** `nextLockedMeta`, `countAffordableMeta`, `canBuyMeta`.
+
+## Meilensteine je Schicht
+
+`PrestigeLayerDef.milestones`: Liste aus `{ at, reward?, bonus? }`. Erreicht die Zahl der Läufe einer Schicht `at`, gibt es die Belohnung einmal (Ereignis `prestige.milestone`) und `bonus` dauerhaft auf jeden Ertrag (Effekt `effect.layerMilestones`). Alles folgt aus der gespeicherten Zahl der Läufe, es gibt kein eigenes Feld. Die Liste darf deshalb später wachsen; ein alter Stand, der einen Meilenstein schon hinter sich hat, bekommt den Bonus sofort, die Belohnung aber nicht nachträglich. Abfrage: `layerMilestones(world, layer)`.

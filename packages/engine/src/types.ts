@@ -70,6 +70,20 @@ export interface PrestigeLayerDef {
     /** Rest period after a run of this layer (ms, measured on the game clock). */
     restMs?: number
   }
+  /**
+   * Lifetime milestones: when the run count of this layer reaches `at`, the
+   * reward is granted once and `bonus` (0.02 = +2 % on every rate) stays for
+   * good. Derived from the saved count — nothing extra is stored, so the list
+   * may grow later; milestones an old save already passed give their bonus
+   * at once (but no reward).
+   */
+  milestones?: readonly LayerMilestone[]
+}
+
+export interface LayerMilestone {
+  at: number
+  reward?: readonly Amount[]
+  bonus?: number
 }
 
 /** Effect targets: `rate:*`, `rate:<producer>`, `cost:*`, `cost:<producer>`, `offline.softHours`, … */

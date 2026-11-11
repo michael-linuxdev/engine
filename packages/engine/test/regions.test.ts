@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  applyOffline, createManualClock, createState, dispatch, loadState, regionsModule, serializeState, standardModules, tick, view,
+  applyOffline, createManualClock, createState, dispatch, loadState, regionRate, regionsModule, regionStarProgress, regionStars, serializeState, standardModules, tick, totalRegionStars, view,
   type EngineState, type GameDefinition, type RegionConfig, type RegionDef, type RegionsState,
 } from '../src'
 import { T0, testGame } from './fixture'
@@ -67,5 +67,53 @@ describe('regions', () => {
     s = { ...s, modules: { ...s.modules, regions: { regions } } }
     const bytes = serializeState(def, s, T0).length
     expect(bytes).toBeLessThan(100_000)
+  })
+})
+
+describe('regions: mastery', () => {
+  const MASTERY: RegionConfig = { ...CFG(2), mastery: { levels: [3, 6], yieldPerStar: 0.5, reward: [{ currency: 'gem', amount: 4 }] } }
+  const def = testGame({ modules: [...standardModules(), regionsModule(MASTERY)] })
+  const gems = (s: EngineState) => (s.modules.wallet as { balances: Record<string, number> }).balances.gem ?? 0
+  const setOwned = (s: EngineState, level: number, last = level): EngineState => {
+    const owned = Object.fromEntries(MASTERY.regions[0].areas.map((a, k) => [a.id, k === 9 ? last : level]))
+    return { ...s, modules: { ...s.modules, regions: { regions: { ...reg(s).regions, r0: { ...reg(s).regions.r0, open: true, balance: 1e30, owned } } } } }
+  }
+  it('stars follow the weakest area; a closed region has none; nothing extra is saved', () => {
+    const clock = createManualClock(T0)
+    let s = tick(def, createState(def, clock), 250, clock).state
+    expect(regionStars(MASTERY, MASTERY.regions[1], reg(s).regions.r1)).toBe(0)
+    s = setOwned(s, 6, 2)
+    expect(regionStars(MASTERY, MASTERY.regions[0], reg(s).regions.r0)).toBe(0)
+    expect(regionStarProgress(MASTERY, MASTERY.regions[0], reg(s).regions.r0)).toEqual({ stars: 0, max: 2, nextLevel: 3, have: 9, total: 10 })
+    s = setOwned(s, 6, 3)
+    expect(regionStars(MASTERY, MASTERY.regions[0], reg(s).regions.r0)).toBe(1)
+    expect(totalRegionStars(MASTERY, reg(s))).toEqual({ have: 1, total: 4 })
+    // An old save gets its stars at once: they are derived, the slice has no star field
+    const loaded = loadState(def, serializeState(def, s, clock.now()), clock).state
+    expect(regionStars(MASTERY, MASTERY.regions[0], reg(loaded).regions.r0)).toBe(1)
+    expect(Object.keys(reg(loaded).regions.r0).sort()).toEqual(['balance', 'grow', 'introSeen', 'open', 'openedAt', 'owned', 'thrift'])
+  })
+  it('the buy that completes a star grants the reward once, emits an event and raises the yield', () => {
+    const clock = createManualClock(T0)
+    let s = setOwned(tick(def, createState(def, clock), 250, clock).state, 3, 2)
+    const rate0 = regionRate(MASTERY, MASTERY.regions[0], reg(s).regions.r0, view(def, s))
+    const g0 = gems(s)
+    const r = dispatch(def, s, { module: 'regions', type: 'buy', payload: { region: 'r0', area: 'r0a9', count: 1 } }, clock)
+    s = r.state
+    expect(r.events.some((e) => e.type === 'region.mastered' && e.region === 'r0' && e.stars === 1)).toBe(true)
+    expect(gems(s) - g0).toBe(4)
+    // +50 % for the star; the one extra level of the last area adds its own share on top
+    expect(regionRate(MASTERY, MASTERY.regions[0], reg(s).regions.r0, view(def, s))).toBeGreaterThan(rate0 * 1.5)
+    // Further levels without a new star: no second reward
+    const again = dispatch(def, s, { module: 'regions', type: 'buy', payload: { region: 'r0', area: 'r0a9', count: 1 } }, clock)
+    expect(again.events.some((e) => e.type === 'region.mastered')).toBe(false)
+    expect(gems(again.state)).toBe(gems(s))
+  })
+  it('without a mastery config nothing changes', () => {
+    const plain = game(2)
+    const clock = createManualClock(T0)
+    const s = tick(plain, createState(plain, clock), 250, clock).state
+    expect(regionStars(CFG(2), CFG(2).regions[0], reg(s).regions.r0)).toBe(0)
+    expect(totalRegionStars(CFG(2), reg(s))).toEqual({ have: 0, total: 0 })
   })
 })

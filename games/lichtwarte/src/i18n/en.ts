@@ -118,6 +118,10 @@ export const stringsEn: Strings = {
       rankTen: { name: 'Warden of rank', blurb: 'Reached Warden Rank 10.' },
       rankTwentyFive: { name: 'Old hand', blurb: 'Reached Warden Rank 25.' },
       wholeValley: { name: 'The whole valley', blurb: 'All ten buildings stand.' },
+      firstStar: { name: 'A realm shines', blurb: 'The first star of mastery.' },
+      tenStars: { name: 'Mastered tenfold', blurb: 'Ten stars across the realms.' },
+      starPerRealm: { name: 'A star for every realm', blurb: 'As many stars as there are realms.' },
+      allStars: { name: 'All realms mastered', blurb: 'Three stars in every realm.' },
     },
     trials: {
       withoutWoodshed: { name: 'Without a woodshed', blurb: 'One moon without the Woodshed.' },
@@ -149,7 +153,7 @@ export const stringsEn: Strings = {
     hints: {
       wilds: { name: 'Wilds', blurb: 'Behind thorns and mist more places wait. Tap them to see what is still missing.' },
       milestone: { name: 'Milestones', blurb: 'At level 25, 50, 100 … a building doubles its yield.' },
-      buyMode: { name: 'Several levels', blurb: 'With ×10 or Max you upgrade several levels at once.' },
+      buyMode: { name: 'Press and hold', blurb: 'Hold “Upgrade” and the watch keeps building level after level.' },
       branches: { name: 'Branches', blurb: 'In the upgrade window, Efficiency and Capacity make a building better or cheaper.' },
       bonuses: { name: 'Where does it come from?', blurb: 'Tap your Glimmer to see every bonus on its own.' },
       burstRecharge: { name: 'Sparks recharge', blurb: 'Called sparks come back over time.' },

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { layerStatus, MODULE, prestigeState } from '@engine/core'
+import { layerMilestones, layerStatus, MODULE, prestigeState } from '@engine/core'
 import { useEngine } from '@engine/react'
 import { useUi } from '../useUi'
 import { Button } from './Button'
@@ -22,6 +22,8 @@ export function PrestigeLayerBlock({ layer, onPerformed, art }: { layer: string;
           ? ui.t.prestige.blockedLower(String(ldef.minimum?.lowerRuns ?? 0), lower)
           : null
   const count = prestigeState(world).layers[st.index]?.count ?? 0
+  const ms = layerMilestones(world, layer)
+  const pct = (x: number) => String(Math.round(x * 1000) / 10)
   return (
     <section className="ek-card ek-layer" data-testid={`layer-${layer}`} aria-labelledby={`layer-h-${layer}`}>
       {art}
@@ -45,6 +47,22 @@ export function PrestigeLayerBlock({ layer, onPerformed, art }: { layer: string;
         {l.action}
       </Button>
       <p className="ek-muted">{ui.t.prestige.count(String(count))}</p>
+      {ms.total > 0 ? (
+        <div className="ek-note ek-milestones" data-testid={`milestones-${layer}`} data-reached={ms.reached}>
+          <strong>{ui.t.prestige.milestones(String(ms.reached), String(ms.total))}</strong>
+          <ProgressBar ratio={ms.next ? Math.min(1, count / ms.next.at) : 1} label={ui.t.prestige.milestones(String(ms.reached), String(ms.total))} />
+          {ms.next ? (
+            <>
+              <span>{ui.t.prestige.milestoneNext(String(ms.next.at))}</span>
+              {ms.next.reward?.length ? <span className="ek-muted">{ui.t.prestige.milestoneReward(ms.next.reward.map((r) => `${ui.fmt(r.amount)} ${ui.labels.currency(r.currency)}`).join(', '))}</span> : null}
+              {ms.next.bonus ? <span className="ek-muted">{ui.t.prestige.milestoneBonus(pct(ms.next.bonus))}</span> : null}
+            </>
+          ) : (
+            <span>{ui.t.prestige.milestonesDone}</span>
+          )}
+          {ms.bonus > 0 ? <span className="ek-muted">{ui.t.prestige.milestoneTotal(pct(ms.bonus))}</span> : null}
+        </div>
+      ) : null}
     </section>
   )
 }

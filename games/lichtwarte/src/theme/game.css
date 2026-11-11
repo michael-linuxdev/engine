@@ -23,31 +23,276 @@ body {
   font-weight: 700;
   letter-spacing: 0.01em;
 }
+/* ── Fenster und Menüs: wie Tafeln eines Spiels, nicht wie Formulare ────── */
 .lw-app .ek-sheet {
-  background: linear-gradient(var(--parchment), var(--surface) 140px);
-  border-top: 3px solid var(--gold);
+  background: var(--parchment);
+  border: 2px solid var(--gold-deep);
+  border-bottom: none;
+  box-shadow: 0 -8px 40px rgb(23 32 64 / 0.55);
+  overflow: hidden;
+}
+/* Kopf als nachtblaues Banner mit goldenem Titel */
+.lw-app .ek-sheet__head {
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
+  background: linear-gradient(var(--night-2), var(--night));
+  border-bottom: 3px solid var(--gold);
+  box-shadow: 0 3px 10px rgb(23 32 64 / 0.35);
 }
 .lw-app .ek-sheet__title {
-  font-size: 1.45rem;
+  font-size: 1.5rem;
+  color: var(--gold);
+  text-shadow: 0 2px 0 rgb(0 0 0 / 0.35);
 }
+.lw-app .ek-sheet__head .ek-icon-btn {
+  width: var(--tap);
+  height: var(--tap);
+  border-radius: 50%;
+  background: var(--night-2);
+  border: 2px solid var(--gold-deep);
+  color: var(--on-night);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+.lw-app .ek-sheet__foot {
+  background: var(--surface-2);
+  border-top: 2px solid var(--parchment-edge);
+}
+
+/* Karten und Zeilen: Pergament-Tafeln mit Kante */
 .lw-app .ek-card,
-.lw-app .ek-row {
-  box-shadow: 0 1px 0 var(--parchment-edge), 0 3px 10px rgb(43 33 28 / 0.07);
+.lw-app .ek-row,
+.lw-app .ek-stat,
+.lw-app .ek-tile {
+  background: linear-gradient(var(--surface), var(--parchment));
+  border: 2px solid var(--parchment-edge);
+  border-bottom-width: 4px;
+  border-radius: var(--radius-m);
+  box-shadow: 0 3px 10px rgb(43 33 28 / 0.1);
+}
+.lw-app .ek-row.is-locked,
+.lw-app .ek-tile.is-locked {
+  background: var(--surface-2);
+  border-style: dashed;
+  box-shadow: none;
+}
+.lw-app .ek-tile.is-done {
+  border-color: var(--gold-deep);
+}
+.lw-app .ek-card > strong:first-child,
+.lw-app .ek-row__main > strong:first-child,
+.lw-app .ek-card .ek-h3 {
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 700;
+}
+.lw-app .ek-h3::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  vertical-align: 2px;
+  transform: rotate(45deg);
+  background: var(--gold-deep);
+}
+.lw-app .ek-note {
+  background: var(--surface-2);
+  border-left: 4px solid var(--gold);
+}
+.lw-app .ek-quote {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  border-left-color: var(--gold-deep);
+}
+
+/* Knöpfe: dick, golden, mit Druckpunkt */
+.lw-app .ek-btn {
+  border-radius: 14px;
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  transition: transform 0.06s;
+}
+.lw-app .ek-btn--small {
+  font-size: 1rem;
 }
 .lw-app .ek-btn--primary {
-  background: linear-gradient(var(--night-2), var(--accent));
-  box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.22), 0 2px 6px rgb(23 32 64 / 0.3);
-  border-color: var(--night);
+  background: linear-gradient(var(--gold), var(--gold-deep));
+  color: var(--night);
+  border: 2px solid var(--night);
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.4), inset 0 -4px 0 rgb(0 0 0 / 0.18), 0 3px 0 var(--night);
 }
-.lw-app .ek-btn--primary:active:not(:disabled) {
-  transform: translateY(1px);
-  box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.22);
+.lw-app .ek-btn--secondary {
+  background: linear-gradient(var(--surface), var(--surface-2));
+  color: var(--ink);
+  border: 2px solid var(--ink-muted);
+  box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.1), 0 3px 0 var(--ink-muted);
 }
+.lw-app .ek-btn--primary:active:not(:disabled),
+.lw-app .ek-btn--secondary:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: inset 0 2px 0 rgb(0 0 0 / 0.12);
+}
+.lw-app .ek-btn:disabled {
+  opacity: 1;
+  background: var(--surface-2);
+  color: var(--ink-muted);
+  border-color: var(--line);
+  box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.06);
+}
+.lw-app .ek-btn__cost {
+  font-weight: 700;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.lw-app .ek-buy {
+  min-height: 58px;
+  font-size: 1.25rem;
+}
+.lw-app .ek-buy:not(:disabled) {
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.4), inset 0 -4px 0 rgb(0 0 0 / 0.18), 0 3px 0 var(--night), 0 0 18px rgb(255 159 67 / 0.45);
+}
+
+/* Ausbau-Karte: klein über der Leiste, die Talkarte dahinter bleibt hell (Größe wie beim Vorbild) */
+.lw-app .ek-sheet-backdrop--clear {
+  align-items: flex-end;
+  padding: 0 var(--space-2) calc(var(--tabbar-h) + env(safe-area-inset-bottom) + var(--space-2));
+}
+.lw-app .ek-upgrade {
+  max-height: min(56dvh, 470px);
+  border: 2px solid var(--gold-deep);
+  border-bottom-width: 5px;
+  border-radius: 22px;
+  box-shadow: 0 10px 34px rgb(23 32 64 / 0.55);
+  padding-bottom: 0;
+}
+.lw-app .ek-upgrade .ek-sheet__head {
+  padding: var(--space-3) var(--space-2) 0 var(--space-4);
+  background: transparent;
+  border-bottom: none;
+  box-shadow: none;
+}
+.lw-app .ek-upgrade .ek-sheet__title {
+  color: var(--ink);
+  text-shadow: none;
+  font-size: 1.45rem;
+}
+.lw-app .ek-upgrade .ek-sheet__head .ek-icon-btn {
+  background: var(--surface);
+  border-color: var(--parchment-edge);
+  color: var(--ink);
+}
+.lw-app .ek-upgrade .ek-sheet__body {
+  padding: var(--space-2) var(--space-4) var(--space-3);
+  gap: var(--space-2);
+}
+.lw-app .ek-upgrade .ek-stack {
+  gap: var(--space-2);
+}
+.lw-app .ek-upgrade__hero {
+  border: 2px solid var(--parchment-edge);
+  border-bottom-width: 4px;
+  border-radius: 16px;
+  background: radial-gradient(ellipse at 50% 85%, var(--surface-2), var(--surface) 75%);
+}
+.lw-app .ek-upgrade__badge {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 30%, var(--gold), var(--gold-deep));
+  color: var(--night);
+  border: 2px solid var(--night);
+  box-shadow: 0 2px 0 var(--night);
+}
+.lw-app .ek-upgrade__badge strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-variant-numeric: lining-nums;
+}
+.lw-app .ek-upgrade__rate {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.lw-app .ek-upgrade__info .ek-muted {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+.lw-app .ek-upgrade__branches {
+  border: 2px dashed var(--parchment-edge);
+  border-radius: var(--radius-m);
+  padding: 0 var(--space-3);
+}
+.lw-app .ek-upgrade__branches[open] {
+  padding-bottom: var(--space-3);
+}
+.lw-app .ek-upgrade__branches summary {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+.lw-app .ek-sheet__grip {
+  background: var(--gold-deep);
+  opacity: 0.6;
+}
+.lw-app .ek-pips i {
+  width: 13px;
+  height: 13px;
+  border-color: var(--gold-deep);
+  transform: rotate(45deg);
+  border-radius: 2px;
+  margin-right: 7px;
+}
+.lw-app .ek-pips i.is-on {
+  background: var(--gold);
+  box-shadow: 0 0 6px var(--ember);
+}
+.lw-app .ek-stars__on {
+  color: var(--gold-deep);
+  text-shadow: 0 0 6px rgb(255 159 67 / 0.6);
+}
+
+/* Balken: dicker, mit Glanz */
 .lw-app .ek-progress {
-  background: rgb(43 33 28 / 0.14);
+  height: 12px;
+  background: rgb(43 33 28 / 0.16);
+  border: 1px solid rgb(43 33 28 / 0.25);
 }
 .lw-app .ek-progress__fill {
-  background: linear-gradient(90deg, var(--gold-deep), var(--gold));
+  background: linear-gradient(rgb(255 255 255 / 0.35), transparent 45%), linear-gradient(90deg, var(--gold-deep), var(--gold));
+  border-radius: 999px;
+}
+
+/* Menü: Kacheln in Nachtblau mit goldenem Zeichen */
+.lw-app .ek-menu--tiles .ek-menu__item {
+  background: linear-gradient(var(--night-2), var(--night));
+  color: var(--on-night);
+  border: 2px solid var(--gold-deep);
+  border-bottom-width: 5px;
+  border-radius: 16px;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  min-height: 104px;
+}
+.lw-app .ek-menu--tiles .ek-menu__item:active {
+  transform: translateY(2px);
+  border-bottom-width: 3px;
+}
+.lw-app .ek-menu__icon .lw-icon {
+  width: 34px;
+  height: 34px;
+  color: var(--gold);
+  filter: drop-shadow(0 0 6px var(--ember));
+}
+.lw-app .ek-menu--tiles .ek-badge {
+  background: var(--ember);
+  color: var(--night);
+  padding: 1px 8px;
+  font-family: var(--font-body);
 }
 .lw-icon {
   display: block;
@@ -161,6 +406,13 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle at 40% 35%, var(--surface) 0 18%, var(--gold) 45%, var(--gold-deep) 100%);
   box-shadow: 0 0 10px var(--ember);
+}
+
+/* Auf den übrigen Tabs klebt die Kopfzeile oben: deckend, damit kein Text durchscheint */
+.lw-app:not([data-tab='play']) .ek-hud {
+  background: var(--bg);
+  padding-bottom: var(--space-2);
+  max-width: none;
 }
 
 /* Hinweise unter der Kopfzeile */
@@ -436,6 +688,38 @@ body {
   opacity: 0;
 }
 
+/* Talgast auf der Karte: antippen heißt begrüßen */
+.lw-guest-btn {
+  position: absolute;
+  z-index: 3;
+  width: 56px;
+  height: 56px;
+  transform: translate(-50%, -78%);
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.lw-guest-btn__mark {
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, var(--gold), var(--gold-deep));
+  border: 2px solid var(--night);
+  color: var(--night);
+  font-weight: 800;
+  font-size: 0.9rem;
+  line-height: 18px;
+  text-align: center;
+  box-shadow: 0 0 10px var(--ember);
+}
+
 /* Sprechblase des Lehrlings */
 .lw-bubble {
   position: absolute;
@@ -586,12 +870,9 @@ body {
 }
 
 .lw-upgrade-art {
-  width: 190px;
-  height: 208px;
-  max-height: 30dvh;
-  align-self: center;
-  border-radius: var(--radius-m);
-  background: radial-gradient(ellipse at 50% 90%, var(--surface-2), transparent 70%);
+  display: block;
+  width: 84px;
+  height: 92px;
 }
 
 /* Talstile (Markt): tönen nur die Karte, nie die Bedienung. Dämmerblau = unverändert. */
@@ -658,6 +939,7 @@ body {
   :root:not(.ek-reduced-motion) .lw-story { animation: lw-fade 0.5s ease-out both; }
   :root:not(.ek-reduced-motion) .lw-turn { animation: lw-turn 5s ease-in-out 0.4s both; }
   :root:not(.ek-reduced-motion) .lw-page { animation: lw-leaf 0.3s ease-out both; }
+  :root:not(.ek-reduced-motion) .lw-guest-btn__mark { animation: lw-hop 1.6s ease-in-out infinite; }
   :root:not(.ek-reduced-motion) .lw-bubble { animation: lw-bubble 0.35s ease-out both; }
   :root:not(.ek-reduced-motion) .lw-slot.can-buy .lw-slot__up { animation: lw-pulse 1.8s ease-in-out infinite; }
   :root:not(.ek-reduced-motion) .lw-app .ek-sheet { animation: lw-sheet 0.28s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
@@ -705,3 +987,10 @@ body {
 @keyframes lw-line { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes lw-turn { from { transform: translateX(-84px); } to { transform: translateX(0); } }
 @keyframes lw-leaf { from { transform: translateX(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* Tab-Überschriften als Schriftzug mit Doppellinie */
+.lw-app .ek-h2 {
+  font-size: 1.55rem;
+  padding-bottom: var(--space-1);
+  border-bottom: 3px double var(--gold-deep);
+}

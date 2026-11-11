@@ -74,3 +74,22 @@ export const IconSpark = () => (
     <path d="M12 3 l1.8 6.2 L20 11 l-6.2 1.8 L12 19 l-1.8 -6.2 L4 11 l6.2 -1.8 z" />
   </Icon>
 )
+/** Sicherung: Lade mit Pfeil. */
+export const IconSave = () => (
+  <Icon>
+    <path d="M5 13 v6 h14 v-6 M12 4 v10 M8 10 l4 4 l4 -4" />
+  </Icon>
+)
+/** Einstellungen: Zahnrad. */
+export const IconGear = () => (
+  <Icon>
+    <circle cx="12" cy="12" r="3.2" />
+    <path d="M12 3.5 v2.5 M12 18 v2.5 M3.5 12 h2.5 M18 12 h2.5 M6 6 l1.8 1.8 M16.2 16.2 l1.8 1.8 M18 6 l-1.8 1.8 M7.8 16.2 L6 18" />
+  </Icon>
+)
+/** Rechtliches: Schriftrolle. */
+export const IconScroll = () => (
+  <Icon>
+    <path d="M7 4 h10 a2 2 0 0 1 2 2 v1 h-3 M7 4 a2 2 0 0 0 -2 2 v12 a2 2 0 0 0 2 2 h9 a2 2 0 0 0 2 -2 V7 M9 9 h6 M9 12.5 h6 M9 16 h4" />
+  </Icon>
+)

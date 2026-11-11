@@ -84,16 +84,20 @@
     "watchRound"
   ],
   "deeds": [
+    "allStars",
     "fifteenMoonturns",
     "firstLight",
     "firstLongNight",
     "firstMoonturn",
+    "firstStar",
     "fiveHundredLevels",
     "fiveMoonturns",
     "hundredLevels",
     "rankTen",
     "rankTwentyFive",
     "sparkSinger",
+    "starPerRealm",
+    "tenStars",
     "thousandLevels",
     "wholeValley"
   ],

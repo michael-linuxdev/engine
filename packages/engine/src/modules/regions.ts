@@ -10,7 +10,7 @@ import { offlineGain } from '../offline'
 import { bulkCost, maxAffordable, milestoneMult } from '../producers'
 import { act } from '../result'
 import { isRecord, parseBool, parseInt0, parseNum, parseNumRecord, parseTime } from '../state'
-import type { EffectSource, EngineModule, ProducerDef, WorldView } from '../types'
+import type { Amount, EffectSource, EngineModule, ProducerDef, WorldView } from '../types'
 import { offlineCaps } from './offline'
 
 export interface RegionDef {
@@ -27,6 +27,13 @@ export interface RegionConfig {
   care: { maxRank: number; growPerRank: number; thriftPerRank: number; costBase: number; costGrowth: number }
   /** Main bonus: 1 + cap · (1 − e^(−levels / l0)). */
   bonus: { cap: number; l0: number }
+  /**
+   * Mastery: one star per entry of `levels`, earned when the WEAKEST area of a
+   * region reaches that level. Each star raises the region's own yield and
+   * grants `reward` once. Stars follow from the saved area levels (which
+   * never drop) — nothing extra is stored.
+   */
+  mastery?: { levels: readonly number[]; yieldPerStar: number; reward?: readonly Amount[] }
 }
 
 export interface RegionSlice {
@@ -47,13 +54,49 @@ export const REGIONS_ID = 'regions'
 
 const emptySlice = (): RegionSlice => ({ open: false, owned: {}, balance: 0, grow: 0, thrift: 0, introSeen: false, openedAt: 0 })
 
+/** Mastery stars of a region (0 … levels.length); closed regions have none. */
+export function regionStars(cfg: RegionConfig, def: RegionDef, r: RegionSlice | undefined): number {
+  if (!cfg.mastery || !r?.open) return 0
+  let weakest = Infinity
+  for (const a of def.areas) weakest = Math.min(weakest, r.owned[a.id] ?? 0)
+  let stars = 0
+  for (const level of cfg.mastery.levels) if (weakest >= level) stars += 1
+  return stars
+}
+
+export interface StarProgress {
+  stars: number
+  max: number
+  /** Level every area needs for the next star, `null` once all stars are earned. */
+  nextLevel: number | null
+  /** Areas already at that level. */
+  have: number
+  total: number
+}
+
+export function regionStarProgress(cfg: RegionConfig, def: RegionDef, r: RegionSlice | undefined): StarProgress {
+  const levels = cfg.mastery?.levels ?? []
+  const stars = regionStars(cfg, def, r)
+  const nextLevel = levels[stars] ?? null
+  const total = def.areas.length
+  const have = nextLevel === null ? total : def.areas.filter((a) => (r?.owned[a.id] ?? 0) >= nextLevel).length
+  return { stars, max: levels.length, nextLevel, have, total }
+}
+
+/** All stars over all regions and the maximum. */
+export function totalRegionStars(cfg: RegionConfig, s: RegionsState | undefined): { have: number; total: number } {
+  let have = 0
+  for (const def of cfg.regions) have += regionStars(cfg, def, s?.regions[def.id])
+  return { have, total: cfg.regions.length * (cfg.mastery?.levels.length ?? 0) }
+}
+
 export function regionRate(cfg: RegionConfig, def: RegionDef, r: RegionSlice, w: WorldView): number {
   let sum = 0
   for (const a of def.areas) {
     const n = r.owned[a.id] ?? 0
     if (n > 0) sum += a.baseRate * n * milestoneMult(n, w.def.balance)
   }
-  return sum * (1 + cfg.care.growPerRank * r.grow)
+  return sum * (1 + cfg.care.growPerRank * r.grow) * (1 + (cfg.mastery?.yieldPerStar ?? 0) * regionStars(cfg, def, r))
 }
 
 export function regionCostMult(cfg: RegionConfig, r: RegionSlice): number {
@@ -165,7 +208,14 @@ export function regionsModule(cfg: RegionConfig): EngineModule<RegionsState> {
         const k = count === 'max' ? maxAffordable(a, n, r.balance, m) : Math.max(1, Math.floor(Number(count) || 1))
         const cost = bulkCost(a, n, k, m)
         if (k <= 0 || cost > r.balance) return s
-        return act(update(s, def.id, { owned: { ...r.owned, [a.id]: n + k }, balance: r.balance - cost }), { events: [{ type: 'region.bought', region: def.id, area: a.id, count: k }] })
+        const next = update(s, def.id, { owned: { ...r.owned, [a.id]: n + k }, balance: r.balance - cost })
+        const events = [{ type: 'region.bought', region: def.id, area: a.id, count: k }]
+        // New mastery stars: reward once per star (levels never drop, so a star is earned exactly here)
+        const before = regionStars(cfg, def, r)
+        const after = regionStars(cfg, def, next.regions[def.id])
+        if (after <= before) return act(next, { events })
+        const grant = Array.from({ length: after - before }, () => (cfg.mastery?.reward ?? []).map((x) => ({ ...x, source: 'mastery' }))).flat()
+        return act(next, { grant, events: [...events, { type: 'region.mastered', region: def.id, stars: after }] })
       },
       care: (s, p) => {
         const { region, kind } = (p ?? {}) as { region?: string; kind?: 'grow' | 'thrift' }
@@ -180,7 +230,7 @@ export function regionsModule(cfg: RegionConfig): EngineModule<RegionsState> {
         return s.regions[id] && !s.regions[id].introSeen ? update(s, id, { introSeen: true }) : s
       },
     },
-    playtestEvents: ['region.opened', 'region.bought'],
+    playtestEvents: ['region.opened', 'region.bought', 'region.mastered'],
     sample: () => {
       const s = fill({ regions: {} })
       const first = cfg.regions[0]

@@ -4,17 +4,20 @@
  * Texte in i18n/*.ts (live.*), IDs in ids.lock.json.
  */
 import {
-  burstMax, isFeatureOpen, layerStatus, levelOf, MODULE, ownedOf, prestigeState, producerLevelsTotal, producersOnline,
+  burstMax, isFeatureOpen, layerStatus, levelOf, MODULE, ownedOf, prestigeState, producerLevelsTotal, producersOnline, REGIONS_ID, totalRegionStars,
   type AchievementDef, type BurstState, type ChallengeConfig, type DailyConfig, type FeatureDef, type FestConfig, type FestItem, type FlashConfig, type ProgressionState,
-  type QuestConfig, type WeekendConfig, type WheelConfig, type WorldView,
+  type QuestConfig, type RegionsState, type WeekendConfig, type WheelConfig, type WorldView,
 } from '@engine/core'
 import type { HintDef } from '@engine/react'
 import { CURRENCY, LAYER } from '../ids'
+import { REALMS } from './realms'
 import { FEST_VARIETIES } from './world'
 
 const pebbles = (amount: number) => ({ currency: CURRENCY.glowPebbles, amount })
 const shards = (amount: number) => ({ currency: CURRENCY.runeShards, amount })
 const turns = (w: WorldView) => prestigeState(w).layers[0]?.count ?? 0
+/** Sterne der Meisterschaft über alle Lande. */
+const stars = (w: WorldView) => totalRegionStars(REALMS, w.get<RegionsState>(REGIONS_ID)).have
 const rank = (w: WorldView) => levelOf(w.get<ProgressionState>(MODULE.progression)?.xp ?? 0, w.def.balance).level
 
 export const DAILY: DailyConfig = {
@@ -60,6 +63,11 @@ export const DEEDS: AchievementDef[] = [
   { id: 'rankTen', metric: rank, at: 10, reward: [pebbles(15)], bonus: 0.01 },
   { id: 'rankTwentyFive', metric: rank, at: 25, reward: [shards(15)], bonus: 0.02 },
   { id: 'wholeValley', metric: producersOnline, at: 10, reward: [pebbles(30)], bonus: 0.02 },
+  // Meisterschaft der Lande (nur anhängen)
+  { id: 'firstStar', metric: stars, at: 1, reward: [pebbles(10)], bonus: 0.01 },
+  { id: 'tenStars', metric: stars, at: 10, reward: [pebbles(30)], bonus: 0.01 },
+  { id: 'starPerRealm', metric: stars, at: REALMS.regions.length, reward: [pebbles(60)], bonus: 0.02 },
+  { id: 'allStars', metric: stars, at: REALMS.regions.length * 3, reward: [pebbles(200)], bonus: 0.03 },
 ]
 
 export const TRIALS: ChallengeConfig = {

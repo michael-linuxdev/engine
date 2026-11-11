@@ -147,6 +147,7 @@ export const storyDe = {
     title: (layer: string) => `${layer}`,
     body: (amount: string, currency: string) => `Das Tal ruht. Im Archiv liegen jetzt ${amount} ${currency} mehr.`,
     cta: 'Ein neuer Morgen',
+    milestone: (n: string) => `Meilenstein: zum ${n}. Mal. Das Tal vergisst es nicht.`,
     layers: {
       moonturn: { l1: 'Der Mond dreht sich über dem Dämmertal.', l2: 'Der Glimmer verfliegt, die Häuser sinken in den Schlaf.', l3: 'Was du gelernt hast, bleibt.' },
       longNight: { l1: 'Die Sonne bleibt fort.', l2: 'Tagelang brennt nur ein Feuer: deines.', l3: 'Dann, endlich, wird der Rand des Himmels hell.' },

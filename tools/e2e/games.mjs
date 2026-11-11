@@ -11,6 +11,8 @@ export const GAMES = [
     skipIntro: { 'lichtwarte-chronicle-v1': '["welcome"]', 'lichtwarte-ftue-v1': '{"completed":[],"dismissed":true}' },
     screens: true,
     art: true,
+    /** Kein ×10/Max im Ausbau-Fenster: eine Stufe je Tippen, Halten baut weiter. */
+    holdToBuy: true,
     /** axe auch für die Spiel-Fenster. */
     axeExtra: async (p, check) => {
       await p.getByTestId('slot-kraeuterkate').click()
@@ -142,6 +144,28 @@ export const GAMES = [
       assert((await r.evaluate(() => window.__engine.get().modules.choiceEvents.active)) === true, 'Omen gewählt')
       await r.getByTestId('tab-play').click()
       assert((await r.locator('[data-decor="blueBanner"]').count()) === 1, 'Banner auf der Talkarte')
+      // Talgast auf der Karte: sichtbar neben dem Funkenruf, Antippen begrüßt, danach ist er fort (und kommt nicht sofort wieder)
+      await r.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        rt.replace({ ...s, modules: { ...s.modules, visitors: { ...s.modules.visitors, current: 'fox', until: Date.now() + 60_000, nextAt: 0 } } })
+      })
+      await r.getByTestId('guest-greet').click()
+      assert((await r.evaluate(() => window.__engine.get().modules.visitors.seen.fox)) === 2, 'Talgast auf der Karte begrüßt')
+      await r.waitForTimeout(600)
+      assert((await r.getByTestId('guest-greet').count()) === 0 && (await r.evaluate(() => window.__engine.get().modules.visitors.current)) === '', 'Talgast bleibt nach dem Begrüßen fort')
+      // Ausbau-Karte: klein über der Leiste, dunkelt die Kopfzeile nicht ab, Wisch nach unten schließt sie
+      await r.getByTestId('slot-kraeuterkate').click()
+      const card = await r.getByTestId('upgrade-sheet').boundingBox()
+      const screen = r.viewportSize()
+      assert(card.height <= screen.height * 0.6, `Ausbau-Karte bleibt klein (${Math.round(card.height)} von ${screen.height} px)`)
+      assert((await r.locator('.ek-sheet-backdrop--clear').count()) === 1, 'Ausbau-Karte dunkelt die Talkarte und die Kopfzeile nicht ab')
+      const cdp = await w.newCDPSession(r)
+      const sx = card.x + card.width / 2
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: sx, y: card.y + 20 }] })
+      for (let i = 1; i <= 6; i++) await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: sx, y: card.y + 20 + i * 25 }] })
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
+      await r.getByTestId('upgrade-sheet').waitFor({ state: 'detached' })
 
       // Rückkehr-Brief nach 50 Stunden: Brief + Geschenk (20 Lichtkiesel)
       const pebblesBefore = await r.evaluate(() => window.__engine.get().modules.wallet.balances.glowPebbles)
@@ -168,7 +192,25 @@ export const GAMES = [
       await r.getByTestId('realm-sheet').getByText(T.realms.lands.moorgrund.areas.boardwalk, { exact: true }).waitFor()
       await r.getByTestId('area-buy-moorgrund_boardwalk').click()
       assert((await r.evaluate(() => window.__engine.get().modules.regions.regions.moorgrund.owned.moorgrund_boardwalk)) === 1, 'Land: erster Bereich gebaut')
+      // Meisterschaft: Der Kauf, der den schwächsten Bereich auf Stufe 25 bringt, gibt den ersten Stern und 5 Lichtkiesel
+      const pebblesBeforeStar = await r.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        const areas = ['boardwalk', 'peatCut', 'reedHut', 'wispBridge', 'bogBirches', 'cottonMeadow', 'mistTower', 'bogSpring', 'dragonflyPond', 'peatBeacon']
+        const owned = Object.fromEntries(areas.map((a) => [`moorgrund_${a}`, a === 'boardwalk' ? 24 : 25]))
+        const moor = { ...s.modules.regions.regions.moorgrund, owned, balance: 1e15 }
+        rt.replace({ ...s, modules: { ...s.modules, regions: { regions: { ...s.modules.regions.regions, moorgrund: moor } } } })
+        return s.modules.wallet.balances.glowPebbles
+      })
+      await r.getByTestId('mastery').getByText(T.live.starNext('25', '9', '10')).waitFor()
+      await r.getByTestId('area-buy-moorgrund_boardwalk').click()
+      await r.getByTestId('mastery').getByText(T.live.starNext('50', '0', '10')).waitFor()
+      assert((await r.evaluate(() => window.__engine.get().modules.wallet.balances.glowPebbles)) - pebblesBeforeStar >= 5, 'Meisterschaft: Stern belohnt')
       await r.keyboard.press('Escape')
+      assert((await r.getByTestId('stars-moorgrund').getAttribute('data-stars')) === '1', 'Meisterschaft: Stern in der Lande-Liste')
+      // Meilensteine der Schichten stehen im Neubeginn-Tab
+      await r.getByTestId('tab-prestige').click()
+      assert((await r.getByTestId('milestones-ages').getAttribute('data-reached')) === '0', 'Meilensteine des Zeitalters sichtbar')
 
       // Markt: Tagesgeschenk, Talstil kaufen und anlegen, Testkauf mit Testgeld
       await r.getByTestId('tab-market').click()

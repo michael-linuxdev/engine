@@ -62,3 +62,34 @@ Tag, an dem sich ein Land öffnet (bis Land 14 unverändert):
 - **Lande** (`REALM_TUNING` in `src/content/realms.ts`): Kosten × 1,15 je Land. Ab Land 14 (`lateFrom: 12`) steigt auch der Ertrag: × 1,75 (`lateYield`) und × 1,145 je weiterem Land (`lateYieldGrowth`). Ohne das lagen ab Land 15 sieben bis elf Tage zwischen zwei Landen. Die Lande 2–13 sind unverändert.
 - **Wächterrang:** XP aus Ausbau (8 je Stufe), Prestige (150 × Schicht) und Rückkehr-Korb (√ Betrag × 0,85, höchstens 80). Die beiden letzten Quellen kamen mit P6 hinzu, weil die Ränge ab Rang 20 zu langsam kamen.
 - **Offline:** 8 h voll, bis 24 h halb (Archiv: Sanduhr, Nachtkerze).
+
+## Langzeit: Meisterschaft und Meilensteine
+
+Ziel: Auch nach dem letzten Land und über Jahre gibt es Ziele, die man sieht und die langsam fallen. Beides wird aus dem Spielstand **berechnet**, nichts wird zusätzlich gespeichert. Alte Stände bekommen Sterne und Boni sofort.
+
+### Meisterschaft der Lande (drei Sterne je Land, 102 insgesamt)
+
+Es zählt der **schwächste** der zehn Bereiche eines Landes: Stern 1 bei Stufe 25, Stern 2 bei Stufe 50, Stern 3 bei Stufe 100 (`REALMS.mastery`). Je Stern +5 % Ertrag im eigenen Land und einmalig 5 Lichtkiesel. Vier Taten zählen die Sterne (1, 10, 34, 102).
+
+Messung (regular, Simulator kauft reihum alles Bezahlbare):
+
+| Stand | Schwächster Bereich im ältesten Land | Stärkster Bereich | Pflege „Wachstum“ |
+|---|---|---|---|
+| Tag 45 | Stufe 41 | Stufe 177 | Rang 10 von 10 |
+| Tag 90 | Stufe 49 | Stufe 182 | Rang 10 von 10 |
+
+- **Warum der schwächste Bereich:** Er wächst sehr langsam (8 Stufen in 45 Tagen im ältesten Land). Stern 2 fällt im ältesten Land um Tag 90, Stern 3 liegt weit dahinter. Geschätzt, nicht gemessen: bei gleichem Wachstum rund ein Jahr.
+- **Warum nicht die Pflege:** Sie ist nach wenigen Tagen voll und taugt deshalb nicht als Langzeit-Ziel.
+- Die Korridore der frühen und der späten Taktung halten mit der Meisterschaft unverändert (`tempo.test.ts`, `late.test.ts`).
+
+### Meilensteine der Schichten (`milestones` je Schicht in `game.ts`)
+
+| Schicht | Meilensteine bei … Läufen | Belohnung | Dauerhaft |
+|---|---|---|---|
+| Mondwende | 1.000, 2.500, 5.000, 10.000, 25.000 | 30–90 Lichtkiesel | je +1 % Ertrag |
+| Lange Nacht | 15, 20, 30, 40, 50, 75, 100, 150 | 30–100 Lichtkiesel | je +1 % Ertrag |
+| Zeitalter | 2–10, 12, 15, 20, 25, 30, 40, 50 | 25–100 Lichtkiesel | je +2 % Ertrag |
+
+Die Schwellen von Mondwende und Langer Nacht liegen bewusst hinter dem gemessenen Zeitraum (regular an Tag 90: rund 730 Mondwenden, 13 Lange Nächte, 3 Zeitalter). Nur die Zeitalter-Meilensteine 2 und 3 fallen hinein; die Korridore halten.
+
+**Nicht gemessen:** alles nach Tag 90, also wann die späteren Meilensteine und die dritten Sterne tatsächlich fallen.

@@ -5,7 +5,7 @@
 import { gateAt, rawPayout } from '../prestige'
 import { act } from '../result'
 import { isRecord, parseInt0, parseNum, parseTime } from '../state'
-import type { EngineModule, GameDefinition, StateView, WorldView } from '../types'
+import type { EffectSource, EngineModule, GameDefinition, LayerMilestone, StateView, WorldView } from '../types'
 import { MODULE } from './ids'
 import { producersOnline } from './producers'
 
@@ -80,6 +80,24 @@ export function layerStatus(world: WorldView, layer: string): LayerStatus {
   return { layer, index: k, earned, gate, probe, payout, block, ratio: gate > 0 ? Math.min(1, earned / gate) : 1, restLeft }
 }
 
+export interface MilestoneProgress {
+  reached: number
+  total: number
+  /** Next milestone, `null` once all are reached. */
+  next: LayerMilestone | null
+  /** Sum of the permanent bonuses reached so far (0.04 = +4 %). */
+  bonus: number
+}
+
+/** Lifetime milestones of a layer, derived from its run count. */
+export function layerMilestones(view: StateView, layer: string): MilestoneProgress {
+  const k = layerIndex(view.def, layer)
+  const list = [...(view.def.prestigeLayers[k]?.milestones ?? [])].sort((a, b) => a.at - b.at)
+  const count = prestigeState(view).layers[k]?.count ?? 0
+  const done = list.filter((m) => m.at <= count)
+  return { reached: done.length, total: list.length, next: list[done.length] ?? null, bonus: done.reduce((x, m) => x + (m.bonus ?? 0), 0) }
+}
+
 export function prestigeModule(): EngineModule<PrestigeState> {
   return {
     id: MODULE.prestige,
@@ -106,11 +124,28 @@ export function prestigeModule(): EngineModule<PrestigeState> {
         }),
       }
     },
-    on: (s, e) => {
+    on: (s, e, _ctx, world) => {
+      if (e.type === 'prestige.performed') {
+        // The count was raised by the reset; a milestone at exactly this count is new
+        const k = layerIndex(world.def, String(e.layer))
+        const hit = (world.def.prestigeLayers[k]?.milestones ?? []).filter((m) => m.at === (s.layers[k]?.count ?? 0))
+        if (!hit.length) return s
+        return act(s, {
+          grant: hit.flatMap((m) => (m.reward ?? []).map((r) => ({ ...r, source: 'milestone' }))),
+          events: hit.map((m) => ({ type: 'prestige.milestone', layer: String(e.layer), at: m.at })),
+        })
+      }
       if (e.type !== 'primary.gained') return s
       const a = Number(e.amount) || 0
       if (a <= 0) return s
       return { layers: s.layers.map((l) => ({ ...l, runEarned: l.runEarned + a })) }
+    },
+    effects: (s, view): EffectSource[] => {
+      let bonus = 0
+      view.def.prestigeLayers.forEach((l, k) => {
+        for (const m of l.milestones ?? []) if (m.at <= (s.layers[k]?.count ?? 0)) bonus += m.bonus ?? 0
+      })
+      return bonus > 0 ? [{ id: 'prestige.milestones', target: 'rate:*', op: 'mul', value: 1 + bonus, labelKey: 'effect.layerMilestones' }] : []
     },
     prestigePayout: (_s, layer, world) => {
       const st = layerStatus(world, layer)
@@ -123,7 +158,7 @@ export function prestigeModule(): EngineModule<PrestigeState> {
         return act(s, { prestige: layer })
       },
     },
-    playtestEvents: ['prestige.performed'],
+    playtestEvents: ['prestige.performed', 'prestige.milestone'],
     sample: (_ctx, def) => ({ layers: def.prestigeLayers.map((_, i) => ({ count: 5 - i, runEarned: 1e6 * (i + 1), sinceReset: 2, lastAt: 1_800_000_000_000 - i })) }),
   }
 }
