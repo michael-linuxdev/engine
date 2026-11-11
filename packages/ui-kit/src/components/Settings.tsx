@@ -1,15 +1,46 @@
 import { useEffect, useRef, useState } from 'react'
-import { decodeBackup, encodeBackup } from '@engine/core'
-import { browserFiles, checkForUpdate, copyText, readKey, usePrefs, useStore, writeKey, type PlaytestLog, type Prefs } from '@engine/react'
+import { decodeBackup, encodeBackup, type BackupBundle } from '@engine/core'
+import { browserFiles, checkForUpdate, copyText, readKey, usePrefs, useStore, writeKey, type AutoBackupStore, type PlaytestLog, type Prefs } from '@engine/react'
 import { useUi } from '../useUi'
+import { dateParts } from '../welcome'
 import { Button } from './Button'
 import { Sheet } from './Sheet'
 
-/** Backup code (copy / file) and import. `keys` = every storage key of the game that belongs to the backup. */
-export function SaveSheet({ open, onClose, prefix, app, keys, fileName }: { open: boolean; onClose: () => void; prefix: string; app: string; keys: readonly string[]; fileName: (date: string) => string }) {
+/** Lifetime income stored in a backup (engine field `core.primaryLifetime`), 0 if it cannot be read. */
+function progressOf(bundle: BackupBundle, saveKey: string): number {
+  try {
+    const raw = JSON.parse(bundle.data[saveKey] ?? '{}') as { core?: { primaryLifetime?: unknown } }
+    const v = raw.core?.primaryLifetime
+    return typeof v === 'number' && Number.isFinite(v) ? v : 0
+  } catch {
+    return 0
+  }
+}
+
+/**
+ * Backup code (copy / file) and restore. Restoring never happens on the first tap:
+ * the code is checked, a preview shows its date and progress, a second tap replaces
+ * the save, and the current one is backed up automatically first.
+ * `keys` = every storage key of the game that belongs to the backup.
+ */
+export function SaveSheet({ open, onClose, prefix, app, keys, fileName, auto, onBackedUp, remind }: {
+  open: boolean
+  onClose: () => void
+  prefix: string
+  app: string
+  keys: readonly string[]
+  fileName: (date: string) => string
+  /** Automatic backups on this device (listed for restoring; one more is taken before a restore). */
+  auto?: AutoBackupStore
+  /** The player copied or saved the code. */
+  onBackedUp?: () => void
+  /** Show the reminder line. */
+  remind?: boolean
+}) {
   const ui = useUi()
   const [msg, setMsg] = useState<string | null>(null)
   const [input, setInput] = useState('')
+  const [preview, setPreview] = useState<BackupBundle | null>(null)
   if (!open) return null
   ui.rt.save()
   const data: Record<string, string> = {}
@@ -19,29 +50,53 @@ export function SaveSheet({ open, onClose, prefix, app, keys, fileName }: { open
   }
   const now = ui.rt.clock.now()
   const code = encodeBackup(prefix, app, data, now)
-  const restore = () => {
-    const r = decodeBackup(prefix, app, input)
+  const saveKey = ui.rt.def.saveKey
+  const date = (at: number) => ui.t.common.date(...dateParts(at))
+  const check = (text: string) => {
+    const r = decodeBackup(prefix, app, text)
     if (!r.ok) {
+      setPreview(null)
       setMsg({ format: ui.t.save.errFormat, checksum: ui.t.save.errChecksum, app: ui.t.save.errApp, newer: ui.t.save.errNewer }[r.reason])
       return
     }
+    setMsg(null)
+    setPreview(r.bundle)
+  }
+  const restore = (bundle: BackupBundle) => {
+    // The state that is about to be replaced is kept as an automatic backup
+    auto?.add({ at: now, code, progress: ui.rt.get().core.primaryLifetime }, true)
     ui.rt.guard.set('foreign') // never write the old state over the restored one
     for (const k of keys) {
-      const v = r.bundle.data[k]
+      const v = bundle.data[k]
       if (v) writeKey(k, v)
     }
+    setPreview(null)
     setMsg(ui.t.save.importOk)
     setTimeout(() => location.reload(), 600)
   }
+  const backups = auto?.list() ?? []
   return (
     <Sheet open={open} title={ui.t.save.title} onClose={onClose} testId="save-sheet">
+      {remind ? (
+        <p className="ek-note" data-testid="save-remind">
+          {ui.t.save.remind}
+        </p>
+      ) : null}
       <p>{ui.t.save.intro}</p>
       <label className="ek-field">
         <span>{ui.t.save.code}</span>
         <textarea className="ek-code" readOnly value={code} rows={4} data-testid="save-code" onFocus={(e) => e.currentTarget.select()} />
       </label>
       <div className="ek-row-actions">
-        <Button variant="secondary" data-testid="save-copy" onClick={async () => setMsg((await copyText(code)) ? ui.t.save.copied : ui.t.save.copyFailed)}>
+        <Button
+          variant="secondary"
+          data-testid="save-copy"
+          onClick={async () => {
+            const ok = await copyText(code)
+            if (ok) onBackedUp?.()
+            setMsg(ok ? ui.t.save.copied : ui.t.save.copyFailed)
+          }}
+        >
           {ui.t.save.copy}
         </Button>
         <Button
@@ -49,7 +104,10 @@ export function SaveSheet({ open, onClose, prefix, app, keys, fileName }: { open
           data-testid="save-file"
           onClick={async () => {
             const r = await browserFiles.save(fileName(new Date(now).toISOString().slice(0, 10)), code, 'text/plain')
-            if (r === 'shared' || r === 'downloaded') setMsg(ui.t.save.fileSaved)
+            if (r === 'shared' || r === 'downloaded') {
+              onBackedUp?.()
+              setMsg(ui.t.save.fileSaved)
+            }
           }}
         >
           {ui.t.save.file}
@@ -58,11 +116,67 @@ export function SaveSheet({ open, onClose, prefix, app, keys, fileName }: { open
       <h3 className="ek-h3">{ui.t.save.importTitle}</h3>
       <label className="ek-field">
         <span>{ui.t.save.importHint}</span>
-        <textarea className="ek-code" rows={3} value={input} onChange={(e) => setInput(e.target.value)} data-testid="save-import" />
+        <textarea
+          className="ek-code"
+          rows={3}
+          value={input}
+          onChange={(e) => {
+            setInput(e.target.value)
+            setPreview(null)
+          }}
+          data-testid="save-import"
+        />
       </label>
-      <Button variant="danger" data-testid="save-restore" disabled={!input.trim()} onClick={restore}>
-        {ui.t.save.importCta}
-      </Button>
+      <div className="ek-row-actions">
+        <Button variant="secondary" data-testid="save-restore" disabled={!input.trim()} onClick={() => check(input)}>
+          {ui.t.save.check}
+        </Button>
+        <label className="ek-btn ek-btn--secondary ek-file">
+          {ui.t.save.file2}
+          <input
+            type="file"
+            accept=".txt,text/plain"
+            className="ek-visually-hidden"
+            data-testid="save-pick"
+            onChange={async (e) => {
+              const f = e.target.files?.[0]
+              if (!f) return
+              const text = (await f.text()).trim()
+              setInput(text)
+              check(text)
+            }}
+          />
+        </label>
+      </div>
+      {backups.length ? (
+        <>
+          <h3 className="ek-h3">{ui.t.save.autoTitle}</h3>
+          <ul className="ek-list" data-testid="save-auto">
+            {backups.map((x) => (
+              <li key={x.at} className="ek-row">
+                <div className="ek-row__main">{ui.t.save.autoRow(date(x.at), ui.fmt(x.progress))}</div>
+                <Button size="small" variant="secondary" onClick={() => check(x.code)}>
+                  {ui.t.save.autoUse}
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : null}
+      {preview ? (
+        <div className="ek-note ek-restore" role="alertdialog" aria-label={ui.t.save.importTitle} data-testid="save-preview">
+          <strong>{ui.t.save.preview(date(preview.at), ui.fmt(progressOf(preview, saveKey)))}</strong>
+          <span>{ui.t.save.previewWarn}</span>
+          <div className="ek-row-actions">
+            <Button variant="danger" data-testid="save-confirm" onClick={() => restore(preview)}>
+              {ui.t.save.confirm}
+            </Button>
+            <Button variant="ghost" data-testid="save-cancel" onClick={() => setPreview(null)}>
+              {ui.t.save.cancel}
+            </Button>
+          </div>
+        </div>
+      ) : null}
       {msg ? (
         <p role="status" className="ek-note" data-testid="save-msg">
           {msg}
@@ -175,10 +289,12 @@ export function SettingsSheet({ open, onClose, version, playtest }: { open: bool
       </div>
       <Toggle label={s.bigText} value={p.fontScale > 1} onChange={(v) => ui.prefs.update({ fontScale: v ? 1.15 : 1 })} testId="pref-bigtext" />
       <Toggle label={s.reducedMotion} value={p.reducedMotion} onChange={(v) => ui.prefs.update({ reducedMotion: v })} testId="pref-motion" />
+      <Toggle label={s.vibration} value={p.vibration} onChange={(v) => ui.prefs.update({ vibration: v })} testId="pref-vibration" />
       <h3 className="ek-h3">{s.soundGroup}</h3>
       <Toggle label={s.sound} value={p.sound} onChange={(v) => ui.prefs.update({ sound: v })} testId="pref-sound" />
       <Toggle label={s.ambient} value={p.ambient} onChange={(v) => ui.prefs.update({ ambient: v })} testId="pref-ambient" />
       <h3 className="ek-h3">{s.system}</h3>
+      <Toggle label={s.backupReminder} value={p.backupReminder} onChange={(v) => ui.prefs.update({ backupReminder: v })} testId="pref-backup-reminder" />
       {playtest ? <PlaytestBlock log={playtest} /> : null}
       <UpdateBlock version={version} />
     </Sheet>

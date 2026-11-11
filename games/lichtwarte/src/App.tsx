@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { countAffordableMeta, DAILY_ID, dailyStatus, isFeatureOpen, prestigeReady, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type OfflineState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
+import { bestBuy, countAffordableMeta, DAILY_ID, dailyStatus, isFeatureOpen, prestigeReady, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type OfflineState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
 import { connectSfx, currentStep, useEngine, useStore, useSteps } from '@engine/react'
 import { CardPicker, ChallengesCard, FtueCoach, GameShell, Hud, MetaShopPanel, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
@@ -10,6 +10,7 @@ import { TIER_LEVELS } from './art/registry'
 import { DISTRIBUTION, TEST_PHASE } from './distribution'
 import { CHRONICLE } from './content/chronicle'
 import { DAILY, TRIALS } from './content/live'
+import { CONSTELLATIONS } from './content/world'
 import { MARKET } from './content/market'
 import { Notices } from './story/Notices'
 import { WatchView } from './story/Watch'
@@ -50,9 +51,9 @@ const PROLOGUE = 'prologue'
 
 const steps = ftueSteps((id) => chronicleRead.has(id), (id) => tabsSeen.has(id))
 
-function Play({ onOpen, today, letter }: { onOpen: (id: string) => void } & MapExtras) {
+function Play({ onOpen, today, letter, preview }: { onOpen: (id: string) => void } & MapExtras) {
   return (
-    <ValleyMap onOpen={onOpen} today={today} letter={letter}>
+    <ValleyMap onOpen={onOpen} today={today} letter={letter} preview={preview}>
       <SparkDock />
     </ValleyMap>
   )
@@ -179,6 +180,7 @@ export function App() {
   const unread = CHRONICLE.some((e) => e.open(world) && !read.includes(e.id))
   const unreadLetter = CHRONICLE.some((e) => e.voice === 'letter' && e.open(world) && !read.includes(e.id))
   const [rankOpen, setRankOpen] = useState(false)
+  const [previewStyle, setPreviewStyle] = useState<string | null>(null)
   const basket = world.get<OfflineState>(MODULE.offline)?.pending ?? null
   const openTab = (id: string) => {
     setTab(id)
@@ -259,6 +261,7 @@ export function App() {
                 : undefined
           }
           letter={unreadLetter ? { onOpen: () => setChronicle(true) } : undefined}
+          preview={previewStyle ? { style: previewStyle, onEnd: () => { setPreviewStyle(null); openTab('market') } } : undefined}
         />
       }
       feedback={feedback}
@@ -267,7 +270,7 @@ export function App() {
       navLabels={{ play: t.app.tabPlay, prestige: t.layers.moonturn.name }}
       navBadges={{ prestige: prestigeReady(world) || (archiveOpen && countAffordableMeta(world) > 0) }}
       shopVisible={false}
-      tabs={[{ item: { id: 'market', label: t.trade.tab, icon: <IconPouch />, badge: marketReady(world.get<MarketState>(MARKET_ID), MARKET, rt.clock) }, view: <MarketTab /> }]}
+      tabs={[{ item: { id: 'market', label: t.trade.tab, icon: <IconPouch />, badge: marketReady(world.get<MarketState>(MARKET_ID), MARKET, rt.clock) }, view: <MarketTab onPreviewStyle={(id) => { setPreviewStyle(id); setTab('play') }} /> }]}
       menuViews={[
         ...(isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, icon: <IconLantern />, badge: !seen.includes('watch'), dot: watchBadge(world) }, view: <WatchView /> }] : []),
         ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab, icon: <IconLeaf />, badge: !seen.includes('world') }, view: <WorldTab /> }] : []),
@@ -302,13 +305,15 @@ export function App() {
             ceremony={ceremony}
             endCeremony={() => {
               setCeremony(null)
-              // Danach einmal am Sternenrad drehen (falls freigeschaltet) — erst wenn die Chronik zu ist
+              // Das Sternenrad dreht man in der Zeremonie; wer es dort ausließ, bekommt es danach noch einmal angeboten
               if (isFeatureOpen(rt.world(), 'wheel') && (rt.get().modules.wheel as { spins: number }).spins > 0) setWheelOpen(true)
+              // Danach liegt das erste lohnende Bauwerk gleich auf (wenn keine Chronik-Seite wartet)
+              else if (!CHRONICLE.some((e) => e.open(rt.world()) && !chronicleRead.has(e.id))) setSelected(bestBuy(rt.world())?.id ?? game.producers[0].id)
             }}
           />
           <WheelSheet open={wheelOpen && !ceremony && !chronicleOpen} onClose={() => setWheelOpen(false)} />
           <RankSheet open={rankOpen} onClose={() => setRankOpen(false)} />
-          <CardPicker open={!wheelOpen && !ceremony && !chronicleOpen && cardsWaiting(world)} onClose={() => rt.dispatch('layerCards', 'pick', { id: (rt.get().modules.layerCards as { offer: string[] }).offer[0] })} />
+          <CardPicker open={!wheelOpen && !ceremony && !chronicleOpen && cardsWaiting(world)} cfg={CONSTELLATIONS} />
         </>
       }
     />

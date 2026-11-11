@@ -353,7 +353,12 @@ export const GAMES = [
       // Der Kiesel-Stand steht oben, die vier Regale sind Unterreiter; der zuletzt offene bleibt gemerkt
       assert((await r.getByTestId('market-balance').innerText()).includes(T.currencies.glowPebbles), 'Markt: Lichtkiesel-Stand steht oben')
       await r.getByTestId('market-tab-styles').click()
-      await r.getByTestId('style-emberRed').getByRole('button').click()
+      // Vor dem Kauf lässt sich ein Stil auf der Karte ansehen; die Vorschau führt zurück zum Markt und kauft nichts
+      await r.getByTestId('style-look-emberRed').click()
+      await r.getByTestId('style-preview').waitFor()
+      assert((await r.locator('.lw-map[data-style="emberRed"]').count()) === 1 && (await r.evaluate(() => window.__engine.get().modules.market.owned.includes('emberRed'))) === false, 'Stil-Vorschau zeigt den Stil, ohne ihn zu kaufen')
+      await r.getByTestId('style-preview').click()
+      await r.getByTestId('style-buy-emberRed').click()
       await r.getByTestId('style-equip-emberRed').click()
       assert((await r.evaluate(() => window.__engine.get().modules.market.equipped)) === 'emberRed', 'Talstil angelegt')
       // Testkauf: Der erste Tipp bucht nichts ab, erst die Antwort „Ja, kaufen“

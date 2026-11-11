@@ -142,6 +142,19 @@ describe('layer cards', () => {
   })
 })
 
+describe('layer cards: going on without one', () => {
+  it('skip ends the offer and leaves no card active', () => {
+    const def = game()
+    let { s, clock } = start(def)
+    s = prestige(def, ready(s), 'l1', clock).state
+    expect((s.modules.layerCards as { offer: string[] }).offer).toHaveLength(2)
+    s = dispatch(def, s, { module: 'layerCards', type: 'skip' }, clock).state
+    const c = s.modules.layerCards as { offer: string[]; active: string }
+    expect(c.offer).toEqual([])
+    expect(c.active).toBe('')
+  })
+})
+
 describe('choice events and projects', () => {
   it('a game pick (weather) decides the day\'s event instead of the roll', () => {
     const storm = { id: 'storm', safe: { cost: { currency: 'gem', amount: 1 }, buff: { target: 'income', mult: 1.1, durationMs: 1 } }, risk: { win: { target: 'income', mult: 1.2, durationMs: 1 }, lose: { target: 'income', mult: 0.8, durationMs: 1 }, chance: 0.5 } }

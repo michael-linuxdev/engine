@@ -389,6 +389,7 @@ export const stringsEn: Strings = {
     turnSoon: (layer: string, time: string) => `${layer} in ${time}`,
   },
   trade: {
+    previewing: (name: string) => `Preview: ${name}. Back to the market`,
     tab: 'Market',
     title: { name: 'Market', blurb: 'Traders from the neighbouring valleys. Everything here is optional.' },
     cosmetics: {

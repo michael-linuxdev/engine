@@ -155,6 +155,9 @@ export const storyDe = {
     },
   },
   ceremony: {
+    fresh: (names: string) => `Neu frei: ${names}.`,
+    wheel: 'Am Sternenrad drehen',
+    wheelResult: (name: string, blurb: string) => `Das Sternenrad zeigt: ${name}. ${blurb}`,
     title: (layer: string) => `${layer}`,
     body: (amount: string, currency: string) => `Das Tal ruht. Im Archiv liegen jetzt ${amount} ${currency} mehr.`,
     cta: 'Ein neuer Morgen',

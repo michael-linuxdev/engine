@@ -107,7 +107,7 @@ export function createSfx(prefs: PrefsStore, recipes: Readonly<Record<string, Sf
       const r = recipes[id]
       if (!r || !prefs.get().sound) return
       const ms = vibrate[id]
-      if (ms && typeof navigator !== 'undefined' && !prefs.get().reducedMotion) navigator.vibrate?.(ms)
+      if (ms && typeof navigator !== 'undefined' && prefs.get().vibration) navigator.vibrate?.(ms)
       const ac = audioContext()
       if (!ac) return
       void ac.resume().catch(() => undefined)

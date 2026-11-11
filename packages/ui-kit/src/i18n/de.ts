@@ -4,6 +4,7 @@
  */
 export const engineDe = {
   common: {
+    date: (day: string, month: string, year: string) => `${day}.${month}.${year}`,
     close: 'Schließen',
     cancel: 'Abbrechen',
     ok: 'OK',
@@ -107,6 +108,20 @@ export const engineDe = {
     none: 'Noch keine Boni',
   },
   save: {
+    check: 'Code prüfen',
+    file2: 'Datei auswählen',
+    preview: (date: string, amount: string) => `Sicherung vom ${date}. Stand: ${amount} insgesamt.`,
+    previewWarn: 'Dein aktueller Stand wird ersetzt. Vorher wird er automatisch gesichert.',
+    confirm: 'Jetzt ersetzen',
+    cancel: 'Abbrechen',
+    autoTitle: 'Automatische Sicherungen',
+    autoRow: (date: string, amount: string) => `${date} · ${amount} insgesamt`,
+    autoUse: 'Prüfen',
+    offerTitle: 'Sicherung gefunden',
+    offerBody: (date: string, amount: string) => `Auf diesem Gerät liegt eine automatische Sicherung vom ${date} (Stand: ${amount} insgesamt). Soll sie zurückgeholt werden?`,
+    offerYes: 'Zurückholen',
+    offerNo: 'Neu beginnen',
+    remind: 'Dein Fortschritt ist gewachsen. Ein guter Moment für eine Sicherung.',
     menu: 'Spielstand sichern',
     title: 'Spielstand sichern',
     intro: 'Mit diesem Code holst du deinen Fortschritt auf ein anderes Gerät oder zurück. Er bleibt nur bei dir.',
@@ -132,6 +147,8 @@ export const engineDe = {
     reload: 'Neu laden',
   },
   settings: {
+    vibration: 'Vibration',
+    backupReminder: 'An die Sicherung erinnern',
     menu: 'Einstellungen',
     title: 'Einstellungen',
     display: 'Anzeige',
@@ -220,6 +237,8 @@ export const engineDe = {
     privacyPage: 'Datenschutzerklärung als Seite',
   },
   live: {
+    cardNow: (per: string) => `Für dein Tal jetzt: ${per}`,
+    cardSkip: 'Ohne Karte weiter',
     percent: (n: string) => `${n} %`,
     setLeft: (n: string) => `noch ${n} bis zum Satz`,
     setDone: 'Satz komplett',
@@ -299,6 +318,7 @@ export const engineDe = {
     days: (n: string) => (n === '1' ? '1 Tag' : `${n} Tage`),
   },
   market: {
+    look: 'Auf der Karte ansehen',
     gift: 'Tagesgeschenk',
     giftBlurb: 'Einmal am Tag, kostenlos.',
     ad: 'Bonus-Video',

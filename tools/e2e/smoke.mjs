@@ -183,7 +183,11 @@ try {
     await p.getByTestId('menu').click()
     await p.getByTestId('menu-save').click()
     await p.getByTestId('save-import').fill(code)
+    // Restoring never happens on the first tap: check, preview with date and progress, then the second tap
     await p.getByTestId('save-restore').click()
+    await p.getByTestId('save-preview').waitFor()
+    assert((await p.evaluate((id) => window.__engine.get().modules.producers.owned[id] ?? 0, first)) !== 7, 'Wiederherstellen: der erste Tipp ersetzt nichts')
+    await p.getByTestId('save-confirm').click()
     await p.waitForFunction((id) => window.__engine?.get().modules.producers.owned[id] === 7, first, { timeout: 10_000 })
     await ctx.close()
   }

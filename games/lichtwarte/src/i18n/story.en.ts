@@ -153,6 +153,9 @@ export const storyEn: StoryStrings = {
     },
   },
   ceremony: {
+    fresh: (names: string) => `Newly open: ${names}.`,
+    wheel: 'Spin the Star Wheel',
+    wheelResult: (name: string, blurb: string) => `The Star Wheel shows: ${name}. ${blurb}`,
     title: (layer) => `${layer}`,
     body: (amount, currency) => `The valley rests. The archive now holds ${amount} more ${currency}.`,
     cta: 'A new morning',

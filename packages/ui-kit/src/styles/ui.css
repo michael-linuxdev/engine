@@ -1323,3 +1323,26 @@ html:has(.ek-app) body {
   gap: var(--space-1);
   padding: var(--space-1) 0;
 }
+
+/* Restore: file picker as a button, preview with the second tap */
+.ek-file {
+  cursor: pointer;
+}
+.ek-restore {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border-left: 4px solid var(--danger);
+}
+
+.ek-link {
+  align-self: flex-start;
+  min-height: var(--tap);
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
