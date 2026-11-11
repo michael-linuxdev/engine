@@ -120,6 +120,32 @@ describe('surprises', () => {
     expect(r.events.some((e) => e.type === 'surprise.found')).toBe(true)
     clock.set(T0)
   })
+
+  it('every n-th manual level is a sure find, kept between floor and cap', () => {
+    const d = testGame()
+    d.balance.surprises = { chance: 0, seconds: 90, secondsMax: 210, minIntervalMs: 0, every: { count: 5, seconds: 45 }, floorSeconds: 8, capShare: 0.12 }
+    let s = createState(d, clock)
+    s = { ...s, core: { ...s.core, primary: 1e9 } }
+    const found = () => (s.modules.surprises as { found: number; buys: number })
+    for (let i = 0; i < 4; i++) s = dispatch(d, s, { module: 'producers', type: 'buy', payload: { id: 'a', count: 1 } }, clock).state
+    expect(found().found).toBe(0)
+    expect(found().buys).toBe(4)
+    const r = dispatch(d, s, { module: 'producers', type: 'buy', payload: { id: 'a', count: 1 } }, clock)
+    s = r.state
+    expect(found().found).toBe(1)
+    const e = r.events.find((x) => x.type === 'surprise.found')!
+    expect(e.kind).toBe('sure')
+    const rate = view(d, s).rate()
+    // Never below a few seconds of income, never above the share of this run's income plus a minute
+    expect(Number(e.amount)).toBeGreaterThanOrEqual(rate * 8 - 1e-9)
+    expect(Number(e.amount)).toBeLessThanOrEqual(Math.max(rate * 8, (s.core.primaryRun + rate * 60) * 0.12) + 1e-9)
+  })
+
+  it('an old save without the buy counter loads with zero', () => {
+    const d = testGame()
+    const mod = d.modules.find((m) => m.id === 'surprises')!
+    expect(mod.parse({ found: 3, lastAt: 5 }, {} as never, d)).toEqual({ found: 3, lastAt: 5, buys: 0 })
+  })
 })
 
 describe('best buy and next goal', () => {

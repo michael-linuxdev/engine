@@ -1,6 +1,6 @@
 # Inhalte für fünf Jahre
 
-Stand 2026-11-11. Entwurf zur Abstimmung, noch nichts davon gebaut. Entscheidung Michael: Die Jahre 1 bis 5 werden geplant und gebaut, alles danach bleibt Gerüst. Gefüllt wird mit Geschichte, neuen Landen, neuen Systemen und dem Jahreskreis; alle Texte entstehen hier auf Deutsch und Englisch.
+Stand 2026-11-11. Plan mit den Entscheidungen vom selben Tag, noch nichts davon gebaut. Entscheidung Michael: Die Jahre 1 bis 5 werden geplant und gebaut, alles danach bleibt Gerüst. Gefüllt wird mit Geschichte, neuen Landen, neuen Systemen und dem Jahreskreis; alle Texte entstehen hier auf Deutsch und Englisch.
 
 ## Wo wir stehen
 
@@ -13,6 +13,30 @@ Stand 2026-11-11. Entwurf zur Abstimmung, noch nichts davon gebaut. Entscheidung
 | Jahreskreis | 9 Lichterfeste, 13 Fest-Sorten, ein Folio mit 12 Zielen je Jahreszeit |
 
 Nach Tag 90 tragen nur Meisterschafts-Sterne, Schicht-Meilensteine und der Wochenplan. Das ist nicht gemessen.
+
+## Messung über fünf Jahre (heutiger Stand, Profil „regular“)
+
+`SUMMARY=1 npm run balance -- lichtwarte regular 43800`, gemessen 2026-11-11. Der Lauf dauert nur wenige Minuten, nicht wie geschätzt 17.
+
+| | Ergebnis |
+|---|---|
+| Letztes neues Land | Tag 90 (Land 34). Danach keines mehr. |
+| Zeitalter | 9 in fünf Jahren: Tag 28, 46, 79, 120, 182, 292, 479, 724, 1.135. Die Abstände wachsen von 3 Wochen auf über ein Jahr. |
+| Lange Nächte | 56 |
+| Mondwenden | 4.591 |
+| Größte Zahl | 1,6 · 10²¹ Glimmer insgesamt. Die Grenze von 10³⁰⁰ ist weit weg. |
+
+**Folgen:**
+- Der Zahlenraum ist kein Risiko. Die späten Wellen dürfen normal weiterwachsen.
+- **Ab etwa Tag 120 gibt es kein neues Ziel mehr.** Nach dem vierten Zeitalter liegen zwei, dann drei, dann sechs Monate zwischen zwei Zeitaltern. Fünf Jahre trägt heute nichts.
+- Die Meilensteine der Zeitalter (bis zum 50.) sind unerreichbar: In fünf Jahren fallen neun.
+- Die Taktung der Zeitalter muss neu gesetzt werden (Ziel aus dem Plan: eines je vier bis fünf Wochen, also etwa zehn im Jahr).
+
+## Nach dem ersten Baustein (2026-11-11)
+
+- **Lande 35 bis 50** sind gebaut. Gemessen öffnen sie sich alle drei Tage von Tag 93 bis Tag 138. Fester Inhalt reicht damit bis Tag 138.
+- **Zeitalter:** Die Schwelle wächst ab dem vierten flach (Knie 3, danach 1,35). Zwei Jahre gemessen (vor der Änderung an den Funden): 15 Zeitalter an Tag 28, 46, 79, 120, 162, 200, 236, 270, 313, 363, 408, 458, 507, 562, 625. Im ersten Jahr liegt der Abstand bei fünf bis sechs Wochen, im zweiten wächst er auf neun. Ziel waren vier bis fünf Wochen; für die Jahre 3 bis 5 muss der Faktor noch kleiner werden.
+- Nach Tag 138 tragen weiter nur Zeitalter, Sterne, Meilensteine und der Wochenplan. Die Fernfahrten und das sechste Kapitel fehlen noch.
 
 ## Was „fünf Jahre“ hier heißt
 
@@ -40,8 +64,8 @@ Jedes Jahr ist ein **Buch** der Chronik mit eigener Frage, einer **Welle** Lande
 
 ## Was dafür gebaut werden muss
 
-1. **Messung bis Tag 1.825.** Der Simulator misst heute 90 Tage in etwa 50 Sekunden; fünf Jahre brauchen rund 17 Minuten. Ohne diese Messung ist jede Taktung geraten.
-2. **Zahlenraum.** Die Engine begrenzt Werte auf 1e300. Ob das Wachstum über fünf Jahre darunter bleibt, zeigt erst die Messung. Falls nicht, müssen die späten Wellen flacher wachsen.
+1. **Messung bis Tag 1.825:** erledigt, siehe oben. Sie gehört nach jedem Paket wiederholt.
+2. **Taktung der Zeitalter** über Tag 120 hinaus (heute brechen sie ab).
 3. **Jahres-Tabelle** in der Engine (Wellen, Bücher, Jahrgänge anhängbar; IDs nur anhängen).
 4. **Vier neue Systeme** (Feuerstraße, Himmelskarte, Wächterschule, Großes Leuchtfeuer) und die Fernfahrten. Jedes ist ein eigenes Engine-Modul mit Tests und Spielstand-Startwert.
 5. **Texte:** etwa 200 Chronik-Seiten, 116 Lande mit Namen, Figur und Einleitung, je zwei Sprachen.
@@ -61,8 +85,8 @@ Jedes Jahr ist ein **Buch** der Chronik mit eigener Frage, einer **Welle** Lande
 3. Jahres-Tabelle bauen und Jahr 2 als erstes ganzes Jahr liefern (Buch, Welle, Feuerstraße, Jahrgang).
 4. Jahre 3 bis 5 je als eigenes Paket, jeweils mit Messung.
 
-## Offene Entscheidungen
+## Entscheidungen (Michael, 2026-11-11)
 
-1. **Wodurch öffnet sich ein neues Jahr?** Durch Fortschritt (letztes Land der Welle) oder durch den Kalender (365 Tage nach dem ersten Start)?
-2. **Namen der späteren Lande:** Eigennamen mit Prüfung oder beschreibende Namen?
-3. **Reihenfolge:** erst messen oder gleich Jahr 1 schließen?
+1. **Ein neues Jahr öffnet sich durch Fortschritt:** mit dem letzten Land der Welle, nicht durch den Kalender.
+2. **Lande späterer Wellen tragen beschreibende Namen** („Das Hohe Moor“), keine Eigennamen. Damit entfällt für sie die Namensprüfung.
+3. **Zuerst wird gemessen:** Simulator auf fünf Jahre, heutiger Stand, erst dann wird gebaut.

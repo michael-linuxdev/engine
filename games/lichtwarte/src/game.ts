@@ -125,6 +125,11 @@ export const archive: MetaItemDef[] = [
 
 const balance = defaultBalance(LAYER.moonturn)
 // Rückkehr-Brief: nach mindestens 48 Stunden Abwesenheit ein Geschenk
+// Funde am Wegrand so OFT wie in der Referenz: jede fünfte Stufe ein sicherer Fund, dazu 7 % Glücksfund je Ausbau,
+// höchstens einer je 5 s. Die BETRÄGE sind kleiner als dort (8 s bzw. 20 bis 45 s Ertrag statt 45 s bzw. 90 bis 210 s):
+// Mit den Beträgen der Referenz lief das gemessene Tempo davon (alle Bauwerke an Tag 2,6 statt Tag 5, zweite Mondwende
+// nach 57 statt 81 Minuten). Deckel: 12 % des Ertrags dieses Laufs plus einer Minute.
+balance.surprises = { chance: 0.07, seconds: 20, secondsMax: 45, minIntervalMs: 5000, every: { count: 5, seconds: 8 }, floorSeconds: 3, capShare: 0.12 }
 balance.offline = { ...balance.offline, comebackMs: 48 * 3600_000, comebackGrant: [{ currency: CURRENCY.glowPebbles, amount: 20 }] }
 balance.helper = {
   ranks: [
@@ -172,7 +177,9 @@ export const game: GameDefinition = {
       id: LAYER.ages,
       currency: CURRENCY.forebearLight,
       // Wachstum 3 (vorher 10): das zweite Zeitalter kommt bei regular um Tag 47 statt Tag 71 (späte Taktung, balance.md)
-      gate: { base: 5e16, growth: 3, knee: 6, lateGrowth: 2 },
+      // Ab dem vierten Zeitalter wächst die Schwelle flach (Knie 3, danach 1,35): Über fünf Jahre gemessen lagen sonst
+      // erst Monate, dann über ein Jahr zwischen zwei Zeitaltern (fuenf-jahre.md). Die ersten vier bleiben, wo sie waren.
+      gate: { base: 5e16, growth: 3, knee: 3, lateGrowth: 1.35 },
       payout: { base: 3, growth: 1.1 },
       minimum: { lowerRuns: 3 },
       // Jedes Zeitalter bis zum zwölften ist ein Meilenstein, danach in größeren Schritten: ein Ziel ohne nahes Ende.

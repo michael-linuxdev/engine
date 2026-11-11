@@ -339,6 +339,17 @@ export const GAMES = [
       await r.getByTestId('tab-prestige').click()
       assert((await r.getByTestId('milestones-ages').getAttribute('data-reached')) === '0', 'Meilensteine des Zeitalters sichtbar')
 
+      // Vorräte-Fenster: liegt über der Leiste, und der Text bricht in der Kachel um (er lief auf dem Handy hinaus)
+      await r.getByTestId('hud-purse').click()
+      await r.getByTestId('purse-sheet').waitFor()
+      const purse = await r.evaluate(() => {
+        const sheet = document.querySelector('[data-testid="purse-sheet"]')
+        const rows = [...sheet.querySelectorAll('.ek-row__main span')]
+        return { inApp: sheet.parentElement.parentElement.classList.contains('ek-app'), wraps: rows.every((x) => x.scrollWidth <= x.clientWidth + 1 && x.getBoundingClientRect().right <= innerWidth), bottom: sheet.getBoundingClientRect().bottom, vh: innerHeight }
+      })
+      assert(purse.inApp && purse.wraps && purse.bottom <= purse.vh + 1, `Vorräte-Fenster vollständig und umbrochen (${JSON.stringify(purse)})`)
+      await r.keyboard.press('Escape')
+      await r.getByTestId('purse-sheet').waitFor({ state: 'detached' })
       // Markt: Tagesgeschenk, Talstil kaufen und anlegen, Testkauf mit Testgeld
       await r.getByTestId('tab-market').click()
       // Die Seite selbst scrollt nie (kein Wandern des Hintergrunds hinter Fenstern); nur die Ansicht scrollt
@@ -375,6 +386,14 @@ export const GAMES = [
       await r.getByTestId('market-tab-offers').click()
       await r.getByTestId('offer-buy-pebbles50').click()
       await r.getByTestId('testbuy-sheet').waitFor()
+      // Das Fenster liegt über der Leiste unten: Seine Knöpfe sind sichtbar und treffbar (auf dem Handy lagen sie dahinter)
+      const ask = await r.evaluate(() => {
+        const b = document.querySelector('[data-testid="testbuy-yes"]').getBoundingClientRect()
+        const hit = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2)
+        return { inApp: !!document.querySelector('.ek-app > .ek-sheet-backdrop [data-testid="testbuy-sheet"]'), hit: hit?.closest('[data-testid]')?.getAttribute('data-testid'), bottom: b.bottom, vh: innerHeight }
+      })
+      assert(ask.inApp && ask.hit === 'testbuy-yes' && ask.bottom <= ask.vh, `Testkauf-Knopf ist frei sichtbar (${JSON.stringify(ask)})`)
+      assert((await r.evaluate(() => getComputedStyle(document.querySelector('.ek-app')).userSelect)) === 'none', 'Text lässt sich nicht markieren')
       assert((await pebbles()) === p1 && (await r.getByTestId('wallet').getAttribute('data-spent')) === '0', 'Testkauf fragt erst nach')
       await r.getByTestId('testbuy-no').click()
       await r.getByTestId('testbuy-sheet').waitFor({ state: 'detached' })

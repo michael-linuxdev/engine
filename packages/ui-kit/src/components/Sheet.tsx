@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, type KeyboardEvent, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { useOverlay } from '@engine/react'
 import { useUi } from '../useUi'
 
@@ -124,8 +125,18 @@ export function Sheet({ open, title, onClose, children, className, testId, foote
       first.focus()
     }
   }
-  return (
-    <div className={`ek-sheet-backdrop${dim ? '' : ' ek-sheet-backdrop--clear'}`} onClick={onClose}>
+  // Always render at the top of the app, never inside the scrolling view: there a fixed sheet
+  // is trapped below the tab bar on phones (its buttons end up hidden behind the bar).
+  const host = document.querySelector('.ek-app') ?? document.body
+  return createPortal(
+    <div
+      className={`ek-sheet-backdrop${dim ? '' : ' ek-sheet-backdrop--clear'}`}
+      onClick={(e) => {
+        // A portal still bubbles through the React tree: keep the tap away from whatever opened the sheet
+        e.stopPropagation()
+        onClose()
+      }}
+    >
       <div
         ref={ref}
         role="dialog"
@@ -152,6 +163,7 @@ export function Sheet({ open, title, onClose, children, className, testId, foote
         </div>
         {footer ? <footer className="ek-sheet__foot">{footer}</footer> : null}
       </div>
-    </div>
+    </div>,
+    host,
   )
 }

@@ -25,6 +25,6 @@ Mindestmengen nach `docs/referenz/paritaet.md`. Der Stand je Phase steht in `ROA
 | Sternbilder | ≥ 12 (9 + 3) | | P8 |
 | Omen | ≥ 3 × 2 Optionen, 4 Wetterarten | Sturmnacht, Dürresommer, Frühfrost | P8 |
 | Großwerke | ≥ 6 × 3 Stufen | Brücke über den Fluss, Leuchtfeuerkette, Talmühle … | P8 |
-| Lande | ≥ 34 ausgearbeitet, 50 geplant | `regionen.md` | P9 |
+| Lande | 50 ausgearbeitet (die Talkarte zählt als Land 1) | `regionen.md` | P9, Welle 4 am 2026-11-11 |
 | Markt | 7 Angebote, 8 Talstile, 5 Festwochen-Stufen, 2 Zeitsprünge | Attrappen mit Testgeld | P11 |
 | Ton | 8 Effekte, 4 Ambiente-Schichten | Wind, Feuer, Wasser, Nachtgeräusche | P12 |
