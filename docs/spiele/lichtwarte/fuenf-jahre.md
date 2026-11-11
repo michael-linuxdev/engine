@@ -130,7 +130,7 @@ Gemessen über 475 Tage, „regular“:
 - **Buch 3:** Die Stern-Seiten gehen bei 1, 4, 9, 14, 20, 28, 34 und 43 Sternen auf (vorher 8, 13, 19, 26), damit sie nicht auf den Tag fallen, an dem ein Sternbild erscheint. Die Zahlen in den Texten sind angepasst.
 - **Buch 2:** Die letzte Seite geht erst auf, wenn auch die Erste Warte erreicht ist; gemessen wären die 40 Stufen 17 Tage früher gefallen als das Ende der Geschichte.
 - **Nicht geändert:** die Zeitalter. In Jahr 3 wächst der Abstand auf gut sechs Wochen; für die Jahre 4 und 5 sollte der späte Faktor (1,35) sinken.
-- Die Wartezeit der Himmelskarte ist noch nicht nachgemessen.
+- **Nachgemessen (675 Tage, mit Wartezeit):** ein Stern alle drei Tage. Die Leiter ist an Tag 500 vollständig, der Schlüssel an Tag 523, die Laterne an Tag 562, der Greif an Tag 596, die Glocke an Tag 619, das Boot an Tag 652. Die Seiten von Buch 3 liegen bis Tag 668 3 bis 16 Tage auseinander, meist etwa eine Woche; nur am ersten Tag von Jahr 3 gehen zwei zugleich auf (ein Brief und die erste Stern-Seite).
 
 ## Was „fünf Jahre“ hier heißt
 
