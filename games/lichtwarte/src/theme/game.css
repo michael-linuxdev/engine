@@ -1254,3 +1254,17 @@ body {
 .lw-notices .ek-pill {
   pointer-events: auto;
 }
+
+/* Wartet Ertrag, wird der Heute-Knopf zum goldenen Einsammeln-Knopf */
+.lw-today--collect {
+  background: linear-gradient(var(--gold), var(--gold-deep));
+  border-color: var(--night);
+  color: var(--night);
+  font-weight: 700;
+}
+.lw-today--collect .lw-icon {
+  color: var(--night);
+}
+.lw-app .ek-coach-target {
+  outline-color: var(--ember);
+}

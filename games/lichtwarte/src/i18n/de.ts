@@ -61,6 +61,7 @@ export const gameDe = {
   },
   branches: { glow: 'Glanz', watch: 'Wacht', setout: 'Aufbruch', night: 'Lange Nacht', ages: 'Zeitalter' },
   play: {
+    collect: (amount: string) => `+${amount}`,
     best: 'Bester Kauf',
     toStar: (n: string) => `Noch ${n} bis ★`,
     nextUp: (pct: string) => `Als Nächstes, ${pct} % erreicht`,
@@ -81,6 +82,7 @@ export const gameDe = {
   chronicle: storyDe.chronicle,
   fenno: storyDe.fenno,
   ftue: {
+    act: { welcome: 'Chronik öffnen', build: 'Kräuterkate öffnen', unlock: 'Holzlager öffnen', prestige: 'Zur Mondwende' },
     skip: 'Überspringen',
     next: 'Weiter',
     steps: {
@@ -89,7 +91,7 @@ export const gameDe = {
       burst: { title: 'Funkenruf', body: 'Ruf die Funken: Sie bringen dir sofort Glimmer.' },
       unlock: { title: 'Wildnis freilegen', body: 'Mit genug Glimmer legst du das Holzlager frei.' },
       offline: { title: 'Auch wenn du fort bist', body: 'Die Warte glimmt weiter. Komm später zurück und sammle ein.' },
-      prestige: { title: 'Die Mondwende', body: 'Unter „Neubeginn“ siehst du, wie nah die erste Mondwende ist.' },
+      prestige: { title: 'Die Mondwende', body: 'Unter „Mondwende“ siehst du, wie nah die erste Mondwende ist.' },
     },
   },
   ceremony: storyDe.ceremony,
@@ -166,7 +168,7 @@ export const gameDe = {
       bonuses: { name: 'Woher kommt das?', blurb: 'Tippe auf deinen Glimmer: Dort siehst du jeden Bonus einzeln.' },
       burstRecharge: { name: 'Funken laden nach', blurb: 'Gerufene Funken kommen mit der Zeit zurück.' },
       watchTab: { name: 'Die Wacht', blurb: 'Unter „Wacht“ warten Wachrunde, Aufträge und Taten.' },
-      moonturnNear: { name: 'Bald Mondwende', blurb: 'Unter „Neubeginn“ siehst du, wie nah die nächste Mondwende ist.' },
+      moonturnNear: { name: 'Bald Mondwende', blurb: 'Unter „Mondwende“ siehst du, wie nah die nächste Mondwende ist.' },
       archive: { name: 'Das Archiv', blurb: 'Runensplitter tauschst du im Archiv gegen dauerhafte Hilfen.' },
       wheel: { name: 'Sternenrad', blurb: 'Nach jeder Mondwende darfst du am Sternenrad drehen.' },
       festivals: { name: 'Lichterfeste', blurb: 'Gerade feiert das Tal. Festmarken tauschst du in der Wacht ein.' },
@@ -178,6 +180,8 @@ export const gameDe = {
     },
   },
   world: {
+    omenNow: (per: string) => `Für dich jetzt: ${per}.`,
+    omenNowRisk: (win: string, lose: string) => `Für dich jetzt: ${win} oder ${lose}.`,
     tab: 'Sammlung',
     visitorHere: (name: string) => `${name} ist zu Besuch!`,
     guestThanks: (name: string, gift: string) => `${name}: ${gift}`,

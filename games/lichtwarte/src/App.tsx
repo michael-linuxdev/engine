@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { countAffordableMeta, DAILY_ID, dailyStatus, isFeatureOpen, prestigeReady, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
+import { countAffordableMeta, DAILY_ID, dailyStatus, isFeatureOpen, prestigeReady, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type OfflineState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
 import { connectSfx, currentStep, useEngine, useStore, useSteps } from '@engine/react'
 import { CardPicker, ChallengesCard, FtueCoach, GameShell, Hud, MetaShopPanel, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
@@ -93,16 +93,21 @@ function useCoachActive(): boolean {
   return currentStep(steps, ftue, world) !== null
 }
 
-function NoticeArea({ onEvents, onPrestige, compact }: { onEvents: () => void; onPrestige: () => void; compact: boolean }) {
+type CoachActs = Partial<Record<string, () => void>>
+
+function NoticeArea({ onEvents, onPrestige, compact, acts }: { onEvents: () => void; onPrestige: () => void; compact: boolean; acts: CoachActs }) {
   const active = useCoachActive()
   return (
     <div className="lw-notices">
-      <Notices coach={active ? <Coach /> : null} onEvents={onEvents} onPrestige={onPrestige} compact={compact} />
+      <Notices coach={active ? <Coach acts={acts} /> : null} onEvents={onEvents} onPrestige={onPrestige} compact={compact} />
     </div>
   )
 }
 
-function Coach() {
+/** Worauf ein Schritt des Einstiegs zeigt (data-testid des Ziels). */
+const COACH_TARGET: Partial<Record<string, string>> = { welcome: 'hud-chronicle', build: 'slot-kraeuterkate', burst: 'burst', unlock: 'slot-holzlager', prestige: 'tab-prestige' }
+
+function Coach({ acts }: { acts: CoachActs }) {
   const ui = useUi()
   const { world } = useEngine(ui.rt)
   useSteps(ftue)
@@ -111,7 +116,19 @@ function Coach() {
   const step = currentStep(steps, ftue, world)
   if (!step) return null
   const s = t.ftue.steps[step.id as keyof typeof t.ftue.steps]
-  return <FtueCoach title={s.title} body={s.body} skipLabel={t.ftue.skip} onSkip={() => ftue.dismiss()} />
+  const act = acts[step.id]
+  const label = (t.ftue.act as Record<string, string>)[step.id]
+  return (
+    <FtueCoach
+      title={s.title}
+      body={s.body}
+      skipLabel={t.ftue.skip}
+      onSkip={() => ftue.dismiss()}
+      step={[steps.findIndex((x) => x.id === step.id) + 1, steps.length]}
+      target={COACH_TARGET[step.id]}
+      action={act && label ? { label, onAct: act } : undefined}
+    />
+  )
 }
 
 function GameOverlays({ selected, onClose, chronicleOpen, setChronicle, ceremony, endCeremony }: {
@@ -162,6 +179,7 @@ export function App() {
   const unread = CHRONICLE.some((e) => e.open(world) && !read.includes(e.id))
   const unreadLetter = CHRONICLE.some((e) => e.voice === 'letter' && e.open(world) && !read.includes(e.id))
   const [rankOpen, setRankOpen] = useState(false)
+  const basket = world.get<OfflineState>(MODULE.offline)?.pending ?? null
   const openTab = (id: string) => {
     setTab(id)
     tabsSeen.add(id)
@@ -232,7 +250,14 @@ export function App() {
       play={
         <Play
           onOpen={setSelected}
-          today={isFeatureOpen(world, 'watch') ? { dot: watchBadge(world), onOpen: () => openTab('watch') } : undefined}
+          // Wartet Ertrag (kurze Abwesenheit oder „Später“), sammelt der Knopf ein; sonst führt er zur Wacht
+          today={
+            basket
+              ? { dot: true, collect: basket.gained, onOpen: () => rt.dispatch(MODULE.offline, 'claim') }
+              : isFeatureOpen(world, 'watch')
+                ? { dot: watchBadge(world), onOpen: () => openTab('watch') }
+                : undefined
+          }
           letter={unreadLetter ? { onOpen: () => setChronicle(true) } : undefined}
         />
       }
@@ -256,8 +281,10 @@ export function App() {
         ...(archiveOpen ? [{ id: 'archive', label: t.effectLabels.archive, view: <MetaShopPanel title={t.effectLabels.archive} branchVisible={branchVisible} /> }] : []),
         ...(isFeatureOpen(world, 'trials') ? [{ id: 'trials', label: labels.content('title.trials').name, view: <ChallengesCard cfg={TRIALS} /> }] : []),
       ]}
-      notice={<NoticeArea onEvents={() => openTab('watch')} onPrestige={() => openTab('prestige')} compact />}
+      notice={<NoticeArea onEvents={() => openTab('watch')} onPrestige={() => openTab('prestige')} compact acts={{ welcome: () => setChronicle(true), build: () => setSelected('kraeuterkate'), unlock: () => setSelected('holzlager'), prestige: () => openTab('prestige') }} />}
       welcomeArt={<ComebackLetter />}
+      welcomeExtra={<Soon />}
+      onWelcomePick={setSelected}
       installArt={<img src="./icons/icon-192.png" alt="" width={72} height={72} className="lw-install-icon" />}
       tab={tab}
       onTab={(id) => {

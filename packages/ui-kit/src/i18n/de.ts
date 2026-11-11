@@ -92,6 +92,8 @@ export const engineDe = {
     noneAffordable: 'Gerade nichts bezahlbar',
   },
   welcome: {
+    afford: 'Das kannst du dir jetzt leisten:',
+    later: 'Später',
     title: 'Willkommen zurück',
     away: (time: string) => `Du warst ${time} fort.`,
     gained: (amount: string) => `Inzwischen: +${amount}`,
@@ -218,6 +220,7 @@ export const engineDe = {
     privacyPage: 'Datenschutzerklärung als Seite',
   },
   live: {
+    coachStep: (n: string, total: string) => `Schritt ${n} von ${total}`,
     morePills: (n: string) => `${n} weitere`,
     claim: 'Einsammeln',
     claimed: 'Eingesammelt',
