@@ -148,7 +148,9 @@ export const FESTIVALS: FestConfig = {
     { id: 'longLight', from: [12, 15], to: [12, 31], major: true },
   ],
   shop: festShops(),
-  earn: { 'daily.claimed': 10, 'burst.used': 2, 'prestige.performed': 15, 'quest.claimed': 5 },
+  // Mondwende: 1 statt 15. Gemessen fielen sonst 4.500 bis 14.500 Marken je Fest an (rund zwölf Mondwenden am Tag),
+  // bei Preisen von 60 bis 170 (fuenf-jahre.md).
+  earn: { 'daily.claimed': 10, 'burst.used': 2, 'prestige.performed': 1, 'quest.claimed': 5 },
   override: festOverride,
 }
 

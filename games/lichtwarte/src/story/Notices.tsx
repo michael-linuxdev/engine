@@ -18,7 +18,7 @@ import { hintsSeen, t } from '../runtime'
 /** Ab so vielen Sekunden bis zur Schwelle kündigt eine Pille die Mondwende an. */
 const TURN_SOON_S = 30 * 60
 
-export function Notices({ coach, onEvents, onPrestige, compact = false }: { coach: ReactNode; onEvents: () => void; onPrestige: () => void; compact?: boolean }) {
+export function Notices({ coach, onEvents, onPrestige, compact = false, waiting = [] }: { coach: ReactNode; onEvents: () => void; onPrestige: () => void; compact?: boolean; /** Marken für das, was auf einen Tipp wartet (stehen vorn). */ waiting?: readonly Pill[] }) {
   const [expanded, setExpanded] = useState<string | null>(null)
   const ui = useUi()
   const { world } = useEngine(ui.rt)
@@ -60,7 +60,7 @@ export function Notices({ coach, onEvents, onPrestige, compact = false }: { coac
       : []
   return (
     <>
-      <EventPills onOpen={onEvents} extra={turn} />
+      <EventPills onOpen={onEvents} extra={[...waiting, ...turn]} />
       {notice}
     </>
   )

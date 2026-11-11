@@ -120,6 +120,8 @@ export const GAMES = [
       await q.getByTestId('rank-sheet').waitFor()
       await q.keyboard.press('Escape')
       await q.getByTestId('rank-sheet').waitFor({ state: 'detached' })
+      // Unter dem Ziel steht, was die nächste Mondwende öffnet
+      assert((await q.getByTestId('goal-note').innerText()).includes(T.producers.schmiede.name), 'Ziel-Zeile nennt, was die nächste Mondwende öffnet')
       await q.getByTestId('goal').click()
       await q.getByTestId('upgrade-sheet').waitFor()
       await q.keyboard.press('Escape')
@@ -435,8 +437,13 @@ export const GAMES = [
       await r.getByTestId('card-gift').waitFor()
       const pebbles = () => r.evaluate(() => window.__engine.get().modules.wallet.balances.glowPebbles)
       const p0 = await pebbles()
-      await r.getByTestId('gift-claim').click()
-      assert((await pebbles()) === p0 + 3, 'Markt: Tagesgeschenk')
+      // Was wartet, lässt sich schon im Tal mit einem Tipp einsammeln: Das Tagesgeschenk steht dort als Marke
+      await r.getByTestId('tab-play').click()
+      await r.getByTestId('pill-gift').click()
+      assert((await pebbles()) === p0 + 3, 'Tal: Tagesgeschenk über die Marke eingesammelt')
+      await r.getByTestId('pill-gift').waitFor({ state: 'detached' })
+      await r.getByTestId('tab-market').click()
+      assert(await r.getByTestId('gift-claim').isDisabled(), 'Markt: Tagesgeschenk ist danach abgeholt')
       // Jede Belohnung meldet sich: eine Meldung und die Gutschrift als aufsteigende Zahl
       await r.getByTestId('toast').filter({ hasText: T.fx.gift }).waitFor()
       await r.getByTestId('fx-float').filter({ hasText: T.currencies.glowPebbles }).last().waitFor()

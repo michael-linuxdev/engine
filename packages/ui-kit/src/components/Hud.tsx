@@ -1,15 +1,17 @@
 import type { ReactNode } from 'react'
 import { nextGoal } from '@engine/core'
 import { useEngine } from '@engine/react'
+import type { UiValue } from '../uiContext'
 import { useUi } from '../useUi'
 import { ProgressBar } from './ProgressBar'
 
 /** Top HUD: primary amount + rate (tap opens the bonus breakdown), goal strip, slots for game extras. */
-export function Hud({ primaryId, icon, extra, sub, goalText, onGoal }: { primaryId: string; icon?: ReactNode; extra?: ReactNode; /** Slim row below the amount (side currencies …). */ sub?: ReactNode; goalText?: (g: ReturnType<typeof nextGoal>) => string | null; /** Makes the goal strip a button: it leads to what the goal names. */ onGoal?: (g: ReturnType<typeof nextGoal>) => void }) {
+export function Hud({ primaryId, icon, extra, sub, goalText, goalNote, onGoal }: { primaryId: string; icon?: ReactNode; extra?: ReactNode; /** Slim row below the amount (side currencies …). */ sub?: ReactNode; goalText?: (g: ReturnType<typeof nextGoal>) => string | null; /** Second, quieter line of the goal strip (what comes after, how long it takes). */ goalNote?: (g: ReturnType<typeof nextGoal>, ui: UiValue) => string | null; /** Makes the goal strip a button: it leads to what the goal names. */ onGoal?: (g: ReturnType<typeof nextGoal>) => void }) {
   const ui = useUi()
   const { state, world } = useEngine(ui.rt)
   const goal = nextGoal(world)
   const text = goalText?.(goal) ?? null
+  const note = text ? (goalNote?.(goal, ui) ?? null) : null
   const ratio = goal.kind === 'unlock' || goal.kind === 'milestone' || goal.kind === 'prestigeProgress' ? goal.ratio : 1
   return (
     <header className="ek-hud">
@@ -28,11 +30,13 @@ export function Hud({ primaryId, icon, extra, sub, goalText, onGoal }: { primary
         <button type="button" className="ek-goal ek-goal--btn" data-testid="goal" onClick={() => onGoal(goal)}>
           <span className="ek-goal__text">{text}</span>
           <ProgressBar ratio={ratio} label={text} />
+          {note ? <span className="ek-goal__note" data-testid="goal-note">{note}</span> : null}
         </button>
       ) : text ? (
         <div className="ek-goal" data-testid="goal">
           <span className="ek-goal__text">{text}</span>
           <ProgressBar ratio={ratio} label={text} />
+          {note ? <span className="ek-goal__note" data-testid="goal-note">{note}</span> : null}
         </div>
       ) : null}
     </header>

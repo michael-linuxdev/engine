@@ -1548,3 +1548,17 @@ html:has(.ek-app) body {
   width: 100%;
   height: auto;
 }
+
+/* Goal strip: quieter second line; pill that collects something */
+.ek-goal__note {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  text-align: left;
+}
+.ek-pill--claim {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}

@@ -16,6 +16,8 @@ export interface VisitorDef {
 export interface VisitorConfig {
   list: readonly VisitorDef[]
   stayMs: number
+  /** The guest stays until greeted instead of leaving after `stayMs` (nobody is missed while away). */
+  waits?: boolean
   gapMs: [number, number]
   firstGift: readonly Amount[]
   againSeconds: number
@@ -46,7 +48,7 @@ export function visitorsModule(cfg: VisitorConfig): EngineModule<VisitorsState> 
     resetOn: 'keep',
     tick: (s, _dt, ctx, w) => {
       const now = ctx.clock.now()
-      if (s.current) return now >= s.until ? { ...s, current: '', until: 0, nextAt: now + cfg.gapMs[0] + ctx.rng.next() * (cfg.gapMs[1] - cfg.gapMs[0]) } : s
+      if (s.current) return !cfg.waits && now >= s.until ? { ...s, current: '', until: 0, nextAt: now + cfg.gapMs[0] + ctx.rng.next() * (cfg.gapMs[1] - cfg.gapMs[0]) } : s
       if (now < s.nextAt) return s
       const open = cfg.list.filter((v) => v.when(w))
       if (!open.length) return { ...s, nextAt: now + cfg.gapMs[0] }
@@ -68,7 +70,7 @@ export function visitorsModule(cfg: VisitorConfig): EngineModule<VisitorsState> 
     },
     actions: {
       greet: (s, _p, ctx, w) => {
-        if (!s.current || ctx.clock.now() >= s.until) return s
+        if (!s.current || (!cfg.waits && ctx.clock.now() >= s.until)) return s
         const first = !s.seen[s.current]
         const grant = first ? cfg.firstGift.map((g) => ({ ...g, source: 'visitor' })) : [{ currency: primaryCurrency(w.def), amount: w.rate() * cfg.againSeconds, source: 'visitor' }]
         // The guest leaves; the next one comes after the usual gap (otherwise the next tick would bring one right back)

@@ -2,10 +2,10 @@
  * Sichtbare Rückmeldung: Welches Engine-Ereignis welche Meldung, aufsteigende Zahl oder welchen Flug
  * zur Kopfzeile auslöst (Lückenliste 4.1 bis 4.3). Der Ton dazu steht in audio/sfx.ts.
  */
-import type { EngineEvent } from '@engine/core'
+import { collectionProgress, COLLECTIONS_ID, type CollectionsState, type EngineEvent } from '@engine/core'
 import type { FeedbackItem, FeedbackMap } from '@engine/ui'
 import { FIRE_ROAD } from '../content/fireRoad'
-import { OMENS } from '../content/world'
+import { COLLECTION, OMENS } from '../content/world'
 import { CURRENCY, game } from '../game'
 import { t } from '../runtime'
 
@@ -51,8 +51,13 @@ export const feedback: FeedbackMap = (e: EngineEvent, ui) => {
       return toast(t.fx.deed(name(`deed.${str(e.id)}`)))
     case 'challenge.done':
       return toast(t.fx.trial(name(`trial.${str(e.id)}`)))
-    case 'collection.found':
-      return toast(t.fx.found(name(`entry.${str(e.id)}`)))
+    case 'collection.found': {
+      // Mit dem Stand des Satzes: Der Fund ist ein Schritt auf etwas zu, kein einzelnes Ding
+      const cat = COLLECTION.entries.find((x) => x.id === str(e.id))?.category ?? ''
+      const pr = collectionProgress(ui.rt.world().get<CollectionsState | undefined>(COLLECTIONS_ID), COLLECTION, cat)
+      const left = pr.total - pr.found
+      return toast(left > 0 ? t.fx.foundLeft(name(`entry.${str(e.id)}`), String(left), name(`category.${cat}`)) : t.fx.foundSet(name(`entry.${str(e.id)}`), name(`category.${cat}`)))
+    }
     case 'region.mastered':
       return toast(t.fx.star(name(`realm.${str(e.region)}`), ui.fmt(num(e.stars))))
     case 'fest.bought':

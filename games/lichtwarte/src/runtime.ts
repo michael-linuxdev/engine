@@ -29,12 +29,15 @@ export const STORAGE = {
   ftue: `${game.id}-ftue-v1`,
   tabs: `${game.id}-tabs-v1`,
   hints: `${game.id}-hints-v1`,
+  finds: `${game.id}-finds-v1`,
 } as const
 
 export const rt = createRuntime(game)
 export const chronicleRead = createSeen(STORAGE.chronicle)
 export const tabsSeen = createSeen(STORAGE.tabs)
 export const hintsSeen = createSeen(STORAGE.hints)
+/** Funde, die man in der Sammlung schon angesehen hat (Gerätemerker). */
+export const findsSeen = createSeen(STORAGE.finds)
 export const ftue = createSteps(STORAGE.ftue)
 /** Testgeld (nur Testphase, eigener Schlüssel, nicht im Spielstand). */
 export const testWallet = TEST_WALLET_ENABLED ? createTestWallet(game.id, TEST_BUDGET_CENTS, () => rt.clock.now()) : null
