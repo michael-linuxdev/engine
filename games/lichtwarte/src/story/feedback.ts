@@ -29,7 +29,10 @@ export const feedback: FeedbackMap = (e: EngineEvent, ui) => {
     case 'burst.used':
       return { kind: 'fly', anchor: 'burst' }
     case 'surprise.found':
-      return [toast(t.fx.surprise(ui.fmt(num(e.amount)), glimmer)), { kind: 'fly', anchor: 'map' }]
+      // Der sichere Fund (jede fünfte Stufe) kommt oft: nur Zahl und Flug. Der seltene Glücksfund bekommt die Meldung.
+      return e.kind === 'lucky'
+        ? [toast(t.fx.surprise(ui.fmt(num(e.amount)), glimmer)), { kind: 'fly', anchor: 'map' }]
+        : [{ kind: 'float', text: t.fx.gained(ui.fmt(num(e.amount)), glimmer), anchor: 'hud' }, { kind: 'fly', anchor: 'map' }]
     case 'offline.claimed':
       return [toast(t.fx.offline(ui.fmt(num(e.amount)), glimmer)), { kind: 'fly' }]
     case 'currency.gained':

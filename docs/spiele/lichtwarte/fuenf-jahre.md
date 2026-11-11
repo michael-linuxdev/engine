@@ -32,6 +32,12 @@ Nach Tag 90 tragen nur Meisterschafts-Sterne, Schicht-Meilensteine und der Woche
 - Die Meilensteine der Zeitalter (bis zum 50.) sind unerreichbar: In fünf Jahren fallen neun.
 - Die Taktung der Zeitalter muss neu gesetzt werden (Ziel aus dem Plan: eines je vier bis fünf Wochen, also etwa zehn im Jahr).
 
+## Nach dem ersten Baustein (2026-11-11)
+
+- **Lande 35 bis 50** sind gebaut. Gemessen öffnen sie sich alle drei Tage von Tag 93 bis Tag 138. Fester Inhalt reicht damit bis Tag 138.
+- **Zeitalter:** Die Schwelle wächst ab dem vierten flach (Knie 3, danach 1,35). Zwei Jahre gemessen (vor der Änderung an den Funden): 15 Zeitalter an Tag 28, 46, 79, 120, 162, 200, 236, 270, 313, 363, 408, 458, 507, 562, 625. Im ersten Jahr liegt der Abstand bei fünf bis sechs Wochen, im zweiten wächst er auf neun. Ziel waren vier bis fünf Wochen; für die Jahre 3 bis 5 muss der Faktor noch kleiner werden.
+- Nach Tag 138 tragen weiter nur Zeitalter, Sterne, Meilensteine und der Wochenplan. Die Fernfahrten und das sechste Kapitel fehlen noch.
+
 ## Was „fünf Jahre“ hier heißt
 
 Maßstab ist eine Spielerin, die täglich kurz spielt (Profil „regular“). Über 1.825 Tage soll gelten:

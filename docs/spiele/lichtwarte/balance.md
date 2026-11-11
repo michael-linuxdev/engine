@@ -93,3 +93,10 @@ Messung (regular, Simulator kauft reihum alles Bezahlbare):
 Die Schwellen von Mondwende und Langer Nacht liegen bewusst hinter dem gemessenen Zeitraum (regular an Tag 90: rund 730 Mondwenden, 13 Lange Nächte, 3 Zeitalter). Nur die Zeitalter-Meilensteine 2 und 3 fallen hinein; die Korridore halten.
 
 **Nicht gemessen:** alles nach Tag 90, also wann die späteren Meilensteine und die dritten Sterne tatsächlich fallen.
+
+## Funde am Wegrand
+
+Häufigkeit wie in der Referenz (Rückmeldung 2026-11-11): jede fünfte von Hand gebaute Stufe ein sicherer Fund, dazu 7 % Glücksfund je Ausbau, höchstens ein Fund je 5 Sekunden. Vorher: 4 % je Ausbau, höchstens einer je 45 Sekunden.
+
+Die **Beträge** sind kleiner als in der Referenz: 8 s Ertrag (sicher) und 20 bis 45 s (Glück) statt 45 s und 90 bis 210 s. Mit den Beträgen der Referenz verfehlte der Simulator die Korridore deutlich (alle Bauwerke an Tag 2,6 statt Tag 5 ± 1; zweite Mondwende nach 57 statt 81 Minuten). Mit den kleineren Beträgen bleiben alle Korridore eingehalten (zweite Mondwende nach 78 Minuten, Sternwarte an Tag 4,1). Deckel: 12 % des Ertrags dieses Laufs plus einer Minute.
+

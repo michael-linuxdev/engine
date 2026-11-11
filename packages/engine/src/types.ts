@@ -257,7 +257,13 @@ export interface BalanceConfig {
     rankStepGrowth: number
   }
   burst: { maxCharges: number; rechargeMs: number; seconds: number }
-  surprises: { chance: number; seconds: number; minIntervalMs: number }
+  /**
+   * Surprise finds on manual buys. `chance` per buy pays `seconds` of income (a random value up to
+   * `secondsMax` when given). `every`: each n-th manual level is a sure find worth `every.seconds`.
+   * `floorSeconds` / `capShare` keep a find between a few seconds of income and a share of
+   * (income of this run + one minute of income). `minIntervalMs` throttles all of them.
+   */
+  surprises: { chance: number; seconds: number; minIntervalMs: number; secondsMax?: number; every?: { count: number; seconds: number }; floorSeconds?: number; capShare?: number }
   helper: { ranks: readonly { cost: Amount; intervalMs: number }[] }
   /** Free room for game-specific knobs (simulator can override). */
   extra?: Record<string, number>
