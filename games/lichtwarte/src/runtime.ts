@@ -7,7 +7,7 @@ import { currentMood } from './scene/mood'
 import { currentWeather } from './scene/weather'
 import type { UiLabels } from '@engine/ui'
 import { TEST_BUDGET_CENTS, TEST_WALLET_ENABLED } from './content/market'
-import { ALCHEMY, COLLECTION, FEST_VARIETIES, GUEST_LURE } from './content/world'
+import { ALCHEMY, COLLECTION, FEST_VARIETIES, FEST_VARIETIES_2, GUEST_LURE } from './content/world'
 import { game } from './game'
 import { stringsDe, type Strings } from './i18n/de'
 
@@ -115,7 +115,7 @@ function realmContent(ns: string, rest: string): { name: string; blurb: string }
 function entryHint(id: string): { name: string; blurb: string } {
   const e = COLLECTION.entries.find((x) => x.id === id)
   if (!e) return { name: `entryHint.${id}`, blurb: '' }
-  const fest = Object.entries(FEST_VARIETIES).find(([, ids]) => ids.includes(id))?.[0]
+  const fest = Object.entries(FEST_VARIETIES).find(([, ids]) => ids.includes(id))?.[0] ?? Object.entries(FEST_VARIETIES_2).find(([, v]) => v === id)?.[0]
   const category = (t.world.categories as Keyed<{ name: string }>)[e.category]?.name ?? ''
   const h = t.world.entryHints
   const name = fest ? h.fest((t.watch.fests as Keyed<{ name: string }>)[fest]?.name ?? '') : ALCHEMY.recipes.some((r) => r.result === id) ? h.brew : e.rarity > 0 ? h.rare(category) : h.buy(category)
@@ -152,6 +152,8 @@ export const labels: UiLabels = {
     if (ns === 'guestHint') return guestHint(id)
     if (ns === 'festEarn') return { name: (t.watch.festEarn as Keyed<string>)[id] ?? key, blurb: '' }
     if (ns === 'festItem' && id.startsWith('variety_')) return labels.content(`entry.${id.slice(8)}`)
+    // Schmuck im Fest-Laden trägt den Namen des Schmuckstücks
+    if (ns === 'festItem' && id.startsWith('decor_')) return labels.content(`decor.${id.slice(6)}`)
     const table = NAMESPACES[ns]?.()
     return table?.[id] ?? { name: key, blurb: '' }
   },

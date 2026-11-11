@@ -256,7 +256,7 @@ export function FestCard({ cfg }: { cfg: FestConfig }) {
   const fest = festAt(cfg, ui.rt.clock)
   if (!s || !fest) return null
   const l = ui.labels.content(`fest.${fest.id}`)
-  const items = festShop(cfg, fest.id).map((item) => ({ item, n: s.bought[item.id] ?? 0 }))
+  const items = festShop(cfg, fest.id, world).map((item) => ({ item, n: s.bought[item.id] ?? 0 }))
   // What can still be bought stands on top, sold-out goods at the bottom
   items.sort((a, b) => Number(a.n >= a.item.max) - Number(b.n >= b.item.max))
   const next = nextFest(cfg, ui.rt.clock)

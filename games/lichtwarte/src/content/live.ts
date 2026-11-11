@@ -4,14 +4,14 @@
  * Texte in i18n/*.ts (live.*), IDs in ids.lock.json.
  */
 import {
-  burstMax, isFeatureOpen, layerStatus, levelOf, MODULE, ownedOf, prestigeState, producerLevelsTotal, producersOnline, REGIONS_ID, totalRegionStars,
-  type AchievementDef, type WeeklyPlanConfig, type BurstState, type ChallengeConfig, type DailyConfig, type FeatureDef, type FestConfig, type FestItem, type FlashConfig, type ProgressionState,
+  burstMax, DECOR_ID, isFeatureOpen, layerStatus, levelOf, MODULE, ownedOf, prestigeState, producerLevelsTotal, producersOnline, REGIONS_ID, totalRegionStars,
+  type AchievementDef, type WeeklyPlanConfig, type BurstState, type ChallengeConfig, type DailyConfig, type DecorState, type FeatureDef, type FestConfig, type FestItem, type FlashConfig, type ProgressionState,
   type QuestConfig, type RegionsState, type WeekendConfig, type WheelConfig, type WorldView,
 } from '@engine/core'
 import type { HintDef } from '@engine/react'
 import { CURRENCY, LAYER } from '../ids'
 import { REALMS } from './realms'
-import { FEST_VARIETIES } from './world'
+import { FEST_DECOR_2, FEST_VARIETIES, FEST_VARIETIES_2 } from './world'
 
 const pebbles = (amount: number) => ({ currency: CURRENCY.glowPebbles, amount })
 const shards = (amount: number) => ({ currency: CURRENCY.runeShards, amount })
@@ -104,6 +104,16 @@ function festShops(): Record<string, readonly FestItem[]> {
   const out: Record<string, readonly FestItem[]> = { default: BASE_SHOP }
   for (const [fest, ids] of Object.entries(FEST_VARIETIES)) {
     out[fest] = [...BASE_SHOP, ...ids.map((id, i): FestItem => ({ id: `variety_${id}`, cost: i === 0 ? 60 : 160, max: 1, kind: 'item', event: { type: 'collection.found', id, source: 'fest' } }))]
+    // Jahrgang 2: erst wenn das erste Hochland offen ist (das System „fireRoad“ öffnet sich im selben Moment).
+    // Das Schmuckstück verschwindet aus dem Laden, sobald man es hat (es gibt jedes nur einmal).
+    const year2 = (w: WorldView) => isFeatureOpen(w, 'fireRoad')
+    const v2 = FEST_VARIETIES_2[fest]
+    const d2 = FEST_DECOR_2[fest]
+    out[fest] = [
+      ...out[fest],
+      ...(v2 ? [{ id: `variety_${v2}`, cost: 90, max: 1, kind: 'item', when: year2, event: { type: 'collection.found', id: v2, source: 'fest' } } satisfies FestItem] : []),
+      ...(d2 ? [{ id: `decor_${d2}`, cost: 140, max: 1, kind: 'item', when: (w) => year2(w) && !w.get<DecorState | undefined>(DECOR_ID)?.owned.includes(d2), event: { type: 'decor.granted', id: d2 } } satisfies FestItem] : []),
+    ]
   }
   return out
 }

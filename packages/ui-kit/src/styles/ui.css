@@ -1513,3 +1513,22 @@ html:has(.ek-app) body {
   transform: rotate(-135deg);
   margin-top: -0.1em;
 }
+
+/* Weekly pass: one line per reward, its button at the end of the line */
+.ek-pass__line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.ek-pass__line > span {
+  min-width: 0;
+}
+.ek-pass__line > .ek-btn {
+  flex: none;
+}
+.ek-pass__from {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.9em;
+}

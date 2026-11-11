@@ -245,19 +245,26 @@ function PassCard({ cfg, s }: { cfg: MarketConfig; s: MarketState }) {
         {cfg.pass.tiers.map((tier, i) => {
           const reached = s.passXp >= tier.xp
           return (
-            <li key={i} className={`ek-row${reached ? '' : ' is-locked'}`} data-testid={`pass-tier-${i + 1}`}>
-              <div className="ek-row__main">
-                <strong>{ui.t.market.passTier(String(i + 1))}</strong>
-                <span className="ek-muted">{ui.t.market.passFree}: {reward(tier.free)}</span>
-                <span className="ek-muted">{ui.t.market.passPremium}: {reward(tier.premium)}</span>
-              </div>
-              <div className="ek-row-actions">
+            // Stacked: with both buttons beside it the text column shrank to a few letters per line on a phone
+            <li key={i} className={`ek-row ek-row--stack${reached ? '' : ' is-locked'}`} data-testid={`pass-tier-${i + 1}`}>
+              <strong>
+                {ui.t.market.passTier(String(i + 1))} {tier.xp > 0 ? <span className="ek-muted ek-pass__from">{ui.t.market.passFrom(ui.fmt(tier.xp))}</span> : null}
+              </strong>
+              <div className="ek-pass__line">
+                <span>
+                  {ui.t.market.passFree}: {reward(tier.free)}
+                </span>
                 <Button size="small" data-testid={`pass-free-${i + 1}`} disabled={!passTierClaimable(s, cfg, i, false)} onClick={() => dispatch(MARKET_ID, 'passClaim', { tier: i, premium: false })}>
-                  {(s.passFree & (1 << i)) !== 0 ? ui.t.live.claimed : ui.t.market.passFree}
+                  {(s.passFree & (1 << i)) !== 0 ? ui.t.live.claimed : ui.t.live.claim}
                 </Button>
+              </div>
+              <div className="ek-pass__line">
+                <span className={s.passPremium ? undefined : 'ek-muted'}>
+                  {ui.t.market.passPremium}: {reward(tier.premium)}
+                </span>
                 {s.passPremium ? (
-                  <Button size="small" variant="secondary" disabled={!passTierClaimable(s, cfg, i, true)} onClick={() => dispatch(MARKET_ID, 'passClaim', { tier: i, premium: true })}>
-                    {(s.passPaid & (1 << i)) !== 0 ? ui.t.live.claimed : ui.t.market.passPremium}
+                  <Button size="small" variant="secondary" data-testid={`pass-paid-${i + 1}`} disabled={!passTierClaimable(s, cfg, i, true)} onClick={() => dispatch(MARKET_ID, 'passClaim', { tier: i, premium: true })}>
+                    {(s.passPaid & (1 << i)) !== 0 ? ui.t.live.claimed : ui.t.live.claim}
                   </Button>
                 ) : null}
               </div>
