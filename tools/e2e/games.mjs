@@ -86,6 +86,9 @@ export const GAMES = [
       await q.getByTestId('chronicle-contents').click()
       await q.getByTestId('chronicle-index').waitFor()
       assert((await q.getByTestId('toc-locked-holzlager').innerText()).includes(T.producers.holzlager.name), 'Chronik-Inhalt: Hinweis, wie die Seite aufgeht')
+      // Buch 2 zeigt vor Jahr 2 nur, womit es beginnt, nicht seine vierzig verschlossenen Seiten
+      assert((await q.getByTestId('toc-book-wayOfFires').innerText()).includes(T.chronicle.bookLocked.wayOfFires), 'Chronik-Inhalt: Buch 2 ist noch zu')
+      assert((await q.getByTestId('toc-locked-highFirst').count()) === 0, 'Chronik-Inhalt: Seiten von Buch 2 bleiben verborgen')
       await q.getByTestId('chronicle-resume').click()
       await q.getByTestId('chronicle-welcome').waitFor()
       await q.keyboard.press('Escape')
@@ -372,6 +375,16 @@ export const GAMES = [
       assert((await r.getByTestId('link-road_hohesMoor').getAttribute('data-level')) === '1', 'Feuerstraße: erstes Feuer entzündet')
       assert((await r.getByTestId('links-total').innerText()).includes('3'), 'Feuerstraße: +3 % Ertrag (Stufe und Kette)')
       assert(await r.getByTestId('link-light-road_hohesMoor').isDisabled(), 'Feuerstraße: Stufe 2 braucht zwei Sterne')
+      // Buch 2 beginnt: Das erste Hochland und das erste Feuer schreiben je eine Seite
+      await r.getByTestId('hud-chronicle').click()
+      await r.getByTestId('chronicle-contents').click()
+      await r.getByTestId('toc-highFirst').waitFor()
+      await r.getByTestId('toc-roadFirst').waitFor()
+      assert((await r.getByTestId('toc-locked-highSaddle').innerText()).includes('3'), 'Chronik: Die nächste Seite von Buch 2 nennt ihre Bedingung')
+      await r.getByTestId('toc-highFirst').click()
+      assert(await r.getByTestId('chronicle-highFirst').getByText(T.chronicle.entries.highFirst.title).isVisible(), 'Chronik: erste Seite von Buch 2')
+      await r.keyboard.press('Escape')
+      await r.getByTestId('chronicle').waitFor({ state: 'detached' })
       // Meilensteine der Schichten stehen im Neubeginn-Tab
       await r.getByTestId('tab-prestige').click()
       assert((await r.getByTestId('milestones-ages').getAttribute('data-reached')) === '0', 'Meilensteine des Zeitalters sichtbar')

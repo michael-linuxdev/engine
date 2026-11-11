@@ -70,3 +70,21 @@ Gemütliche Fantasy („cozy“): Wunder, Handwerk, Jahreszeiten, Sternenhimmel.
 - **Zeitalter** (Prestige 3): Du gibst die Wacht weiter.
 
 Kalender-Feste folgen dem realen Kalender, mit eigenen Fantasy-Namen und ohne Bezug auf reale religiöse Feste (P7).
+
+## Buch 2 · Der Weg der Feuer (Jahr 2)
+
+Frage des Buchs: **Wer hat die anderen Feuer entzündet?** 40 Seiten in fünf Kapiteln, Deutsch und Englisch.
+
+| Kapitel | Inhalt |
+|---|---|
+| 1 · Über der Baumgrenze | Hinter der Himmelswarte geht der Weg weiter. Alwine steigt in die Hochlande und findet Spuren einer älteren Wacht: die Laterne an der Treppe, die Feuerschale im See, den Wacholder in Reihe. |
+| 2 · Spuren im Stein | Die Brücke, an der jemand von drüben mitbaut. Der zwanzigste Stein, der ein Feuer war. Der Laternendeckel im Adlerhorst. |
+| 3 · Die Feuer der anderen | Oben brennen drei Feuer, die niemand von uns entzündet hat. Ein Schlüssel mit vier Zacken. Die Kerze im Kloster brennt seit 211 Jahren. |
+| 4 · Der kalte Ofen | Die Feuer laufen den Grat entlang und auf der anderen Seite hinunter: Wer sie baute, kam zu uns. Die Kette antwortet in den Zeichen, die Fenno vom Turm gibt. |
+| 5 · Die Erste Warte | Am Kalten Ofen wurden alle Laternen gemacht. Am Grenzstein stehen zwei Zeichen. Unter der dritten Stufe der Ersten Warte liegt ein Schlüssel und der Satz von der allerersten Seite der Chronik. |
+
+**Antwort:** Niemand allein. Eine Wacht hat angefangen, eine hat weitergemacht, eine hat den Schlüssel unter die Stufe gelegt. Jenseits der Hochlande gibt es eine zweite Wacht (Laterne mit vier Strahlen), die ihre Feuer nie ausgehen ließ. Das ist der Aufbruch für Buch 3.
+
+**Stimmen:** Seiten aus den Hochlanden schreibt Alwine (Chronik oder Brief). Seiten vom Turm (Fenno, die Kette von unten) schreibt die Wacht selbst.
+
+**Wie die Seiten aufgehen:** 25 mit je einem Hochland, 10 mit Stufen der Feuerstraße (1, 3, 8, 12, 16, 22, 28, 36, 45, 60), 5 mit der längsten Kette (3, 8, 13, 18, 24). Im Inhaltsverzeichnis steht Buch 2 bis zum ersten Hochland nur als eine Zeile.

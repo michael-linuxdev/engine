@@ -21,6 +21,9 @@ export const storyEn: StoryStrings = {
       realms: (n: string) => `Opens with ${n} realms.`,
       helper: 'Opens when someone helps with the work.',
       voyages: (n: string) => `Opens after ${n} far flights.`,
+      highlands: (n: string) => `Opens with ${n} highlands.`,
+      road: (n: string) => `Opens with ${n} levels of the Road of Fires.`,
+      chain: (n: string) => `Opens with a chain of ${n} fires.`,
     },
     menu: 'Chronicle',
     title: "The Warden's Chronicle",
@@ -34,6 +37,9 @@ export const storyEn: StoryStrings = {
     close: 'Close the book',
     page: (n, total) => `Page ${n} of ${total}`,
     chapter: (n, name) => `Chapter ${n} · ${name}`,
+    books: { watch: 'Book 1 · The Watch', wayOfFires: 'Book 2 · The Way of the Fires' },
+    bookShort: (n: string) => `Book ${n}`,
+    bookLocked: { wayOfFires: 'Begins with the first highland.' },
     chapters: {
       key: 'The Key',
       remains: 'What Stays',
@@ -41,6 +47,11 @@ export const storyEn: StoryStrings = {
       night: 'The Long Night',
       handover: 'Passing the Watch',
       firstYear: 'The First Year',
+      upward: 'Above the Tree Line',
+      traces: 'Marks in the Stone',
+      otherFires: 'Other People\'s Fires',
+      coldKiln: 'The Cold Kiln',
+      firstWatch: 'The First Watch',
     },
     comeback: { title: 'There you are', body: 'Not a word for so long. The watch kept glowing, I kept an eye on it. Here, for the road: a few Glowpebbles.' },
     entries: {
@@ -175,6 +186,166 @@ export const storyEn: StoryStrings = {
       voyageYear: {
         title: 'After a year',
         body: 'I am writing this page myself. A year has passed, perhaps a little more or less. Nobody in the valley counts that closely.\n\nAlwine sits on the bench and says the first year is the easy one. Fenno disagrees, because he always disagrees. Beyond the mountains lies land that is on none of our maps. The griffins already know the way.',
+      },
+      highFirst: {
+        title: 'The path goes on',
+        body: 'I had thought the map ended behind the Sky Watch. It does. The path does not.\n\nUp there lies a moor, and in the moor a hearth older than ours. Someone kept a fire here long before the valley had a watchtower. I would like to know who.',
+      },
+      roadFirst: {
+        title: 'Two fires',
+        body: 'Tonight I lit a fire between two realms for the first time. It stands halfway, belongs to neither and warms both.\n\nAlwine says this is how it all began once: not with a watchtower, but with the stretch in between.',
+      },
+      highStair: {
+        title: 'A letter from the stair',
+        body: 'Dear Watch,\n\nI am at step four hundred and writing sitting down. The stair keeper showed me a mark cut into the rock at knee height: a lantern. Our lantern.\n\nHe says it was already there when his grandfather swept these steps. I am climbing on. Give Fenno my regards and tell him not to overfeed the griffins.',
+      },
+      roadThree: {
+        title: 'Fenno counts',
+        body: 'Fenno has started counting the fires of the road each evening. He counts out loud, from the tower, and each time arrives at one more than we have lit.\n\nI told him he was miscounting. He says he only counts what he sees. I did not ask further.',
+      },
+      highSaddle: {
+        title: 'What the wind knows',
+        body: 'The weather woman on the saddle keeps a book about the wind, day by day, and has for thirty years. Before her another woman kept it, and before that one another.\n\nThe first page holds no weather. It says only: “Fire burning. View down to the valley.” The valley is us.',
+      },
+      chainThree: {
+        title: 'A chain',
+        body: 'Three fires in a row, without a gap. From the watchtower they look like one line climbing the mountain.\n\nA single fire says: someone is here. A chain says something else. It says: this way.',
+      },
+      highTarn: {
+        title: 'A letter from the tarn',
+        body: 'Dear Watch,\n\nthe ferry boy rowed me across and did not say a word. In the middle he shipped the oar and pointed down. On the bottom lies a fire bowl as big as a cartwheel.\n\nNobody throws such a thing away. Someone laid it there so that it would stay. I do not know why yet.',
+      },
+      highJuniper: {
+        title: 'Where juniper grows',
+        body: 'The smoke maker claims juniper grows best where a fire once stood. I took that for a pretty saying.\n\nThen I walked the slope. The bushes stand in a row, one every two hundred paces, all the way up to the ridge. Nobody plants like that. But that is how you set out fires.',
+      },
+      highBridge: {
+        title: 'A letter from the bridge',
+        body: 'Dear Watch,\n\nI am standing at the end of a bridge that stops in mid-air. The bridge builder adds one arch every year. He says someone is building toward him from the far side.\n\nHe has never seen anyone. But each spring there is one more arch over there. I counted. He is right.',
+      },
+      roadEight: {
+        title: 'Fenno and the glowpebbles',
+        body: 'Fenno has worked out what the whole Road of Fires costs. It took him three pages and half an evening. He did not tell me the result, only: “A lot.”\n\nThen he asked whether he could add his own pouch. I said yes. It held eleven pebbles and a button.',
+      },
+      highGoat: {
+        title: 'The lantern on the staff',
+        body: 'The goatherd carries a lantern on her staff, even in broad daylight. I asked what for.\n\n“So they can see me from below,” she said. “My mother did it this way. Someone down there used to signal back.” She said it without reproach. I have resolved to look up more often in the evenings all the same.',
+      },
+      highCircle: {
+        title: 'The twentieth stone',
+        body: 'Nineteen stones stand in the ring. The stone counter counts twenty every morning and has stopped being annoyed about it.\n\nI stood in the gap. The ground there is black, a hand\'s breadth deep. The twentieth stone was never a stone. A fire burned there, and the nineteen stood around it like people keeping warm.',
+      },
+      roadTwelve: {
+        title: 'What a level is',
+        body: 'It took me a long time to understand why a fire has three levels. The first is a sign: we know of each other. The second is a way: whoever wants to can find across.\n\nAlwine wrote to me about the third. “The third,” she writes, “keeps burning even when one of the two is asleep for once.”',
+      },
+      highSprings: {
+        title: 'A letter from the springs',
+        body: 'Dear Watch,\n\nI have drunk from all seven springs and still cannot tell them apart. The well mistress was politely disappointed.\n\nShe is looking for the eighth. It tasted of smoke, she says, and the old ones fetched their water only from there. Smoky water, Watch. I think I know what stood beside the eighth spring.',
+      },
+      chainEight: {
+        title: 'Seen from below',
+        body: 'A trader came through the valley today who does not know the highlands. In the evening he stopped and looked up for a long time.\n\n“Does someone live up there?” he asked. I said: “Again, as of recently.” He nodded as if that were the most sensible answer in the world, and pitched his camp so that he could see the chain.',
+      },
+      highEagle: {
+        title: 'What the eagles build',
+        body: 'The eyrie warden showed me an old nest the eagles have given up. Under the branches lay a piece of iron, flat, with a handle.\n\nIt is the lid of a lantern. Eagles gather whatever shines. Somewhere on this wall a lantern once hung, so high that only birds could reach it. Who hangs a lantern up there? Someone who wants to be seen from very far away.',
+      },
+      highSlate: {
+        title: 'The right page',
+        body: 'The slate splitter opened a slab for me the way one opens a book. Inside was an imprint: a hand, five fingers, and beside it a flame scratched with a nail.\n\n“There are many of those,” she said. “One in every layer.” I asked how old the lowest was. She laughed. Nobody had got that deep yet.',
+      },
+      roadSixteen: {
+        title: 'Fenno gets mail',
+        body: 'A griffin brought a letter addressed not to the Watch but to “the boy who counts the fires”. Fenno read it three times and then sat very straight.\n\nIt is from the herdsman on the Last Pasture. He writes that he counts too, from above, and arrives at the same number. Fenno did not show me the letter. He read it to me. Twice.',
+      },
+      highMist: {
+        title: 'A letter out of the mist',
+        body: 'Dear Watch,\n\nin the hollow you cannot see your own hand. The mist catcher finds his way with a horn: one note for “I am here”, two for “come”.\n\nTonight he blew once. From the far side of the hollow a note came back. It startled him, Watch. He lives here alone.',
+      },
+      highPasture: {
+        title: 'Nine fires',
+        body: 'The herdsman says you can see nine fires from the Last Pasture at dusk. There used to be more; his father still counted fourteen.\n\nI waited with him until dark. We counted twelve. For a long time he said nothing, and then he took off his cap, to no one in particular.',
+      },
+      roadTwentyTwo: {
+        title: 'Not all of them are ours',
+        body: 'Today I made the list I should have made long ago: every fire we have lit, with day and place.\n\nThen I climbed the tower and counted. There are three more. Fenno never miscounted. Fires are burning up there that none of us set alight.',
+      },
+      highHeaps: {
+        title: 'What the old ones overlooked',
+        body: 'The ore washer washes the spoil of the old galleries. Mostly she finds iron, sometimes copper. Yesterday, a key.\n\nIt looks like ours except for the bit. Ours has three teeth, this one four. A key for a door much like ours and yet another one. I carry it in my coat pocket now and reach for it more often than I need to.',
+      },
+      chainThirteen: {
+        title: 'Halfway',
+        body: 'Thirteen fires in a row. From here to the middle of the highlands there is no gap left.\n\nThe observatory reports that the chain can now be told from the constellation of the Ladder with the naked eye, but only just. I am taking that as praise.',
+      },
+      highCloister: {
+        title: 'A letter from the cloister',
+        body: 'Dear Watch,\n\nin the cloister only the gatekeeper speaks. I asked her about the candle in the window.\n\nIt burns, she says, for someone who went up and did not come back. Since when? She looked it up in the book. For two hundred and eleven years. A new candle every evening. I showed her the key with the four teeth. She looked at it for a very long time and then, for the first time that day, said nothing.',
+      },
+      highLarch: {
+        title: 'Letting go',
+        body: 'The resin tapper says the larch is the only conifer that drops everything in autumn. The others hold on and break under the snow.\n\nI thought of the warden who lays the key under the step and leaves. I had always taken that for a going-away. Perhaps it is what the resin tapper means.',
+      },
+      roadTwentyEight: {
+        title: 'Fenno wants to go up',
+        body: 'Fenno asked when he would be allowed to come along into the highlands. I said: when someone else keeps the fire down here. He said that was unfair and then, after a while, that he understood.\n\nIn the evening he stood on the tower and signalled upward, once short, once long. From the Last Pasture it came back. He has made a friend up there without taking a single step.',
+      },
+      highWatershed: {
+        title: 'A letter from the watershed',
+        body: 'Dear Watch,\n\nI am standing with one foot in each sea, says the gauge writer, and she means it literally. To the left everything flows down to us in the valley. To the right it flows away, into a land I know nothing about.\n\nThe fires do not run to the left here. They run along the ridge and then down to the right. Whoever built them did not come from us. They came to us.',
+      },
+      highCave: {
+        title: 'A town without a sky',
+        body: 'In the Cave Town there is a painted wall. It shows a procession of people with lanterns descending a mountain. At the front walks a woman with a key on her belt.\n\nThe lamp bearer says the picture was already old when the town was dug. The people on the wall walk from right to left. Toward us.',
+      },
+      highGorge: {
+        title: 'The language of lanterns',
+        body: 'In the gorge it is too loud to talk, so people speak with lanterns. The walkway mistress taught me her signs: short, long, covered.\n\nThey are the same ones Fenno gives from the tower. I asked him where he got them. From Alwine. And she? From her mistress. Nobody invented these signs. They came down the mountain with the fires.',
+      },
+      roadThirtySix: {
+        title: 'Half the levels',
+        body: 'Thirty-six levels are burning. I notice that in the evening I no longer look at our own fire first, but up along the chain, to the place where it ends.\n\nI used to keep a fire. Now I keep the question of how far it reaches. Alwine writes that it is not different work, only the same work from higher up.',
+      },
+      chainEighteen: {
+        title: 'A sign from above',
+        body: 'Tonight the chain answered. Not one of our fires, but one of the three we did not light. Short, long, covered. Short, long, covered.\n\nFenno read it first, because he is the only one who never doubted. It means: “I am here.”',
+      },
+      highFirn: {
+        title: 'A letter from the firn',
+        body: 'Dear Watch,\n\nthe tracker showed me a trail in the old snow. Boots, a staff, and beside them something small on four paws. It leads upward and is two hundred years old, he says, give or take ten.\n\nBeside it runs a second one, fresh. It leads down. It is from yesterday.',
+      },
+      highFair: {
+        title: 'The empty square',
+        body: 'The Herders\' Fair stands empty all year and is swept all the same. The fair reeve says a square nobody waits for turns into a meadow.\n\nThis year the herders came early. From their pastures, they say, they had seen the fires and thought there was something to celebrate. They were right. I just did not know it yet.',
+      },
+      highPlateau: {
+        title: 'The missing star',
+        body: 'On the Star Plateau constellations are scratched into the rock. The night scribe has been comparing them with the sky for years. One does not match: in the rock, the Ladder has one rung more.\n\nTonight he woke me. The rung was back, he said. It is not a star. It is our seventeenth fire. Whoever scratched this did not draw stars, but a road that has burned once before.',
+      },
+      roadFortyFive: {
+        title: 'Fenno keeps the fire',
+        body: 'Today I left Fenno alone with the fire for the first time, for a whole night. He did not sleep, he claims. In the morning there were four empty mugs on the table and a list: every hour, every fire, a tick.\n\nUnder the last line it said: “All there. The strange ones too.” I laid the list into the chronicle. It belongs here.',
+      },
+      highKiln: {
+        title: 'A fire someone waits for',
+        body: 'The Cold Kiln is as big as a house. The ash keeper sweeps it out every morning although it has been cold for as long as anyone can think. “A fire no one waits for does not come back,” she says.\n\nI asked what was fired here. She showed me a brick, the first one, with a mark: a lantern. This is where the lanterns were made, Watch. All of them. Ours too.',
+      },
+      highBoundary: {
+        title: 'A letter from the boundary stone',
+        body: 'Dear Watch,\n\nthere are two marks on the stone. Our lantern on one side. On the other a lantern with four rays instead of three. I held the key up beside it. Four teeth.\n\nThe border walker has spoken at last. Over there, he says, is a watch like ours. It never let its fires go out. It only stopped waiting for an answer. Until recently.',
+      },
+      chainTwentyFour: {
+        title: 'One fire missing',
+        body: 'Twenty-four fires in a row, from the valley to just below the last ridge. One is missing.\n\nFenno asks every evening: when? Every evening I say: soon. We both know I am putting it off. It is not every day that you stand before the last stretch of a road someone began two hundred years ago.',
+      },
+      highFirstWatch: {
+        title: 'The third step',
+        body: 'Of the First Watch only the foundations still stand. A fire bowl. A stair of three steps that no longer leads anywhere.\n\nI reached under the third step without thinking. A key lay there. Three teeth. And a note, in a hand I know from our own chronicle, from the very first page: “If you are reading this, you are curious, and curiosity is all it takes to begin.”',
+      },
+      roadSixty: {
+        title: 'The way of the fires',
+        body: 'I am writing this page myself. The road is burning, from the valley to the First Watch and on, down the other slope, in fires that are not ours.\n\nWho lit the other fires? No one alone. One began, one carried on, one laid the key under the step. Over there a watch with four rays is waiting. Alwine is already packing. Fenno says this time he is coming along. I think this time he is right.',
       },
     },
   },

@@ -1519,3 +1519,30 @@ body {
 .ek-wheel__seg.is-won > path {
   stroke: var(--gold);
 }
+
+/* Chronik: Bücher im Inhaltsverzeichnis, Landesbild als Seitenbild */
+.lw-vignette--realm {
+  overflow: hidden;
+}
+.lw-vignette--realm svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.lw-toc-book + .lw-toc-book {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 2px solid var(--line);
+}
+.lw-toc-book__title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--accent);
+}
+p.lw-toc__locked {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  margin: 0;
+}

@@ -3,9 +3,29 @@ import { MODULE, type OfflineState } from '@engine/core'
 import { useEngine } from '@engine/react'
 import { Button, Sheet, useUi } from '@engine/ui'
 import { VignetteArt } from '../art/vignettes'
-import { CHAPTERS, CHRONICLE, type Clue } from '../content/chronicle'
+import { RealmArt } from '../art/realm'
+import { BOOKS, CHRONICLE, type ChapterId, type Clue } from '../content/chronicle'
 import { chronicleRead, labels, t } from '../runtime'
 import { useChronicle } from './useChronicle'
+
+/** Kapitel zählen je Buch neu; ab Buch 2 steht das Buch davor. */
+function chapterLabel(ch: ChapterId): string {
+  const bi = BOOKS.findIndex((b) => b.chapters.includes(ch))
+  const label = t.chronicle.chapter(String(BOOKS[bi].chapters.indexOf(ch) + 1), t.chronicle.chapters[ch])
+  return bi > 0 ? `${t.chronicle.bookShort(String(bi + 1))} · ${label}` : label
+}
+
+/** Bild zur Seite: Motiv, Bauwerk oder das Bild eines Landes in Abendstimmung. */
+function PageArt({ art, uid }: { art: string; uid: string }) {
+  if (art.startsWith('realm:')) {
+    return (
+      <div className="lw-vignette lw-vignette--realm">
+        <RealmArt id={art.slice(6)} m={{ daypart: 'evening', season: 'summer' }} />
+      </div>
+    )
+  }
+  return <VignetteArt art={art} uid={uid} />
+}
 
 /**
  * Chronik der Wächterin als Buch: eine Seite auf einmal, mit Kapitel, Bild und Blättern.
@@ -40,6 +60,8 @@ export function ChronicleSheet({ open, onClose }: { open: boolean; onClose: () =
   const text = t.chronicle.entries[e.id]
   const voice = e.voice ?? 'chronicle'
   const last = at >= entries.length - 1
+  // Seitenzahl: nur Bücher zählen, die schon begonnen haben (sonst spränge die Zahl mit Jahr 2 von 33 auf 73)
+  const total = CHRONICLE.filter((x) => BOOKS.some((b, bi) => b.chapters.includes(x.chapter) && (bi === 0 || entries.some((o) => b.chapters.includes(o.chapter))))).length
   if (index) {
     // Inhaltsverzeichnis: alle Seiten nach Kapiteln; verschlossene nennen nur, wie sie sich öffnen
     const openIds = entries.map((x) => x.id)
@@ -54,28 +76,44 @@ export function ChronicleSheet({ open, onClose }: { open: boolean; onClose: () =
           {t.chronicle.resume(t.chronicle.entries[resume.id].title)}
         </Button>
         <div data-testid="chronicle-index">
-          {CHAPTERS.map((ch, ci) => (
-            <section key={ch} className="lw-toc">
-              <h3 className="ek-h3">{t.chronicle.chapter(String(ci + 1), t.chronicle.chapters[ch])}</h3>
-              <ul>
-                {CHRONICLE.filter((x) => x.chapter === ch).map((x) =>
-                  openIds.includes(x.id) ? (
-                    <li key={x.id}>
-                      <button type="button" className="lw-toc__page" data-testid={`toc-${x.id}`} onClick={() => go(x.id)}>
-                        {t.chronicle.entries[x.id].title}
-                        {unread.some((u) => u.id === x.id) ? <span className="ek-badge ek-badge--inline">{t.chronicle.unread}</span> : null}
-                      </button>
-                    </li>
-                  ) : (
-                    <li key={x.id} className="lw-toc__locked" data-testid={`toc-locked-${x.id}`}>
-                      <span className="lw-toc__lock" aria-hidden="true" />
-                      <span>{x.clue ? clueText(x.clue) : t.chronicle.lockedPage}</span>
-                    </li>
-                  ),
+          {BOOKS.map((book, bi) => {
+            // Ein späteres Buch zeigt sein Inhaltsverzeichnis erst, wenn seine erste Seite geschrieben ist
+            const started = bi === 0 || CHRONICLE.some((x) => book.chapters.includes(x.chapter) && openIds.includes(x.id))
+            return (
+              <section key={book.id} className="lw-toc-book" data-testid={`toc-book-${book.id}`}>
+                <h3 className="lw-toc-book__title">{t.chronicle.books[book.id]}</h3>
+                {started ? (
+                  book.chapters.map((ch, ci) => (
+                    <section key={ch} className="lw-toc">
+                      <h4 className="ek-h3">{t.chronicle.chapter(String(ci + 1), t.chronicle.chapters[ch])}</h4>
+                      <ul>
+                        {CHRONICLE.filter((x) => x.chapter === ch).map((x) =>
+                          openIds.includes(x.id) ? (
+                            <li key={x.id}>
+                              <button type="button" className="lw-toc__page" data-testid={`toc-${x.id}`} onClick={() => go(x.id)}>
+                                {t.chronicle.entries[x.id].title}
+                                {unread.some((u) => u.id === x.id) ? <span className="ek-badge ek-badge--inline">{t.chronicle.unread}</span> : null}
+                              </button>
+                            </li>
+                          ) : (
+                            <li key={x.id} className="lw-toc__locked" data-testid={`toc-locked-${x.id}`}>
+                              <span className="lw-toc__lock" aria-hidden="true" />
+                              <span>{x.clue ? clueText(x.clue) : t.chronicle.lockedPage}</span>
+                            </li>
+                          ),
+                        )}
+                      </ul>
+                    </section>
+                  ))
+                ) : (
+                  <p className="lw-toc__locked">
+                    <span className="lw-toc__lock" aria-hidden="true" />
+                    <span>{(t.chronicle.bookLocked as Record<string, string>)[book.id] ?? t.chronicle.lockedPage}</span>
+                  </p>
                 )}
-              </ul>
-            </section>
-          ))}
+              </section>
+            )
+          })}
         </div>
       </Sheet>
     )
@@ -93,7 +131,7 @@ export function ChronicleSheet({ open, onClose }: { open: boolean; onClose: () =
             {t.chronicle.prev}
           </Button>
           <button type="button" className="lw-toc__open" data-testid="chronicle-contents" onClick={() => setIndex(true)}>
-            <span data-testid="chronicle-pos">{t.chronicle.page(String(at + 1), String(CHRONICLE.length))}</span>
+            <span data-testid="chronicle-pos">{t.chronicle.page(String(at + 1), String(total))}</span>
             <span>{t.chronicle.contents}</span>
           </button>
           {last ? (
@@ -110,10 +148,10 @@ export function ChronicleSheet({ open, onClose }: { open: boolean; onClose: () =
     >
       <article key={e.id} className={`lw-page lw-page--${voice}`} data-testid={`chronicle-${e.id}`}>
         <p className="lw-page__chapter">
-          {voice === 'letter' ? t.chronicle.letter : t.chronicle.chapter(String(CHAPTERS.indexOf(e.chapter) + 1), t.chronicle.chapters[e.chapter])}
+          {voice === 'letter' ? t.chronicle.letter : chapterLabel(e.chapter)}
           {fresh.includes(e.id) ? <span className="ek-badge ek-badge--inline">{t.chronicle.unread}</span> : null}
         </p>
-        <VignetteArt art={e.art} uid={e.id} />
+        <PageArt art={e.art} uid={e.id} />
         <h3 className="lw-page__title">{text.title}</h3>
         {text.body.split('\n\n').map((para, i) => (
           <p key={i} className={`lw-page__text${i === 0 && voice === 'chronicle' ? ' lw-page__text--first' : ''}`}>
@@ -141,6 +179,12 @@ function clueText(c: Clue): string {
       return t.chronicle.clue.helper
     case 'voyages':
       return t.chronicle.clue.voyages(String(c.n))
+    case 'highlands':
+      return t.chronicle.clue.highlands(String(c.n))
+    case 'road':
+      return t.chronicle.clue.road(String(c.n))
+    case 'chain':
+      return t.chronicle.clue.chain(String(c.n))
   }
 }
 
