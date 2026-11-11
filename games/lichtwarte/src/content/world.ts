@@ -22,6 +22,8 @@ const CREATURES = ['tinyWyrm', 'lampMoth', 'pebbleToad', 'mistHeron', 'stoneBeet
 const FEST = ['hoarfrostBloom', 'snowdropBell', 'buddingRibbon', 'buddingSeed', 'blossomCrown', 'midsummerFlame', 'midsummerHoney', 'fireflyJar', 'lanternGourd', 'lanternApple', 'mistLantern', 'longLightCandle', 'longLightStar'] as const
 /** Fest-Jahrgang 2: je Lichterfest eine neue Sorte, eigene Sammlung (die erste bleibt für sich vollständig). Nur anhängen. */
 const FEST2 = ['hoarfrostFern', 'snowdropLantern', 'buddingWhistle', 'blossomRibbon', 'midsummerWheel', 'fireflyNet', 'lanternKite', 'mistBell', 'longLightWreath'] as const
+/** Fest-Jahrgang 3 (ab den Fernen Küsten). Nur anhängen. */
+const FEST3 = ['hoarfrostShell', 'snowdropBuoy', 'buddingKelp', 'blossomNet', 'midsummerTide', 'fireflySea', 'lanternBoat', 'mistHornShell', 'longLightFourRays'] as const
 const BREWS = ['glowTea', 'quietTonic', 'brightInk', 'warmSalve', 'starSyrup', 'dewElixir', 'stoneBalm', 'emberDrops', 'mossLamp', 'dawnPowder', 'frostCordial', 'runeDust'] as const
 
 const rarity = (i: number): 0 | 1 | 2 => (i < 5 ? 0 : i < 7 ? 1 : 2)
@@ -34,6 +36,7 @@ export const COLLECTION: CollectionConfig = {
     ...FEST.map((id): CollectionEntry => ({ id, category: 'festival', rarity: 1, source: 'event' })),
     ...BREWS.map((id): CollectionEntry => ({ id, category: 'brews', rarity: 1, source: 'event' })),
     ...FEST2.map((id): CollectionEntry => ({ id, category: 'festival2', rarity: 1, source: 'event' })),
+    ...FEST3.map((id): CollectionEntry => ({ id, category: 'festival3', rarity: 1, source: 'event' })),
   ],
   chance: [1 / 400, 1 / 2000, 1 / 8000],
   bonus: [0.005, 0.015, 0.03],
@@ -76,6 +79,30 @@ export const FEST_DECOR_2: Record<string, string> = {
   lanternMoon: 'kiteMast',
   mistMoon: 'mistHorn',
   longLight: 'candleRing',
+}
+
+/** Jahrgang 3 (ab dem ersten Küstenland jenseits der Hochlande). */
+export const FEST_VARIETIES_3: Record<string, string> = {
+  hoarfrost: 'hoarfrostShell',
+  snowdrop: 'snowdropBuoy',
+  budding: 'buddingKelp',
+  blossomRound: 'blossomNet',
+  midsummerGlow: 'midsummerTide',
+  fireflyNights: 'fireflySea',
+  lanternMoon: 'lanternBoat',
+  mistMoon: 'mistHornShell',
+  longLight: 'longLightFourRays',
+}
+export const FEST_DECOR_3: Record<string, string> = {
+  hoarfrost: 'frostAnchor',
+  snowdrop: 'iceBuoy',
+  budding: 'kelpArch',
+  blossomRound: 'netPole',
+  midsummerGlow: 'tideGlass',
+  fireflyNights: 'glowBarrel',
+  lanternMoon: 'paperBoats',
+  mistMoon: 'shellHorn',
+  longLight: 'fourRayLamp',
 }
 
 const PAIRS: [string, string][] = [
@@ -192,6 +219,16 @@ export const DECOR: DecorConfig = {
     { id: 'kiteMast', cost: null, bonus: 0.02 },
     { id: 'mistHorn', cost: null, bonus: 0.02 },
     { id: 'candleRing', cost: null, bonus: 0.02 },
+    // exklusiv: Fest-Jahrgang 3
+    { id: 'frostAnchor', cost: null, bonus: 0.025 },
+    { id: 'iceBuoy', cost: null, bonus: 0.025 },
+    { id: 'kelpArch', cost: null, bonus: 0.025 },
+    { id: 'netPole', cost: null, bonus: 0.025 },
+    { id: 'tideGlass', cost: null, bonus: 0.025 },
+    { id: 'glowBarrel', cost: null, bonus: 0.025 },
+    { id: 'paperBoats', cost: null, bonus: 0.025 },
+    { id: 'shellHorn', cost: null, bonus: 0.025 },
+    { id: 'fourRayLamp', cost: null, bonus: 0.025 },
   ],
 }
 

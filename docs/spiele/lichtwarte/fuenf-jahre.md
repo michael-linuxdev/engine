@@ -107,7 +107,9 @@ Gemessen über 475 Tage, „regular“:
 - **Welle 6 · Die Fernen Küsten:** 25 Lande (76 bis 100) jenseits der Ersten Warte, vom Langen Abstieg bis zur Warte der vier Strahlen. Beschreibende Namen, Figuren ohne Eigennamen, je zehn Bereiche, eigenes Bild, eigener Bildrahmen (Meer bis zum Horizont, Strand), de/en. Taktung wie die Hochlande (`highCost`), noch nicht gemessen.
 - **Himmelskarte (neues System, Engine-Modul `chart`):** zwölf Sternbilder mit zusammen 74 Sternen. Ein Stern kostet Nachttau (2, je Stern 3,5 % mehr; zusammen rund 670). Jeder Stern gibt +0,5 % Ertrag, jedes vollständige Sternbild wirkt dauerhaft (Ertrag, Baukosten oder Funkenruf). Ein Sternbild lässt sich eintragen, sobald jedes zweite Küstenland offen ist. Ob der Nachttau dafür reicht, ist nicht gemessen.
 - **Buch 3 „Die tiefe Zeit“:** 40 Seiten in fünf Kapiteln, de/en. Briefe von Alwine und erstmals von Fenno, dazu Seiten der Wacht aus der Sternwarte. Die Seiten gehen mit den Küstenlanden (25), den Sternen der Karte (8) und vollständigen Sternbildern (7) auf.
-- **Noch offen in Jahr 3:** Fest-Jahrgang 3, Messung, Taktung der Zeitalter.
+- **Fest-Jahrgang 3:** je Lichterfest eine neue Sorte (110 Festmarken) und ein neues Schmuckstück (170 Festmarken) von der Küste, eigene Sammlung „Festschätze · Jahrgang 3“, erst ab dem ersten Küstenland im Fest-Laden. Die Jahrgänge stehen jetzt als Liste im Inhalt (`FEST_YEARS`); ein weiterer Jahrgang ist ein Eintrag.
+- **Zeitalter:** In der Messung mit mitgespielten Systemen liegen sie in Jahr 2 stabil 32 bis 40 Tage auseinander (Tag 154, 192, 227, 259, 297, 337, 373, 409, 444). Das sind rund fünf Wochen; der Abstand wächst nicht mehr. Die Taktung bleibt deshalb, wie sie ist.
+- **Noch offen in Jahr 3:** die Messung über Jahr 3 (läuft).
 
 ## Was „fünf Jahre“ hier heißt
 

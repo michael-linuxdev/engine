@@ -185,6 +185,93 @@ export function DecorArt({ id, m }: { id: string; m: Mood }) {
           <Glow x={0} y={-10} r={10} m={m} />
         </g>
       )
+    // ── Fest-Jahrgang 3 (Küste) ──
+    case 'frostAnchor':
+      return (
+        <g>
+          <path d="M0 -24 v20 M-8 -10 q0 8 8 8 q8 0 8 -8 M-5 -18 h10" fill="none" stroke={P.outline} strokeWidth={STROKE.bold + 2} strokeLinecap="round" />
+          <path d="M0 -24 v20 M-8 -10 q0 8 8 8 q8 0 8 -8 M-5 -18 h10" fill="none" stroke={P.snow} strokeWidth={STROKE.bold} strokeLinecap="round" />
+          <circle cx={0} cy={-26} r={2.5} fill={P.snow} stroke={P.outline} strokeWidth={STROKE.fine} />
+          <path d="M-8 -10 l-2 3 M8 -10 l2 3" stroke={P.snow} strokeWidth={STROKE.fine} />
+        </g>
+      )
+    case 'iceBuoy':
+      return (
+        <g>
+          <path d="M-6 0 l2 -12 h8 l2 12 z" fill={P.waterLight} {...line} />
+          <path d="M-4 -12 l4 -10 l4 10" fill="none" stroke={P.metal} strokeWidth={STROKE.main} />
+          <circle cx={0} cy={-23} r={2} fill={P.snow} stroke={P.outline} strokeWidth={0.6} />
+          <path d="M-5 -6 h10" stroke={P.snow} strokeWidth={STROKE.fine * 1.5} />
+        </g>
+      )
+    case 'kelpArch':
+      return (
+        <g>
+          <path d="M-9 0 q-2 -22 9 -24 q11 2 9 24" fill="none" stroke={P.grassDark} strokeWidth={STROKE.bold} strokeLinecap="round" />
+          {[[-8, -8], [-5, -18], [5, -18], [8, -8]].map(([x, y]) => (
+            <ellipse key={`${x}${y}`} cx={x} cy={y} rx={2.6} ry={1.4} fill={P.grassLight} stroke={P.outline} strokeWidth={0.5} />
+          ))}
+        </g>
+      )
+    case 'netPole':
+      return (
+        <g>
+          <line x1={-6} y1={0} x2={-6} y2={-24} {...line} />
+          <path d="M-6 -22 q8 4 14 10 l-14 6 z" fill={P.paper} opacity={0.5} stroke={P.thatchDark} strokeWidth={0.7} />
+          <path d="M-6 -17 l10 2 M-6 -12 l12 2 M-2 -20 l2 12 M3 -16 l1 9" stroke={P.thatchDark} strokeWidth={0.5} />
+          {[[-1, -15], [4, -11], [-3, -9]].map(([x, y]) => (
+            <circle key={`${x}${y}`} cx={x} cy={y} r={1.4} fill={P.blossom} stroke={P.outline} strokeWidth={0.4} />
+          ))}
+        </g>
+      )
+    case 'tideGlass':
+      return (
+        <g>
+          <rect x={-5} y={-22} width={10} height={20} rx={2} fill={P.waterLight} opacity={0.6} {...line} />
+          <rect x={-5} y={-12} width={10} height={10} fill={P.water} opacity={0.85} />
+          <path d="M-5 -16 h3 M-5 -12 h4 M-5 -8 h3" stroke={P.outline} strokeWidth={0.7} />
+          <rect x={-7} y={-2} width={14} height={2.5} fill={P.woodDark} stroke={P.outline} strokeWidth={0.6} />
+        </g>
+      )
+    case 'glowBarrel':
+      return (
+        <g>
+          <path d="M-7 0 q-2 -8 0 -16 h14 q2 8 0 16 z" fill={P.woodLight} {...line} />
+          <path d="M-8 -5 h16 M-8 -11 h16" stroke={P.metal} strokeWidth={STROKE.fine * 1.5} />
+          <ellipse cx={0} cy={-16} rx={7} ry={2.4} fill={P.waterLight} stroke={P.outline} strokeWidth={0.7} />
+          <Glow x={0} y={-17} r={8} m={m} />
+        </g>
+      )
+    case 'paperBoats':
+      return (
+        <g>
+          {[[-7, -2], [1, -6], [8, -1]].map(([x, y]) => (
+            <g key={x}>
+              <path d={`M${x - 4} ${y} h8 l-2 3 h-4 z`} fill={P.paper} stroke={P.outline} strokeWidth={0.7} />
+              <path d={`M${x} ${y} v-5 l3 5 z`} fill={P.paper} stroke={P.outline} strokeWidth={0.6} />
+              <circle cx={x} cy={y - 1} r={0.9} fill={P.glowHot} />
+            </g>
+          ))}
+          <Glow x={1} y={-5} r={9} m={m} />
+        </g>
+      )
+    case 'shellHorn':
+      return (
+        <g>
+          <path d="M-4 0 v-8" {...line} />
+          <path d="M-9 -8 q0 -10 10 -12 q8 0 9 6 q-1 6 -8 6 q-5 0 -5 4 q0 3 -6 -4 z" fill={P.paper} {...line} />
+          <path d="M-4 -12 q4 -5 9 -3 M-2 -9 q3 -3 7 -2" fill="none" stroke={P.thatchDark} strokeWidth={0.7} />
+        </g>
+      )
+    case 'fourRayLamp':
+      return (
+        <g>
+          <line x1={0} y1={0} x2={0} y2={-14} {...line} />
+          <path d="M0 -20 l-12 -3 M0 -20 l12 -3 M0 -20 l-12 4 M0 -20 l12 4" stroke={P.glowSoft} strokeWidth={STROKE.fine * 1.5} strokeLinecap="round" opacity={0.8} />
+          <Lantern x={0} y={-14} m={m} />
+          <Glow x={0} y={-20} r={9} m={m} />
+        </g>
+      )
     default:
       return null
   }

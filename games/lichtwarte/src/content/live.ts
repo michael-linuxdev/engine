@@ -11,7 +11,7 @@ import {
 import type { HintDef } from '@engine/react'
 import { CURRENCY, LAYER } from '../ids'
 import { REALMS } from './realms'
-import { FEST_DECOR_2, FEST_VARIETIES, FEST_VARIETIES_2 } from './world'
+import { FEST_DECOR_2, FEST_DECOR_3, FEST_VARIETIES, FEST_VARIETIES_2, FEST_VARIETIES_3 } from './world'
 
 const pebbles = (amount: number) => ({ currency: CURRENCY.glowPebbles, amount })
 const shards = (amount: number) => ({ currency: CURRENCY.runeShards, amount })
@@ -99,21 +99,29 @@ const BASE_SHOP: FestItem[] = [
   { id: 'festShards', cost: 25, max: 2, kind: 'grant', grant: [shards(5)] },
 ]
 
+/** Jahrgänge nach dem ersten: Sorte und Schmuckstück je Fest, geöffnet mit dem System des Jahres. Nur anhängen. */
+const FEST_YEARS = [
+  { feature: 'fireRoad', varieties: FEST_VARIETIES_2, decor: FEST_DECOR_2, varietyCost: 90, decorCost: 140 },
+  { feature: 'skyChart', varieties: FEST_VARIETIES_3, decor: FEST_DECOR_3, varietyCost: 110, decorCost: 170 },
+]
+
 /** Fest-Laden: Grundangebot plus die Fest-Sorte(n) fürs Bestiarium & Kräuterkunde (P8). */
 function festShops(): Record<string, readonly FestItem[]> {
   const out: Record<string, readonly FestItem[]> = { default: BASE_SHOP }
   for (const [fest, ids] of Object.entries(FEST_VARIETIES)) {
     out[fest] = [...BASE_SHOP, ...ids.map((id, i): FestItem => ({ id: `variety_${id}`, cost: i === 0 ? 60 : 160, max: 1, kind: 'item', event: { type: 'collection.found', id, source: 'fest' } }))]
-    // Jahrgang 2: erst wenn das erste Hochland offen ist (das System „fireRoad“ öffnet sich im selben Moment).
-    // Das Schmuckstück verschwindet aus dem Laden, sobald man es hat (es gibt jedes nur einmal).
-    const year2 = (w: WorldView) => isFeatureOpen(w, 'fireRoad')
-    const v2 = FEST_VARIETIES_2[fest]
-    const d2 = FEST_DECOR_2[fest]
-    out[fest] = [
-      ...out[fest],
-      ...(v2 ? [{ id: `variety_${v2}`, cost: 90, max: 1, kind: 'item', when: year2, event: { type: 'collection.found', id: v2, source: 'fest' } } satisfies FestItem] : []),
-      ...(d2 ? [{ id: `decor_${d2}`, cost: 140, max: 1, kind: 'item', when: (w) => year2(w) && !w.get<DecorState | undefined>(DECOR_ID)?.owned.includes(d2), event: { type: 'decor.granted', id: d2 } } satisfies FestItem] : []),
-    ]
+    // Spätere Jahrgänge: je Fest eine Sorte und ein Schmuckstück, erst wenn das Jahr begonnen hat (das System des
+    // Jahres öffnet sich im selben Moment). Ein Schmuckstück verschwindet aus dem Laden, sobald man es hat.
+    for (const y of FEST_YEARS) {
+      const begun = (w: WorldView) => isFeatureOpen(w, y.feature)
+      const v = y.varieties[fest]
+      const d = y.decor[fest]
+      out[fest] = [
+        ...out[fest],
+        ...(v ? [{ id: `variety_${v}`, cost: y.varietyCost, max: 1, kind: 'item', when: begun, event: { type: 'collection.found', id: v, source: 'fest' } } satisfies FestItem] : []),
+        ...(d ? [{ id: `decor_${d}`, cost: y.decorCost, max: 1, kind: 'item', when: (w) => begun(w) && !w.get<DecorState | undefined>(DECOR_ID)?.owned.includes(d), event: { type: 'decor.granted', id: d } } satisfies FestItem] : []),
+      ]
+    }
   }
   return out
 }
