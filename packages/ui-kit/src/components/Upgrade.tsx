@@ -167,26 +167,25 @@ function UpgradeBody({ p, art, note, buyModes }: { p: ProducerDef; art?: ReactNo
       <BuyButton p={p} />
       {buyModes ? null : <p className="ek-muted ek-hold-hint">{ui.t.upgrade.holdHint}</p>}
       {level >= 1 ? (
-        <details className="ek-details ek-upgrade__branches">
-          <summary data-testid="branches-toggle">{ui.t.upgrade.branches}</summary>
-          <div className="ek-grid2">
-            {(['efficiency', 'capacity'] as const).map((kind) => {
-              const rank = branches[kind]
-              const cost = branchCost(p, kind, rank, world.def.balance)
-              const full = rank >= max
-              return (
-                <div key={kind} className="ek-card">
+        <section className="ek-upgrade__branches" aria-label={ui.t.upgrade.branches}>
+          {(['efficiency', 'capacity'] as const).map((kind) => {
+            const rank = branches[kind]
+            const cost = branchCost(p, kind, rank, world.def.balance)
+            const full = rank >= max
+            return (
+              <div key={kind} className="ek-card ek-branch">
+                <span className="ek-branch__head">
                   <strong>{ui.t.upgrade[kind]}</strong>
-                  <span className="ek-muted">{kind === 'efficiency' ? ui.t.upgrade.efficiencyBlurb : ui.t.upgrade.capacityBlurb}</span>
                   <Pips n={rank} max={max} />
-                  <Button size="small" variant="secondary" data-testid={`branch-${kind}`} disabled={full || world.balance(primaryCurrency(world.def)) < cost} onClick={() => dispatch(MODULE.branches, 'buy', { id: p.id, kind })}>
-                    {full ? ui.t.meta.maxed : ui.fmt(cost)}
-                  </Button>
-                </div>
-              )
-            })}
-          </div>
-        </details>
+                </span>
+                <span className="ek-muted ek-branch__blurb">{kind === 'efficiency' ? ui.t.upgrade.efficiencyBlurb : ui.t.upgrade.capacityBlurb}</span>
+                <Button size="small" variant="secondary" data-testid={`branch-${kind}`} disabled={full || world.balance(primaryCurrency(world.def)) < cost} onClick={() => dispatch(MODULE.branches, 'buy', { id: p.id, kind })}>
+                  {full ? ui.t.meta.maxed : ui.fmt(cost)}
+                </Button>
+              </div>
+            )
+          })}
+        </section>
       ) : null}
     </div>
   )

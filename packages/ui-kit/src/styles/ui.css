@@ -806,8 +806,25 @@ html:has(.ek-app) body {
   gap: 2px;
   font-size: 0.86rem;
 }
-.ek-upgrade__branches .ek-grid2 {
-  margin-top: var(--space-2);
+.ek-upgrade__branches {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+.ek-branch {
+  gap: var(--space-1);
+  padding: var(--space-2);
+  min-width: 0;
+}
+.ek-branch__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1);
+}
+.ek-branch__blurb {
+  font-size: 0.8rem;
 }
 .ek-buy {
   width: 100%;

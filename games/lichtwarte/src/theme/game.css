@@ -158,7 +158,8 @@ body {
   padding: 0 var(--space-2) calc(var(--tabbar-h) + env(safe-area-inset-bottom) + var(--space-2));
 }
 .lw-app .ek-upgrade {
-  max-height: min(56dvh, 470px);
+  /* So hoch wie ihr Inhalt: In der Karte wird nicht gescrollt */
+  max-height: calc(100dvh - var(--tabbar-h) - env(safe-area-inset-bottom) - env(safe-area-inset-top) - 2 * var(--space-2));
   border: 2px solid var(--gold-deep);
   border-bottom-width: 5px;
   border-radius: 22px;
@@ -184,6 +185,8 @@ body {
 .lw-app .ek-upgrade .ek-sheet__body {
   padding: var(--space-2) var(--space-4) var(--space-3);
   gap: var(--space-2);
+  overflow: hidden;
+  touch-action: none;
 }
 .lw-app .ek-upgrade .ek-stack {
   gap: var(--space-2);
@@ -223,17 +226,17 @@ body {
   font-size: 0.98rem;
   line-height: 1.25;
 }
-.lw-app .ek-upgrade__branches {
-  border: 2px dashed var(--parchment-edge);
-  border-radius: var(--radius-m);
-  padding: 0 var(--space-3);
+.lw-app .ek-branch {
+  border-bottom-width: 3px;
 }
-.lw-app .ek-upgrade__branches[open] {
-  padding-bottom: var(--space-3);
+.lw-app .ek-branch .ek-btn {
+  min-height: 40px;
+  padding: 2px var(--space-2);
 }
-.lw-app .ek-upgrade__branches summary {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
+.lw-app .ek-branch .ek-pips i {
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
 }
 .lw-app .ek-sheet__grip {
   background: var(--gold-deep);

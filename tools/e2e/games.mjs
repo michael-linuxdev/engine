@@ -164,9 +164,17 @@ export const GAMES = [
       // Ausbau-Karte: klein über der Leiste, dunkelt die Kopfzeile nicht ab, Wisch nach unten schließt sie
       await r.getByTestId('slot-kraeuterkate').click()
       const card = await r.getByTestId('upgrade-sheet').boundingBox()
-      const screen = r.viewportSize()
-      assert(card.height <= screen.height * 0.6, `Ausbau-Karte bleibt klein (${Math.round(card.height)} von ${screen.height} px)`)
+      // Die Karte ist nur so hoch wie ihr Inhalt und lässt die Zahl oben links frei
+      const amount = await r.getByTestId('hud-amount').boundingBox()
+      assert(card.y >= amount.y + amount.height, `Ausbau-Karte verdeckt die Zahl oben nicht (Karte ab ${Math.round(card.y)}, Zahl bis ${Math.round(amount.y + amount.height)})`)
       assert((await r.locator('.ek-sheet-backdrop--clear').count()) === 1, 'Ausbau-Karte dunkelt die Talkarte und die Kopfzeile nicht ab')
+      // In der Karte wird nicht gescrollt, die Zweige sind immer sichtbar (nichts zum Aufklappen)
+      const inner = await r.evaluate(() => {
+        const b = document.querySelector('.ek-upgrade .ek-sheet__body')
+        return { fits: b.scrollHeight <= b.clientHeight, overflow: getComputedStyle(b).overflowY }
+      })
+      assert(inner.fits && inner.overflow === 'hidden', `Ausbau-Karte scrollt nicht (${JSON.stringify(inner)})`)
+      assert((await r.getByTestId('branch-efficiency').isVisible()) && (await r.locator('.ek-upgrade details').count()) === 0, 'Zweige sind immer aufgeklappt')
       const cdp = await w.newCDPSession(r)
       const sx = card.x + card.width / 2
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: sx, y: card.y + 20 }] })
