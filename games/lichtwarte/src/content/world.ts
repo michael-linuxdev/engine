@@ -318,5 +318,9 @@ export const WORLD_FEATURES: FeatureDef[] = [
   { id: 'fireRoad', when: (w) => !!w.get<RegionsState | undefined>(REGIONS_ID)?.regions.hohesMoor?.open },
   // Jahr 3: Die Himmelskarte öffnet sich mit dem ersten Küstenland jenseits der Hochlande
   { id: 'skyChart', when: (w) => !!w.get<RegionsState | undefined>(REGIONS_ID)?.regions.langerAbstieg?.open },
+  // Jahr 4: Die Wächterschule öffnet sich mit der Schulinsel
+  { id: 'school', when: (w) => !!w.get<RegionsState | undefined>(REGIONS_ID)?.regions.schulinsel?.open },
+  // Jahr 5: Der Bau des Großen Leuchtfeuers beginnt mit dem ersten Land jenseits der Karte
+  { id: 'greatBeacon', when: (w) => !!w.get<RegionsState | undefined>(REGIONS_ID)?.regions.offenesMeer?.open },
   { id: 'realms', when: (w) => Object.values(w.get<RegionsState | undefined>(REGIONS_ID)?.regions ?? {}).some((r) => r.open) },
 ]
