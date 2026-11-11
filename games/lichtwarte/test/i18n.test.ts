@@ -1,6 +1,7 @@
+import { describe, expect, it } from 'vitest'
 import { join } from 'node:path'
 import { describeI18nGuards, walk } from '@engine/testing'
-import { game } from '../src/game'
+import { extraIds, game } from '../src/game'
 import { gameDe, stringsDe } from '../src/i18n/de'
 import { engineDe } from '@engine/ui'
 import { stringsEn } from '../src/i18n/en'
@@ -31,4 +32,24 @@ describeI18nGuards({
       t.app.title,
     ],
   },
+})
+
+// Jede Inhalts-ID, die ein Fenster anzeigt, braucht einen Namen; sonst steht der rohe Schlüssel im Spiel.
+describe('Inhalts-Namen', () => {
+  const NS: Record<string, string> = {
+    quests: 'quest', deeds: 'deed', trials: 'trial', fests: 'fest', festItems: 'festItem', wheel: 'wheel',
+    collection: 'entry', guests: 'guest', decor: 'decor', folio: 'folio', constellations: 'card', omens: 'omen',
+    greatWorks: 'work', realms: 'realm', cosmetics: 'cosmetic', offers: 'offer', skips: 'skip', adChoices: 'adChoice',
+  }
+  const ids = extraIds as Record<string, readonly string[]>
+  for (const [group, ns] of Object.entries(NS)) {
+    it(`${group}: alle Namen vorhanden (de + en)`, () => {
+      for (const strings of [stringsDe, stringsEn]) {
+        i18n.__setStrings(strings)
+        const missing = [...new Set(ids[group])].filter((id) => labels.content(`${ns}.${id}`).name === `${ns}.${id}`)
+        expect(missing).toEqual([])
+      }
+      i18n.__setStrings(stringsDe, 'de')
+    })
+  }
 })
