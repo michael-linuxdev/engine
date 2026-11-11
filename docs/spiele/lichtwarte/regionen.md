@@ -45,22 +45,22 @@ Engine-Modul `regions` (P9): eigene Unterwirtschaft mit eigener Währung, 10 Ber
 | 32 | `muschelbucht` | Muschelbucht | Shell Bay | Perlmutt | Taucherin Okka | Muscheln und Riffe | Welle 3 ✓ |
 | 33 | `duenenland` | Dünenland | Dunelands | Sandglas | Strandvogt Fokko | Dünen und Strandhafer | Welle 3 ✓ |
 | 34 | `seehundbank` | Seehundsbank | Seal Bank | Gischt | Wattführerin Kea | Watt und Seehunde | Welle 3 ✓ |
-| 35 | `sturmkap` | Sturmkap | Storm Cape | Sturmfunken | Lotse Reimer | Wind und Wellen | später |
-| 36 | `nordlichtinsel` | Nordlichtinsel | Northlight Isle | Polarschimmer | Sternfischerin Inga | Nordlichter | später |
-| 37 | `bernsteinstrand` | Bernsteinstrand | Amber Strand | Bernstein | Sammler Momme | Bernstein im Sand | später |
-| 38 | `treibholzhafen` | Treibholzhafen | Driftwood Haven | Treibholz | Bootsbauerin Tjarda | Boote aus Treibholz | später |
-| 39 | `nebelinseln` | Nebelinseln | Mist Isles | Inselnebel | Einsiedler Brar | Verborgene Inseln | später |
-| 40 | `walgesang` | Walgesangbucht | Whalesong Bay | Tiefenklang | Sängerin Elske | Bogen III Ende: Lieder im Meer | später |
-| 41 | `rosenhof` | Rosenhof | Rose Court | Rosenduft | Gärtnerin Adelheid | Bogen IV: Die alten Höfe | später |
-| 42 | `hirschgarten` | Hirschgarten | Stag Park | Geweihlicht | Wildhüter Tönnies | Wildgehege | später |
-| 43 | `schlossruine` | Schlossruine | Castle Ruin | Mauerglanz | Baumeisterin Gerlinde | Eine Ruine wird bewohnt | später |
-| 44 | `bibliotheksberg` | Bibliotheksberg | Library Hill | Tintenlicht | Bibliothekar Wendelin | Bücher bis zur Decke | später |
-| 45 | `orgelklause` | Orgelklause | Organ Hermitage | Pfeifenklang | Organistin Mechthild | Musik im Fels | später |
-| 46 | `teehaus` | Teehausgarten | Teahouse Garden | Teeblatt | Teemeisterin Okke | Stille und Dampf | später |
-| 47 | `kuppelstadt` | Kuppelstadt | Dome Town | Kuppelglanz | Glaserin Reinhild | Kuppeln aus Glas | später |
-| 48 | `wolkenmarkt` | Wolkenmarkt | Cloud Market | Wolkenperle | Händler Fiete | Märkte in luftiger Höhe | später |
-| 49 | `sternenpfad` | Sternenpfad | Starpath | Pfadlicht | Wanderin Lene | Bogen IV Ende: Der Weg nach oben | später |
-| 50 | `himmelswarte` | Himmelswarte | Sky Watch | Himmelslicht | Alwine (Rückkehr) | Finale: Die Warte über den Wolken | später |
+| 35 | `sturmkap` | Sturmkap | Storm Cape | Sturmfunken | Lotse Reimer | Wind und Wellen | Welle 4 ✓ |
+| 36 | `nordlichtinsel` | Nordlichtinsel | Northlight Isle | Polarschimmer | Sternfischerin Inga | Nordlichter | Welle 4 ✓ |
+| 37 | `bernsteinstrand` | Bernsteinstrand | Amber Strand | Bernstein | Sammler Momme | Bernstein im Sand | Welle 4 ✓ |
+| 38 | `treibholzhafen` | Treibholzhafen | Driftwood Haven | Treibholz | Bootsbauerin Tjarda | Boote aus Treibholz | Welle 4 ✓ |
+| 39 | `nebelinseln` | Nebelinseln | Mist Isles | Inselnebel | Einsiedler Brar | Verborgene Inseln | Welle 4 ✓ |
+| 40 | `walgesang` | Walgesangbucht | Whalesong Bay | Tiefenklang | Sängerin Elske | Bogen III Ende: Lieder im Meer | Welle 4 ✓ |
+| 41 | `rosenhof` | Rosenhof | Rose Court | Rosenduft | Gärtnerin Adelheid | Bogen IV: Die alten Höfe | Welle 4 ✓ |
+| 42 | `hirschgarten` | Hirschgarten | Stag Park | Geweihlicht | Wildhüter Tönnies | Wildgehege | Welle 4 ✓ |
+| 43 | `schlossruine` | Schlossruine | Castle Ruin | Mauerglanz | Baumeisterin Gerlinde | Eine Ruine wird bewohnt | Welle 4 ✓ |
+| 44 | `bibliotheksberg` | Bibliotheksberg | Library Hill | Tintenlicht | Bibliothekar Wendelin | Bücher bis zur Decke | Welle 4 ✓ |
+| 45 | `orgelklause` | Orgelklause | Organ Hermitage | Pfeifenklang | Organistin Mechthild | Musik im Fels | Welle 4 ✓ |
+| 46 | `teehaus` | Teehausgarten | Teahouse Garden | Teeblatt | Teemeisterin Okke | Stille und Dampf | Welle 4 ✓ |
+| 47 | `kuppelstadt` | Kuppelstadt | Dome Town | Kuppelglanz | Glaserin Reinhild | Kuppeln aus Glas | Welle 4 ✓ |
+| 48 | `wolkenmarkt` | Wolkenmarkt | Cloud Market | Wolkenperle | Händler Fiete | Märkte in luftiger Höhe | Welle 4 ✓ |
+| 49 | `sternenpfad` | Sternenpfad | Starpath | Pfadlicht | Wanderin Lene | Bogen IV Ende: Der Weg nach oben | Welle 4 ✓ |
+| 50 | `himmelswarte` | Himmelswarte | Sky Watch | Himmelslicht | Alwine (Rückkehr) | Finale: Die Warte über den Wolken | Welle 4 ✓ |
 
 ## Bögen
 

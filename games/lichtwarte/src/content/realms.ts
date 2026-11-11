@@ -9,6 +9,8 @@ import { prestigeState, REGIONS_ID, type ProducerDef, type RegionConfig, type Re
 export const REALM_IDS = ['moorgrund', 'kieselbach', 'birkenhang', 'felsenkamm', 'heidegrund', 'schilfufer', 'apfelhain', 'eulenwald', 'salzquelle', 'windmark', 'sternweiher',
   // Welle 2 (13–23) und Welle 3 (24–34) — nur anhängen
   'nebelpass', 'hochalm', 'gletscherblick', 'tannengrat', 'murmelstein', 'kristallgrotte', 'hangdorf', 'talauen', 'muehlenbach', 'toepferwinkel', 'glaserhuette', 'weberdorf', 'faerberbach', 'glockengiesserei', 'papiermuehle', 'uhrmacherturm', 'brueckenstadt', 'markthafen', 'leuchtfeuer', 'muschelbucht', 'duenenland', 'seehundbank',
+  // Welle 4 (35–50): Küste, alte Höfe und der Weg nach oben — nur anhängen
+  'sturmkap', 'nordlichtinsel', 'bernsteinstrand', 'treibholzhafen', 'nebelinseln', 'walgesang', 'rosenhof', 'hirschgarten', 'schlossruine', 'bibliotheksberg', 'orgelklause', 'teehaus', 'kuppelstadt', 'wolkenmarkt', 'sternenpfad', 'himmelswarte',
 ] as const
 export type RealmId = (typeof REALM_IDS)[number]
 
@@ -47,6 +49,22 @@ export const REALM_AREAS: Record<RealmId, readonly string[]> = {
   muschelbucht: ['beachHut', 'shellSands', 'divingRock', 'pearlBeds', 'tidePools', 'nacreWorkshop', 'reefGarden', 'boatMooring', 'coralArch', 'pearlHall'],
   duenenland: ['marramBeds', 'duneFence', 'sandPath', 'wreckwood', 'driftHut', 'windDune', 'hollowDune', 'sandGlassworks', 'dunePond', 'duneTower'],
   seehundbank: ['mudflatPath', 'sealBank', 'tideHouse', 'wormFlats', 'priel', 'lookoutPost', 'sealNursery', 'driftMarkers', 'shellRidge', 'tideBeacon'],
+  sturmkap: ['pilotHouse', 'windVane', 'breakwater', 'signalMast', 'netLoft', 'stormBell', 'rescueShed', 'cliffStairs', 'gullRock', 'capeBeacon'],
+  nordlichtinsel: ['iceJetty', 'lightNets', 'snowHut', 'driftIce', 'sledTrack', 'smokeHouse', 'skyDeck', 'frostWell', 'auroraStones', 'northBeacon'],
+  bernsteinstrand: ['tideLine', 'amberSieve', 'beachHut', 'polishBench', 'kelpRack', 'findersPost', 'lampWorkshop', 'pineDune', 'resinCellar', 'amberBeacon'],
+  treibholzhafen: ['slipway', 'woodPile', 'ropeWalk', 'tarPot', 'sailLoft', 'craneArm', 'boatShed', 'carvingBench', 'mooringRow', 'havenBeacon'],
+  nebelinseln: ['fogHorn', 'stiltPath', 'hermitHut', 'reedBoat', 'herbPatch', 'echoRock', 'ropeFerry', 'mossWell', 'hiddenCove', 'mistBeacon'],
+  walgesang: ['songPier', 'listeningShell', 'choirSteps', 'hornWorkshop', 'tidePool', 'whaleGate', 'driftChimes', 'singersHouse', 'deepWatch', 'songBeacon'],
+  rosenhof: ['roseArch', 'hedgeMaze', 'pottingShed', 'sundial', 'orangery', 'stillRoom', 'lilyPond', 'gardenWall', 'seedVault', 'courtBeacon'],
+  hirschgarten: ['deerFence', 'feedRack', 'keepersLodge', 'saltLick', 'oakAvenue', 'hayBarn', 'watchStand', 'brookFord', 'antlerHall', 'parkBeacon'],
+  schlossruine: ['gateArch', 'scaffold', 'oldKitchen', 'stoneYard', 'wellHouse', 'greatHall', 'towerStump', 'ivyWall', 'roofTruss', 'ruinBeacon'],
+  bibliotheksberg: ['readingRoom', 'ladderRail', 'scriptorium', 'bindery', 'mapDrawer', 'inkCellar', 'lanternNook', 'catalogue', 'rareVault', 'hillBeacon'],
+  orgelklause: ['windPipes', 'bellows', 'keyDesk', 'echoCave', 'tuningRoom', 'pipeForge', 'choirLedge', 'quietCell', 'greatStop', 'hermitBeacon'],
+  teehaus: ['teaTerrace', 'dryingMats', 'kettleHouse', 'steppingStones', 'bambooGrove', 'cupShelf', 'mossGarden', 'springSpout', 'quietPavilion', 'teaBeacon'],
+  kuppelstadt: ['glassDome', 'leadWorks', 'paneStore', 'winterGarden', 'rainGutter', 'mirrorHall', 'domeStairs', 'lightCourt', 'prismRoom', 'domeBeacon'],
+  wolkenmarkt: ['ropeBridge', 'hangingStall', 'basketLift', 'kiteMast', 'scalesHouse', 'awningRow', 'cloudCistern', 'balloonDock', 'nightBazaar', 'marketBeacon'],
+  sternenpfad: ['trailHead', 'cairnRow', 'restHut', 'starSteps', 'windGap', 'lanternLine', 'highBridge', 'silentTarn', 'lastCamp', 'pathBeacon'],
+  himmelswarte: ['cloudGate', 'oldStairs', 'windRoom', 'starLens', 'keepersBench', 'logRoom', 'skyGarden', 'bellLoft', 'firePan', 'skyBeacon'],
 }
 
 /**

@@ -14,6 +14,24 @@ Stand 2026-11-11. Plan mit den Entscheidungen vom selben Tag, noch nichts davon 
 
 Nach Tag 90 tragen nur Meisterschafts-Sterne, Schicht-Meilensteine und der Wochenplan. Das ist nicht gemessen.
 
+## Messung über fünf Jahre (heutiger Stand, Profil „regular“)
+
+`SUMMARY=1 npm run balance -- lichtwarte regular 43800`, gemessen 2026-11-11. Der Lauf dauert nur wenige Minuten, nicht wie geschätzt 17.
+
+| | Ergebnis |
+|---|---|
+| Letztes neues Land | Tag 90 (Land 34). Danach keines mehr. |
+| Zeitalter | 9 in fünf Jahren: Tag 28, 46, 79, 120, 182, 292, 479, 724, 1.135. Die Abstände wachsen von 3 Wochen auf über ein Jahr. |
+| Lange Nächte | 56 |
+| Mondwenden | 4.591 |
+| Größte Zahl | 1,6 · 10²¹ Glimmer insgesamt. Die Grenze von 10³⁰⁰ ist weit weg. |
+
+**Folgen:**
+- Der Zahlenraum ist kein Risiko. Die späten Wellen dürfen normal weiterwachsen.
+- **Ab etwa Tag 120 gibt es kein neues Ziel mehr.** Nach dem vierten Zeitalter liegen zwei, dann drei, dann sechs Monate zwischen zwei Zeitaltern. Fünf Jahre trägt heute nichts.
+- Die Meilensteine der Zeitalter (bis zum 50.) sind unerreichbar: In fünf Jahren fallen neun.
+- Die Taktung der Zeitalter muss neu gesetzt werden (Ziel aus dem Plan: eines je vier bis fünf Wochen, also etwa zehn im Jahr).
+
 ## Was „fünf Jahre“ hier heißt
 
 Maßstab ist eine Spielerin, die täglich kurz spielt (Profil „regular“). Über 1.825 Tage soll gelten:
@@ -40,8 +58,8 @@ Jedes Jahr ist ein **Buch** der Chronik mit eigener Frage, einer **Welle** Lande
 
 ## Was dafür gebaut werden muss
 
-1. **Messung bis Tag 1.825.** Der Simulator misst heute 90 Tage in etwa 50 Sekunden; fünf Jahre brauchen rund 17 Minuten. Ohne diese Messung ist jede Taktung geraten.
-2. **Zahlenraum.** Die Engine begrenzt Werte auf 1e300. Ob das Wachstum über fünf Jahre darunter bleibt, zeigt erst die Messung. Falls nicht, müssen die späten Wellen flacher wachsen.
+1. **Messung bis Tag 1.825:** erledigt, siehe oben. Sie gehört nach jedem Paket wiederholt.
+2. **Taktung der Zeitalter** über Tag 120 hinaus (heute brechen sie ab).
 3. **Jahres-Tabelle** in der Engine (Wellen, Bücher, Jahrgänge anhängbar; IDs nur anhängen).
 4. **Vier neue Systeme** (Feuerstraße, Himmelskarte, Wächterschule, Großes Leuchtfeuer) und die Fernfahrten. Jedes ist ein eigenes Engine-Modul mit Tests und Spielstand-Startwert.
 5. **Texte:** etwa 200 Chronik-Seiten, 116 Lande mit Namen, Figur und Einleitung, je zwei Sprachen.
