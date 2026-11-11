@@ -2,6 +2,13 @@
  * E2E-Konfiguration je Spiel. Die Tests selbst sind spielunabhängig (data-testid
  * aus @engine/ui); hier stehen nur Pfad, Präfix und spielspezifische Vorbereitung.
  */
+/** Systeme jenseits der vier Tabs liegen als Kacheln im Menü. */
+const viaMenu = async (p, id) => {
+  await p.getByTestId('menu').click()
+  await p.getByTestId(`menu-${id}`).click()
+  await p.getByTestId('menu-sheet').waitFor({ state: 'detached' })
+}
+
 export const GAMES = [
   {
     slug: 'lichtwarte',
@@ -22,8 +29,9 @@ export const GAMES = [
         const layers = s.modules.prestige.layers.map((l, i) => (i === 0 ? { ...l, count: 1, sinceReset: 1 } : l))
         rt.replace({ ...s, modules: { ...s.modules, prestige: { layers }, wallet: { ...s.modules.wallet, balances: { ...s.modules.wallet.balances, runeShards: 100 }, earned: { ...s.modules.wallet.earned, runeShards: 100 } } } })
       })
-      await p.getByTestId('tab-shop').click()
-      await check('Archiv')
+      await p.getByTestId('tab-prestige').click()
+      await p.getByTestId('ptab-archive').waitFor()
+      await check('Mondwende-Tab mit Archiv')
       await p.getByTestId('tab-play').click()
       await p.getByTestId('slot-kraeuterkate').click()
       await p.getByTestId('upgrade-sheet').waitFor()
@@ -97,7 +105,10 @@ export const GAMES = [
       await q.keyboard.press('Escape')
       await q.getByTestId('upgrade-sheet').waitFor({ state: 'detached' })
       // Der Markt ist von Anfang an da, das Archiv erst nach der ersten Mondwende; in den Einstellungen gibt es kein Zahlenformat mehr
-      assert((await q.getByTestId('tab-market').count()) === 1 && (await q.getByTestId('tab-shop').count()) === 0, 'Markt ab Start, Archiv noch nicht')
+      // Die Leiste hat genau vier Knöpfe (Tal, Mondwende, Markt, Menü); das Archiv gibt es noch nicht
+      assert((await q.locator('.ek-tabbar .ek-tab').count()) === 4 && (await q.getByTestId('tab-market').count()) === 1, 'Leiste: vier Knöpfe, Markt ab Start')
+      await q.getByTestId('tab-prestige').click()
+      assert((await q.getByTestId('ptab-archive').count()) === 0 && (await q.getByTestId('keeps-moonturn').count()) === 1, 'Mondwende-Tab: „Bleibt/Geht“ da, Archiv noch nicht')
       await q.getByTestId('tab-market').click()
       await q.getByTestId('card-gift').waitFor()
       assert((await q.getByTestId('ad-glimmer').count()) === 1, 'Bonus-Video: mit Ertrag gibt es die Glimmer-Wahl')
@@ -147,11 +158,17 @@ export const GAMES = [
         rt.dispatch('burst', 'use')
         rt.dispatch('producers', 'buy', { id: 'kraeuterkate', count: 30 })
       })
-      await r.getByTestId('tab-watch').click()
+      await viaMenu(r, 'watch')
       await r.getByTestId('daily-claim').click()
       assert(await r.getByTestId('daily-claim').isDisabled(), 'Wachrunde nur einmal am Tag')
       await r.getByTestId('card-fest').getByRole('heading', { name: T.watch.fests.budding.name }).waitFor()
+      await r.getByTestId('deed-firstLight').waitFor()
+      // Die Prüfungen und das Archiv stehen im Mondwende-Tab, erreichbar über Sprungknöpfe
+      await r.getByTestId('tab-prestige').click()
+      await r.getByTestId('ptab-jump-trials').click()
       await r.getByTestId('card-trials').waitFor()
+      await r.getByTestId('ptab-archive').waitFor()
+      await viaMenu(r, 'watch')
       const deeds = await r.evaluate(() => window.__engine.get().modules.achievements.done)
       assert(deeds.includes('firstLight'), 'Tat „Erstes Licht“ erreicht')
       await r.getByTestId('deed-firstLight').waitFor()
@@ -173,7 +190,7 @@ export const GAMES = [
         })
         rt.dispatch('producers', 'buy', { id: 'kraeuterkate', count: 1 })
       })
-      await r.getByTestId('tab-world').click()
+      await viaMenu(r, 'world')
       await r.getByTestId('card-collection').waitFor()
       await r.getByTestId('brew-a').selectOption('moonsage')
       await r.getByTestId('brew-b').selectOption('dewcup')
@@ -248,7 +265,7 @@ export const GAMES = [
         rt.replace({ ...s, modules: { ...s.modules, prestige: { layers } } })
         rt.dispatch('producers', 'buy', { id: 'kraeuterkate', count: 1 })
       })
-      await r.getByTestId('tab-realms').click()
+      await viaMenu(r, 'realms')
       await r.getByTestId('realm-open-moorgrund').click()
       await r.getByTestId('realm-sheet').getByText(T.realms.lands.moorgrund.areas.boardwalk, { exact: true }).waitFor()
       await r.getByTestId('area-buy-moorgrund_boardwalk').click()

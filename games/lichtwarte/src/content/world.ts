@@ -194,13 +194,14 @@ export const GREAT_WORKS: ProjectDef[] = [
 ]
 
 export const WORLD_FEATURES: FeatureDef[] = [
+  // Gestaffelt (Lückenliste 1.2): Sammlung nach der 1. Mondwende, dann je Mondwende höchstens zwei neue Systeme
   { id: 'herbal', when: (w) => turns(w) >= 1 },
-  { id: 'guests', when: (w) => turns(w) >= 1 },
-  { id: 'decor', when: (w) => turns(w) >= 1 },
-  { id: 'folio', when: (w) => turns(w) >= 2 },
-  { id: 'alchemy', when: (w) => turns(w) >= 2 },
-  { id: 'constellations', when: (w) => turns(w) >= 3 },
-  { id: 'omens', when: (w) => turns(w) >= 2 },
-  { id: 'greatWorks', when: (w) => turns(w) >= 4 },
+  { id: 'guests', when: (w) => turns(w) >= 2 },
+  { id: 'decor', when: (w) => turns(w) >= 3 },
+  { id: 'folio', when: (w) => turns(w) >= 4 },
+  { id: 'alchemy', when: (w) => turns(w) >= 5 },
+  { id: 'constellations', when: (w) => turns(w) >= 6 },
+  { id: 'omens', when: (w) => turns(w) >= 4 },
+  { id: 'greatWorks', when: (w) => turns(w) >= 7 },
   { id: 'realms', when: (w) => Object.values(w.get<RegionsState | undefined>(REGIONS_ID)?.regions ?? {}).some((r) => r.open) },
 ]

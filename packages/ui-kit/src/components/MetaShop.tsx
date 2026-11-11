@@ -37,15 +37,14 @@ export function MetaShopPanel({ title, branchVisible }: { title?: string; branch
                 const open = isRankUnlocked(world, item, rank)
                 const tip = !full && isTipRank(item, rank, count)
                 return (
-                  <li key={item.id} className={`ek-row${open || full ? '' : ' is-locked'}`} data-testid={`meta-${item.id}`}>
+                  <li key={item.id} className={`ek-row ek-row--stack${open || full ? '' : ' is-locked'}`} data-testid={`meta-${item.id}`}>
+                    {/* Text over the full width, the button below on the right */}
                     <div className="ek-row__main">
                       <strong>
                         {l.name} {tip ? <span className="ek-badge ek-badge--inline">{ui.t.meta.tip}</span> : null}
                       </strong>
                       <span className="ek-muted">{l.blurb}</span>
-                      <span>
-                        {ui.t.common.rank(String(rank), String(item.maxRank))} · {l.effect(rank)}
-                      </span>
+                      <span>{rank === 0 ? ui.t.meta.notBought : `${ui.t.common.rank(String(rank), String(item.maxRank))} · ${l.effect(rank)}`}</span>
                       {!open && !full ? <span className="ek-muted">{ui.t.meta.lockedRank}</span> : null}
                     </div>
                     <Button size="small" data-testid={`meta-buy-${item.id}`} disabled={full || !canBuyMeta(world, item)} onClick={() => dispatch(MODULE.metaShop, 'buy', { id: item.id })}>

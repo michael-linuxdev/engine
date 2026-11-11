@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  createManualClock, createState, dispatch, gateAt, tick, layerMilestones, layerStatus, payoutAtGate, payoutCurve, prestige, rawPayout, view,
+  createManualClock, createState, dispatch, gateAt, tick, layerForecast, layerMilestones, layerStatus, prestigeReady, payoutAtGate, payoutCurve, prestige, rawPayout, view,
   type EngineState, type LayerState,
 } from '../src'
 import { T0, testGame } from './fixture'
@@ -151,5 +151,31 @@ describe('layer milestones', () => {
     expect(layerMilestones(view(M, s), 'l1')).toEqual({ reached: 2, total: 2, next: null, bonus: 0.75 })
     expect(view(M, s).value('rate:a', 1)).toBe(1.75)
     expect(layerMilestones(view(def, s), 'l1')).toEqual({ reached: 0, total: 0, next: null, bonus: 0 })
+  })
+})
+
+describe('layer forecast', () => {
+  it('tells the time to the gate and the payout after waiting; only for the first layer', () => {
+    let s = createState(def, clock)
+    s = { ...s, modules: { ...s.modules, producers: { owned: { ...owned(s), a: 1 } } } }
+    const w = view(def, s)
+    const f = layerForecast(w, 'l1', 600)
+    expect(f).not.toBeNull()
+    const st = layerStatus(w, 'l1')
+    expect(f!.secondsToGate).toBeCloseTo((st.gate - st.earned) / w.rate(), 6)
+    expect(f!.payoutLater).toBeGreaterThanOrEqual(st.payout)
+    expect(prestigeReady(w)).toBe(false)
+    expect(layerForecast(w, 'l2', 600)).toBeNull()
+
+    const done = earn(s, st.gate * 2)
+    const w2 = view(def, done)
+    expect(layerForecast(w2, 'l1', 600)!.secondsToGate).toBe(0)
+    expect(prestigeReady(w2)).toBe(true)
+  })
+
+  it('without income the gate is out of reach', () => {
+    const w = view(def, createState(def, clock))
+    expect(w.rate()).toBe(0)
+    expect(layerForecast(w, 'l1', 600)!.secondsToGate).toBe(Infinity)
   })
 })

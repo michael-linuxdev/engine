@@ -1,8 +1,8 @@
-/** Wacht-Tab: Wachrunde, Aufträge, laufende Ereignisse, Lichterfest, Prüfungen, Taten. */
+/** Wacht: Wachrunde, Aufträge, laufende Ereignisse, Lichterfest, Taten. Die Prüfungen stehen im Mondwende-Tab. */
 import { isFeatureOpen } from '@engine/core'
 import { useEngine } from '@engine/react'
-import { AchievementsCard, ChallengesCard, DailyCard, FestCard, FlashCard, QuestsCard, useUi, WeekendCard } from '@engine/ui'
-import { DAILY, DEEDS, FESTIVALS, TRIALS } from '../content/live'
+import { AchievementsCard, DailyCard, FestCard, FlashCard, QuestsCard, useUi, WeekendCard } from '@engine/ui'
+import { DAILY, DEEDS, FESTIVALS } from '../content/live'
 
 export function WatchView() {
   const ui = useUi()
@@ -18,7 +18,6 @@ export function WatchView() {
         </>
       ) : null}
       {isFeatureOpen(world, 'festivals') ? <FestCard cfg={FESTIVALS} /> : null}
-      {isFeatureOpen(world, 'trials') ? <ChallengesCard cfg={TRIALS} /> : null}
       <AchievementsCard list={DEEDS} />
     </section>
   )

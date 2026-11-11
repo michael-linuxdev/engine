@@ -80,6 +80,17 @@ try {
     await p.getByTestId(`tab-${tab}`).click()
     await shot(`02-tab-${tab}`)
   }
+  // Views that live in the menu as tiles (beyond the tab bar)
+  await p.getByTestId('menu').click()
+  const menuViews = await p.locator('[data-view="true"]').evaluateAll((els) => els.map((e) => e.getAttribute('data-testid').slice(5)))
+  await p.keyboard.press('Escape')
+  await p.getByTestId('menu-sheet').waitFor({ state: 'detached' })
+  for (const v of menuViews) {
+    await p.getByTestId('menu').click()
+    await p.getByTestId(`menu-${v}`).click()
+    await p.getByTestId('menu-sheet').waitFor({ state: 'detached' })
+    await shot(`02-view-${v}`)
+  }
   await p.getByTestId('tab-play').click()
   for (const prod of def.producers) {
     const slot = p.getByTestId(`slot-${prod.id}`)

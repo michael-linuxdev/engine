@@ -1,9 +1,14 @@
-import type { ReactNode } from 'react'
-import { layerMilestones, layerStatus, MODULE, prestigeState } from '@engine/core'
+import { useEffect, useState, type ReactNode } from 'react'
+import { layerForecast, layerMilestones, layerStatus, MODULE, prestigeState } from '@engine/core'
 import { useEngine } from '@engine/react'
 import { useUi } from '../useUi'
 import { Button } from './Button'
 import { ProgressBar } from './ProgressBar'
+
+/** Seconds the outlook looks ahead ("in 10 minutes it would be …"). */
+const FORECAST_SECONDS = 600
+/** Time (ms) the second tap of a higher layer stays armed. */
+const CONFIRM_MS = 4000
 
 /** One block per prestige layer: progress to the gate, payout, block reason, perform. */
 export function PrestigeLayerBlock({ layer, onPerformed, art }: { layer: string; onPerformed?: (layer: string, payout: number) => void; art?: ReactNode }) {
@@ -24,6 +29,16 @@ export function PrestigeLayerBlock({ layer, onPerformed, art }: { layer: string;
   const count = prestigeState(world).layers[st.index]?.count ?? 0
   const ms = layerMilestones(world, layer)
   const pct = (x: number) => String(Math.round(x * 1000) / 10)
+  const cur = ui.labels.currency(ldef.currency)
+  const forecast = layerForecast(world, layer, FORECAST_SECONDS)
+  // Higher layers reset far more: they start only on the second tap
+  const [armed, setArmed] = useState(false)
+  useEffect(() => {
+    if (!armed) return
+    const id = setTimeout(() => setArmed(false), CONFIRM_MS)
+    return () => clearTimeout(id)
+  }, [armed])
+  const ready = st.block === null
   return (
     <section className="ek-card ek-layer" data-testid={`layer-${layer}`} aria-labelledby={`layer-h-${layer}`}>
       {art}
@@ -34,17 +49,40 @@ export function PrestigeLayerBlock({ layer, onPerformed, art }: { layer: string;
       {st.probe ? <p className="ek-note">{ui.t.prestige.probe}</p> : null}
       <ProgressBar ratio={st.ratio} label={ui.t.prestige.progress(ui.fmt(st.earned), ui.fmt(st.gate))} />
       <p className="ek-muted">{ui.t.prestige.progress(ui.fmt(st.earned), ui.fmt(st.gate))}</p>
-      <p className="ek-strong">{ui.t.prestige.payout(ui.fmt(st.payout), ui.labels.currency(ldef.currency))}</p>
-      {reason ? <p className="ek-muted">{reason}</p> : <p className="ek-muted">{ui.t.prestige.resetInfo}</p>}
+      {/* Outlook: when the gate is reached, and what a little patience would add */}
+      {forecast && st.block === 'earned' && Number.isFinite(forecast.secondsToGate) && forecast.secondsToGate > 0 ? (
+        <p data-testid={`forecast-gate-${layer}`}>{ui.t.prestige.toGate(ui.duration(forecast.secondsToGate * 1000))}</p>
+      ) : null}
+      <p className="ek-strong">{ui.t.prestige.payout(ui.fmt(st.payout), cur)}</p>
+      {forecast && ready && forecast.payoutLater > st.payout ? (
+        <p className="ek-muted" data-testid={`forecast-later-${layer}`}>{ui.t.prestige.later(ui.fmt(forecast.payoutLater), cur)}</p>
+      ) : null}
+      {reason ? <p className="ek-muted">{reason}</p> : null}
+      {l.keeps?.length || l.loses?.length ? (
+        <div className="ek-keeps" data-testid={`keeps-${layer}`}>
+          <div className="ek-keeps__box ek-keeps__box--stay">
+            <strong>{ui.t.prestige.keeps}</strong>
+            <ul>{(l.keeps ?? []).map((x) => <li key={x}>{x}</li>)}</ul>
+          </div>
+          <div className="ek-keeps__box ek-keeps__box--go">
+            <strong>{ui.t.prestige.loses}</strong>
+            <ul>{(l.loses ?? []).map((x) => <li key={x}>{x}</li>)}</ul>
+          </div>
+        </div>
+      ) : reason ? null : (
+        <p className="ek-muted">{ui.t.prestige.resetInfo}</p>
+      )}
       <Button
         data-testid={`prestige-${layer}`}
-        disabled={st.block !== null}
+        disabled={!ready}
         onClick={() => {
+          if (st.index > 0 && !armed) return setArmed(true)
+          setArmed(false)
           const payout = st.payout
           if (dispatch(MODULE.prestige, 'perform', { layer })) onPerformed?.(layer, payout)
         }}
       >
-        {l.action}
+        {armed ? ui.t.prestige.confirm : ready ? ui.t.prestige.actionWith(l.action, ui.fmt(st.payout), cur) : l.action}
       </Button>
       <p className="ek-muted">{ui.t.prestige.count(String(count))}</p>
       {ms.total > 0 ? (
@@ -79,5 +117,61 @@ export function PrestigePanel({ onPerformed, showAll, art }: { onPerformed?: (la
         <PrestigeLayerBlock key={l.id} layer={l.id} onPerformed={onPerformed} art={art?.(l.id)} />
       ))}
     </section>
+  )
+}
+
+export interface PrestigeSection {
+  id: string
+  label: string
+  view: ReactNode
+}
+
+/**
+ * The whole new-beginning tab: jump buttons, the layers, further sections of
+ * the game (meta shop, challenges …) and a fixed bar with the button of the
+ * first layer once it is ready.
+ */
+export function PrestigeTab({ onPerformed, art, sections, title }: { onPerformed?: (layer: string, payout: number) => void; art?: (layer: string) => ReactNode; sections: readonly PrestigeSection[]; /** Label of the jump button to the layers (default: the engine's word). */ title?: string }) {
+  const ui = useUi()
+  const { world, dispatch } = useEngine(ui.rt)
+  const first = world.def.prestigeLayers[0]
+  const st = first ? layerStatus(world, first.id) : null
+  const jump = (id: string) => document.getElementById(`ptab-${id}`)?.scrollIntoView({ block: 'start' })
+  return (
+    <div className="ek-ptab" data-testid="prestige-tab">
+      {sections.length ? (
+        <div className="ek-segmented ek-ptab__jump" role="group" aria-label={ui.t.prestige.title}>
+          <button type="button" data-testid="ptab-jump-layers" onClick={() => jump('layers')}>
+            {title ?? ui.t.prestige.title}
+          </button>
+          {sections.map((x) => (
+            <button key={x.id} type="button" data-testid={`ptab-jump-${x.id}`} onClick={() => jump(x.id)}>
+              {x.label}
+            </button>
+          ))}
+        </div>
+      ) : null}
+      <div id="ptab-layers">
+        <PrestigePanel onPerformed={onPerformed} art={art} />
+      </div>
+      {sections.map((x) => (
+        <div key={x.id} id={`ptab-${x.id}`} data-testid={`ptab-${x.id}`}>
+          {x.view}
+        </div>
+      ))}
+      {first && st && st.block === null ? (
+        <div className="ek-ptab__bar">
+          <Button
+            data-testid="prestige-bar"
+            onClick={() => {
+              const payout = st.payout
+              if (dispatch(MODULE.prestige, 'perform', { layer: first.id })) onPerformed?.(first.id, payout)
+            }}
+          >
+            {ui.t.prestige.actionWith(ui.labels.layer(first.id).action, ui.fmt(st.payout), ui.labels.currency(first.currency))}
+          </Button>
+        </div>
+      ) : null}
+    </div>
   )
 }

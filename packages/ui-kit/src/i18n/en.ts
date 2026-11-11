@@ -10,6 +10,7 @@ export const engineEn: EngineStrings = {
     max: 'Max',
     locked: 'Locked',
     new: 'New',
+    ready: 'Ready',
     perSecond: (v) => `${v}/s`,
     level: (n) => `Level ${n}`,
     rank: (n, max) => `Rank ${n}/${max}`,
@@ -21,6 +22,7 @@ export const engineEn: EngineStrings = {
     shop: 'Shop',
     menu: 'Menu',
     menuTitle: 'Menu',
+    soon: 'Ready soon',
   },
   buyMode: {
     label: 'Amount',
@@ -55,6 +57,12 @@ export const engineEn: EngineStrings = {
   },
   prestige: {
     title: 'New start',
+    toGate: (time: string) => `Threshold in about ${time}`,
+    later: (amount: string, currency: string) => `In 10 minutes it would be +${amount} ${currency}`,
+    keeps: 'Stays',
+    loses: 'Goes',
+    confirm: 'Really? Tap once more',
+    actionWith: (action: string, amount: string, currency: string) => `${action}: +${amount} ${currency}`,
     progress: (earned, gate) => `${earned} of ${gate}`,
     payout: (amount, currency) => `+${amount} ${currency}`,
     probe: 'First run: lower threshold',
@@ -73,6 +81,7 @@ export const engineEn: EngineStrings = {
   },
   meta: {
     title: 'Shop',
+    notBought: 'Not bought yet',
     balance: (amount, currency) => `${amount} ${currency}`,
     maxed: 'Fully upgraded',
     lockedRank: 'Rank opens as you rebuild',

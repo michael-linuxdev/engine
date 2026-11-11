@@ -7,6 +7,7 @@ import type { Strings } from './de'
 export const stringsEn: Strings = {
   ...engineEn,
   app: {
+    tabPlay: 'Valley',
     title: BRAND.en,
     tagline: 'Raise the old watchtower again — the light returns, even while you are away.',
     description: 'Cosy fantasy idle game: raise buildings, light up the valley, keep growing offline.',
@@ -31,9 +32,9 @@ export const stringsEn: Strings = {
     sternwarte: { name: 'Observatory', blurb: 'The dome above the valley. From here the light looks back.', note: 'When the observatory still burned, no one in the valley slept in the dark.' },
   },
   layers: {
-    moonturn: { name: 'Moonturn', action: 'Celebrate the Moonturn', blurb: 'The moon turns, the valley rests. You begin anew and keep what the wardens hold in the archive.' },
-    longNight: { name: 'Long Night', action: 'Begin the Long Night', blurb: 'A night that lasts for days. Afterwards the watch stands stronger than ever.' },
-    ages: { name: 'Ages', action: 'A new age', blurb: 'You pass the watch on. What you learned stays as Forebear Light.' },
+    moonturn: { name: 'Moonturn', action: 'Celebrate the Moonturn', blurb: 'The moon turns, the valley rests. You begin anew and keep what the wardens hold in the archive.', keeps: ['Archive and Rune Shards', 'Warden Rank and deeds', 'Collection, decor and valley styles', 'Glowpebbles'], loses: ['Glimmer', 'Levels of all buildings', 'Branches of the buildings'] },
+    longNight: { name: 'Long Night', action: 'Begin the Long Night', blurb: 'A night that lasts for days. Afterwards the watch stands stronger than ever.', keeps: ['Archive and Rune Shards', 'Warden Rank and deeds', 'Collection and realms'], loses: ['Glimmer and buildings', 'The Moonturn threshold starts small again'] },
+    ages: { name: 'Ages', action: 'A new age', blurb: 'You pass the watch on. What you learned stays as Forebear Light.', keeps: ['All archives and Rune Shards', 'Warden Rank and deeds', 'Collection and realms'], loses: ['Glimmer and buildings', 'Unspent Nightdew', 'The thresholds start small again'] },
   },
   archive: {
     oldLantern: { name: 'Old Lantern', blurb: "The watch's first light, freshly polished.", effect: (r) => `+${r * 5}% Glimmer` },
@@ -170,7 +171,7 @@ export const stringsEn: Strings = {
     },
   },
   world: {
-    tab: 'Valley',
+    tab: 'Collection',
     visitorHere: (name) => `${name} is visiting!`,
     guestThanks: (name, gift) => `${name}: ${gift}`,
     greet: 'Greet',
@@ -345,6 +346,14 @@ export const stringsEn: Strings = {
     pass: 'Festival week tier collected',
     window: 'Reward collected',
     wheel: (name: string) => `Star wheel: ${name}`,
+  },
+  soon: {
+    brew: (time: string) => `Cauldron: done in ${time}`,
+    brewDone: 'Cauldron: done, collect the result',
+    boost: (time: string) => `Lamp oil: ${time} left`,
+    circle: (time: string) => `Warden circle: ${time} left`,
+    omen: (time: string) => `Omen in effect: ${time} left`,
+    flash: (time: string) => `Star window: ${time} left`,
   },
   trade: {
     tab: 'Market',

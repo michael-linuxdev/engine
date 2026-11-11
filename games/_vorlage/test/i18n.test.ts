@@ -22,7 +22,7 @@ describeI18nGuards({
     probe: () => [
       ...game.producers.flatMap((p) => [labels.producer(p.id).name, labels.producer(p.id).blurb]),
       ...game.currencies.map((c) => labels.currency(c.id)),
-      ...game.prestigeLayers.flatMap((l) => Object.values(labels.layer(l.id))),
+      ...game.prestigeLayers.flatMap((l) => [labels.layer(l.id).name, labels.layer(l.id).action, labels.layer(l.id).blurb]),
       ...game.metaShop.flatMap((m) => [labels.metaItem(m.id).name, labels.metaItem(m.id).effect(2)]),
       labels.effect('effect.milestones'),
     ],

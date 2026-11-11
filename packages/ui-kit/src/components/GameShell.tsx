@@ -11,7 +11,7 @@ import { FeedbackLayer } from './Feedback'
 import type { FeedbackMap } from '../feedback'
 import { MetaShopPanel } from './MetaShop'
 import { ErrorBoundary, InstallGate, MultSheet, SaveGuardBanner, TestPhaseNotice, WelcomeBack } from './Overlays'
-import { PrestigePanel } from './Prestige'
+import { PrestigePanel, PrestigeTab, type PrestigeSection } from './Prestige'
 import { LegalSheet, SaveSheet, SettingsSheet } from './Settings'
 
 export interface GameShellProps<S extends EngineStrings> {
@@ -29,6 +29,14 @@ export interface GameShellProps<S extends EngineStrings> {
   hud: ReactNode
   /** Extra tabs (id → view) after play/prestige/shop. */
   tabs?: { item: NavItem; view: ReactNode }[]
+  /** Further views that live in the menu as tiles instead of tabs (the tab bar stays short). `badge` marks a tile as new. */
+  menuViews?: { item: NavItem; view: ReactNode }[]
+  /** Shown at the top of the menu (e.g. what is ready soon). */
+  menuTop?: ReactNode
+  /** Sections of the new-beginning tab below the layers (meta shop, challenges …); with them the tab gets jump buttons and a fixed action bar. */
+  prestigeSections?: readonly PrestigeSection[]
+  /** Dots at the built-in tabs (something is ready there). */
+  navBadges?: Partial<Record<'play' | 'prestige' | 'shop', boolean>>
   /** Icons for the built-in tabs (`play`, `prestige`, `shop`) and the menu button (`menu`). */
   navIcons?: Partial<Record<'play' | 'prestige' | 'shop' | 'menu', ReactNode>>
   /** Other labels for the built-in tabs (default: the engine's own words). */
@@ -106,23 +114,29 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
   const testPhase = !gate && shouldShowTestPhase(p.testPhase, !!flags.testPhaseOk, env)
   const t = p.i18n.t
   const items: NavItem[] = [
-    { id: 'play', label: p.navLabels?.play ?? t.nav.play, icon: p.navIcons?.play },
-    { id: 'prestige', label: p.navLabels?.prestige ?? t.nav.prestige, icon: p.navIcons?.prestige },
-    ...(p.shopVisible === false ? [] : [{ id: 'shop', label: p.navLabels?.shop ?? t.nav.shop, icon: p.navIcons?.shop }]),
+    { id: 'play', label: p.navLabels?.play ?? t.nav.play, icon: p.navIcons?.play, badge: p.navBadges?.play },
+    { id: 'prestige', label: p.navLabels?.prestige ?? t.nav.prestige, icon: p.navIcons?.prestige, badge: p.navBadges?.prestige },
+    ...(p.shopVisible === false ? [] : [{ id: 'shop', label: p.navLabels?.shop ?? t.nav.shop, icon: p.navIcons?.shop, badge: p.navBadges?.shop }]),
     ...(p.tabs ?? []).map((x) => x.item),
   ]
+  const go = (id: string) => {
+    setTab(id)
+    p.onTab?.(id)
+    playtest?.record('app.tab', { tab: id })
+  }
   const menu: MenuItem[] = [
+    ...(p.menuViews ?? []).map((x) => ({ id: x.item.id, label: x.item.label, icon: x.item.icon, badge: !!x.item.badge, dot: x.item.dot, view: true, onSelect: () => go(x.item.id) })),
     ...(p.menu ?? []),
-    { id: 'save', label: t.save.menu, icon: p.menuIcons?.save, onSelect: () => setOverlay('save') },
-    { id: 'settings', label: t.settings.menu, icon: p.menuIcons?.settings, onSelect: () => setOverlay('settings') },
-    { id: 'legal', label: t.legal.menu, icon: p.menuIcons?.legal, onSelect: () => setOverlay('legal') },
+    { id: 'save', label: t.save.menu, icon: p.menuIcons?.save, quiet: true, onSelect: () => setOverlay('save') },
+    { id: 'settings', label: t.settings.menu, icon: p.menuIcons?.settings, quiet: true, onSelect: () => setOverlay('settings') },
+    { id: 'legal', label: t.legal.menu, icon: p.menuIcons?.legal, quiet: true, onSelect: () => setOverlay('legal') },
   ]
   const views: Record<string, ReactNode> = {
     play: p.play,
-    prestige: <PrestigePanel onPerformed={p.onPrestige} art={p.prestigeArt} />,
+    prestige: p.prestigeSections ? <PrestigeTab onPerformed={p.onPrestige} art={p.prestigeArt} sections={p.prestigeSections} title={p.navLabels?.prestige} /> : <PrestigePanel onPerformed={p.onPrestige} art={p.prestigeArt} />,
     shop: <MetaShopPanel branchVisible={p.metaBranchVisible} />,
   }
-  for (const x of p.tabs ?? []) views[x.item.id] = x.view
+  for (const x of [...(p.tabs ?? []), ...(p.menuViews ?? [])]) views[x.item.id] = x.view
   const close = () => setOverlay(null)
   return (
     <ErrorBoundary strings={() => t}>
@@ -144,13 +158,11 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
             <AppNav
               items={items}
               active={tab}
-              onChange={(id) => {
-                setTab(id)
-                p.onTab?.(id)
-                playtest?.record('app.tab', { tab: id })
-              }}
+              onChange={go}
               menu={menu}
               menuIcon={p.navIcons?.menu}
+              menuActive={(p.menuViews ?? []).some((x) => x.item.id === tab)}
+              menuTop={p.menuTop}
             />
             {testPhase ? <TestPhaseNotice onDone={(record) => {
                   saveFlags({ ...flags, testPhaseOk: true, record })

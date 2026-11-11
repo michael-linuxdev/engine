@@ -9,6 +9,7 @@ import { storyDe } from './story.de'
 
 export const gameDe = {
   app: {
+    tabPlay: 'Tal',
     title: BRAND.de as string,
     tagline: 'Richte die alte Turmwarte wieder auf — das Licht kehrt zurück, auch wenn du fort bist.',
     description: 'Gemütliches Fantasy-Idle-Spiel: Bauwerke aufrichten, das Tal erhellen, offline weiterwachsen.',
@@ -33,9 +34,9 @@ export const gameDe = {
     sternwarte: { name: 'Sternwarte', blurb: 'Die Kuppel über dem Tal. Von hier aus schaut das Licht zurück.', note: 'Als die Sternwarte noch brannte, schlief niemand im Tal im Dunkeln.' },
   },
   layers: {
-    moonturn: { name: 'Mondwende', action: 'Mondwende feiern', blurb: 'Der Mond dreht sich, das Tal ruht. Du beginnst neu und behältst, was die Wächter im Archiv bewahren.' },
-    longNight: { name: 'Lange Nacht', action: 'Die Lange Nacht beginnen', blurb: 'Eine Nacht, die Tage dauert. Danach steht die Warte stärker als je zuvor.' },
-    ages: { name: 'Zeitalter', action: 'Ein neues Zeitalter', blurb: 'Du gibst die Wacht weiter. Was du gelernt hast, bleibt als Ahnenlicht.' },
+    moonturn: { name: 'Mondwende', action: 'Mondwende feiern', blurb: 'Der Mond dreht sich, das Tal ruht. Du beginnst neu und behältst, was die Wächter im Archiv bewahren.', keeps: ['Archiv und Runensplitter', 'Wächterrang und Taten', 'Sammlung, Schmuck und Talstile', 'Lichtkiesel'], loses: ['Glimmer', 'Stufen aller Bauwerke', 'Zweige der Bauwerke'] },
+    longNight: { name: 'Lange Nacht', action: 'Die Lange Nacht beginnen', blurb: 'Eine Nacht, die Tage dauert. Danach steht die Warte stärker als je zuvor.', keeps: ['Archiv und Runensplitter', 'Wächterrang und Taten', 'Sammlung und Lande'], loses: ['Glimmer und Bauwerke', 'Die Schwelle der Mondwende beginnt wieder klein'] },
+    ages: { name: 'Zeitalter', action: 'Ein neues Zeitalter', blurb: 'Du gibst die Wacht weiter. Was du gelernt hast, bleibt als Ahnenlicht.', keeps: ['Alle Archive und Runensplitter', 'Wächterrang und Taten', 'Sammlung und Lande'], loses: ['Glimmer und Bauwerke', 'Nicht ausgegebener Nachttau', 'Die Schwellen beginnen wieder klein'] },
   },
   archive: {
     oldLantern: { name: 'Alte Laterne', blurb: 'Das erste Licht der Warte, frisch geputzt.', effect: (r: number) => `+${r * 5} % Glimmer` },
@@ -172,7 +173,7 @@ export const gameDe = {
     },
   },
   world: {
-    tab: 'Tal',
+    tab: 'Sammlung',
     visitorHere: (name: string) => `${name} ist zu Besuch!`,
     guestThanks: (name: string, gift: string) => `${name}: ${gift}`,
     greet: 'Begrüßen',
@@ -347,6 +348,14 @@ export const gameDe = {
     pass: 'Festwochen-Stufe eingesammelt',
     window: 'Belohnung eingesammelt',
     wheel: (name: string) => `Sternenrad: ${name}`,
+  },
+  soon: {
+    brew: (time: string) => `Kessel: fertig in ${time}`,
+    brewDone: 'Kessel: fertig, hol das Ergebnis ab',
+    boost: (time: string) => `Leuchtöl: noch ${time}`,
+    circle: (time: string) => `Wächterzirkel: noch ${time}`,
+    omen: (time: string) => `Omen wirkt: noch ${time}`,
+    flash: (time: string) => `Sternenfenster: noch ${time}`,
   },
   trade: {
     tab: 'Markt',

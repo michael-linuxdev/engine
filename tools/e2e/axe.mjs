@@ -37,10 +37,23 @@ try {
   await check('Start')
   // Alle Tabs, die es in diesem Stand gibt (ein Spiel kann Tabs erst später zeigen), zuletzt zurück zur Spielansicht
   const tabs = await p.locator('[data-testid^="tab-"]').evaluateAll((els) => els.map((e) => e.getAttribute('data-testid').slice(4)).filter((x) => x !== 'play'))
-  for (const tab of [...tabs, 'play']) {
+  for (const tab of tabs) {
     await p.getByTestId(`tab-${tab}`).click()
     await check(`Tab ${tab}`)
   }
+  // Views that live in the menu as tiles (beyond the tab bar)
+  await p.getByTestId('menu').click()
+  const menuViews = await p.locator('[data-view="true"]').evaluateAll((els) => els.map((e) => e.getAttribute('data-testid').slice(5)))
+  await p.keyboard.press('Escape')
+  await p.getByTestId('menu-sheet').waitFor({ state: 'detached' })
+  for (const v of menuViews) {
+    await p.getByTestId('menu').click()
+    await p.getByTestId(`menu-${v}`).click()
+    await p.getByTestId('menu-sheet').waitFor({ state: 'detached' })
+    await check(`Menü-Ansicht ${v}`)
+  }
+  await p.getByTestId('tab-play').click()
+  await check('Tab play')
   for (const m of ['settings', 'save', 'legal']) {
     await p.getByTestId('menu').click()
     await p.getByTestId(`menu-${m}`).click()

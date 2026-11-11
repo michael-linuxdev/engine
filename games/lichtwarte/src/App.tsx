@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
-import { DAILY_ID, dailyStatus, isFeatureOpen, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
+import { countAffordableMeta, DAILY_ID, dailyStatus, isFeatureOpen, prestigeReady, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
 import { connectSfx, currentStep, useEngine, useStore, useSteps } from '@engine/react'
-import { CardPicker, FtueCoach, GameShell, Hud, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
+import { CardPicker, ChallengesCard, FtueCoach, GameShell, Hud, MetaShopPanel, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
 import { BuildingArt } from './art/Building'
-import { IconArchive, IconBook, IconGear, IconLantern, IconLeaf, IconMap, IconMenu, IconMoon, IconPouch, IconSave, IconScroll, IconTower } from './art/icons'
+import { IconBook, IconGear, IconLantern, IconLeaf, IconMap, IconMenu, IconMoon, IconPouch, IconSave, IconScroll, IconTower } from './art/icons'
 import { SparkDock } from './scene/SparkDock'
 import { TIER_LEVELS } from './art/registry'
 import { DISTRIBUTION, TEST_PHASE } from './distribution'
 import { CHRONICLE } from './content/chronicle'
-import { DAILY } from './content/live'
+import { DAILY, TRIALS } from './content/live'
 import { MARKET } from './content/market'
 import { Notices } from './story/Notices'
 import { WatchView } from './story/Watch'
@@ -17,6 +17,7 @@ import { WorldTab } from './story/WorldTab'
 import { RealmsTab } from './story/RealmsTab'
 import { MarketTab } from './story/MarketTab'
 import { feedback } from './story/feedback'
+import { Soon } from './story/Soon'
 import { ftueSteps } from './content/ftue'
 import { CURRENCY, game } from './game'
 import { ambience, chronicleRead, ftue, i18n, labels, playtest, prefs, rt, sfx, t, tabsSeen } from './runtime'
@@ -141,6 +142,16 @@ export function App() {
   const read = useStore(chronicleRead)
   const { world } = useEngine(rt)
   const unread = CHRONICLE.some((e) => e.open(world) && !read.includes(e.id))
+  const seen = useStore(tabsSeen)
+  // Das Archiv erscheint erst, wenn es dort etwas zu holen gibt: nach der ersten Mondwende
+  const archiveOpen = (prestigeState(world).layers[0]?.count ?? 0) >= 1 || (world.get<{ earned: Record<string, number> }>(MODULE.wallet)?.earned[CURRENCY.runeShards] ?? 0) > 0
+  const branchVisible = (b: string) => {
+        // Läden der Langen Nacht und des Zeitalters erst zeigen, wenn es ihre Währung schon gab
+        const earned = (rt.get().modules.wallet as { earned: Record<string, number> }).earned
+        if (b === 'night') return (earned[CURRENCY.nightDew] ?? 0) > 0
+        if (b === 'ages') return (earned[CURRENCY.forebearLight] ?? 0) > 0
+        return true
+      }
   useEffect(() => connectSfx(rt, sfx, SFX_EVENTS), [])
   useEffect(() => ambience.attach(), [])
   useEffect(() => {
@@ -186,27 +197,26 @@ export function App() {
       }
       play={<Play onOpen={setSelected} />}
       feedback={feedback}
-      navIcons={{ play: <IconTower />, prestige: <IconMoon />, shop: <IconArchive />, menu: <IconMenu /> }}
+      navIcons={{ play: <IconTower />, prestige: <IconMoon />, menu: <IconMenu /> }}
+      // Die Leiste bleibt bei vier Knöpfen: Tal, Mondwende, Markt, Menü. Weitere Systeme sind Kacheln im Menü.
+      navLabels={{ play: t.app.tabPlay, prestige: t.layers.moonturn.name }}
+      navBadges={{ prestige: prestigeReady(world) || (archiveOpen && countAffordableMeta(world) > 0) }}
+      shopVisible={false}
+      tabs={[{ item: { id: 'market', label: t.trade.tab, icon: <IconPouch />, badge: marketReady(world.get<MarketState>(MARKET_ID), MARKET, rt.clock) }, view: <MarketTab /> }]}
+      menuViews={[
+        ...(isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, icon: <IconLantern />, badge: !seen.includes('watch'), dot: watchBadge(world) }, view: <WatchView /> }] : []),
+        ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab, icon: <IconLeaf />, badge: !seen.includes('world') }, view: <WorldTab /> }] : []),
+        ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab, icon: <IconMap />, badge: !seen.includes('realms') }, view: <RealmsTab /> }] : []),
+      ]}
       menu={[{ id: 'chronicle', label: t.chronicle.menu, icon: <IconBook />, onSelect: () => setChronicle(true), badge: unread }]}
+      menuTop={<Soon />}
       menuIcons={{ save: <IconSave />, settings: <IconGear />, legal: <IconScroll /> }}
-      tabs={[
-        // Der Markt steht von Anfang an offen (Tagesgeschenk, Stile, Testgeld)
-        { item: { id: 'market', label: t.trade.tab, icon: <IconPouch />, badge: marketReady(world.get<MarketState>(MARKET_ID), MARKET, rt.clock) }, view: <MarketTab /> },
-        ...(isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, icon: <IconLantern />, badge: watchBadge(world) }, view: <WatchView /> }] : []),
-        ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab, icon: <IconLeaf /> }, view: <WorldTab /> }] : []),
-        ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab, icon: <IconMap /> }, view: <RealmsTab /> }] : []),
+      // Alles zum Neubeginn steht im Mondwende-Tab: das Archiv (sobald es dort etwas gibt) und die Prüfungen
+      prestigeSections={[
+        ...(archiveOpen ? [{ id: 'archive', label: t.effectLabels.archive, view: <MetaShopPanel title={t.effectLabels.archive} branchVisible={branchVisible} /> }] : []),
+        ...(isFeatureOpen(world, 'trials') ? [{ id: 'trials', label: labels.content('title.trials').name, view: <ChallengesCard cfg={TRIALS} /> }] : []),
       ]}
       notice={<NoticeArea onEvents={() => setTab('watch')} compact />}
-      // Das Archiv erscheint erst, wenn es dort etwas zu holen gibt: nach der ersten Mondwende
-      shopVisible={(prestigeState(world).layers[0]?.count ?? 0) >= 1 || ((world.get<{ earned: Record<string, number> }>(MODULE.wallet)?.earned[CURRENCY.runeShards] ?? 0) > 0)}
-      navLabels={{ shop: t.effectLabels.archive }}
-      metaBranchVisible={(b) => {
-        // Läden der Langen Nacht und des Zeitalters erst zeigen, wenn es ihre Währung schon gab
-        const earned = (rt.get().modules.wallet as { earned: Record<string, number> }).earned
-        if (b === 'night') return (earned[CURRENCY.nightDew] ?? 0) > 0
-        if (b === 'ages') return (earned[CURRENCY.forebearLight] ?? 0) > 0
-        return true
-      }}
       welcomeArt={<ComebackLetter />}
       installArt={<img src="./icons/icon-192.png" alt="" width={72} height={72} className="lw-install-icon" />}
       tab={tab}

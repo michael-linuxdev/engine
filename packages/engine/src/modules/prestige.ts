@@ -80,6 +80,36 @@ export function layerStatus(world: WorldView, layer: string): LayerStatus {
   return { layer, index: k, earned, gate, probe, payout, block, ratio: gate > 0 ? Math.min(1, earned / gate) : 1, restLeft }
 }
 
+export interface LayerForecast {
+  /** Seconds until the gate is reached at the current income (0 once reached, Infinity without income). */
+  secondsToGate: number
+  /** Payout if the player waits `seconds` longer at the current income. */
+  payoutLater: number
+}
+
+/**
+ * Outlook for the first layer, whose progress grows with the primary income:
+ * time to the gate and the payout after waiting a little. Higher layers feed
+ * on runs of the layer below, not on income: `null`.
+ */
+export function layerForecast(world: WorldView, layer: string, seconds: number): LayerForecast | null {
+  const k = layerIndex(world.def, layer)
+  const l = world.def.prestigeLayers[k]
+  if (k !== 0 || !l) return null
+  const s = prestigeState(world).layers[k] ?? emptyLayer()
+  const probe = isProbe(world, k)
+  const gate = gateAt(l, s.sinceReset, probe)
+  const rate = world.rate()
+  const secondsToGate = s.runEarned >= gate ? 0 : rate > 0 ? (gate - s.runEarned) / rate : Infinity
+  const later = rawPayout(l, s.runEarned + rate * seconds, s.sinceReset, probe)
+  return { secondsToGate, payoutLater: Math.floor(world.value(`prestige.payout:${l.id}`, later)) }
+}
+
+/** A layer can be performed right now (dot at the tab). */
+export function prestigeReady(world: WorldView): boolean {
+  return world.def.prestigeLayers.some((l) => layerStatus(world, l.id).block === null)
+}
+
 export interface MilestoneProgress {
   reached: number
   total: number

@@ -12,6 +12,7 @@ export const engineDe = {
     max: 'Max',
     locked: 'Gesperrt',
     new: 'Neu',
+    ready: 'Bereit',
     perSecond: (v: string) => `${v}/s`,
     level: (n: string) => `Stufe ${n}`,
     rank: (n: string, max: string) => `Rang ${n}/${max}`,
@@ -23,6 +24,7 @@ export const engineDe = {
     shop: 'Laden',
     menu: 'Menü',
     menuTitle: 'Menü',
+    soon: 'Bald fertig',
   },
   buyMode: {
     label: 'Kaufmenge',
@@ -57,6 +59,12 @@ export const engineDe = {
   },
   prestige: {
     title: 'Neubeginn',
+    toGate: (time: string) => `Schwelle in etwa ${time}`,
+    later: (amount: string, currency: string) => `In 10 Minuten wären es +${amount} ${currency}`,
+    keeps: 'Bleibt',
+    loses: 'Geht',
+    confirm: 'Wirklich? Noch einmal tippen',
+    actionWith: (action: string, amount: string, currency: string) => `${action}: +${amount} ${currency}`,
     progress: (earned: string, gate: string) => `${earned} von ${gate}`,
     payout: (amount: string, currency: string) => `+${amount} ${currency}`,
     probe: 'Erster Durchgang: niedrigere Schwelle',
@@ -75,6 +83,7 @@ export const engineDe = {
   },
   meta: {
     title: 'Laden',
+    notBought: 'Noch nicht gekauft',
     balance: (amount: string, currency: string) => `${amount} ${currency}`,
     maxed: 'Voll ausgebaut',
     lockedRank: 'Rang wird beim Wiederaufbau frei',
