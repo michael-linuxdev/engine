@@ -197,28 +197,35 @@ export function VisitorNotice({ name }: { name: (guest: string) => string }) {
   )
 }
 
-export function DecorCard({ cfg }: { cfg: DecorConfig }) {
+/** `onEdit`: the game places decor on its own scene; the card then offers that instead of the slot lists. */
+export function DecorCard({ cfg, onEdit }: { cfg: DecorConfig; onEdit?: () => void }) {
   const ui = useUi()
   const { world, dispatch } = useEngine(ui.rt)
   const s = world.get<DecorState>(DECOR_ID)
   if (!s) return null
   return (
     <Card id="decor">
-      <div className="ek-grid2">
-        {s.placed.map((id, slot) => (
-          <label key={slot} className="ek-field">
-            <span>{ui.t.live.slot(String(slot + 1))}</span>
-            <select className="ek-select" value={id} data-testid={`decor-slot-${slot}`} onChange={(e) => dispatch(DECOR_ID, 'place', { slot, id: e.target.value })}>
-              <option value="">{ui.t.live.emptySlot}</option>
-              {s.owned.map((o) => (
-                <option key={o} value={o}>
-                  {ui.labels.content(`decor.${o}`).name}
-                </option>
-              ))}
-            </select>
-          </label>
-        ))}
-      </div>
+      {onEdit ? (
+        <Button variant="secondary" data-testid="decor-edit" disabled={!s.owned.length} onClick={onEdit}>
+          {ui.t.live.decorEdit}
+        </Button>
+      ) : (
+        <div className="ek-grid2">
+          {s.placed.map((id, slot) => (
+            <label key={slot} className="ek-field">
+              <span>{ui.t.live.slot(String(slot + 1))}</span>
+              <select className="ek-select" value={id} data-testid={`decor-slot-${slot}`} onChange={(e) => dispatch(DECOR_ID, 'place', { slot, id: e.target.value })}>
+                <option value="">{ui.t.live.emptySlot}</option>
+                {s.owned.map((o) => (
+                  <option key={o} value={o}>
+                    {ui.labels.content(`decor.${o}`).name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ))}
+        </div>
+      )}
       <ul className="ek-list">
         {cfg.items
           .filter((i) => i.cost || s.owned.includes(i.id))

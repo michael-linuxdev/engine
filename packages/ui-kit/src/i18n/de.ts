@@ -237,6 +237,7 @@ export const engineDe = {
     privacyPage: 'Datenschutzerklärung als Seite',
   },
   live: {
+    decorEdit: 'Auf der Karte aufstellen',
     cardNow: (per: string) => `Für dein Tal jetzt: ${per}`,
     cardSkip: 'Ohne Karte weiter',
     percent: (n: string) => `${n} %`,

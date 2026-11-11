@@ -98,6 +98,7 @@ export const gameDe = {
   watch: {
     tab: 'Wacht',
     titles: {
+      weekly: { name: 'Wochenplan', blurb: 'Drei Vorhaben für diese Woche. Wer alle schafft, bekommt einen Bonus. Montags beginnt ein neuer Plan.' },
       daily: { name: 'Wachrunde', blurb: 'Einmal am Tag die Runde um die Warte. Fällt ein Tag aus, wartet die Serie auf dich.' },
       quests: { name: 'Aufträge', blurb: 'Drei Bitten aus dem Tal, jeden Tag neu.' },
       deeds: { name: 'Taten', blurb: 'Was die Chronik über dich festhält.' },
@@ -155,6 +156,11 @@ export const gameDe = {
       'prestige.performed': 'Mondwende',
       'quest.claimed': 'Auftrag',
     },
+    weekly: {
+      rounds: { name: 'Fünf Wachrunden gehen', blurb: 'An fünf Tagen die Wachrunde einsammeln.' },
+      errands: { name: 'Neun Aufträge erfüllen', blurb: 'Neun Bitten aus dem Tal erledigen.' },
+      turns: { name: 'Zwei Mondwenden feiern', blurb: 'Zweimal neu beginnen.' },
+    },
     festItems: {
       festBoost: { name: 'Festlaterne', blurb: '30 Minuten doppelter Ertrag.' },
       festPebbles: { name: 'Kieselbeutel', blurb: '10 Lichtkiesel.' },
@@ -186,6 +192,8 @@ export const gameDe = {
     },
   },
   world: {
+    decorPick: 'Tippe einen Platz am Weg an.',
+    decorDone: 'Fertig',
     entryHints: {
       buy: (category: string) => `Zeigt sich beim Ausbauen (${category}).`,
       rare: (category: string) => `Selten. Zeigt sich beim Ausbauen (${category}).`,
@@ -344,6 +352,7 @@ export const gameDe = {
     },
   },
   fx: {
+    weekly: 'Wochenplan geschafft: Bonus eingesammelt',
     spent: (amount: string) => `−${amount}`,
     gained: (amount: string, cur: string) => `+${amount} ${cur}`,
     milestone: (name: string, level: string, mult: string) => `${name} Stufe ${level}: Ertrag ×${mult}`,

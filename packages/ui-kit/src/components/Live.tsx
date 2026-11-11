@@ -5,9 +5,9 @@
  */
 import type { CSSProperties, ReactNode } from 'react'
 import {
-  ACHIEVEMENTS_ID, CHALLENGES_ID, challengeAvailable, DAILY_ID, dailyStatus, FESTS_ID, festAt, festDaysLeft, festShop, FLASH_ID, nextFest, primaryCurrency, localDayKey, QUESTS_ID, WEEKEND_ID, WHEEL_ID,
+  ACHIEVEMENTS_ID, CHALLENGES_ID, challengeAvailable, DAILY_ID, dailyStatus, FESTS_ID, festAt, festDaysLeft, festShop, FLASH_ID, nextFest, primaryCurrency, localDayKey, QUESTS_ID, WEEKEND_ID, WEEKLY_ID, weeklyDone, WHEEL_ID,
   type AchievementDef, type AchievementsState, type ChallengeConfig, type ChallengesState, type DailyConfig, type DailyState, type FestConfig, type FestsState,
-  type Amount, type FlashState, type QuestConfig, type QuestsState, type WeekendState, type WheelState,
+  type Amount, type FlashState, type QuestConfig, type QuestsState, type WeeklyPlanConfig, type WeeklyPlanState, type WeekendState, type WheelState,
 } from '@engine/core'
 import { useEngine } from '@engine/react'
 import { useUi } from '../useUi'
@@ -99,6 +99,42 @@ export function QuestsCard({ cfg }: { cfg?: QuestConfig }) {
           )
         })}
       </ul>
+    </Card>
+  )
+}
+
+/** Weekly plan: a few goals for the calendar week and one bonus for all of them. Names: `weekly.<goal id>`, title `title.weekly`. */
+export function WeeklyCard({ cfg }: { cfg: WeeklyPlanConfig }) {
+  const ui = useUi()
+  const { world, dispatch } = useEngine(ui.rt)
+  const amounts = useAmounts()
+  const s = world.get<WeeklyPlanState>(WEEKLY_ID)
+  if (!s) return null
+  const t = ui.labels.content('title.weekly')
+  const done = weeklyDone(s, cfg)
+  return (
+    <Card title={t.name} testId="card-weekly">
+      <p className="ek-muted">{t.blurb}</p>
+      <ul className="ek-list">
+        {cfg.goals.map((g) => {
+          const n = Math.min(g.target, s.progress[g.id] ?? 0)
+          const l = ui.labels.content(`weekly.${g.id}`)
+          return (
+            <li key={g.id} className={`ek-row${n >= g.target ? ' is-done' : ''}`} data-testid={`weekly-${g.id}`}>
+              <div className="ek-row__main">
+                <strong>{l.name}</strong>
+                <ProgressBar ratio={n / g.target} label={l.name} />
+                <span className="ek-muted">{ui.t.live.progress(String(n), String(g.target))}</span>
+              </div>
+              {n >= g.target ? <span>{ui.t.live.done}</span> : <Ring ratio={n / g.target} />}
+            </li>
+          )
+        })}
+      </ul>
+      <p>{ui.t.live.rewardLine(amounts(cfg.reward).join(' + '))}</p>
+      <Button data-testid="weekly-claim" disabled={!done || s.claimed} onClick={() => dispatch(WEEKLY_ID, 'claim')}>
+        {s.claimed ? ui.t.live.claimed : ui.t.live.claim}
+      </Button>
     </Card>
   )
 }

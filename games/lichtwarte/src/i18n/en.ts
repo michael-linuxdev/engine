@@ -96,6 +96,7 @@ export const stringsEn: Strings = {
   watch: {
     tab: 'Watch',
     titles: {
+      weekly: { name: 'Weekly Plan', blurb: 'Three aims for this week. Reach them all for a bonus. A new plan starts on Monday.' },
       daily: { name: 'Watch Round', blurb: 'Once a day, a round of the watch. Miss a day and your streak waits for you.' },
       quests: { name: 'Errands', blurb: 'Three requests from the valley, new every day.' },
       deeds: { name: 'Deeds', blurb: 'What the chronicle records about you.' },
@@ -153,6 +154,11 @@ export const stringsEn: Strings = {
       'prestige.performed': 'Moonturn',
       'quest.claimed': 'Errand',
     },
+    weekly: {
+      rounds: { name: 'Walk five Watch Rounds', blurb: 'Collect the Watch Round on five days.' },
+      errands: { name: 'Finish nine errands', blurb: 'See to nine requests from the valley.' },
+      turns: { name: 'Celebrate two Moonturns', blurb: 'Begin anew twice.' },
+    },
     festItems: {
       festBoost: { name: 'Festival lantern', blurb: '30 minutes of double yield.' },
       festPebbles: { name: 'Pebble pouch', blurb: '10 Glowpebbles.' },
@@ -184,6 +190,8 @@ export const stringsEn: Strings = {
     },
   },
   world: {
+    decorPick: 'Tap a spot along the path.',
+    decorDone: 'Done',
     entryHints: {
       buy: (category: string) => `Turns up while upgrading (${category}).`,
       rare: (category: string) => `Rare. Turns up while upgrading (${category}).`,
@@ -342,6 +350,7 @@ export const stringsEn: Strings = {
     },
   },
   fx: {
+    weekly: 'Weekly plan done: bonus collected',
     spent: (amount: string) => `−${amount}`,
     gained: (amount: string, cur: string) => `+${amount} ${cur}`,
     milestone: (name: string, level: string, mult: string) => `${name} level ${level}: yield ×${mult}`,
