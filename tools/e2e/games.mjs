@@ -219,6 +219,12 @@ export const GAMES = [
       const sx = card.x + card.width / 2
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: sx, y: card.y + 20 }] })
       for (let i = 1; i <= 6; i++) await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: sx, y: card.y + 20 + i * 25 }] })
+      // Beim Ziehen folgt die Karte sichtbar dem Finger und verblasst (auch gegen die Einblend-Animation des Spiels)
+      const pulled = await r.evaluate(() => {
+        const el = document.querySelector('[data-testid="upgrade-sheet"]')
+        return { y: el.getBoundingClientRect().y, opacity: Number(getComputedStyle(el).opacity) }
+      })
+      assert(pulled.y > card.y + 100 && pulled.opacity < 0.9, `Karte folgt dem Wisch und verblasst (${JSON.stringify(pulled)}, Start ${card.y})`)
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
       await r.getByTestId('upgrade-sheet').waitFor({ state: 'detached' })
 

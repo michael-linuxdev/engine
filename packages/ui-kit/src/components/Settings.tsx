@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { decodeBackup, encodeBackup } from '@engine/core'
 import { browserFiles, checkForUpdate, copyText, readKey, usePrefs, useStore, writeKey, type PlaytestLog, type Prefs } from '@engine/react'
 import { useUi } from '../useUi'
@@ -112,33 +112,43 @@ function PlaytestBlock({ log }: { log: PlaytestLog }) {
   )
 }
 
+/** Shortest time (ms) the update check shows as running. */
+const UPDATE_MIN_MS = 700
+
 /** Version line with "update now": pulls a new version right away and reloads into it. */
 function UpdateBlock({ version }: { version: string }) {
   const ui = useUi()
   const s = ui.t.settings
-  const [note, setNote] = useState('')
-  const [busy, setBusy] = useState(false)
+  const [state, setState] = useState<'idle' | 'checking' | 'reloading' | 'current' | 'offline'>('idle')
+  const note = useRef<HTMLParagraphElement>(null)
+  // The answer appears below the button, at the very end of the sheet: bring it into view
+  useEffect(() => {
+    if (state !== 'idle') note.current?.scrollIntoView({ block: 'nearest' })
+  }, [state])
   const run = async () => {
-    setBusy(true)
-    setNote(s.updateChecking)
-    const r = await checkForUpdate().catch(() => 'offline' as const)
+    setState('checking')
+    // The check often answers within milliseconds; keep "checking" visible long enough to be seen
+    const [r] = await Promise.all([checkForUpdate().catch(() => 'offline' as const), new Promise((done) => setTimeout(done, UPDATE_MIN_MS))])
     if (r === 'unsupported') {
       // No service worker (plain browser tab): a reload fetches the current version
+      setState('reloading')
       location.reload()
       return
     }
-    setNote(r === 'reloading' ? s.updateFound : r === 'offline' ? s.updateOffline : s.updateCurrent)
-    setBusy(false)
+    setState(r)
   }
+  const busy = state === 'checking' || state === 'reloading'
+  const text = state === 'checking' ? s.updateChecking : state === 'reloading' ? s.updateFound : state === 'offline' ? s.updateOffline : state === 'current' ? s.updateCurrent : ''
   return (
     <>
       <p className="ek-muted">{s.version(version)}</p>
       <Button variant="secondary" data-testid="app-update" disabled={busy} onClick={() => void run()}>
-        {s.update}
+        {busy ? <span className="ek-spinner" aria-hidden="true" /> : null}
+        {busy ? s.updateBusy : s.update}
       </Button>
-      {note ? (
-        <p role="status" className="ek-note" data-testid="app-update-note">
-          {note}
+      {text ? (
+        <p ref={note} role="status" className={`ek-note ek-update-note ek-update-note--${state}`} data-testid="app-update-note" data-state={state}>
+          {text}
         </p>
       ) : null}
     </>

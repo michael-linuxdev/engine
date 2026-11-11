@@ -19,6 +19,10 @@ const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select
 
 /** Swipe distance (px) that closes the sheet. */
 const SWIPE_CLOSE_PX = 72
+/** Drag distance (px) over which the sheet fades while it is pulled down. */
+const SWIPE_FADE_PX = 320
+/** Duration (ms) of the slide-out after a swipe that closes. */
+const SWIPE_OUT_MS = 160
 
 /**
  * Modal sheet: role=dialog, Escape/back closes it (overlay stack), focus moves
@@ -48,12 +52,14 @@ export function Sheet({ open, title, onClose, children, className, testId, foote
     const el = ref.current
     if (!open || !el) return
     let drag: { y: number; dy: number } | null = null
+    let leaving: ReturnType<typeof setTimeout> | undefined
     const start = (e: TouchEvent) => {
       const body = el.querySelector<HTMLElement>('.ek-sheet__body')
       const inBody = !!body && body.contains(e.target as Node)
       // Inside scrolled content the gesture scrolls; only from the very top it drags the sheet
       drag = e.touches.length === 1 && (!inBody || (body?.scrollTop ?? 0) <= 0) ? { y: e.touches[0].clientY, dy: 0 } : null
     }
+    const backdrop = el.parentElement
     const move = (e: TouchEvent) => {
       if (!drag) return
       const dy = e.touches[0].clientY - drag.y
@@ -61,22 +67,42 @@ export function Sheet({ open, title, onClose, children, className, testId, foote
       if (dy <= 0 && drag.dy <= 0) return
       drag.dy = Math.max(0, dy)
       if (e.cancelable) e.preventDefault()
-      el.style.transform = `translateY(${drag.dy}px)`
+      // A running or filled open animation would win over the inline transform: switch it off while dragging
+      el.style.animation = 'none'
       el.style.transition = 'none'
+      el.style.transform = `translateY(${drag.dy}px)`
+      el.style.opacity = String(Math.max(0.35, 1 - drag.dy / SWIPE_FADE_PX))
+      if (backdrop) {
+        backdrop.style.animation = 'none'
+        backdrop.style.transition = 'none'
+        backdrop.style.setProperty('--ek-drag', String(Math.max(0, 1 - drag.dy / SWIPE_FADE_PX)))
+      }
     }
     const end = () => {
       const d = drag
       drag = null
-      if (!d) return
-      el.style.transition = ''
-      el.style.transform = ''
-      if (d.dy >= SWIPE_CLOSE_PX) close.current()
+      if (!d || d.dy <= 0) return
+      const leave = d.dy >= SWIPE_CLOSE_PX
+      el.style.transition = `transform ${SWIPE_OUT_MS}ms ease-in, opacity ${SWIPE_OUT_MS}ms ease-in`
+      if (!leave) {
+        // Not far enough: the sheet slides back
+        el.style.transform = ''
+        el.style.opacity = ''
+        backdrop?.style.removeProperty('--ek-drag')
+        return
+      }
+      // Far enough: the sheet slides out and fades, then it closes
+      el.style.transform = 'translateY(100%)'
+      el.style.opacity = '0'
+      backdrop?.style.setProperty('--ek-drag', '0')
+      leaving = setTimeout(() => close.current(), SWIPE_OUT_MS)
     }
     el.addEventListener('touchstart', start, { passive: true })
     el.addEventListener('touchmove', move, { passive: false })
     el.addEventListener('touchend', end)
     el.addEventListener('touchcancel', end)
     return () => {
+      clearTimeout(leaving)
       el.removeEventListener('touchstart', start)
       el.removeEventListener('touchmove', move)
       el.removeEventListener('touchend', end)
