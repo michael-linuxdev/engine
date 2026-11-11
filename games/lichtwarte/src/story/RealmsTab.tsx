@@ -1,11 +1,13 @@
-/** Lande-Tab: offene Lande und das nächste gesperrte, je mit eigener Landschaft; ab Jahr 2 darüber die Feuerstraße. */
+/** Lande-Tab: offene Lande und das nächste gesperrte, je mit eigener Landschaft; ab Jahr 2 darüber die Feuerstraße, ab Jahr 3 die Himmelskarte. */
 import { isFeatureOpen, LINKS_ID, type LinksState } from '@engine/core'
 import { useEngine } from '@engine/react'
-import { LinksCard, RegionsPanel, useUi } from '@engine/ui'
+import { ChartCard, LinksCard, RegionsPanel, useUi } from '@engine/ui'
+import { ConstellationArt } from '../art/constellation'
 import { FireRoadArt } from '../art/fireRoad'
 import { RealmArt } from '../art/realm'
 import { FIRE_ROAD, realmOpen } from '../content/fireRoad'
 import { REALM_GROUPS, REALM_IDS, REALMS } from '../content/realms'
+import { constellationRealm, SKY_CHART } from '../content/skyChart'
 import { t } from '../runtime'
 import { currentMood } from '../scene/mood'
 
@@ -19,9 +21,17 @@ export function RealmsTab() {
         <LinksCard
           cfg={FIRE_ROAD}
           placeKey="realm"
+          needLabel={(need) => t.world.roadNeed[need] ?? ''}
           // Sichtbar ist eine Verbindung, sobald das Land davor offen ist: Man sieht, wohin die Straße als Nächstes führt
           visible={(l) => realmOpen(world, l.a)}
           art={<FireRoadArt levels={FIRE_ROAD.list.map((l) => road?.levels[l.id] ?? 0)} m={currentMood()} />}
+        />
+      ) : null}
+      {isFeatureOpen(world, 'skyChart') ? (
+        <ChartCard
+          cfg={SKY_CHART}
+          art={(g, marked) => <ConstellationArt id={g.id} marked={marked} hidden={!realmOpen(world, constellationRealm(g.id))} />}
+          lockedText={(g) => t.world.chartLocked(t.realms.lands[constellationRealm(g.id) as keyof typeof t.realms.lands].name)}
         />
       ) : null}
       <RegionsPanel

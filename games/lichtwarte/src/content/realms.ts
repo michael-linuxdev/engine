@@ -13,6 +13,8 @@ export const REALM_IDS = ['moorgrund', 'kieselbach', 'birkenhang', 'felsenkamm',
   'sturmkap', 'nordlichtinsel', 'bernsteinstrand', 'treibholzhafen', 'nebelinseln', 'walgesang', 'rosenhof', 'hirschgarten', 'schlossruine', 'bibliotheksberg', 'orgelklause', 'teehaus', 'kuppelstadt', 'wolkenmarkt', 'sternenpfad', 'himmelswarte',
   // Welle 5 (51–75): die Hochlande, Jahr 2 — nur anhängen. Beschreibende Namen, keine Eigennamen.
   'hohesMoor', 'steinerneTreppe', 'windsattel', 'schwarzerSee', 'wacholderhang', 'zerbrocheneBruecke', 'ziegenpfad', 'alterSteinkreis', 'siebenQuellen', 'adlerwand', 'schieferbruch', 'nebelkessel', 'letzteWeide', 'roteHalde', 'stillesKloster', 'laerchenwald', 'wasserscheide', 'hoehlenstadt', 'donnerschlucht', 'firnfeld', 'hirtenmarkt', 'sternplatte', 'kalterOfen', 'grenzstein', 'ersteWarte',
+  // Welle 6 (76–100): die Fernen Küsten, Jahr 3 — nur anhängen. Beschreibende Namen, keine Eigennamen.
+  'langerAbstieg', 'tropfenderWald', 'salzterrassen', 'gezeitenmuehle', 'weisseKlippen', 'bootsfriedhof', 'lotsenturm', 'seegraswiesen', 'glockentonne', 'netzmacherdorf', 'sturmhafen', 'leuchtschiff', 'muschelkalkofen', 'wattenweg', 'vogelinsel', 'versunkenesDorf', 'hausDerSeekarten', 'walknochenbogen', 'strandDerLichter', 'kompassrose', 'nebelhornfelsen', 'flaschenpostbucht', 'alteSternwarte', 'langerDamm', 'warteDerVierStrahlen',
 ] as const
 export type RealmId = (typeof REALM_IDS)[number]
 
@@ -23,6 +25,7 @@ export const REALM_GROUPS = [
   { id: 'crafts', from: 22, to: 33 },
   { id: 'cape', from: 33, to: 49 },
   { id: 'highlands', from: 49, to: 74 },
+  { id: 'coasts', from: 74, to: 99 },
 ] as const
 
 /** Bereichs-IDs je Land (10, in Reihenfolge). */
@@ -101,6 +104,31 @@ export const REALM_AREAS: Record<RealmId, readonly string[]> = {
   kalterOfen: ['kilnMouth', 'ashPit', 'bellowsHouse', 'woodStacks', 'sootWall', 'flue', 'keepersRoom', 'firstBrick', 'warmStone', 'kilnFire'],
   grenzstein: ['markedStone', 'twoPaths', 'tollBench', 'walkersHut', 'signPost', 'exchangeTable', 'farGate', 'unknownMark', 'meetingGround', 'borderFire'],
   ersteWarte: ['foundations', 'thirdStep', 'fireBowl', 'oldChronicle', 'scaffoldRing', 'wardenStone', 'newWalls', 'lanternRoom', 'openDoor', 'firstFire'],
+  langerAbstieg: ['firstBend', 'muleStable', 'brakeLog', 'waterTrough', 'packShed', 'scree', 'restWall', 'seaGlimpse', 'fourRayStone', 'descentFire'],
+  tropfenderWald: ['mossSteps', 'dripLeaves', 'mushroomLog', 'fernHollow', 'rootBridge', 'dryingHut', 'snailWall', 'cloudBranch', 'glowCaps', 'woodFire'],
+  salzterrassen: ['topPan', 'sluiceBoard', 'rakeRack', 'saltCones', 'brineChannel', 'whiteHut', 'mirrorPan', 'windFence', 'saltStore', 'terraceFire'],
+  gezeitenmuehle: ['millPond', 'tideGate', 'wheelPit', 'grainHoist', 'stoneFloor', 'flourChute', 'tideTable', 'millersBoat', 'moonWindow', 'millFire'],
+  weisseKlippen: ['cliffPath', 'chalkPit', 'flintBed', 'ropeLadder', 'gullLedge', 'whiteWash', 'carvedSign', 'lookoutChair', 'seaStack', 'cliffFire'],
+  bootsfriedhof: ['oldHull', 'ribCage', 'nailBarrel', 'lanternShed', 'tarYard', 'figurehead', 'plankStack', 'nameBoards', 'lastBoat', 'wreckFire'],
+  lotsenturm: ['pilotStairs', 'spyglass', 'flagLocker', 'pilotBoat', 'chartNook', 'fogBell', 'nightBunk', 'channelMarks', 'lampGallery', 'towerFire'],
+  seegraswiesen: ['lowMeadow', 'scytheRack', 'dryingLines', 'crabHoles', 'balePress', 'stiltHut', 'eelPool', 'tideStakes', 'greenBarn', 'meadowFire'],
+  glockentonne: ['tenderBoat', 'chainLocker', 'paintShed', 'sandbankMark', 'oilCan', 'spareBell', 'anchorStone', 'swellGauge', 'bellCage', 'buoyFire'],
+  netzmacherdorf: ['netPoles', 'twineLoft', 'needleBench', 'corkStore', 'tanningVat', 'knotSchool', 'dryingLane', 'floatRack', 'greatSeine', 'villageFire'],
+  sturmhafen: ['breakwater', 'harbourBook', 'mooringRings', 'stormShutters', 'soupKitchen', 'sailRepair', 'chainBoom', 'refugeHall', 'harbourLamp', 'harbourFire'],
+  leuchtschiff: ['anchorChain', 'mastLamp', 'galley', 'logDesk', 'oilTank', 'stormSail', 'dinghy', 'watchBell', 'lensHouse', 'shipFire'],
+  muschelkalkofen: ['shellHeap', 'kilnDoor', 'peatStack', 'slakingPit', 'limeBarrels', 'rakeFloor', 'whiteCart', 'drawHole', 'burnersBench', 'kilnFire'],
+  wattenweg: ['firstStake', 'brushMarks', 'refugeCage', 'wormCasts', 'mudSled', 'tideClock', 'shellBank', 'halfwayPost', 'lastStake', 'pathFire'],
+  vogelinsel: ['landingRock', 'countingHut', 'nestTerraces', 'ringBench', 'driftwoodFence', 'eggLedge', 'rainCistern', 'hide', 'ternBank', 'islandFire'],
+  versunkenesDorf: ['towerTop', 'bellRope', 'wallLines', 'oldWell', 'doorStep', 'plankWalk', 'namePost', 'tideMarks', 'dryHour', 'villageLight'],
+  hausDerSeekarten: ['chartTable', 'inkStand', 'copperPlates', 'rollRack', 'lightDrawer', 'dividers', 'dryingAttic', 'oldSheets', 'masterChart', 'chartFire'],
+  walknochenbogen: ['ribGate', 'debtBook', 'wrackLine', 'reevesHut', 'findingsRack', 'sandLedger', 'amberJar', 'driftBench', 'highTideMark', 'archFire'],
+  strandDerLichter: ['glowLine', 'darkBoat', 'netBasket', 'warmShallows', 'sandFire', 'oarRack', 'starPool', 'quietDune', 'thousandthLight', 'beachFire'],
+  kompassrose: ['stoneRose', 'brassPoint', 'needleForge', 'lodestone', 'glassBlower', 'gimbalBench', 'sightLine', 'windNames', 'fourthPoint', 'roseFire'],
+  nebelhornfelsen: ['windHole', 'hornLedge', 'echoWall', 'bellowsHut', 'signalBook', 'rockStairs', 'kelpBed', 'stillDay', 'answerPoint', 'rockFire'],
+  flaschenpostbucht: ['bottleLine', 'readingRock', 'corkBowl', 'letterLines', 'waxPot', 'answerDesk', 'currentPost', 'glassHeap', 'oldestLetter', 'bayFire'],
+  alteSternwarte: ['copperDome', 'longTube', 'twoLists', 'nightStairs', 'lensCabinet', 'clockRoom', 'coastWindow', 'skyWindow', 'emptyLine', 'domeFire'],
+  langerDamm: ['firstLantern', 'stonePacking', 'keepersCart', 'oilHut', 'waveWall', 'fishingSteps', 'midwayBench', 'sprayGate', 'lastLantern', 'causewayFire'],
+  warteDerVierStrahlen: ['openDoor', 'twoMugs', 'fourRayLens', 'seaStairs', 'otherChronicle', 'signalDeck', 'keyHook', 'guestBed', 'sharedTable', 'fourthRay'],
 }
 
 /**

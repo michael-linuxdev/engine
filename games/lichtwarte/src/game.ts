@@ -5,7 +5,7 @@
  * Inhalts-IDs sind stabil und stehen in ids.lock.json — nie ändern, nur anhängen.
  */
 import {
-  achievementsModule, calendarFestsModule, challengesModule, choiceEventsModule, collectionsModule, combineModule, dailyModule, regionsModule, marketModule, decorModule, layerCardsModule, projectsModule, seasonAlbumModule, visitorsModule, defaultBalance, featureUnlocksModule, flashModule, questsModule, standardModules, linksModule, voyagesModule, weeklyPlanModule,
+  achievementsModule, calendarFestsModule, challengesModule, choiceEventsModule, collectionsModule, combineModule, dailyModule, regionsModule, marketModule, decorModule, layerCardsModule, projectsModule, seasonAlbumModule, visitorsModule, defaultBalance, featureUnlocksModule, flashModule, questsModule, standardModules, chartModule, linksModule, voyagesModule, weeklyPlanModule,
   weekendModule, wheelModule, type GameDefinition, type GateAtom, type MetaItemDef, type ProducerDef,
 } from '@engine/core'
 import { BRAND } from './brand'
@@ -14,7 +14,9 @@ import { MARKET } from './content/market'
 import { REALMS } from './content/realms'
 
 export { REALMS }
+export { simPlay } from './simPlay'
 import { FIRE_ROAD } from './content/fireRoad'
+import { SKY_CHART } from './content/skyChart'
 import { ALCHEMY, COLLECTION, CONSTELLATIONS, DECOR, FOLIO, GREAT_WORKS, GUESTS, OMENS, WORLD_FEATURES, VOYAGES } from './content/world'
 
 export const PRODUCER_IDS = [
@@ -230,6 +232,7 @@ function liveModules() {
     projectsModule(GREAT_WORKS),
     voyagesModule(VOYAGES),
     linksModule(FIRE_ROAD),
+    chartModule(SKY_CHART),
     // P9 Lande
     regionsModule(REALMS),
     marketModule(MARKET),

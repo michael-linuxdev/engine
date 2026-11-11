@@ -26,6 +26,9 @@ export const storyDe = {
       highlands: (n: string) => `Öffnet sich mit ${n} Hochlanden.`,
       road: (n: string) => `Öffnet sich mit ${n} Stufen der Feuerstraße.`,
       chain: (n: string) => `Öffnet sich mit einer Kette aus ${n} Feuern.`,
+      coasts: (n: string) => `Öffnet sich mit ${n} Küstenlanden.`,
+      sky: (n: string) => `Öffnet sich mit ${n} Sternen auf der Himmelskarte.`,
+      constellations: (n: string) => `Öffnet sich mit ${n} vollständigen Sternbildern.`,
     },
     menu: 'Chronik',
     title: 'Chronik der Wächterin',
@@ -33,15 +36,17 @@ export const storyDe = {
     empty: 'Noch steht nichts darin.',
     signature: '— Alwine',
     signatureYou: '— die Wacht vor dir',
+    signatureFenno: '— Fenno',
+    letterFenno: 'Ein Brief von Fenno, vom Greif gebracht',
     letter: 'Ein Brief, vom Greif gebracht',
     prev: 'Zurück',
     next: 'Weiter',
     close: 'Buch schließen',
     page: (n: string, total: string) => `Seite ${n} von ${total}`,
     chapter: (n: string, name: string) => `Kapitel ${n} · ${name}`,
-    books: { watch: 'Buch 1 · Die Wacht', wayOfFires: 'Buch 2 · Der Weg der Feuer' },
+    books: { watch: 'Buch 1 · Die Wacht', wayOfFires: 'Buch 2 · Der Weg der Feuer', deepTime: 'Buch 3 · Die tiefe Zeit' },
     bookShort: (n: string) => `Buch ${n}`,
-    bookLocked: { wayOfFires: 'Beginnt mit dem ersten Hochland.' },
+    bookLocked: { wayOfFires: 'Beginnt mit dem ersten Hochland.', deepTime: 'Beginnt jenseits der Ersten Warte.' },
     chapters: {
       key: 'Der Schlüssel',
       remains: 'Was bleibt',
@@ -54,6 +59,11 @@ export const storyDe = {
       otherFires: 'Die Feuer der anderen',
       coldKiln: 'Der kalte Ofen',
       firstWatch: 'Die Erste Warte',
+      descent: 'Der andere Hang',
+      lights: 'Lichter am Wasser',
+      twoLists: 'Zwei Listen',
+      deepTime: 'Die tiefe Zeit',
+      fourRays: 'Vier Strahlen',
     },
     comeback: { title: 'Da bist du ja', body: 'Lange nichts gehört. Die Warte hat geglimmt, ich habe aufgepasst. Hier, für den Weg: ein paar Lichtkiesel.' },
     entries: {
@@ -306,8 +316,8 @@ export const storyDe = {
         body: 'In der Schlucht ist es zu laut zum Reden, also spricht man mit Laternen. Die Stegmeisterin hat mir ihre Zeichen beigebracht: kurz, lang, verdeckt.\n\nEs sind dieselben, die Fenno vom Turm aus gibt. Ich habe ihn gefragt, woher er sie hat. Von Alwine. Und die? Von ihrer Meisterin. Niemand hat diese Zeichen erfunden. Sie sind mit den Feuern den Berg heruntergekommen.',
       },
       roadThirtySix: {
-        title: 'Die Hälfte der Stufen',
-        body: 'Sechsunddreißig Stufen brennen. Ich merke, dass ich abends nicht mehr zuerst auf unser eigenes Feuer sehe, sondern die Kette hinauf, bis dorthin, wo sie aufhört.\n\nFrüher habe ich ein Feuer gehütet. Jetzt hüte ich die Frage, wie weit es reicht. Alwine schreibt, das sei keine andere Arbeit, nur dieselbe von weiter oben.',
+        title: 'Achtundzwanzig Stufen',
+        body: 'Achtundzwanzig Stufen brennen. Ich merke, dass ich abends nicht mehr zuerst auf unser eigenes Feuer sehe, sondern die Kette hinauf, bis dorthin, wo sie aufhört.\n\nFrüher habe ich ein Feuer gehütet. Jetzt hüte ich die Frage, wie weit es reicht. Alwine schreibt, das sei keine andere Arbeit, nur dieselbe von weiter oben.',
       },
       chainEighteen: {
         title: 'Ein Zeichen von oben',
@@ -348,6 +358,166 @@ export const storyDe = {
       roadSixty: {
         title: 'Der Weg der Feuer',
         body: 'Diese Seite schreibe ich selbst. Die Straße brennt, vom Tal bis zur Ersten Warte, und weiter, den anderen Hang hinunter, in Feuern, die nicht unsere sind.\n\nWer hat die anderen Feuer entzündet? Niemand allein. Eine hat angefangen, eine hat weitergemacht, eine hat den Schlüssel unter die Stufe gelegt. Drüben wartet eine Wacht mit vier Strahlen. Alwine packt schon. Fenno sagt, diesmal komme er mit. Ich glaube, diesmal hat er recht.',
+      },
+      coastDescent: {
+        title: 'Bergab',
+        body: 'Liebe Wacht,\n\nwir sind über den Grat. Fenno ist die ersten hundert Kehren gerannt und die nächsten hundert getragen worden, von einem Maultier, das ihn nicht leiden kann.\n\nAn jeder zehnten Kehre steht ein Stein mit einer Laterne darauf. Vier Strahlen. Jemand hat diesen Weg für Leute gebaut, die von unten heraufkommen. Wir gehen ihn in der falschen Richtung, und er stimmt trotzdem.',
+      },
+      skyFirst: {
+        title: 'Der erste Stern',
+        body: 'Solange die beiden fort sind, habe ich in der Sternwarte etwas angefangen. Unter der Kuppel hängt eine leere Karte, groß wie ein Tischtuch. Ich habe den ersten Stern eingetragen.\n\nEs hat länger gedauert, als ich dachte. Man muss warten, bis er wirklich dort steht, wo man ihn vermutet. Der Himmel lässt sich nicht drängen.',
+      },
+      coastWood: {
+        title: 'Fenno schreibt',
+        body: 'Hallo Wacht,\n\nAlwine sagt, ich soll auch mal schreiben. Also: Hier ist ein Wald, in dem es nie regnet und in dem trotzdem alles tropft. Ich bin seit zwei Tagen nass. Der Pilzsammler sagt, er hört die Pilze wachsen. Ich habe eine Stunde gelauscht und nur Alwine schnarchen gehört.\n\nNachts leuchten die Pilze. Ich habe einen eingepackt. Er leuchtet jetzt in meinem Rucksack und riecht.',
+      },
+      coastSalt: {
+        title: 'Hundert Spiegel',
+        body: 'Liebe Wacht,\n\nam Hang liegen Salzbecken, hundert Stück, und in der Nacht liegt in jedem ein Stück Himmel. Die Salzharkerin hat mir die untersten gezeigt. Dort spiegeln sich keine Sterne. Dort spiegeln sich Lichter, die tiefer stehen, knapp über dem Wasser.\n\n„Die am Rand“, hat sie gesagt, „das sind die von der Küste.“ Wacht, ich habe an unsere Sternwarte gedacht. An den Rand des Himmels. An das, was dort fehlt, bevor eine Lange Nacht kommt.',
+      },
+      conLadder: {
+        title: 'Die Leiter',
+        body: 'Das erste Sternbild ist vollständig: die Leiter. Sieben Sterne, zwei Holme, drei Sprossen, wenn man großzügig zählt.\n\nIch habe sie mit der alten Karte verglichen, die in der Schublade unter dem Rohr liegt. Dort hat die Leiter neun Sterne. Zwei davon stehen so tief, dass man sie von hier gar nicht sehen dürfte. Jemand hat sie trotzdem eingetragen. Jemand hat sie einmal gesehen.',
+      },
+      coastMill: {
+        title: 'Zweimal am Tag',
+        body: 'Hallo Wacht,\n\nich habe das Meer gesehen. Es ist größer, als Alwine gesagt hat, und sie hat schon übertrieben. Es kommt zweimal am Tag und geht zweimal wieder, und niemand regt sich darüber auf.\n\nDer Müller mahlt, wenn es kommt. Ich habe gefragt, was er macht, wenn es einmal nicht kommt. Er hat mich angesehen wie du, wenn ich frage, was passiert, wenn das Feuer ausgeht.',
+      },
+      skyEdge: {
+        title: 'Am Rand',
+        body: 'Vier Sterne stehen auf der Karte. Der fünfte gehört an den Rand, knapp über die Berge. Ich warte seit einer Woche auf ihn.\n\nEr ist da, aber er benimmt sich nicht wie ein Stern. Er flackert bei Wind. Er ist gelber als die anderen. Und gestern Abend war er eine halbe Stunde früher zu sehen, als er dürfte. Ich habe ihn mit Bleistift eingetragen.',
+      },
+      coastCliffs: {
+        title: 'Die hellste Wand',
+        body: 'Liebe Wacht,\n\ndie Klippen hier sind so weiß, dass sie nachts noch leuchten, wenn längst kein Licht mehr da ist. Oben steht ein Stuhl aus Stein, mit Blick aufs Meer. In die Lehne ist die Laterne mit den vier Strahlen geritzt.\n\nIch habe mich hineingesetzt. Von dort sieht man die ganze Küste, und an der Küste elf Feuer. Die Kreidebrecherin sagt, ihre Großmutter habe von diesem Stuhl aus vierzig gezählt.',
+      },
+      coastBoats: {
+        title: 'Dreihundert Laternen',
+        body: 'Hallo Wacht,\n\nhier liegen alte Boote, und ein Mann nimmt sie auseinander und hebt von jedem die Laterne auf. Dreihundert Stück, alle geputzt, keine brennt. Ich habe gefragt, warum er sie nicht anzündet.\n\n„Wem denn?“, hat er gefragt. Ich habe gesagt: uns. Er hat lange nichts gesagt und dann eine angezündet. Nur eine. Aber er hat sie ins Fenster gestellt, zum Berg hin.',
+      },
+      coastPilot: {
+        title: 'Wer zuerst sieht',
+        body: 'Liebe Wacht,\n\ndie Lotsin sieht jedes Schiff, bevor es selbst etwas sieht. Ich habe sie gefragt, woran sich die Schiffe nachts halten. „An die Feuer“, hat sie gesagt, „und wo keins mehr ist, an mich.“\n\nSie hat eine Liste der Feuer, die es nicht mehr gibt. Sie ist länger als die der Feuer, die brennen. Am Ende der Liste steht eines, das in ihren Karten „das Feuer hinter dem Berg“ heißt. Daneben ein Fragezeichen, und seit letztem Herbst ein zweites Zeichen: ein Haken.',
+      },
+      skyOldChart: {
+        title: 'Die alte Karte',
+        body: 'Acht Sterne. Ich habe die alte Karte jetzt neben die neue gehängt, und der Unterschied ist nicht mehr zu übersehen. Oben, in der Mitte des Himmels, stimmen sie überein. Am Rand hat die alte Karte einen ganzen Kranz von Sternen, die es bei mir nicht gibt.\n\nSie sind alle gleich hell gezeichnet. Sie stehen alle gleich hoch. Kein Himmel ordnet seine Sterne so.',
+      },
+      coastSeagrass: {
+        title: 'Unter Wasser mähen',
+        body: 'Hallo Wacht,\n\nes gibt hier Wiesen, die zweimal am Tag untergehen. Ich durfte mähen. Ich habe mir in den Schuh gemäht, aber nur in den Schuh.\n\nDer Mäher schläft auf Stroh, obwohl er Seegras für alle Betten der Küste macht. Er sagt, wer den ganzen Tag etwas für andere macht, will abends was anderes. Ich glaube, deshalb sitzt du abends nie am Feuer, sondern in der Küche.',
+      },
+      conSecond: {
+        title: 'Der Schlüssel am Himmel',
+        body: 'Das zweite Sternbild heißt der Schlüssel. Fünf Sterne, ein Schaft und ein Bart. Ich habe gezählt: drei Zacken.\n\nAuf der alten Karte hat er vier. Der vierte Stern steht wieder am Rand, wieder zu tief, wieder gelb eingezeichnet statt weiß. Wer immer diese Karte gemacht hat, wusste den Unterschied. Er hat zwei Farben benutzt. Ich habe nur nie darauf geachtet.',
+      },
+      coastBuoy: {
+        title: 'Eine Glocke, die niemand läutet',
+        body: 'Liebe Wacht,\n\ndraußen auf der Sandbank schlägt eine Glocke im Seegang. Seit hundert Jahren, sagt die Tonnenlegerin, und kein Mensch hat sie je angefasst außer zum Ölen.\n\nIch habe sie gefragt, ob das nicht traurig sei: etwas zu pflegen, das einem nie antwortet. Sie hat gelacht. „Sie antwortet jedem Schiff“, hat sie gesagt. „Nur nicht mir. Ich bin nicht gemeint.“ Ich habe lange nichts so Kluges über unsere Arbeit gehört.',
+      },
+      coastNets: {
+        title: 'Die richtigen Löcher',
+        body: 'Hallo Wacht,\n\nich kann jetzt einen Netzknoten. Er hält. Der Netzflicker sagt, ein Netz ist vor allem Loch, und man muss die richtigen Löcher lassen.\n\nIch habe ihm von der Feuerstraße erzählt, und er hat gesagt, das sei dasselbe: lauter Dunkel mit Knoten drin. Wenn ein Knoten reißt, fällt nicht das ganze Netz. Aber der Fisch findet das Loch. Ich weiß nicht, wer bei uns der Fisch ist. Alwine sagt: die Nacht.',
+      },
+      skyTwoSkies: {
+        title: 'Zwei Himmel',
+        body: 'Dreizehn Sterne, und ich führe inzwischen zwei Karten. Auf der einen stehen die Sterne, die bleiben. Auf der anderen die am Rand, die flackern.\n\nGestern ist auf der zweiten einer dazugekommen. Einfach so, an einem Abend, an dem kein Stern aufgehen sollte. Heute kam ein Greif mit einem Brief von Fenno. Er schreibt von einem Mann, der eine Laterne ins Fenster gestellt hat, zum Berg hin.',
+      },
+      coastHarbour: {
+        title: 'Vier Striche',
+        body: 'Liebe Wacht,\n\nim Hafenbuch stehen hinten Namen in einer Schrift aus vier Strichen. Die Hafenmeisterin kann sie nicht lesen, aber sie schreibt sie ab, wenn das Buch voll ist, ins nächste. Seit zwölf Büchern.\n\nIch habe ihr den Schlüssel gezeigt. Sie hat genickt und eine Seite aufgeschlagen, auf der nur ein einziger Name steht, und daneben, in ihrer eigenen Hand: „Ist den Berg hinauf. Kommt wieder.“ Das Datum ist zweihundertelf Jahre alt.',
+      },
+      conThird: {
+        title: 'Was ein Sternbild ist',
+        body: 'Drei Sternbilder sind vollständig. Ich habe heute verstanden, dass ein Sternbild keine Entdeckung ist, sondern eine Verabredung. Die Sterne der Laterne haben nichts miteinander zu tun. Jemand hat beschlossen, dass sie zusammengehören, und es weitergesagt.\n\nSo ist es mit den Feuern auch. Zwischen unserem Tal und dem Hohen Moor ist nichts als Dunkel. Die Straße ist nur das, was wir darüber verabredet haben.',
+      },
+      coastLightship: {
+        title: 'Ein Schiff, das bleibt',
+        body: 'Hallo Wacht,\n\nich war auf einem Schiff, das nirgends hinfährt. Es hat sein Feuer oben am Mast und liegt genau dort, wo kein Turm stehen kann. Der Schiffsjunge ist sechzig. Er sagt, er sei mit vierzehn an Bord gekommen und habe nie jemanden gefunden, der es besser kann.\n\nIch habe gefragt, ob er einen Lehrling will. Er hat mich sehr lange angesehen. Keine Sorge. Ich habe gesagt, ich hätte schon eine Stelle.',
+      },
+      coastKiln: {
+        title: 'Der kleine Bruder',
+        body: 'Liebe Wacht,\n\nhier brennt ein Ofen, der Muscheln zu Kalk macht. Die Kalkbrennerin kennt den Kalten Ofen in den Bergen. Sie nennt ihn „den großen Bruder“. Ihrer ist nie ausgegangen.\n\nIch habe gefragt, wie man ein Feuer zweihundert Jahre hält. „Gar nicht“, hat sie gesagt. „Man hält es bis morgen. Das hat meine Mutter gemacht und ihre auch.“ Ich schreibe es dir auf, weil ich es selbst erst hier begriffen habe.',
+      },
+      skyLow: {
+        title: 'Zu tief für Sterne',
+        body: 'Neunzehn Sterne auf der ersten Karte. Auf der zweiten, der mit den flackernden, sind es inzwischen sechs.\n\nIch habe gerechnet, mit dem Rohr und einem Faden. Die sechs stehen nicht am Himmel. Sie stehen darunter, hinter dem Grat, dort wo die Erde sich wegkrümmt und nur noch das Hellste herüberreicht. Ich habe die ganze Zeit keine Sterne gezählt. Ich habe die Küste gezählt.',
+      },
+      coastPath: {
+        title: 'Ein Weg für sechs Stunden',
+        body: 'Hallo Wacht,\n\nhier gibt es einen Weg, der nur sechs Stunden am Tag da ist. Dann kommt das Meer und nimmt ihn wieder mit. Der Wattführer steckt ihn jeden Morgen neu ab. Jeden Morgen!\n\nIch habe gesagt, das sei doch Unsinn, er könne ja auch eine Brücke bauen. Er hat gesagt: „Und wer steckt dann morgens den Weg ab?“ Alwine hat so gelacht, dass sie sich setzen musste. Ich verstehe es immer noch nicht ganz. Aber fast.',
+      },
+      coastBirds: {
+        title: 'Die Vögel wissen es',
+        body: 'Liebe Wacht,\n\ndie Vogelwartin sagt, die Zugvögel flögen nach den Feuern. In den Jahren, in denen viele brannten, seien sie in einer geraden Linie gekommen. In den dunklen Jahren seien sie umhergeirrt und zu spät gewesen.\n\nSeit zwei Sommern kommen sie wieder gerade. Sie führt Buch darüber, wie über alles. Im Buch steht bei jedem Jahr eine Zahl: wie viele Feuer man von der Insel sah. Die Zahlen fallen, vierzig Jahre lang. Dann, ganz unten auf der letzten Seite, steigen sie.',
+      },
+      conFifth: {
+        title: 'Fünf Bilder, ein Rand',
+        body: 'Fünf Sternbilder. Der obere Himmel ist fast fertig, und er ist genau so, wie er auf der alten Karte steht. Kein Stern fehlt. Es hat nie einer gefehlt.\n\nWas vor einer Langen Nacht verschwindet, sind die gelben am Rand. Die Sternwarte hat es immer richtig gesehen und immer falsch genannt. „Dort fehlen Sterne“, stand in der Chronik. Es müsste heißen: Dort ist jemand eingeschlafen.',
+      },
+      coastVillage: {
+        title: 'Für ein Dorf, das es nicht mehr gibt',
+        body: 'Liebe Wacht,\n\nbei Ebbe ragt hier ein Kirchturm aus dem Watt. Der Glöckner läutet ihn, für ein Dorf, das seit hundert Jahren unter Wasser liegt.\n\nIch habe ihn gefragt, für wen. „Für die, die hier wohnen werden“, hat er gesagt. „Das Meer kommt und geht. Vor dem Dorf war hier auch schon ein Dorf.“ Er hat mir im Schlick drei Schichten Mauern gezeigt, übereinander. Unter jeder lag Asche von einem Feuer.',
+      },
+      coastCharts: {
+        title: 'Karten ohne Land',
+        body: 'Hallo Wacht,\n\nich war in einem Haus voller Karten, auf denen das Land leer ist. Nur das Meer ist bemalt, und am Ufer stehen Punkte. Jeder Punkt ist ein Feuer. Die Zeichnerin hat mich in den Keller gelassen, zu den alten Blättern.\n\nAuf dem ältesten ist die Küste ein einziger Strich aus Punkten. Auf dem nächsten fehlen ein paar. Dann viele. Dann wieder mehr. Dann wieder weniger. Wacht, das geht so durch den ganzen Keller. Es sieht aus, als würde die Küste atmen.',
+      },
+      skyCount: {
+        title: 'Was Fenno gesehen hat',
+        body: 'Sechsundzwanzig Sterne. Ich habe Fennos Brief dreimal gelesen und dann das Archiv aufgeschlossen. Dort liegen die Karten der Wächter vor uns, eine in jedem Fach. Ich habe sie nie nebeneinandergelegt.\n\nHeute habe ich es getan. Auf jeder ist der obere Himmel gleich. Auf jeder ist der Rand anders: einmal voll, einmal leer, einmal halb. Was wir ein Zeitalter nennen, ist ein Atemzug dieser Küste. Die Lange Nacht ist der Moment, in dem sie ausgeatmet hat.',
+      },
+      coastArch: {
+        title: 'Was man dem Meer schuldet',
+        body: 'Liebe Wacht,\n\nam Strand steht ein Tor aus zwei Walrippen. Wer hindurchgeht, muss dem Strandvogt sagen, was er dem Meer schuldet. Fenno hat gesagt: „Einen Schuh.“ Der Vogt hat es ernst aufgeschrieben.\n\nIch habe lange überlegt. Dann habe ich gesagt: einen Weg zurück. Er hat geblättert, weit nach vorn, und mir einen Eintrag gezeigt, zweihundertelf Jahre alt, in der Schrift mit den vier Strichen. Er konnte ihn nicht lesen. Ich inzwischen schon. Es ist dieselbe Antwort.',
+      },
+      coastGlow: {
+        title: 'Das Meer leuchtet selbst',
+        body: 'Hallo Wacht,\n\ndas glaubst du mir nicht: Hier leuchtet nachts das Wasser. Bei jedem Schritt. Ich bin eine Stunde am Ufer hin und her gerannt und habe eine Spur aus Licht gemacht, bis Alwine gesagt hat, ich solle die Fische schlafen lassen.\n\nDie Fischerin fährt ohne Laterne hinaus. Sie sagt, hier brauche es kein Feuer, das Meer wisse selbst, wo sie ist. Ich habe gefragt, ob sie dann nie Angst hat. „Doch“, hat sie gesagt. „Wenn es mal nicht leuchtet.“',
+      },
+      conSeventh: {
+        title: 'Vor den Sternen',
+        body: 'Sieben Sternbilder. Im untersten Fach des Archivs habe ich die älteste Karte gefunden, auf Leder, nicht auf Papier. Der Rand ist ein geschlossener Ring aus gelben Punkten, ohne eine einzige Lücke.\n\nDas hat die Sternwarte gesehen, bevor die Sterne fehlten: einen Horizont, der rundherum bewohnt war. Kein Wunder, dass niemand die Lichter für etwas anderes hielt als für den Himmel. Sie waren immer da gewesen.',
+      },
+      coastRose: {
+        title: 'Vier aus zweiunddreißig',
+        body: 'Liebe Wacht,\n\nauf einem Platz am Meer liegt eine Rose aus Stein, zweiunddreißig Striche. Vier sind aus Messing. Der Kompassmacher sagt, sie zeigten auf vier Feuer, die nie ausgehen dürfen, damit alle anderen wieder angezündet werden können. Eines davon, sagt er, sei erloschen gewesen.\n\nIch habe mich auf den vierten Strich gestellt und ihm nachgesehen. Er zeigt den Berg hinauf, über den Grat, über die Hochlande. Wacht, er zeigt auf dich.',
+      },
+      skyRing: {
+        title: 'Vier Strahlen',
+        body: 'Vierunddreißig Sterne. Alwines Brief von der Kompassrose liegt neben der Lederkarte, und jetzt sehe ich, was ich vorher für Schmuck gehalten habe: Vier der gelben Punkte im Ring sind größer gezeichnet, mit Strahlen. Einer steht dort, wo unser Tal ist.\n\nDie Laterne mit den vier Strahlen ist kein fremdes Zeichen. Es ist das ganze Zeichen. Unseres hat drei, weil wir vergessen haben, uns selbst mitzuzählen.',
+      },
+      coastHorn: {
+        title: 'Ein Ton',
+        body: 'Hallo Wacht,\n\nhier ist ein Fels mit einem Loch, und wenn der Wind durchgeht, klingt es wie ein Horn. Wenn kein Wind geht, bläst eine Frau hinein. Ein Ton: „Ich bin hier.“ Sie hat ihn von ihrer Großmutter, und die hatte ihn aus den Bergen.\n\nIch habe meine Laterne genommen und geantwortet. Kurz, lang, verdeckt. Sie hat das Horn sinken lassen und mich angestarrt. Dann hat sie gefragt, wer mir das beigebracht hat. Ich habe gesagt: du. Also du, Wacht. Ich hoffe, das war richtig.',
+      },
+      coastBottles: {
+        title: 'Der älteste Brief',
+        body: 'Liebe Wacht,\n\nin dieser Bucht landet jede Flaschenpost der Küste. Der Briefsammler liest alle und beantwortet die, die es verdienen. Er hat mir den ältesten Brief gezeigt, den er besitzt. Er steckt noch in der Flasche, weil das Papier sonst zerfällt.\n\nMan kann ihn durch das Glas lesen. Vier Striche. „Bin oben. Das Feuer brennt. Schickt jemanden, wenn ihr mich braucht. Wenn nicht, bleibe ich, bis hier jemand lesen kann.“ Er hat nie eine Antwort hineingeworfen. Er wusste nicht, wohin.',
+      },
+      conNinth: {
+        title: 'Die Antwort',
+        body: 'Neun Sternbilder. Ich habe heute Abend etwas getan, das in keiner Chronik steht. Ich habe das Feuer oben nicht einfach brennen lassen. Ich habe es abgedeckt und wieder aufgedeckt. Kurz, lang, verdeckt. Den Berg hinauf, damit die Kette es weiterträgt.\n\nEs hat die halbe Nacht gedauert. Dann hat am Rand, hinter dem Grat, einer der gelben Punkte geblinkt. Kurz, lang, verdeckt. Zweihundertelf Jahre, und die Antwort hat eine halbe Nacht gebraucht.',
+      },
+      coastObservatory: {
+        title: 'Zwei Listen',
+        body: 'Liebe Wacht,\n\nüber dem Meer steht eine Sternwarte wie unsere, nur aus Kupfer und grün vom Salz. Die Sternzählerin führt zwei Listen, eine für den Himmel, eine für die Küste. Sie hat gelacht, als ich ihr von deinem Brief erzählte. „Zwei Karten“, hat sie gesagt, „natürlich. Wie denn sonst.“\n\nAuf ihrer zweiten Liste gibt es eine leere Zeile, ganz oben. Sie hat sie nie gestrichen. Heute Nacht hat sie etwas hineingeschrieben und das Buch zu mir gedreht. Dort steht jetzt: „Das Feuer hinter dem Berg. Brennt.“',
+      },
+      skyReturn: {
+        title: 'Der Rand füllt sich',
+        body: 'Dreiundvierzig Sterne oben, und unten am Rand komme ich mit dem Eintragen kaum nach. Jede Woche ein gelber Punkt mehr. Der Mann mit den dreihundert Laternen muss angefangen haben, sie zu verteilen.\n\nIch trage sie jetzt mit Tinte ein, nicht mehr mit Bleistift. Die Lange Nacht wird wiederkommen, so wie die Ebbe. Aber ich weiß jetzt, was dann am Rand geschieht, und dass man hinüberleuchten kann.',
+      },
+      coastCauseway: {
+        title: 'Die letzte Laterne',
+        body: 'Hallo Wacht,\n\nwir stehen auf einem Damm, der gerade ins Meer hinausgeht. Alle hundert Schritte eine Laterne. Der Wärter zündet sie an, eine nach der anderen, und ich durfte die Fackel tragen. Am Ende steht ein Turm. Ich habe gefragt, wer dort wohnt. Er hat gesagt, er zünde nur die Laternen an, den Turm habe er nie betreten. Das gehöre sich nicht.\n\nAlwine ist sehr still. Sie hat den Schlüssel mit den vier Zacken in der Hand, seit wir losgegangen sind. Morgen früh gehen wir hin. Ich schreibe dir danach. Versprochen.',
+      },
+      coastFourRays: {
+        title: 'Zwei Becher',
+        body: 'Liebe Wacht,\n\ndie Tür war nicht verschlossen. Den Schlüssel habe ich trotzdem ins Schloss gesteckt, weil man das so macht. Er passt.\n\nDrinnen ist es wie bei uns, bis hin zum Haken, an dem der Mantel hängt. Auf dem Tisch standen zwei Becher, einer noch warm. Am Feuer saß ein Mädchen in Fennos Alter und hat eine Chronik abgeschrieben. Ihre Meisterin ist im Frühjahr gestorben, sagt sie. Seither hält sie das Feuer allein und stellt jeden Abend einen zweiten Becher hin, falls jemand den Berg herunterkommt.\n\nFenno hat ihr den Pilz geschenkt. Er leuchtet noch.',
+      },
+      conAll: {
+        title: 'Die tiefe Zeit',
+        body: 'Die Himmelskarte ist fertig, alle zwölf Bilder. Ich habe sie neben die Lederkarte gehängt. Oben gleichen sie sich Stern für Stern. Am Rand fehlt meiner noch viel zum geschlossenen Ring. Aber er wächst, und zum ersten Mal weiß jemand, warum.\n\nWas sah die Sternwarte, bevor die Sterne fehlten? Nachbarn. Alwine schreibt, sie bleibe den Winter über unten und lehre das Mädchen, was es noch nicht weiß. Fenno schreibt, er lehre es auch. Ich fürchte, wir werden bald mehr Lehrlinge haben als Laternen. Es gibt Schlimmeres.',
       },
     },
   },

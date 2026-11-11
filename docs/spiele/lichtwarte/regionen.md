@@ -82,6 +82,10 @@ Lande 51 bis 75, IDs in `content/realms.ts`: `hohesMoor`, `steinerneTreppe`, `wi
 - Taktung: ein Hochland alle 11 bis 14 Tage (`REALM_TUNING.highCost`), Messung in `fuenf-jahre.md`.
 - Die Lande-Liste zeigt die Wellen als aufklappbare Gruppen (`REALM_GROUPS`).
 
+## Welle 6 · Die Fernen Küsten (Jahr 3) ✓
+
+Lande 76 bis 100, IDs in `content/realms.ts` (`langerAbstieg` … `warteDerVierStrahlen`). Beschreibende Namen, Figuren ohne Eigennamen. Roter Faden: Jedes Küstenland hat ein Licht, das auf den Seekarten als Feuer steht; die Küste zählte einmal dreimal so viele. Das letzte Land ist die Warte der vier Strahlen. Eigener Bildrahmen (Meer, Landzungen, Strand).
+
 ## Freischaltung und Taktung (umgesetzt)
 
 - **Land 2:** nach der ersten Langen Nacht (oder nach 20 Mondwenden).

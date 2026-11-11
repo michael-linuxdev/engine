@@ -277,5 +277,7 @@ export const WORLD_FEATURES: FeatureDef[] = [
   { id: 'voyages', when: (w) => ownedOf(w, 'greifenhorst') >= 10 },
   // Jahr 2: Die Feuerstraße öffnet sich mit dem ersten Hochland
   { id: 'fireRoad', when: (w) => !!w.get<RegionsState | undefined>(REGIONS_ID)?.regions.hohesMoor?.open },
+  // Jahr 3: Die Himmelskarte öffnet sich mit dem ersten Küstenland jenseits der Hochlande
+  { id: 'skyChart', when: (w) => !!w.get<RegionsState | undefined>(REGIONS_ID)?.regions.langerAbstieg?.open },
   { id: 'realms', when: (w) => Object.values(w.get<RegionsState | undefined>(REGIONS_ID)?.regions ?? {}).some((r) => r.open) },
 ]

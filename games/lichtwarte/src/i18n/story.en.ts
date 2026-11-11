@@ -24,6 +24,9 @@ export const storyEn: StoryStrings = {
       highlands: (n: string) => `Opens with ${n} highlands.`,
       road: (n: string) => `Opens with ${n} levels of the Road of Fires.`,
       chain: (n: string) => `Opens with a chain of ${n} fires.`,
+      coasts: (n: string) => `Opens with ${n} coastal realms.`,
+      sky: (n: string) => `Opens with ${n} stars on the Sky Chart.`,
+      constellations: (n: string) => `Opens with ${n} complete constellations.`,
     },
     menu: 'Chronicle',
     title: "The Warden's Chronicle",
@@ -31,15 +34,17 @@ export const storyEn: StoryStrings = {
     empty: 'Nothing written yet.',
     signature: '— Alwine',
     signatureYou: '— the warden before you',
+    signatureFenno: '— Fenno',
+    letterFenno: 'A letter from Fenno, brought by griffin',
     letter: 'A letter, brought by griffin',
     prev: 'Back',
     next: 'Next',
     close: 'Close the book',
     page: (n, total) => `Page ${n} of ${total}`,
     chapter: (n, name) => `Chapter ${n} · ${name}`,
-    books: { watch: 'Book 1 · The Watch', wayOfFires: 'Book 2 · The Way of the Fires' },
+    books: { watch: 'Book 1 · The Watch', wayOfFires: 'Book 2 · The Way of the Fires', deepTime: 'Book 3 · Deep Time' },
     bookShort: (n: string) => `Book ${n}`,
-    bookLocked: { wayOfFires: 'Begins with the first highland.' },
+    bookLocked: { wayOfFires: 'Begins with the first highland.', deepTime: 'Begins beyond the First Watch.' },
     chapters: {
       key: 'The Key',
       remains: 'What Stays',
@@ -52,6 +57,11 @@ export const storyEn: StoryStrings = {
       otherFires: 'Other People\'s Fires',
       coldKiln: 'The Cold Kiln',
       firstWatch: 'The First Watch',
+      descent: 'The Other Slope',
+      lights: 'Lights on the Water',
+      twoLists: 'Two Lists',
+      deepTime: 'Deep Time',
+      fourRays: 'Four Rays',
     },
     comeback: { title: 'There you are', body: 'Not a word for so long. The watch kept glowing, I kept an eye on it. Here, for the road: a few Glowpebbles.' },
     entries: {
@@ -304,8 +314,8 @@ export const storyEn: StoryStrings = {
         body: 'In the gorge it is too loud to talk, so people speak with lanterns. The walkway mistress taught me her signs: short, long, covered.\n\nThey are the same ones Fenno gives from the tower. I asked him where he got them. From Alwine. And she? From her mistress. Nobody invented these signs. They came down the mountain with the fires.',
       },
       roadThirtySix: {
-        title: 'Half the levels',
-        body: 'Thirty-six levels are burning. I notice that in the evening I no longer look at our own fire first, but up along the chain, to the place where it ends.\n\nI used to keep a fire. Now I keep the question of how far it reaches. Alwine writes that it is not different work, only the same work from higher up.',
+        title: 'Twenty-eight levels',
+        body: 'Twenty-eight levels are burning. I notice that in the evening I no longer look at our own fire first, but up along the chain, to the place where it ends.\n\nI used to keep a fire. Now I keep the question of how far it reaches. Alwine writes that it is not different work, only the same work from higher up.',
       },
       chainEighteen: {
         title: 'A sign from above',
@@ -346,6 +356,166 @@ export const storyEn: StoryStrings = {
       roadSixty: {
         title: 'The way of the fires',
         body: 'I am writing this page myself. The road is burning, from the valley to the First Watch and on, down the other slope, in fires that are not ours.\n\nWho lit the other fires? No one alone. One began, one carried on, one laid the key under the step. Over there a watch with four rays is waiting. Alwine is already packing. Fenno says this time he is coming along. I think this time he is right.',
+      },
+      coastDescent: {
+        title: 'Downhill',
+        body: 'Dear Watch,\n\nwe are over the ridge. Fenno ran the first hundred bends and was carried the next hundred, by a mule that cannot stand him.\n\nAt every tenth bend there is a stone with a lantern on it. Four rays. Someone built this path for people coming up from below. We are walking it the wrong way, and it works all the same.',
+      },
+      skyFirst: {
+        title: 'The first star',
+        body: 'While the two of them are away, I have begun something in the observatory. Under the dome hangs an empty chart, as big as a tablecloth. I have entered the first star.\n\nIt took longer than I thought. You have to wait until it really stands where you suppose it to be. The sky will not be hurried.',
+      },
+      coastWood: {
+        title: 'Fenno writes',
+        body: 'Hello Watch,\n\nAlwine says I should write for once. So: there is a wood here where it never rains and everything drips anyway. I have been wet for two days. The mushroom gatherer says he can hear the mushrooms grow. I listened for an hour and only heard Alwine snore.\n\nAt night the mushrooms glow. I packed one. It is now glowing in my rucksack and it smells.',
+      },
+      coastSalt: {
+        title: 'A hundred mirrors',
+        body: 'Dear Watch,\n\non the slope lie salt pans, a hundred of them, and at night each one holds a piece of sky. The salt raker showed me the lowest ones. No stars are mirrored there. What is mirrored there are lights that stand lower, just above the water.\n\n“The ones at the edge,” she said, “those are the ones from the coast.” Watch, I thought of our observatory. Of the edge of the sky. Of what goes missing there before a Long Night comes.',
+      },
+      conLadder: {
+        title: 'The Ladder',
+        body: 'The first constellation is complete: the Ladder. Seven stars, two rails, three rungs if you count generously.\n\nI compared it with the old chart that lies in the drawer under the tube. There the Ladder has nine stars. Two of them stand so low that you should not be able to see them from here at all. Someone entered them all the same. Someone saw them once.',
+      },
+      coastMill: {
+        title: 'Twice a day',
+        body: 'Hello Watch,\n\nI have seen the sea. It is bigger than Alwine said, and she was already exaggerating. It comes twice a day and leaves twice a day, and nobody gets upset about it.\n\nThe miller grinds when it comes. I asked what he does if one day it does not come. He looked at me the way you do when I ask what happens if the fire goes out.',
+      },
+      skyEdge: {
+        title: 'At the edge',
+        body: 'Four stars are on the chart. The fifth belongs at the edge, just above the mountains. I have been waiting for it for a week.\n\nIt is there, but it does not behave like a star. It flickers in the wind. It is yellower than the others. And last night it was visible half an hour earlier than it should be. I have entered it in pencil.',
+      },
+      coastCliffs: {
+        title: 'The brightest wall',
+        body: 'Dear Watch,\n\nthe cliffs here are so white that they still glow at night when all light is long gone. At the top stands a chair of stone, looking out to sea. Into its back is carved the lantern with four rays.\n\nI sat down in it. From there you can see the whole coast, and on the coast eleven fires. The chalk cutter says her grandmother counted forty from this chair.',
+      },
+      coastBoats: {
+        title: 'Three hundred lanterns',
+        body: 'Hello Watch,\n\nold boats lie here, and a man takes them apart and keeps the lantern from each one. Three hundred of them, all polished, none lit. I asked why he does not light them.\n\n“For whom?” he asked. I said: for us. He said nothing for a long time and then lit one. Only one. But he put it in the window, facing the mountain.',
+      },
+      coastPilot: {
+        title: 'Who sees first',
+        body: 'Dear Watch,\n\nthe pilot sees every ship before it sees anything itself. I asked her what the ships hold on to at night. “The fires,” she said, “and where there is none left, me.”\n\nShe has a list of the fires that no longer exist. It is longer than the list of the fires that burn. At the end of the list is one that her charts call “the fire behind the mountain”. Beside it a question mark, and since last autumn a second mark: a tick.',
+      },
+      skyOldChart: {
+        title: 'The old chart',
+        body: 'Eight stars. I have now hung the old chart beside the new one, and the difference can no longer be overlooked. At the top, in the middle of the sky, they agree. At the edge the old chart has a whole wreath of stars that do not exist on mine.\n\nThey are all drawn equally bright. They all stand equally high. No sky arranges its stars like that.',
+      },
+      coastSeagrass: {
+        title: 'Mowing under water',
+        body: 'Hello Watch,\n\nthere are meadows here that go under twice a day. I was allowed to mow. I mowed into my shoe, but only into the shoe.\n\nThe mower sleeps on straw although he makes seagrass for every bed on the coast. He says whoever makes something for others all day wants something else in the evening. I think that is why you never sit by the fire at night but in the kitchen.',
+      },
+      conSecond: {
+        title: 'The key in the sky',
+        body: 'The second constellation is called the Key. Five stars, a shaft and a bit. I counted: three teeth.\n\nOn the old chart it has four. The fourth star again stands at the edge, again too low, again drawn in yellow instead of white. Whoever made this chart knew the difference. They used two colours. I just never paid attention to it.',
+      },
+      coastBuoy: {
+        title: 'A bell nobody rings',
+        body: 'Dear Watch,\n\nout on the sandbank a bell rings in the swell. For a hundred years, says the buoy tender, and no one has ever touched it except to oil it.\n\nI asked her whether that was not sad: tending something that never answers you. She laughed. “It answers every ship,” she said. “Just not me. I am not who it is meant for.” I have not heard anything so wise about our work in a long time.',
+      },
+      coastNets: {
+        title: 'The right holes',
+        body: 'Hello Watch,\n\nI can tie a net knot now. It holds. The net mender says a net is mostly hole, and you have to leave the right holes.\n\nI told him about the Road of Fires, and he said it is the same thing: a lot of dark with knots in it. If one knot tears, the whole net does not fall. But the fish finds the hole. I do not know who the fish is in our case. Alwine says: the night.',
+      },
+      skyTwoSkies: {
+        title: 'Two skies',
+        body: 'Thirteen stars, and by now I keep two charts. On one are the stars that stay. On the other the ones at the edge that flicker.\n\nYesterday one was added to the second. Just like that, on an evening when no star was due to rise. Today a griffin came with a letter from Fenno. He writes of a man who put a lantern in his window, facing the mountain.',
+      },
+      coastHarbour: {
+        title: 'Four strokes',
+        body: 'Dear Watch,\n\nat the back of the harbour book there are names in a script of four strokes. The harbour mistress cannot read them, but when the book is full she copies them into the next. For twelve books now.\n\nI showed her the key. She nodded and opened a page with a single name on it, and beside it, in her own hand: “Went up the mountain. Will come back.” The date is two hundred and eleven years old.',
+      },
+      conThird: {
+        title: 'What a constellation is',
+        body: 'Three constellations are complete. Today I understood that a constellation is not a discovery but an agreement. The stars of the Lantern have nothing to do with one another. Someone decided they belong together and passed it on.\n\nIt is the same with the fires. Between our valley and the High Moor there is nothing but dark. The road is only what we have agreed about it.',
+      },
+      coastLightship: {
+        title: 'A ship that stays',
+        body: 'Hello Watch,\n\nI was on a ship that goes nowhere. It carries its fire at the top of the mast and lies exactly where no tower can stand. The ship\'s boy is sixty. He says he came aboard at fourteen and never found anyone who could do it better.\n\nI asked whether he wants an apprentice. He looked at me for a very long time. Do not worry. I said I already had a post.',
+      },
+      coastKiln: {
+        title: 'The little brother',
+        body: 'Dear Watch,\n\na kiln burns here that turns shells into lime. The lime burner knows the Cold Kiln in the mountains. She calls it “the big brother”. Hers never went out.\n\nI asked how you keep a fire for two hundred years. “You do not,” she said. “You keep it until tomorrow. My mother did that, and hers too.” I am writing it down for you because I only grasped it myself here.',
+      },
+      skyLow: {
+        title: 'Too low for stars',
+        body: 'Nineteen stars on the first chart. On the second, the one with the flickering ones, there are six by now.\n\nI did the sums, with the tube and a thread. The six are not in the sky. They stand below it, behind the ridge, where the earth curves away and only the brightest still reaches across. All this time I have not been counting stars. I have been counting the coast.',
+      },
+      coastPath: {
+        title: 'A path for six hours',
+        body: 'Hello Watch,\n\nthere is a path here that exists for only six hours a day. Then the sea comes and takes it away again. The mudflat guide stakes it out anew every morning. Every morning!\n\nI said that was nonsense, he could just build a bridge. He said: “And who would stake out the path in the morning then?” Alwine laughed so hard she had to sit down. I still do not quite understand it. But nearly.',
+      },
+      coastBirds: {
+        title: 'The birds know',
+        body: 'Dear Watch,\n\nthe bird warden says the migrating birds fly by the fires. In the years when many were burning they came in a straight line. In the dark years they strayed and were late.\n\nFor two summers now they have been coming straight again. She keeps a book about it, as about everything. In the book there is a number for each year: how many fires could be seen from the island. The numbers fall, for forty years. Then, at the very bottom of the last page, they rise.',
+      },
+      conFifth: {
+        title: 'Five pictures, one edge',
+        body: 'Five constellations. The upper sky is almost finished, and it is exactly as it stands on the old chart. No star is missing. None was ever missing.\n\nWhat vanishes before a Long Night are the yellow ones at the edge. The observatory always saw it rightly and always named it wrongly. “Stars are missing there,” said the chronicle. It ought to say: someone has fallen asleep there.',
+      },
+      coastVillage: {
+        title: 'For a village that is gone',
+        body: 'Dear Watch,\n\nat low tide a church tower rises from the mudflats here. The bell ringer rings it, for a village that has been under water for a hundred years.\n\nI asked him for whom. “For those who will live here,” he said. “The sea comes and goes. Before the village there was a village here too.” In the mud he showed me three layers of walls, one on top of another. Under each lay the ash of a fire.',
+      },
+      coastCharts: {
+        title: 'Charts without land',
+        body: 'Hello Watch,\n\nI was in a house full of charts on which the land is empty. Only the sea is painted, and along the shore there are dots. Every dot is a fire. The chart maker let me into the cellar, to the old sheets.\n\nOn the oldest the coast is one single line of dots. On the next a few are missing. Then many. Then more again. Then fewer again. Watch, it goes on like that through the whole cellar. It looks as if the coast were breathing.',
+      },
+      skyCount: {
+        title: 'What Fenno saw',
+        body: 'Twenty-six stars. I read Fenno\'s letter three times and then unlocked the archive. The charts of the wardens before us lie there, one in each compartment. I had never laid them side by side.\n\nToday I did. On each the upper sky is the same. On each the edge is different: full once, empty once, half once. What we call an age is one breath of this coast. The Long Night is the moment when it has breathed out.',
+      },
+      coastArch: {
+        title: 'What one owes the sea',
+        body: 'Dear Watch,\n\non the beach stands a gate made of two whale ribs. Whoever walks through must tell the beach reeve what they owe the sea. Fenno said: “A shoe.” The reeve wrote it down in earnest.\n\nI thought for a long time. Then I said: a way back. He leafed far towards the front and showed me an entry, two hundred and eleven years old, in the script of four strokes. He could not read it. By now I can. It is the same answer.',
+      },
+      coastGlow: {
+        title: 'The sea glows by itself',
+        body: 'Hello Watch,\n\nyou will not believe this: the water glows here at night. At every step. I ran up and down the shore for an hour making a trail of light, until Alwine told me to let the fish sleep.\n\nThe fisher goes out without a lantern. She says no fire is needed here, the sea itself knows where she is. I asked whether she is never afraid then. “Oh yes,” she said. “When it does not glow.”',
+      },
+      conSeventh: {
+        title: 'Before the stars',
+        body: 'Seven constellations. In the lowest compartment of the archive I found the oldest chart, on leather, not on paper. The edge is a closed ring of yellow dots without a single gap.\n\nThat is what the observatory saw before the stars were missing: a horizon inhabited all the way round. No wonder nobody took the lights for anything other than the sky. They had always been there.',
+      },
+      coastRose: {
+        title: 'Four out of thirty-two',
+        body: 'Dear Watch,\n\nin a square by the sea lies a rose of stone, thirty-two points. Four are brass. The compass maker says they point at four fires that must never go out, so that all the others can be lit again. One of them, he says, had gone out.\n\nI stood on the fourth point and looked along it. It points up the mountain, over the ridge, over the highlands. Watch, it points at you.',
+      },
+      skyRing: {
+        title: 'Four rays',
+        body: 'Thirty-four stars. Alwine\'s letter from the compass rose lies beside the leather chart, and now I see what I had taken for ornament: four of the yellow dots in the ring are drawn larger, with rays. One stands where our valley is.\n\nThe lantern with four rays is not a foreign sign. It is the whole sign. Ours has three because we forgot to count ourselves.',
+      },
+      coastHorn: {
+        title: 'One note',
+        body: 'Hello Watch,\n\nthere is a rock with a hole here, and when the wind goes through it sounds like a horn. When there is no wind, a woman blows into it. One note: “I am here.” She has it from her grandmother, who had it from the mountains.\n\nI took my lantern and answered. Short, long, covered. She lowered the horn and stared at me. Then she asked who taught me that. I said: you. I mean you, Watch. I hope that was right.',
+      },
+      coastBottles: {
+        title: 'The oldest letter',
+        body: 'Dear Watch,\n\nevery message in a bottle on this coast lands in this bay. The letter collector reads them all and answers those that deserve it. He showed me the oldest letter he owns. It is still in its bottle, because the paper would fall apart otherwise.\n\nYou can read it through the glass. Four strokes. “Am up here. The fire is burning. Send someone if you need me. If not, I will stay until someone here can read.” He never threw an answer in. He did not know where to.',
+      },
+      conNinth: {
+        title: 'The answer',
+        body: 'Nine constellations. Tonight I did something that is in no chronicle. I did not simply let the fire up top burn. I covered it and uncovered it again. Short, long, covered. Up the mountain, so that the chain would carry it on.\n\nIt took half the night. Then at the edge, behind the ridge, one of the yellow dots blinked. Short, long, covered. Two hundred and eleven years, and the answer took half a night.',
+      },
+      coastObservatory: {
+        title: 'Two lists',
+        body: 'Dear Watch,\n\nabove the sea stands an observatory like ours, only of copper and green from the salt. The star counter keeps two lists, one for the sky, one for the coast. She laughed when I told her about your letter. “Two charts,” she said, “of course. How else.”\n\nOn her second list there is an empty line, right at the top. She never struck it out. Tonight she wrote something into it and turned the book towards me. It now says: “The fire behind the mountain. Burning.”',
+      },
+      skyReturn: {
+        title: 'The edge fills',
+        body: 'Forty-three stars above, and down at the edge I can hardly keep up with the entering. One more yellow dot every week. The man with the three hundred lanterns must have started handing them out.\n\nI enter them in ink now, no longer in pencil. The Long Night will come again, like the ebb. But I now know what happens at the edge then, and that one can signal across.',
+      },
+      coastCauseway: {
+        title: 'The last lantern',
+        body: 'Hello Watch,\n\nwe are standing on a causeway that runs straight out into the sea. A lantern every hundred paces. The keeper lights them one after another, and I was allowed to carry the torch. At the end stands a tower. I asked who lives there. He said he only lights the lanterns; he has never set foot in the tower. That would not be proper.\n\nAlwine is very quiet. She has had the key with the four teeth in her hand since we set out. Tomorrow morning we will go there. I will write to you afterwards. Promise.',
+      },
+      coastFourRays: {
+        title: 'Two mugs',
+        body: 'Dear Watch,\n\nthe door was not locked. I put the key in the lock all the same, because that is what one does. It fits.\n\nInside it is like our place, down to the hook where the coat hangs. On the table stood two mugs, one still warm. By the fire sat a girl of Fenno\'s age, copying out a chronicle. Her mistress died in the spring, she says. Since then she has kept the fire alone and set out a second mug every evening, in case someone comes down the mountain.\n\nFenno gave her the mushroom. It is still glowing.',
+      },
+      conAll: {
+        title: 'Deep time',
+        body: 'The sky chart is finished, all twelve pictures. I have hung it beside the leather chart. At the top they match star for star. At the edge mine is still far from a closed ring. But it is growing, and for the first time someone knows why.\n\nWhat did the observatory see before the stars were missing? Neighbours. Alwine writes that she will stay down there over the winter and teach the girl what she does not yet know. Fenno writes that he is teaching her too. I fear we shall soon have more apprentices than lanterns. There are worse things.',
       },
     },
   },

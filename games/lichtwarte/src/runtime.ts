@@ -82,6 +82,7 @@ const NAMESPACES: Record<string, () => Keyed<{ name: string; blurb: string }>> =
   entry: () => t.world.entries,
   guest: () => t.world.guests,
   voyage: () => t.world.voyages,
+  chart: () => t.world.sky,
   decor: () => t.world.decor,
   folio: () => t.world.folio,
   card: () => t.world.cards,

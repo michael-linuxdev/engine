@@ -82,6 +82,33 @@ Entscheidung Michael: Jahr 2 wird gebaut, in derselben Qualität wie Jahr 1. Es 
 - Das Ziel „kein Loch über 7 Tage“ halten die Lande allein nicht (11 bis 15 Tage). Dazwischen liegen die Seiten von Buch 2, die Stufen der Feuerstraße, die Sterne, die Feste und die Fernfahrten. Wie dicht diese fallen, ist nicht gemessen, weil der Simulator sie nicht spielt.
 - Die Zeitalter liegen in Jahr 2 bei fünf bis sieben Wochen, über dem Ziel von vier bis fünf. Für die Jahre 3 bis 5 muss der späte Faktor (heute 1,35) kleiner werden; das gehört zum Paket für Jahr 3.
 
+## Messung mit mitgespielten Systemen (2026-11-11)
+
+Der Simulator kann jetzt die eigenen Systeme des Spiels mitspielen: `PLAY=1 npm run balance -- lichtwarte regular <stunden>` (Wachrunde, Aufträge, Wochenplan, Tagesgeschenk, Fernfahrten, Feuerstraße, Himmelskarte). Er meldet jede neue Chronik-Seite, jede Stufe der Feuerstraße, die Festmarken je Fest und alle 30 Tage den Stand der Lichtkiesel. Die Zielkorridore (`CHECK=1`) laufen weiter ohne `PLAY`.
+
+Gemessen über 475 Tage, „regular“:
+
+| | Ergebnis |
+|---|---|
+| Lichtkiesel | rund 74 am Tag, 33.800 bis Tag 450 (der Simulator gibt nur für die Feuerstraße welche aus). Der Preis der Feuerstraße (zusammen rund 4.100) bremst also nicht. |
+| Feuerstraße | **Erstes Feuer erst an Tag 231**, 90 Tage nach dem ersten Hochland; bis Tag 475 nur 19 Stufen, alle Stufe 1. Der erste Stern eines Hochlands braucht rund 90 Tage. |
+| Seiten von Buch 2 | Bis Tag 231 nur mit jedem Hochland eine (alle 11 bis 15 Tage). Die Seiten für 22, 28, 36, 45 und 60 Stufen wären bis Tag 475 nicht aufgegangen. |
+| Festmarken | 4.500 bis 14.500 je Fest (jede Mondwende gibt 15, und es sind rund zwölf am Tag). Preise von 60 bis 160 Marken sind dagegen bedeutungslos. |
+| Fernfahrten | 480 abgeschlossen |
+
+**Geändert nach dieser Messung:**
+- **Feuerstraße:** Die erste Stufe einer Verbindung braucht in beiden Landen nur noch den siebten Bereich auf Stufe 25 (etwa auf halbem Weg zum nächsten Land), die zweite einen Stern, die dritte zwei Sterne. Vorher: ein, zwei, drei Sterne.
+- **Buch 2:** Die Seiten der Feuerstraße gehen bei 1, 2, 5, 10, 14, 18, 23, 28, 34 und 40 Stufen auf (vorher bis 60).
+- **Nicht geändert:** die Festmarken. Sie fließen so reichlich, dass der Fest-Laden kein Ziel ist. Das betrifft schon Jahr 1 und braucht eine eigene Entscheidung (weniger Marken je Mondwende oder höhere Preise).
+- Die neue Regel ist noch nicht nachgemessen; die Messung über die Jahre 2 und 3 läuft.
+
+## Jahr 3, erste Pakete (2026-11-11)
+
+- **Welle 6 · Die Fernen Küsten:** 25 Lande (76 bis 100) jenseits der Ersten Warte, vom Langen Abstieg bis zur Warte der vier Strahlen. Beschreibende Namen, Figuren ohne Eigennamen, je zehn Bereiche, eigenes Bild, eigener Bildrahmen (Meer bis zum Horizont, Strand), de/en. Taktung wie die Hochlande (`highCost`), noch nicht gemessen.
+- **Himmelskarte (neues System, Engine-Modul `chart`):** zwölf Sternbilder mit zusammen 74 Sternen. Ein Stern kostet Nachttau (2, je Stern 3,5 % mehr; zusammen rund 670). Jeder Stern gibt +0,5 % Ertrag, jedes vollständige Sternbild wirkt dauerhaft (Ertrag, Baukosten oder Funkenruf). Ein Sternbild lässt sich eintragen, sobald jedes zweite Küstenland offen ist. Ob der Nachttau dafür reicht, ist nicht gemessen.
+- **Buch 3 „Die tiefe Zeit“:** 40 Seiten in fünf Kapiteln, de/en. Briefe von Alwine und erstmals von Fenno, dazu Seiten der Wacht aus der Sternwarte. Die Seiten gehen mit den Küstenlanden (25), den Sternen der Karte (8) und vollständigen Sternbildern (7) auf.
+- **Noch offen in Jahr 3:** Fest-Jahrgang 3, Messung, Taktung der Zeitalter.
+
 ## Was „fünf Jahre“ hier heißt
 
 Maßstab ist eine Spielerin, die täglich kurz spielt (Profil „regular“). Über 1.825 Tage soll gelten:

@@ -10,6 +10,7 @@ import {
   type AlbumConfig, type AlbumState, type CardConfig, type CardsState, type ChoiceState, type CollectionConfig, type CollectionsState, type CombineConfig, type CombineState,
   type DecorConfig, type DecorState, type ProjectDef, type ProjectsState, type VisitorConfig, type VisitorsState,
   primaryCurrency, voyageBack, voyageOpen, VOYAGES_ID, type VoyagesConfig, type VoyagesState,
+  CHART_ID, chartCells, chartCompleted, chartStatus, type ChartConfig, type ChartGroup, type ChartState,
   LINKS_ID, linksMult, linkStatus, longestChain, type LinkDef, type LinksConfig, type LinksState,
 } from '@engine/core'
 import { useEngine } from '@engine/react'
@@ -224,7 +225,7 @@ export function VoyagesCard({ cfg }: { cfg: VoyagesConfig }) {
  * Chain of links between places. `placeKey` is the label namespace of the places (`realm` → `realm.<id>`),
  * `visible` hides links the player cannot know yet, `art` is the game's picture of the chain.
  */
-export function LinksCard({ cfg, placeKey, visible, art }: { cfg: LinksConfig; placeKey: string; visible?: (def: LinkDef) => boolean; art?: ReactNode }) {
+export function LinksCard({ cfg, placeKey, visible, art, needLabel }: { cfg: LinksConfig; placeKey: string; visible?: (def: LinkDef) => boolean; art?: ReactNode; /** What a rating means in the game's words (e.g. "1 star"); without it the rating is shown as stars. */ needLabel?: (need: number) => string }) {
   const ui = useUi()
   const { world, dispatch } = useEngine(ui.rt)
   const s = world.get<LinksState>(LINKS_ID)
@@ -255,11 +256,71 @@ export function LinksCard({ cfg, placeKey, visible, art }: { cfg: LinksConfig; p
                 <strong>
                   {a} ↔ {b} <Stars n={st.level} max={st.max} testId={`link-level-${l.id}`} />
                 </strong>
-                <span className={starsOk ? undefined : 'ek-muted'}>{ui.t.live.linkNeed(String(need), a, String(Math.min(st.haveA, need)), b, String(Math.min(st.haveB, need)))}</span>
+                <span className={starsOk ? undefined : 'ek-muted'}>
+                  {needLabel
+                    ? ui.t.live.linkNeedLabel(needLabel(need), a, st.haveA >= need, b, st.haveB >= need)
+                    : ui.t.live.linkNeed(String(need), a, String(Math.min(st.haveA, need)), b, String(Math.min(st.haveB, need)))}
+                </span>
               </div>
               <Button size="small" data-testid={`link-light-${l.id}`} disabled={!st.ready} onClick={() => dispatch(LINKS_ID, 'light', { id: l.id })}>
                 {ui.t.live.linkLight(ui.fmt(st.cost), cur)}
               </Button>
+            </li>
+          )
+        })}
+      </ul>
+    </Card>
+  )
+}
+
+/**
+ * Chart of groups (e.g. constellations): `art` draws a group with its marked cells, `lockedText` says what opens a group.
+ * Names: `chart.<id>` (blurb = what the completed group gives).
+ */
+export function ChartCard({ cfg, art, lockedText }: { cfg: ChartConfig; art?: (group: ChartGroup, marked: number) => ReactNode; lockedText?: (group: ChartGroup) => string }) {
+  const ui = useUi()
+  const { world, dispatch } = useEngine(ui.rt)
+  const s = world.get<ChartState>(CHART_ID)
+  if (!s) return null
+  const cur = ui.labels.currency(cfg.cost.currency)
+  const pct = Math.round(cfg.perCell * chartCells(s) * 1000) / 10
+  const firstLocked = cfg.groups.find((g) => !chartStatus(cfg, s, world, g).open)
+  // Open groups, plus the next locked one as a goal
+  const shown = cfg.groups.filter((g) => chartStatus(cfg, s, world, g).open || g === firstLocked)
+  return (
+    <Card id="chart">
+      <p className="ek-strong" data-testid="chart-total">
+        {ui.t.live.chartDone(String(chartCompleted(cfg, s)), String(cfg.groups.length))} · {ui.t.live.linksBonus(ui.fmt(pct))}
+      </p>
+      <p className="ek-muted">{ui.t.live.chartRule(ui.fmt(Math.round(cfg.perCell * 1000) / 10))}</p>
+      <ul className="ek-list">
+        {shown.map((g) => {
+          const st = chartStatus(cfg, s, world, g)
+          const l = ui.labels.content(`chart.${g.id}`)
+          return (
+            <li key={g.id} className={`ek-row ek-row--stack ek-chart${st.open ? '' : ' is-locked'}`} data-done={st.done ? 'true' : 'false'} data-testid={`chart-${g.id}`} data-marked={st.marked}>
+              <div className="ek-chart__head">
+                {art ? <div className="ek-chart__art">{art(g, st.marked)}</div> : null}
+                <div className="ek-row__main">
+                  <strong>
+                    {st.open ? l.name : ui.t.live.chartUnknown}
+                    {st.done ? <span className="ek-badge ek-badge--inline">{ui.t.live.chartFull}</span> : null}
+                  </strong>
+                  {st.open ? (
+                    <>
+                      <span>{ui.t.live.chartCells(String(st.marked), String(st.cells))}</span>
+                      <span className={st.done ? undefined : 'ek-muted'}>{l.blurb}</span>
+                    </>
+                  ) : (
+                    <span className="ek-muted">{lockedText?.(g) ?? ''}</span>
+                  )}
+                </div>
+              </div>
+              {st.open && !st.done ? (
+                <Button size="small" data-testid={`chart-mark-${g.id}`} disabled={!st.ready} onClick={() => dispatch(CHART_ID, 'mark', { group: g.id })}>
+                  {ui.t.live.chartMark(ui.fmt(st.cost), cur)}
+                </Button>
+              ) : null}
             </li>
           )
         })}
