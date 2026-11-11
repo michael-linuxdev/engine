@@ -3,7 +3,7 @@ import { branchCost, isUnlocked, MODULE, nextMilestone, ownedOf, primaryCurrency
 import { useEngine } from '@engine/react'
 import { buyCount, useBuyMode } from '../buyMode'
 import { useUi } from '../useUi'
-import { gateLines } from '../gates'
+import { gateChecks, gateLines, type GateCheck } from '../gates'
 import { Button } from './Button'
 import { BuyModeToggle } from './BuyModeToggle'
 import { ProgressBar } from './ProgressBar'
@@ -64,6 +64,32 @@ export function ProducerList() {
   )
 }
 
+/** Conditions of a gate as a checklist. `done`: for "one of these", the group is fulfilled as a whole. */
+function GateList({ title, items, testId, done }: { title: string; items: GateCheck[]; testId: string; done?: boolean }) {
+  const ui = useUi()
+  return (
+    <div className="ek-gate" data-testid={testId}>
+      <strong>{title}</strong>
+      <ul className="ek-gate__list">
+        {items.map((x, i) => {
+          const ok = x.ok
+          // In a fulfilled "one of these" group the other conditions no longer matter
+          const moot = !ok && done === true
+          return (
+            <li key={i} className={ok ? 'is-ok' : moot ? 'is-moot' : 'is-missing'} data-ok={ok}>
+              <span className="ek-gate__mark" aria-hidden="true">
+                {ok ? '✓' : moot ? '–' : '✗'}
+              </span>
+              <span>{x.text}</span>
+              <span className="ek-visually-hidden">{ok ? ui.t.upgrade.gateOk : moot ? '' : ui.t.upgrade.gateMissing}</span>
+            </li>
+          )
+        })}
+      </ul>
+    </div>
+  )
+}
+
 /** Rank as filled and empty pips, with the numbers as accessible text. */
 export function Pips({ n, max }: { n: number; max: number }) {
   const ui = useUi()
@@ -98,7 +124,7 @@ function UpgradeBody({ p, art, note, buyModes }: { p: ProducerDef; art?: ReactNo
   const l = ui.labels.producer(p.id)
   const m = nextMilestone(level, world.def.balance)
   if (!unlocked) {
-    const g = gateLines(p.unlock, ui)
+    const g = gateChecks(p.unlock, ui, world)
     return (
       <div className="ek-stack">
         <div className="ek-upgrade__top">
@@ -108,8 +134,9 @@ function UpgradeBody({ p, art, note, buyModes }: { p: ProducerDef; art?: ReactNo
           </div>
         </div>
         <h3 className="ek-h3">{ui.t.upgrade.unlockTitle}</h3>
-        {g.all.length ? <p>{ui.t.upgrade.gateAll}: {g.all.join(' · ')}</p> : null}
-        {g.any.length ? <p>{ui.t.upgrade.gateAny}: {g.any.join(' · ')}</p> : null}
+        {/* Checklist: what already holds and what is still missing */}
+        {g.all.length ? <GateList title={ui.t.upgrade.gateAll} items={g.all} testId="gate-all" /> : null}
+        {g.any.length ? <GateList title={ui.t.upgrade.gateAny} items={g.any} testId="gate-any" done={g.any.some((x) => x.ok)} /> : null}
       </div>
     )
   }

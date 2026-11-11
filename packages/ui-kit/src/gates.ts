@@ -1,4 +1,4 @@
-import type { UnlockGate } from '@engine/core'
+import { atomHolds, gateInput, type GateAtom, type UnlockGate, type WorldView } from '@engine/core'
 import type { UiValue } from './context'
 
 /** Unlock gate as short texts for the UI. */
@@ -16,4 +16,17 @@ export function gateLines(gate: UnlockGate | undefined, ui: UiValue): { all: str
     }
   }
   return { all: (gate?.all ?? []).map(atom), any: (gate?.any ?? []).map(atom) }
+}
+
+export interface GateCheck {
+  text: string
+  ok: boolean
+}
+
+/** The same gate as a checklist: each condition with whether it already holds. */
+export function gateChecks(gate: UnlockGate | undefined, ui: UiValue, world: WorldView): { all: GateCheck[]; any: GateCheck[] } {
+  const lines = gateLines(gate, ui)
+  const input = gateInput(world)
+  const check = (atoms: readonly GateAtom[] | undefined, texts: string[]): GateCheck[] => (atoms ?? []).map((a, i) => ({ text: texts[i], ok: atomHolds(a, input) }))
+  return { all: check(gate?.all, lines.all), any: check(gate?.any, lines.any) }
 }
