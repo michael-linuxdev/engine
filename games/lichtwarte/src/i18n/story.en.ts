@@ -27,6 +27,11 @@ export const storyEn: StoryStrings = {
       coasts: (n: string) => `Opens with ${n} coastal realms.`,
       sky: (n: string) => `Opens with ${n} stars on the Sky Chart.`,
       constellations: (n: string) => `Opens with ${n} complete constellations.`,
+      isles: (n: string) => `Opens with ${n} isles.`,
+      trained: (n: string) => `Opens with ${n} trained apprentices.`,
+      posted: (n: string) => `Opens with ${n} apprentices in a realm of their own.`,
+      rim: (n: string) => `Opens with ${n} realms at the edge of the map.`,
+      beacon: (n: string) => `Opens with ${n} stages of the Great Beacon.`,
     },
     menu: 'Chronicle',
     title: "The Warden's Chronicle",
@@ -42,9 +47,9 @@ export const storyEn: StoryStrings = {
     close: 'Close the book',
     page: (n, total) => `Page ${n} of ${total}`,
     chapter: (n, name) => `Chapter ${n} · ${name}`,
-    books: { watch: 'Book 1 · The Watch', wayOfFires: 'Book 2 · The Way of the Fires', deepTime: 'Book 3 · Deep Time' },
+    books: { watch: 'Book 1 · The Watch', wayOfFires: 'Book 2 · The Way of the Fires', deepTime: 'Book 3 · Deep Time', apprentices: 'Book 4 · The Apprentices', greatLight: 'Book 5 · The Great Light' },
     bookShort: (n: string) => `Book ${n}`,
-    bookLocked: { wayOfFires: 'Begins with the first highland.', deepTime: 'Begins beyond the First Watch.' },
+    bookLocked: { wayOfFires: 'Begins with the first highland.', deepTime: 'Begins beyond the First Watch.', apprentices: 'Begins with the first isle.', greatLight: 'Begins beyond the Outermost Isle.' },
     chapters: {
       key: 'The Key',
       remains: 'What Stays',
@@ -62,6 +67,16 @@ export const storyEn: StoryStrings = {
       twoLists: 'Two Lists',
       deepTime: 'Deep Time',
       fourRays: 'Four Rays',
+      school: 'The School Isle',
+      candidates: 'Who Comes',
+      lessons: 'What Cannot Be Taught',
+      names: 'Names',
+      newWatch: 'The New Watch',
+      beyondChart: 'Beyond the Chart',
+      foreignFires: 'Foreign Fires',
+      everyStone: 'A Stone from Every Realm',
+      thousandLamps: 'A Thousand Lamps',
+      greatLight: 'The Great Light',
     },
     comeback: { title: 'There you are', body: 'Not a word for so long. The watch kept glowing, I kept an eye on it. Here, for the road: a few Glowpebbles.' },
     entries: {
@@ -516,6 +531,326 @@ export const storyEn: StoryStrings = {
       conAll: {
         title: 'Deep time',
         body: 'The sky chart is finished, all twelve pictures. I have hung it beside the leather chart. At the top they match star for star. At the edge mine is still far from a closed ring. But it is growing, and for the first time someone knows why.\n\nWhat did the observatory see before the stars were missing? Neighbours. Alwine writes that she will stay down there over the winter and teach the girl what she does not yet know. Fenno writes that he is teaching her too. I fear we shall soon have more apprentices than lanterns. There are worse things.',
+      },
+      isleSchool: {
+        title: 'A school',
+        body: 'Hello Watch,\n\nwe have found a school. That is, a house with benches and a woman who has been waiting for pupils for years. The girl from the causeway does not want me to write her name in a letter, so I write: the one from the causeway. She sat down in the front row.\n\nThe schoolmistress looked at me and asked what I teach. I said I was the apprentice. She said: “Not for much longer.”',
+      },
+      trainedFirst: {
+        title: 'The first',
+        body: 'Today someone came up the mountain with a letter from Fenno in his hand. All it said was: “He can polish lanterns and does not ask stupid questions. Teach him the rest.”\n\nIt took me two days. By the end he knew all the signs, and I had explained for the first time what until then I had only done. It is astonishing how little you know about your own work until someone asks.',
+      },
+      isleSister: {
+        title: 'Ten minutes',
+        body: 'Dear Watch,\n\nthe island is so small that I had walked round it in ten minutes. The ferry hand sits here every evening although he only means to fetch water.\n\nI asked him whether he would like to have a watch. He looked at the sea for a long time. “I already have one,” he said. “I just did not know that is what it is called.” I am beginning to think we do not have to look for people. We only have to tell them.',
+      },
+      postedFirst: {
+        title: 'A land of one\'s own',
+        body: 'The first apprentice set out today, for a realm I showed him on the map. He took the lantern I gave him, and my second-best coat, which I did not give him.\n\nIn the evening there was a new light in the chain there. It flickered twice, as if not quite sure it was allowed. Then it held.',
+      },
+      isleTwins: {
+        title: 'At the same minute',
+        body: 'Hello Watch,\n\ntwo brothers live here on two islands and do not speak to each other. For twenty years. But every evening they light their lanterns at the very same minute. I checked with Alwine\'s watch.\n\nI asked the left one why. He said he did not want the other to think he was careless. The right one said the same. The one from the causeway reckons that is a way of being fond of each other too.',
+      },
+      trainedSecond: {
+        title: 'What cannot be taught',
+        body: 'The second pupil is better at everything than the first. She polishes the lens faster, reads the signs more fluently, and never asks twice.\n\nLast night there was a storm. She kept the fire, flawlessly. But not once did she look out of the window to see whether anyone was still burning over there. I do not know how to teach that. I do not even know whether I learned it or whether it was already there.',
+      },
+      isleHerring: {
+        title: 'Barrels for patience',
+        body: 'Dear Watch,\n\nthe cooper says the herring come when they please, and a fisherman is someone who can bear that. Most young people here leave because they cannot.\n\nThe one who stayed is a girl who counts the barrels every evening, even when none has been added. Fenno showed her our signs. She had them within the hour. She said it was like counting, except that someone counts back.',
+      },
+      isleSheep: {
+        title: 'What a lamb passes on',
+        body: 'Hello Watch,\n\nthe sheep here eat kelp. The shepherdess says she taught it to one single lamb when she was little, and the lamb showed the others. Now they can all do it, and none of them knows from whom any more.\n\nI said that was just like us. Alwine laughed and asked which of the two of us was the lamb. I said: you. She said she had been afraid of that.',
+      },
+      isleShards: {
+        title: 'What was once a lantern',
+        body: 'Dear Watch,\n\nthe sea casts up glass here, round and dull. The glass gatherer keeps the green pieces. He says green was the glass of the old lanterns.\n\nHe has a jar full. I asked what he means to do with it. “When there is enough,” he said, “I shall make a new one out of it.” How much is enough? He did not know. Fenno counted and said there had been enough for years.',
+      },
+      trainedFour: {
+        title: 'Four',
+        body: 'Four are trained. The kitchen has become too small, and someone has used my mug.\n\nTonight I listened to how they talk about me when they think I am upstairs. They imitate the way I count the steps. I did not know I count the steps. Alwine did. I must have it from her.',
+      },
+      isleTwoTowers: {
+        title: 'Which is the right one?',
+        body: 'Hello Watch,\n\non one island stand two towers, and a woman keeps both fires because nobody ever told her which is the right one. The stairs twice every night. For eleven years.\n\nI said I could go and ask. The one from the causeway kicked me in the shin. Later she said: “She does not want to know. If one were the wrong one, she would have to put it out.”',
+      },
+      postedThree: {
+        title: 'Three more lights',
+        body: 'Three apprentices now have a realm of their own. I can see their fires from here, and I recognise each one. The first keeps his too small, out of thrift. The second keeps hers too large, out of pride. The third forgets until the last minute and is then on time.\n\nI have said nothing to any of them. Alwine never told me that mine burns crooked either. I only noticed when I saw it from outside.',
+      },
+      isleEggs: {
+        title: 'A trade',
+        body: 'Dear Watch,\n\nthe egg gatherer takes one egg from every tenth nest and puts a fish in. He says the birds proposed it. I laughed. He did not.\n\n“Whoever takes something without leaving something,” he said, “comes exactly once.” Fenno wrote that down. He has taken to writing things down lately. I have not told him that this is how a chronicle begins.',
+      },
+      isleHalf: {
+        title: 'The hour you regret it',
+        body: 'Hello Watch,\n\nI set out too late. There is an island here you can walk to at low tide, and a woman who knows exactly until when. I knew better. I did not know better.\n\nShe pulled me out and did not say a word. In the evening she showed me how to read the tide from the birds. The one from the causeway says it was my best lesson, because this time I was the one who was wet.',
+      },
+      trainedSix: {
+        title: 'Who comes',
+        body: 'Six. I have written down where they came from. Fenno sent two. One stood at the door one morning and said she had seen the fire. One is the son of the trader who once pitched his camp in the valley so that he could see the chain.\n\nNone of them came because they wanted to have a watch. They came because they had seen one.',
+      },
+      isleGarden: {
+        title: 'Pips from the valley',
+        body: 'Dear Watch,\n\non an island far out there are apple trees. The orchardist says someone brought the first pips from a valley in the mountains, a very long time ago.\n\nI ate an apple. Watch, it is our variety. The one from the slope behind the herb cottage, so sour that only we like it. Whoever went up the mountain two hundred and eleven years ago was here first, and was homesick.',
+      },
+      isleYard: {
+        title: 'The last plank',
+        body: 'Hello Watch,\n\nthe boat builder builds boats all but one plank. The last one has to be set by whoever will sail it. She says otherwise it is her boat and not theirs, and then they will not look after it.\n\nToday I set a plank. It is a small boat. The one from the causeway painted the name on it; I am not telling. But it is short, and it is a mushroom.',
+      },
+      postedFive: {
+        title: 'By themselves',
+        body: 'Five realms are now tended by someone who is not me. Today for the first time I did nothing for them for a whole day, and in the evening everything was a little further on than in the morning.\n\nIt is a strange feeling. A bit like being superfluous. Alwine writes that it is the feeling she worked towards for thirty years, and would I kindly enjoy it.',
+      },
+      isleSilent: {
+        title: 'Without a word',
+        body: 'Dear Watch,\n\nnobody speaks on this island, because of the nesting birds. The woman who lives here talks with lanterns. Our signs, and thirty more I did not know. One means “I see you”. One means “Sleep easy, I am awake”.\n\nI copied them all down. Watch, we have lived for two hundred years with three signs. It is as if we had only had “yes”, “no” and “here”.',
+      },
+      trainedNine: {
+        title: 'New signs',
+        body: 'Nine. Alwine\'s list of the thirty signs now hangs in the kitchen. The apprentices had them within a week. It is taking me longer.\n\nTonight the first one signalled something across from his realm that I had to look up. It meant: “Sleep easy, I am awake.” I stayed up all the same. But I sat down while I did.',
+      },
+      isleWhite: {
+        title: 'White',
+        body: 'Hello Watch,\n\neverything here is painted white. Houses, stones, the tree. The painter says you can see a white island even without a fire. I asked why he has one anyway.\n\n“By day you can see the island,” he said. “By night you can see that someone is there. That is not the same thing.” I sent the sentence to two apprentices who had asked me what they need the fire for when everyone knows their realm anyway.',
+      },
+      isleFresh: {
+        title: 'News',
+        body: 'Dear Watch,\n\nthe water carrier takes nothing for her water but news. She knew about you before I had opened my mouth. She knew about the Road of Fires, about the Sky Chart, and that Fenno fell into the mudflats.\n\nI asked what she does with all that. “Pass it on,” she said. “To the next one who needs water. Where do you think people learn that they may come to you?”',
+      },
+      postedEight: {
+        title: 'The first mistake',
+        body: 'Tonight one of the new fires went out. For an hour there was nothing where the eighth realm lies. I stood at the window and did not move.\n\nThen a light to the left of it went on and off, on and off: the neighbour, calling across. And then it was burning again. In the morning a griffin came with four words: “Fell asleep. Won\'t happen again.” It will happen again. That is what neighbours are for.',
+      },
+      isleMills: {
+        title: 'Eleven islands, one miller',
+        body: 'Hello Watch,\n\nthe miller here grinds for eleven islands and knows each one by its flour. Blindfolded he told me which island the bread in my pocket came from.\n\nI asked how you learn that. He said: “You do not. You do it for forty years.” I said I did not have that long. The one from the causeway said I had exactly that long. Sometimes she is uncanny.',
+      },
+      isleLetters: {
+        title: 'Whom to write to',
+        body: 'Dear Watch,\n\nall the mail of the archipelago passes through one house. The postmistress reads nothing, she says. Then she laid a pile in front of me: letters addressed to “the Watch”, with no place. Forty of them, from twenty years.\n\nPeople asking whether it still exists. Whether one may come. Whether one is too old. She never delivered them because she did not know where to. Watch, I am answering every one. It will be a long winter.',
+      },
+      trainedTwelve: {
+        title: 'Too old',
+        body: 'Twelve. The twelfth is sixty-two. Twenty years ago she wrote a letter and never got an answer. Alwine\'s answer came in the autumn. In the spring she stood at the door.\n\nIt took her longer than the others, for the stairs and for the signs. But she is the only one who looks out of the window at night without my having told her to. She says she has had twenty years\' practice at waiting for a light.',
+      },
+      isleRope: {
+        title: 'Backwards',
+        body: 'Hello Watch,\n\nthe ropemaker walks backwards all day. You have to, when you lay rope. He says that way you see the whole time what you have already made, and never where you are going.\n\nI said that sounded dreadful. He said he found it calming. Later Alwine asked me what I see when I look back. I began to list things and after a while noticed she had fallen asleep. It was a long list.',
+      },
+      postedEleven: {
+        title: 'A watch is not a tower',
+        body: 'Eleven apprentices are in eleven realms. Two of them have no tower at all. One hangs his lantern in a tree; one sets hers on a boat.\n\nAt first I meant to write to them that this will not do. Then I thought of the lightship Fenno told of, and the kites Alwine writes about. A watch is not a tower. I ought to have known. Ours too was only the place where the key happened to lie.',
+      },
+      isleKites: {
+        title: 'A fire in the sky',
+        body: 'Dear Watch,\n\nabove this island kites with lights stand in the sky at night. The kite maker says a fire in the sky can be seen farther than one on the ground, as long as the wind holds.\n\nAnd if it does not hold? “Then,” she said, “I run.” She showed me the scars on her knees. I have rarely seen anyone who knows so exactly what they are falling for.',
+      },
+      isleSeals: {
+        title: 'The missing one',
+        body: 'Hello Watch,\n\nthe seal warden does not count his seals. He says whoever counts only notices that one is missing. Whoever knows them knows which.\n\nYesterday one was missing. He put out in the storm, and I went along because the one from the causeway was already sitting in the boat. We found her, in a net. On the way back I wondered whether I would know which of our fires is missing if one is. I think so. Write and tell me whether you know too.',
+      },
+      trainedSixteen: {
+        title: 'Yes, I know',
+        body: 'Sixteen. Fenno asked whether I would know which fire is missing if one is. I tested it tonight. I closed my eyes and recited them, from here to the sea, each with the one who keeps it.\n\nI know. I even know which one burns too early and which too sparingly. I wrote to Fenno: yes. And that I miss him. The second I crossed out again and then let stand after all.',
+      },
+      isleBlack: {
+        title: 'A fire from below',
+        body: 'Dear Watch,\n\nthe island is made of black stone and still warm inside. The man who grows pumpkins here says his fire burns from below and has no need of him.\n\n“Then why do you stay?” Fenno asked. The man thought for a while. “So that someone can say it is warm,” he said. The one from the causeway nodded. I think those two have just grasped something about our work that took me longer.',
+      },
+      isleNames: {
+        title: 'A stone with a name',
+        body: 'Dear Watch,\n\nthere is an island where a stone stands for every warden. I found my mistress. And hers. And eleven before that. The first stone bears no name, only the sign with four rays.\n\nBeside my mistress\'s stone stands an empty one. The keeper of names looked at me and held out the chisel. I shook my head. “Not yet,” I said. She said: “They all say that. The stone can wait.”',
+      },
+      isleOutermost: {
+        title: 'A light, far out',
+        body: 'Hello Watch,\n\nwe are on the last island. Beyond it there is nothing on the chart. The man here says the chart was made by people who were never here. Some nights he sees a light, far out. He keeps a book about it: date, hour, how long.\n\nI watched with him tonight. At two it was there. I took my lantern. Short, long, covered. It did not answer. But it did not go out either.',
+      },
+      postedFifteen: {
+        title: 'Whom you give a watch to',
+        body: 'Fifteen realms, fifteen apprentices. Today I tried to write down what I chose them by, so that the next one has an easier time of it.\n\nI did not get far. The skilful ones were not the best. Nor were the brave. In the end the sheet holds a single sentence, and it is not mine but a painter\'s on a white island: by night one should be able to see that someone is there.',
+      },
+      isleTrial: {
+        title: 'One night',
+        body: 'Dear Watch,\n\nwhoever wants a watch here spends one night alone with a fire. The examiner does not look. In the morning she asks only one thing: “Whom do you want to show it to?”\n\nThe one from the causeway rowed across yesterday. She has kept a fire alone for a year; she had no need of it. In the morning the examiner asked. The one from the causeway pointed at Fenno, who stood on the shore pretending he had not been standing there all night.',
+      },
+      trainedTwenty: {
+        title: 'Twenty',
+        body: 'Twenty. The school is full, and for the time being I am training no one else. Not because there are enough. But because the first ones by now have someone with them who polishes lanterns and does not ask stupid questions.\n\nI counted: from here I can see more fires than I ever lit. Most of them were kindled by someone I do not know, because they were taught by someone I taught.',
+      },
+      isleNoFire: {
+        title: 'For the first one who stays',
+        body: 'Hello Watch,\n\nthere is a tower that is finished and has never burned. Oil in the cellar, a wick in the lamp, wood stacked. On the door a note: “For the first one who stays.”\n\nThe three of us stood before it. Alwine said nothing. I said nothing, and you know how hard that is for me. The one from the causeway took the note down, folded it and put it in her pocket. Then she asked me whether I had a match.',
+      },
+      postedNineteen: {
+        title: 'A new star at the edge',
+        body: 'Tonight a yellow dot was added at the edge of the sky chart, farther out than all the others. I entered it in ink, without waiting.\n\nIt flickers. It is a little too large, out of pride, and a little crooked. I would know it among a thousand, although I have never seen it before. It burns like everything Fenno ever lit.',
+      },
+      isleNewWatch: {
+        title: 'The apprentices',
+        body: 'Dear Watch,\n\nthe New Watch has been burning for a week. The two of them keep it together, the one from the causeway and Fenno, taking turns and arguing over whose turn it is. I gave them the key with the four teeth. Fenno laid it under the third step before I could say anything.\n\nWhom do you give a watch to? The one who stays. And who wants to show someone in the morning that it is still burning. I am coming home, Watch. Set out a second mug.',
+      },
+      rimOpenSea: {
+        title: 'One winter',
+        body: 'Dear Watch,\n\nI said I was coming home, and I came. For one winter. You put up with my counting your steps, and I put up with your doing it better than I did. Then word came from the Outermost Isle: the light far out has answered.\n\nForgive me the mug that stands empty again. The helmswoman steers for something only she can see. I sit in the bow, and by now I see it too.',
+      },
+      stageOne: {
+        title: 'The first stone',
+        body: 'From the middle of the map a request arrived, with a griffin I did not know: one stone from every realm, for a tower that all are meant to see. I wrote to the apprentices. Eight realms gave what they make in six hours.\n\nOur stone is the one from the third step. I lifted it out myself. There was nothing under it any more. The key is travelling, after all. It still felt as though I were giving away something that is not mine.',
+      },
+      rimDrifting: {
+        title: 'The same island',
+        body: 'Hello Watch,\n\nit is my turn to travel and her turn at the fire. We drew lots. I think she cheated so that I would go.\n\nWe are moored at an island made of reeds. The raft builder mends one corner every day. In a year nothing of the old one will be left, he says, and it is still the same island. Alwine asked how you can tell. “Because nobody has left,” he said.',
+      },
+      rimWhales: {
+        title: 'In the dark years',
+        body: 'Dear Watch,\n\nthe whales always pass here along the same line. The whale caller says they follow the fires on the shore. In the dark years they swam in circles, for weeks.\n\nI asked which years she meant. She listed them for me. Watch, they are mine. The years when I was alone and the fire only glowed. I did not know that someone so far out was waiting for it.',
+      },
+      stageTwo: {
+        title: 'What a realm gives',
+        body: 'The second stage needed eleven realms. I watched what each one sends. The moor sends peat. The slate quarries send slabs for the roof. Herring Isle sent a barrel, and nobody knows what for. The master builder walled it in.\n\n“I do not sort,” she writes. “Whoever begins to sort what belongs ends up building a tower for themselves alone.”',
+      },
+      rimIce: {
+        title: 'Because of the light',
+        body: 'Hello Watch,\n\nit is so cold that my ink freezes. I am writing with charcoal. Every morning the ice fisher hacks the same hole free and sets a lantern beside it. The fish come because of the light, he says.\n\nI asked whether that was not a bit mean. He said he takes three and feeds thirty. Then he gave me one. Now I do not know which lot I belong to.',
+      },
+      rimAurora: {
+        title: 'More often than chance allows',
+        body: 'Dear Watch,\n\nthe sky here hangs full of colours, and a woman writes them down like signs. I smiled. Then she showed me her books. Short, long, covered. Hundreds of times, over twenty years.\n\nI do not believe the sky is speaking to us. But I no longer believe we invented the signs either. Perhaps the first ones merely copied them down, on a night like this.',
+      },
+      stageThree: {
+        title: 'Eight days',
+        body: 'After every stage the mortar has to rest for eight days. I am bad at waiting, as anyone knows who has ever watched me cook.\n\nBut they are eight good days. The realms that gave refill their stores. Those whose turn has not come ask when they may. Yesterday an apprentice wrote that his realm had “unfortunately only given twice”. As though it were a privilege. Perhaps it is.',
+      },
+      rimMarket: {
+        title: 'Three rays',
+        body: 'Hello Watch,\n\na hundred boats, and on each one somebody wants to sell me something. I bought a lantern for her, one with three rays. The trader says they are in demand again. Ten years ago he sold them as scrap glass.\n\nI asked him what had changed. He pointed his thumb over his shoulder, back to where we come from. “It has grown brighter back there,” he said. “Word gets round.”',
+      },
+      stageFive: {
+        title: 'The list of givers',
+        body: 'Five stages. I keep a list of which realm has given how often, and today I noticed I have been keeping it wrongly. I had ordered it by amount.\n\nLittle Sister gives in six hours what the slate quarries break in a minute. But it has given every single time. I rewrote the list, alphabetically. That way nobody is at the top.',
+      },
+      rimCoral: {
+        title: 'It stands right there',
+        body: 'Dear Watch,\n\nI went diving. At my age. The diver lowered me on a rope like an anchor. Down there stands a lantern with four rays, quite overgrown, and small fish live in it.\n\nI wanted to bring it up. It is the oldest thing of ours I have ever seen. The diver shook her head. Up above she said: “It stands right there.” She is right. Not everything you find has to be taken along. I am learning that late.',
+      },
+      rimSandbank: {
+        title: 'A town that moves along',
+        body: 'Hello Watch,\n\nthe sandbank wanders, and the town wanders with it. New piles at one end, old ones out at the other. I hauled piles for a day. The pile setter says that in sixty years the town will have gone once round itself.\n\nI asked whether it would not be simpler to build on rock. “Simpler, yes,” he said. “But then we would be the ones who stayed put. This way we are the ones who stayed together.”',
+      },
+      stageSeven: {
+        title: 'A stone I do not know',
+        body: 'With the seventh stage there was a stone that none of our realms had sent. Red, with a sign scratched into it: four rays and a fifth, shorter.\n\nThe master builder writes that one morning it was simply lying there. She walled it in like all the rest. I looked at the drawing for a long time. Somewhere someone is building along with us of whom I know nothing. And who knows of us.',
+      },
+      rimRoots: {
+        title: 'Only by night',
+        body: 'Dear Watch,\n\na forest that stands in the sea. By day every root looks like the next, and even the crab catcher loses her way. By night, with the lantern at the bow, she knows every path.\n\n“By day I see too much,” she says. “By night only what my light reaches. That is always enough to the next root.” I thought of all the years when I wanted to know where it was all leading. To the next root would have done.',
+      },
+      rimBuoys: {
+        title: 'The same idea, only wetter',
+        body: 'Hello Watch,\n\na chain of lights straight across the strait. The buoy warden has heard of our Road of Fires and wants to know everything. I drew for him how one fire holds the next.\n\nHe drew for me what he does when a buoy breaks loose: the two neighbours burn twice as bright until it hangs again. We do not do that. We should. I am sending you the drawing. It got wet; the same idea, you see.',
+      },
+      stageNine: {
+        title: 'Above the trees',
+        body: 'Nine stages. The master builder writes that the tower is now taller than the trees, and that from the top you can for the first time see two fires at once: one in the north, one in the south.\n\nI have hung Fenno\'s wet drawing on the wall. Since yesterday the neighbours here burn double when one fails. It was needed on the very first night. Nobody noticed but me. That is how it should be.',
+      },
+      rimForeign: {
+        title: 'Three words for watch',
+        body: 'Dear Watch,\n\nnothing here is on our maps, and I do not understand a word. The people light their fire with the left hand. The interpreter says they have three words for “watch”: one for the watch you keep, one for the watch you are given, and one for the watch you pass on.\n\nFor “alone” they have none. I tried to explain it. They looked at me, polite and at a loss, and then brought me another plate.',
+      },
+      stageEleven: {
+        title: 'Whose tower it is',
+        body: 'A trader asked me today whose the beacon will be in the end. He meant it practically: who pays for the oil?\n\nI counted who has given. There is nobody among them to whom it does not belong. And nobody to whom it belongs more than to the realm with the herring barrel. I told the trader the oil is paid for by whoever happens to have some. He found that untidy. But then he left a barrel.',
+      },
+      rimDunes: {
+        title: 'Wood for a stranger',
+        body: 'Hello Watch,\n\nsand, everywhere. In my boots, in my bread, in this letter. The caravan leader travels by night, by fires on the highest dunes. He does not know who lights them. He leaves wood every time.\n\nI asked whether he had never gone to look. “What for?” he said. “He does not know who brings the wood. So we are even.” I left a log too. Now I am part of it and do not know of what.',
+      },
+      rimWell: {
+        title: 'A star in the ground',
+        body: 'Dear Watch,\n\na town around a single well. At night the warden lowers a lantern on a rope so that you can see the water. From the roofs it looks as if a star were burning in the ground.\n\nI asked her why she does not simply put the light up top. She said: “Up top everyone knows the town is there. Down below you have to show that there is still water. A fire belongs where the worry is.”',
+      },
+      stageThirteen: {
+        title: 'Who cannot give',
+        body: 'One realm did not give this time. Its store was empty; the apprentice there had been ill. He apologised in three letters.\n\nI wrote to him what Alwine once wrote to me when I had slept through a night: a chain that only holds if nobody is ever missing is not a chain but a stroke of luck. The stage was finished all the same. Two other realms, without my asking, gave sooner.',
+      },
+      rimStoneWood: {
+        title: 'Soot, and wood again above it',
+        body: 'Hello Watch,\n\ntrees made of stone. The stone forester counts rings at the breaks and has not finished one trunk in eleven years. He showed me a layer, deep inside: black. Soot. The forest burned once.\n\nAnd above it: wood again. Hundreds of rings. I thought of our cold kiln and of the dark years. From inside it looks like the end. From outside it is a line, and after it things go on.',
+      },
+      rimMirror: {
+        title: 'The lower sky',
+        body: 'Dear Watch,\n\na lake so shallow and still that at night you walk between two skies. The salt walker knows the lower one better than the upper. At the edge, where the low stars stand, many used to be missing, she says. Lately fewer are.\n\nI stopped, in the middle of the lake. Watch, the low stars at the edge. They are not stars. We know that. From here she sees your work, mirrored, and is keeping count.',
+      },
+      stageFifteen: {
+        title: 'Half',
+        body: 'Fifteen stages. Half. The master builder sent a drawing in which the tower is as tall as the sheet, and beside it a dot: a person.\n\nI showed it to the apprentices in the kitchen. One asked whether we shall ever see it finished. The sixty-two-year-old laughed and said she intended to stay until it burns, and would he kindly do the same.',
+      },
+      rimWindTowers: {
+        title: 'The thirteenth note',
+        body: 'Hello Watch,\n\ntwelve hollow towers that sing in the wind. The tower tuner climbs about all day adjusting flaps. This evening, for the first time since spring, all twelve were in tune.\n\nAnd then there was one more note. Lower. From no tower. I felt it in my belly. The tower tuner nodded as if it went without saying: “Nobody builds that one. It comes when all are there.” I keep thinking what that means for fires.',
+      },
+      stageEighteen: {
+        title: 'What Fenno heard',
+        body: 'Fenno writes of a thirteenth note that nobody built. I wrote it to the reckoner in the City of Observatories, because she is the only one who checks such things.\n\nHer answer came today. One line: “When enough fires burn, from each one you can see at least two others. Then there is no dark path left between two people. I do not know what that is called. But forty-one are still missing.”',
+      },
+      rimLamps: {
+        title: 'One evening a year',
+        body: 'Dear Watch,\n\na mountainside full of lamps, and they burn all at once on only one evening a year. The lamp polisher polishes the whole year for it. I asked whether that was not a poor exchange.\n\nShe took me along, today, on that evening. I shall not write to you what it looked like. I could not. I shall only write that I kept one single fire for thirty years and this evening understood for the first time what for.',
+      },
+      rimBridges: {
+        title: 'What has to be renewed',
+        body: 'Hello Watch,\n\nbridges of grass, between the peaks. New every year. For three days I twisted grass until my hands looked like the ropemaker\'s. The bridge weaver says a bridge that never has to be renewed gets forgotten.\n\nI told him about the beacon, of stone, for ever. He frowned. “And who comes together every year then?” he asked. I had no answer. Have you?',
+      },
+      stageTwentyOne: {
+        title: 'An answer for the bridge weaver',
+        body: 'Fenno asks who comes together every year if the tower is of stone and holds for ever. I thought about it for a week.\n\nThen I wrote to the master builder. Her proposal: the fire at the top gets no store. No cellar, no depot. What it burns, every realm brings itself, every year, on one evening. The tower holds. The fire has to be renewed. I wrote to the bridge weaver that he had just helped build it.',
+      },
+      rimCloud: {
+        title: 'Everyone holds someone',
+        body: 'Dear Watch,\n\na forest in the clouds. Plants growing on plants growing on plants. The mist gardener showed me one that sits at the very top and has never touched the ground.\n\n“Here everyone holds someone,” she said. “Otherwise it would all fall down.” I asked who holds the lowest one. She pointed at the roots that hang down again from the very top, all the way into the earth. It is a circle, Watch. There is no lowest one.',
+      },
+      rimCrater: {
+        title: 'Company',
+        body: 'Hello Watch,\n\na mountain with a fire in it that nobody lit. The man on the rim says he does not guard it. He keeps it company. For nineteen years.\n\nI sat beside him for a night. We did not talk. Towards morning he said: “You people do the same. You just think you do more.” I wanted to object. Then I thought of her, alone at the fire, and that I want to go home.',
+      },
+      stageTwentyFour: {
+        title: 'Fenno goes home',
+        body: 'Fenno wrote that he is travelling back to the New Watch. He has seen enough, and she has sat alone long enough. Alwine will make the rest of the journey without him.\n\nTonight I looked across. The yellow dot at the edge that burns a little too large shone twice as bright for a moment. Then as always. He has arrived. I looked up the new sign for it: “I see you.” It is now first on the list.',
+      },
+      rimObservatories: {
+        title: 'How many it takes',
+        body: 'Dear Watch,\n\na city where every house has a dome. The reckoner knows your lists better than I do. She has written on the wall how many fires it takes until the edge of the sky is closed all the way round.\n\nBeneath it is how many are burning. She has wiped out and rewritten the second number so often that the wall is paler there. Nine are still missing. She gave me the chalk and said that when the time comes, I may.',
+      },
+      rimLastHarbour: {
+        title: 'Where one can stay',
+        body: 'Dear Watch,\n\nnobody sails on from here. The anchor smith forges anchors all the same. I watched him and asked for whom.\n\n“For you, for instance,” he said, and laid a small one in my hand, no bigger than a key. “You have been travelling for years. Some day you must say where.” I put it in my pocket, with the chisel from the Isle of Names. My pockets are filling with things that wait for me.',
+      },
+      stageTwentySeven: {
+        title: 'Nine missing',
+        body: 'Nine fires are still missing, Alwine writes. I laid the map on the kitchen table and searched with the apprentices for where it is still dark. We found seven places.\n\nFor each one somebody volunteered before I had even asked. The sixty-two-year-old is taking the farthest. She says she waited longest, so she may go farthest. Two places we cannot find. Perhaps they are not ours.',
+      },
+      rimWholeMap: {
+        title: 'A candle for every fire',
+        body: 'Dear Watch,\n\na hall whose floor is the whole map. I walked across the sea, in my stockings, and found our valley. A candle stands there. It is burning. The map keeper says it is the oldest one here, and that in the dark years she never put it out although no word came.\n\n“I would have noticed if it were out,” she said. I asked how. She shrugged. I sat down beside the candle and said nothing for a while.',
+      },
+      rimSite: {
+        title: 'The stone from the third step',
+        body: 'Dear Watch,\n\nI am standing at the foot of the tower. The master builder showed me where our stone sits: right at the bottom, in the first course, beside a herring barrel. I laid my hand on it. For thirty years I stepped over it.\n\nThere are two red stones as well, with the fifth ray. She does not know from whom. “They come at night,” she says, “and they come from outside.” Tomorrow the last stage is set. Then it rests. Then we shall see.',
+      },
+      stageTwentyNine: {
+        title: 'The evening before',
+        body: 'All the realms have sent their wood, a bundle each, as the master builder wanted. Ours is from the apple tree behind the herb cottage, the sour one.\n\nTonight every fire we have is burning here. I counted them, twice, with my eyes closed. None is missing. The reckoner wrote that on her wall there now stand two equal numbers. Alwine held the chalk and took quite a while about it.',
+      },
+      rimBeacon: {
+        title: 'The great light',
+        body: 'Dear Watch,\n\nit is burning. It has as many rays as there are watches. I looked for ours and found it: it is a little crooked.\n\nAnd then, Watch, towards midnight: out there, beyond the edge, where no map shows anything. A light. Then two. Then a whole chain. Short, long, covered. They waited until we were complete. I have pushed the little anchor into the ground here. I am staying. Come and visit me. The door has no lock.',
+      },
+      stageThirty: {
+        title: 'For whoever it may be',
+        body: 'What happens when all fires burn at once? You see that you were never the only ones. And beyond that begins a map nobody has drawn yet.\n\nFenno sent the key back. I set a new stone into the third step and laid it underneath, with a note. I thought for a long time about what it should say. Then I copied out what mine said: if you are reading this, you are curious. At the start, that is all it takes.',
       },
     },
   },

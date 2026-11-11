@@ -191,6 +191,16 @@ function clueText(c: Clue): string {
       return t.chronicle.clue.sky(String(c.n))
     case 'constellations':
       return t.chronicle.clue.constellations(String(c.n))
+    case 'isles':
+      return t.chronicle.clue.isles(String(c.n))
+    case 'trained':
+      return t.chronicle.clue.trained(String(c.n))
+    case 'posted':
+      return t.chronicle.clue.posted(String(c.n))
+    case 'rim':
+      return t.chronicle.clue.rim(String(c.n))
+    case 'beacon':
+      return t.chronicle.clue.beacon(String(c.n))
   }
 }
 
