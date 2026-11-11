@@ -234,6 +234,10 @@ export const engineEn: EngineStrings = {
     privacyPage: 'Privacy policy as a page',
   },
   live: {
+    voyagesDone: (n: string) => `Completed flights: ${n}`,
+    voyageLeft: (time: string) => `Back in ${time}`,
+    voyageLocked: (n: string) => `Opens after ${n} flights`,
+    voyageSend: 'Send off',
     decorEdit: 'Place on the map',
     cardNow: (per: string) => `For your valley now: ${per}`,
     cardSkip: 'Go on without a card',

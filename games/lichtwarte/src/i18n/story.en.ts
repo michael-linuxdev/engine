@@ -20,6 +20,7 @@ export const storyEn: StoryStrings = {
       near: (layer: string) => `Opens when it draws near: ${layer}.`,
       realms: (n: string) => `Opens with ${n} realms.`,
       helper: 'Opens when someone helps with the work.',
+      voyages: (n: string) => `Opens after ${n} far flights.`,
     },
     menu: 'Chronicle',
     title: "The Warden's Chronicle",
@@ -39,6 +40,7 @@ export const storyEn: StoryStrings = {
       wakes: 'The Valley Wakes',
       night: 'The Long Night',
       handover: 'Passing the Watch',
+      firstYear: 'The First Year',
     },
     comeback: { title: 'There you are', body: 'Not a word for so long. The watch kept glowing, I kept an eye on it. Here, for the road: a few Glowpebbles.' },
     entries: {
@@ -149,6 +151,30 @@ export const storyEn: StoryStrings = {
       epilogue: {
         title: 'The first page',
         body: 'This page is not by Alwine. She laid the quill in front of me and said she had only copied the first page of the chronicle herself, from her teacher, who had it from hers.\n\nSo: if you are reading this, you found the key under the third step. Good. That means you are curious, and curiosity is all it takes to begin.',
+      },
+      voyageFirst: {
+        title: 'A letter back',
+        body: 'Dear warden,\n\nyour griffin has arrived, ruffled and very pleased with itself. Ragna gave it a fish it did not like, and a second one it did.\n\nDo send it out again. A fire that writes letters is news in the realms. And news travels slowly here, but it arrives.',
+      },
+      voyageMaps: {
+        title: 'The shelf fills up',
+        body: 'Every griffin brings back a piece of map. Never a whole sheet, just a corner, the course of a river, a name in an unfamiliar hand.\n\nI have unlocked the empty shelf in the map room. Lay the pieces in as they come. A map you put together yourself is one you never forget.',
+      },
+      voyageFenno: {
+        title: 'Fenno and the griffins',
+        body: 'Fenno has given the griffins names. They do not answer to them, but he insists they do so in secret.\n\nYesterday he explained the way north to one of them, with both arms and very loudly. The griffin flew south and came back on time. Fenno says that is exactly what he meant.',
+      },
+      voyageCoast: {
+        title: 'A letter from the coast',
+        body: 'Dear warden,\n\ndown here everything smells of salt, even the letters. The beacon keeper asked who holds the light in our valley. I said: someone who checks the lanterns once more at night.\n\nHe nodded and turned his own fire up. That is how people talk to each other here.',
+      },
+      voyageFires: {
+        title: 'Fifteen flights',
+        body: 'I counted: fifteen flights, and no griffin has come back empty. Sometimes a piece of map, sometimes a greeting, once only a feather from a bird nobody here knows.\n\nI used to think a watch stands still and keeps a fire. Now I know it also keeps roads open.',
+      },
+      voyageYear: {
+        title: 'After a year',
+        body: 'I am writing this page myself. A year has passed, perhaps a little more or less. Nobody in the valley counts that closely.\n\nAlwine sits on the bench and says the first year is the easy one. Fenno disagrees, because he always disagrees. Beyond the mountains lies land that is on none of our maps. The griffins already know the way.',
       },
     },
   },

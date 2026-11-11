@@ -9,6 +9,7 @@ import {
   ALBUM_ID, CARDS_ID, CHOICES_ID, collectionProgress, COLLECTIONS_ID, COMBINE_ID, DECOR_ID, PROJECTS_ID, VISITORS_ID,
   type AlbumConfig, type AlbumState, type CardConfig, type CardsState, type ChoiceState, type CollectionConfig, type CollectionsState, type CombineConfig, type CombineState,
   type DecorConfig, type DecorState, type ProjectDef, type ProjectsState, type VisitorConfig, type VisitorsState,
+  primaryCurrency, voyageBack, voyageOpen, VOYAGES_ID, type VoyagesConfig, type VoyagesState,
 } from '@engine/core'
 import { useEngine } from '@engine/react'
 import { useUi } from '../useUi'
@@ -155,6 +156,64 @@ export function CombineCard({ cfg, entries }: { cfg: CombineConfig; entries: Col
           })}
         </ul>
       </details>
+    </Card>
+  )
+}
+
+/**
+ * Voyages: one errand at a time. While it runs, a bar with the time left; once back, a collect
+ * button; otherwise the list of voyages, later ones locked until enough are completed.
+ * Names: `voyage.<id>`, card title `title.voyages`.
+ */
+export function VoyagesCard({ cfg }: { cfg: VoyagesConfig }) {
+  const ui = useUi()
+  const { world, dispatch, state } = useEngine(ui.rt)
+  const s = world.get<VoyagesState>(VOYAGES_ID)
+  if (!s) return null
+  const now = state.core.lastSeen
+  const running = cfg.list.find((v) => v.id === s.active)
+  const back = voyageBack(s, now)
+  const reward = (v: VoyagesConfig['list'][number]) =>
+    [...(v.grant ?? []).map((g) => `${ui.fmt(g.amount)} ${ui.labels.currency(g.currency)}`), ...(v.seconds ? [`${ui.fmt(world.rate() * v.seconds)} ${ui.labels.currency(primaryCurrency(world.def))}`] : [])].join(' + ')
+  return (
+    <Card id="voyages">
+      <p className="ek-muted" data-testid="voyages-done">{ui.t.live.voyagesDone(String(s.done))}</p>
+      {running ? (
+        <div className="ek-note" data-testid="voyage-running" data-back={back ? 'true' : 'false'}>
+          <strong>{ui.labels.content(`voyage.${running.id}`).name}</strong>
+          {back ? (
+            <Button data-testid="voyage-collect" onClick={() => dispatch(VOYAGES_ID, 'collect')}>
+              {ui.t.live.claim}: {reward(running)}
+            </Button>
+          ) : (
+            <>
+              <ProgressBar ratio={1 - (s.until - now) / Math.max(1, running.durationMs)} label={ui.labels.content(`voyage.${running.id}`).name} />
+              <span>{ui.t.live.voyageLeft(ui.duration(Math.max(0, s.until - now)))}</span>
+            </>
+          )}
+        </div>
+      ) : null}
+      <ul className="ek-list">
+        {cfg.list.map((v) => {
+          const l = ui.labels.content(`voyage.${v.id}`)
+          const open = voyageOpen(s, v)
+          return (
+            <li key={v.id} className={`ek-row ek-row--stack${open ? '' : ' is-locked'}`} data-testid={`voyage-${v.id}`}>
+              <div className="ek-row__main">
+                <strong>{l.name}</strong>
+                <span className="ek-muted">{l.blurb}</span>
+                <span>
+                  {ui.duration(v.durationMs)} · {ui.t.live.rewardLine(reward(v))}
+                </span>
+                {open ? null : <span className="ek-muted">{ui.t.live.voyageLocked(String(v.fromDone))}</span>}
+              </div>
+              <Button size="small" data-testid={`voyage-send-${v.id}`} disabled={!open || !!s.active} onClick={() => dispatch(VOYAGES_ID, 'send', { id: v.id })}>
+                {ui.t.live.voyageSend}
+              </Button>
+            </li>
+          )
+        })}
+      </ul>
     </Card>
   )
 }

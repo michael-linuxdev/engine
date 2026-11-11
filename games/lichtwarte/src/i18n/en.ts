@@ -207,6 +207,7 @@ export const stringsEn: Strings = {
     pickCard: 'Choose a constellation',
     unknown: 'Not found yet',
     titles: {
+      voyages: { name: 'Far Flights', blurb: 'The griffins fly to distant realms. Send one off and collect later what it brings back.' },
       collection: { name: 'Bestiary & Herbal', blurb: 'What you find in the valley. Every find makes the watch a little brighter.' },
       alchemy: { name: 'Alchemy', blurb: 'Two finds in the cauldron, a few hours of patience.' },
       guests: { name: 'Valley Guests', blurb: 'Who visits the valley while you are here.' },
@@ -216,6 +217,14 @@ export const stringsEn: Strings = {
       omens: { name: 'Omens', blurb: 'The valley asks for your counsel.' },
       greatWorks: { name: 'Great Works', blurb: 'Great buildings that last. Paid with Glimmer and Rune Shards.' },
       world: { name: 'Valley', blurb: 'What there is to find in the valley.' },
+    },
+    voyages: {
+      moorPost: { name: 'Post to the bog', blurb: 'A short flight to Ragna and back.' },
+      passLetters: { name: 'Letters over the pass', blurb: 'Across the Mist Pass to the high pastures.' },
+      coastNews: { name: 'News from the coast', blurb: 'As far as the beacon by the sea.' },
+      oldMap: { name: 'The piece of map', blurb: 'To where the old map ends.' },
+      farFires: { name: 'Distant fires', blurb: 'From hill to hill, until none can be seen.' },
+      skyRoute: { name: 'The way above the clouds', blurb: 'A whole day. The griffin decides when to turn back.' },
     },
     categories: {
       herbal: { name: 'Herbal', blurb: 'Herbs of the valley.' },
@@ -350,6 +359,7 @@ export const stringsEn: Strings = {
     },
   },
   fx: {
+    voyageBack: (name: string) => `The griffin is back: ${name}`,
     weekly: 'Weekly plan done: bonus collected',
     spent: (amount: string) => `−${amount}`,
     gained: (amount: string, cur: string) => `+${amount} ${cur}`,
@@ -378,6 +388,8 @@ export const stringsEn: Strings = {
     wheel: (name: string) => `Star wheel: ${name}`,
   },
   soon: {
+    voyage: (time: string) => `Griffin away: ${time} left`,
+    voyageBack: 'The griffin is back. Collect what it brings.',
     brew: (time: string) => `Cauldron: done in ${time}`,
     brewDone: 'Cauldron: done, collect the result',
     boost: (time: string) => `Lamp oil: ${time} left`,

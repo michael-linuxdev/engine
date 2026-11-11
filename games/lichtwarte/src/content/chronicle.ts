@@ -4,7 +4,7 @@
  * die Lange Nacht, der Weg aus Feuern durch die Lande, die Weitergabe der Wacht.
  * IDs nie ändern: Die gelesenen Seiten stehen als Gerätemerker unter diesen IDs.
  */
-import { layerStatus, MODULE, ownedOf, prestigeState, REGIONS_ID, type HelperState, type RegionsState, type WorldView } from '@engine/core'
+import { layerStatus, MODULE, ownedOf, prestigeState, REGIONS_ID, type HelperState, type RegionsState, type WorldView, VOYAGES_ID, type VoyagesState } from '@engine/core'
 import { LAYER } from '../ids'
 
 export type ChronicleId =
@@ -13,9 +13,11 @@ export type ChronicleId =
   | 'greifenhorst' | 'letterMoor' | 'runenhalle' | 'moonturn5' | 'apprentice' | 'sternwarte' | 'moonturn10' | 'nightNear'
   | 'longNight' | 'firstRealm' | 'letterRoad' | 'fiveRealms' | 'tenRealms'
   | 'agesNear' | 'ages' | 'epilogue'
+  // Kapitel 6 (nur anhängen)
+  | 'voyageFirst' | 'voyageMaps' | 'voyageFenno' | 'voyageCoast' | 'voyageFires' | 'voyageYear'
 
-export type ChapterId = 'key' | 'remains' | 'wakes' | 'night' | 'handover'
-export const CHAPTERS: readonly ChapterId[] = ['key', 'remains', 'wakes', 'night', 'handover']
+export type ChapterId = 'key' | 'remains' | 'wakes' | 'night' | 'handover' | 'firstYear'
+export const CHAPTERS: readonly ChapterId[] = ['key', 'remains', 'wakes', 'night', 'handover', 'firstYear']
 
 /** Wer schreibt: Alwine in die Chronik, Alwine als Brief (vom Greif gebracht), oder die Wacht selbst. */
 export type Voice = 'chronicle' | 'letter' | 'you'
@@ -39,6 +41,7 @@ export type Clue =
   | { kind: 'near'; layer: string }
   | { kind: 'realms'; n: number }
   | { kind: 'helper' }
+  | { kind: 'voyages'; n: number }
 
 const turns = (w: WorldView) => prestigeState(w).layers[0].count
 const nights = (w: WorldView) => prestigeState(w).layers[1]?.count ?? 0
@@ -76,7 +79,19 @@ export const CHRONICLE: readonly ChronicleEntry[] = [
   { id: 'agesNear', chapter: 'handover', art: 'apprentice', open: (w) => layerStatus(w, LAYER.ages).ratio >= 0.5 || ages(w) > 0, clue: { kind: 'near', layer: LAYER.ages } },
   { id: 'ages', chapter: 'handover', art: 'tower', open: (w) => ages(w) >= 1, clue: { kind: 'turns', layer: LAYER.ages, n: 1 } },
   { id: 'epilogue', chapter: 'handover', art: 'key', voice: 'you', open: (w) => ages(w) >= 2, clue: { kind: 'turns', layer: LAYER.ages, n: 2 } },
+
+  // Kapitel 6 · Das erste Jahr: mit den Fernfahrten der Greife
+  { id: 'voyageFirst', chapter: 'firstYear', art: 'letter', voice: 'letter', open: (w) => voyagesDone(w) >= 1, clue: { kind: 'voyages', n: 1 } },
+  { id: 'voyageMaps', chapter: 'firstYear', art: 'archive', open: (w) => voyagesDone(w) >= 3, clue: { kind: 'voyages', n: 3 } },
+  { id: 'voyageFenno', chapter: 'firstYear', art: 'apprentice', open: (w) => voyagesDone(w) >= 6, clue: { kind: 'voyages', n: 6 } },
+  { id: 'voyageCoast', chapter: 'firstYear', art: 'letter', voice: 'letter', open: (w) => voyagesDone(w) >= 10, clue: { kind: 'voyages', n: 10 } },
+  { id: 'voyageFires', chapter: 'firstYear', art: 'fires', open: (w) => voyagesDone(w) >= 15, clue: { kind: 'voyages', n: 15 } },
+  { id: 'voyageYear', chapter: 'firstYear', art: 'dawn', voice: 'you', open: (w) => voyagesDone(w) >= 20, clue: { kind: 'voyages', n: 20 } },
 ]
+
+function voyagesDone(w: WorldView): number {
+  return w.get<VoyagesState | undefined>(VOYAGES_ID)?.done ?? 0
+}
 
 function openRealms(w: WorldView): number {
   return Object.values(w.get<RegionsState | undefined>(REGIONS_ID)?.regions ?? {}).filter((r) => r.open).length
