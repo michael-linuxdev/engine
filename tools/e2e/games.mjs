@@ -339,6 +339,17 @@ export const GAMES = [
       await r.getByTestId('tab-prestige').click()
       assert((await r.getByTestId('milestones-ages').getAttribute('data-reached')) === '0', 'Meilensteine des Zeitalters sichtbar')
 
+      // Vorräte-Fenster: liegt über der Leiste, und der Text bricht in der Kachel um (er lief auf dem Handy hinaus)
+      await r.getByTestId('hud-purse').click()
+      await r.getByTestId('purse-sheet').waitFor()
+      const purse = await r.evaluate(() => {
+        const sheet = document.querySelector('[data-testid="purse-sheet"]')
+        const rows = [...sheet.querySelectorAll('.ek-row__main span')]
+        return { inApp: sheet.parentElement.parentElement.classList.contains('ek-app'), wraps: rows.every((x) => x.scrollWidth <= x.clientWidth + 1 && x.getBoundingClientRect().right <= innerWidth), bottom: sheet.getBoundingClientRect().bottom, vh: innerHeight }
+      })
+      assert(purse.inApp && purse.wraps && purse.bottom <= purse.vh + 1, `Vorräte-Fenster vollständig und umbrochen (${JSON.stringify(purse)})`)
+      await r.keyboard.press('Escape')
+      await r.getByTestId('purse-sheet').waitFor({ state: 'detached' })
       // Markt: Tagesgeschenk, Talstil kaufen und anlegen, Testkauf mit Testgeld
       await r.getByTestId('tab-market').click()
       // Die Seite selbst scrollt nie (kein Wandern des Hintergrunds hinter Fenstern); nur die Ansicht scrollt
