@@ -23,6 +23,9 @@ export const storyDe = {
       realms: (n: string) => `Öffnet sich mit ${n} Landen.`,
       helper: 'Öffnet sich, wenn jemand bei der Arbeit hilft.',
       voyages: (n: string) => `Öffnet sich nach ${n} Fernfahrten.`,
+      highlands: (n: string) => `Öffnet sich mit ${n} Hochlanden.`,
+      road: (n: string) => `Öffnet sich mit ${n} Stufen der Feuerstraße.`,
+      chain: (n: string) => `Öffnet sich mit einer Kette aus ${n} Feuern.`,
     },
     menu: 'Chronik',
     title: 'Chronik der Wächterin',
@@ -36,6 +39,9 @@ export const storyDe = {
     close: 'Buch schließen',
     page: (n: string, total: string) => `Seite ${n} von ${total}`,
     chapter: (n: string, name: string) => `Kapitel ${n} · ${name}`,
+    books: { watch: 'Buch 1 · Die Wacht', wayOfFires: 'Buch 2 · Der Weg der Feuer' },
+    bookShort: (n: string) => `Buch ${n}`,
+    bookLocked: { wayOfFires: 'Beginnt mit dem ersten Hochland.' },
     chapters: {
       key: 'Der Schlüssel',
       remains: 'Was bleibt',
@@ -43,6 +49,11 @@ export const storyDe = {
       night: 'Die Lange Nacht',
       handover: 'Die Wacht weitergeben',
       firstYear: 'Das erste Jahr',
+      upward: 'Über der Baumgrenze',
+      traces: 'Spuren im Stein',
+      otherFires: 'Die Feuer der anderen',
+      coldKiln: 'Der kalte Ofen',
+      firstWatch: 'Die Erste Warte',
     },
     comeback: { title: 'Da bist du ja', body: 'Lange nichts gehört. Die Warte hat geglimmt, ich habe aufgepasst. Hier, für den Weg: ein paar Lichtkiesel.' },
     entries: {
@@ -177,6 +188,166 @@ export const storyDe = {
       voyageYear: {
         title: 'Nach einem Jahr',
         body: 'Diese Seite schreibe ich selbst. Ein Jahr ist um, vielleicht auch etwas mehr oder weniger. Im Tal zählt niemand so genau.\n\nAlwine sitzt auf der Bank und sagt, das erste Jahr sei das leichte. Fenno widerspricht ihr, weil er immer widerspricht. Über den Bergen liegt Land, das auf keiner unserer Karten steht. Die Greife kennen den Weg schon.',
+      },
+      highFirst: {
+        title: 'Der Weg geht weiter',
+        body: 'Ich hatte gedacht, hinter der Himmelswarte sei die Karte zu Ende. Sie ist es auch. Der Weg ist es nicht.\n\nOben liegt ein Moor, und im Moor eine Feuerstelle, älter als unsere. Jemand hat hier ein Feuer gehütet, lange bevor es im Tal eine Warte gab. Ich möchte wissen, wer.',
+      },
+      roadFirst: {
+        title: 'Zwei Feuer',
+        body: 'Heute Abend habe ich zum ersten Mal ein Feuer zwischen zwei Landen entzündet. Es steht auf halbem Weg, gehört keinem von beiden und wärmt beide.\n\nAlwine sagt, so habe das alles einmal angefangen: nicht mit einer Warte, sondern mit dem Stück dazwischen.',
+      },
+      highStair: {
+        title: 'Ein Brief von der Treppe',
+        body: 'Liebe Wacht,\n\nich bin bei Stufe vierhundert und schreibe im Sitzen. Der Treppenwart hat mir ein Zeichen gezeigt, in den Fels gehauen, auf Kniehöhe: eine Laterne. Unsere Laterne.\n\nEr sagt, es sei schon da gewesen, als sein Großvater hier fegte. Ich steige weiter. Grüß Fenno und sag ihm, er soll die Greife nicht überfüttern.',
+      },
+      roadThree: {
+        title: 'Fenno zählt',
+        body: 'Fenno hat angefangen, die Feuer der Straße abends zu zählen. Er zählt laut, vom Turm aus, und kommt jedes Mal auf eines mehr, als wir entzündet haben.\n\nIch habe ihm gesagt, er verzähle sich. Er sagt, er zähle nur, was er sieht. Ich habe nicht weiter gefragt.',
+      },
+      highSaddle: {
+        title: 'Was der Wind weiß',
+        body: 'Die Wetterfrau am Sattel führt ein Buch über den Wind, Tag für Tag, seit dreißig Jahren. Vor ihr hat es eine andere geführt, und vor der wieder eine.\n\nAuf der ersten Seite steht kein Wetter. Dort steht nur: „Feuer brennt. Sicht bis zum Tal.“ Das Tal sind wir.',
+      },
+      chainThree: {
+        title: 'Eine Kette',
+        body: 'Drei Feuer hintereinander, ohne Lücke. Von der Warte aus sieht man sie als eine Linie, die den Berg hinaufsteigt.\n\nEin einzelnes Feuer sagt: Hier ist jemand. Eine Kette sagt etwas anderes. Sie sagt: Hier entlang.',
+      },
+      highTarn: {
+        title: 'Ein Brief vom See',
+        body: 'Liebe Wacht,\n\nder Fährjunge hat mich hinübergerudert und kein Wort gesagt. In der Mitte hat er das Ruder eingezogen und nach unten gezeigt. Auf dem Grund liegt eine Feuerschale, groß wie ein Wagenrad.\n\nNiemand wirft so etwas weg. Jemand hat sie dort hingelegt, damit sie bleibt. Ich weiß noch nicht, warum.',
+      },
+      highJuniper: {
+        title: 'Wo Wacholder wächst',
+        body: 'Die Räucherin behauptet, Wacholder wachse am liebsten dort, wo einmal ein Feuer stand. Ich habe das für eine schöne Redensart gehalten.\n\nDann bin ich den Hang abgegangen. Die Büsche stehen in einer Reihe, alle zweihundert Schritte einer, bis hinauf zum Grat. Niemand pflanzt so. Aber so stellt man Feuer auf.',
+      },
+      highBridge: {
+        title: 'Ein Brief von der Brücke',
+        body: 'Liebe Wacht,\n\nich stehe am Ende einer Brücke, die in der Luft aufhört. Der Brückenbauer setzt jedes Jahr einen Bogen an. Er sagt, von drüben baue ihm jemand entgegen.\n\nGesehen hat er nie jemanden. Aber jedes Frühjahr ist auf der anderen Seite ein Bogen mehr. Ich habe nachgezählt. Er hat recht.',
+      },
+      roadEight: {
+        title: 'Fenno und die Lichtkiesel',
+        body: 'Fenno hat ausgerechnet, was die ganze Feuerstraße kostet. Er hat dafür drei Seiten gebraucht und einen halben Abend. Das Ergebnis hat er mir nicht gesagt, nur: „Viel.“\n\nDann hat er gefragt, ob er seinen eigenen Beutel dazulegen dürfe. Ich habe Ja gesagt. Es waren elf Kiesel und ein Knopf.',
+      },
+      highGoat: {
+        title: 'Die Laterne am Stock',
+        body: 'Die Geißhirtin trägt eine Laterne am Stock, auch am hellen Tag. Ich habe gefragt, wozu.\n\n„Damit man mich von unten sieht“, hat sie gesagt. „Meine Mutter hat es so gemacht. Früher hat unten jemand zurückgeleuchtet.“ Sie hat das ohne Vorwurf gesagt. Ich habe mir trotzdem vorgenommen, abends öfter hinaufzusehen.',
+      },
+      highCircle: {
+        title: 'Der zwanzigste Stein',
+        body: 'Neunzehn Steine stehen im Kreis. Der Steinzähler zählt jeden Morgen zwanzig und ärgert sich nicht mehr darüber.\n\nIch habe mich in die Lücke gestellt. Der Boden dort ist schwarz, eine Handbreit tief. Der zwanzigste Stein war nie ein Stein. Dort hat ein Feuer gebrannt, und die neunzehn standen darum wie Leute, die sich wärmen.',
+      },
+      roadTwelve: {
+        title: 'Was eine Stufe ist',
+        body: 'Ich habe lange gebraucht, um zu verstehen, warum ein Feuer drei Stufen hat. Die erste ist ein Zeichen: Wir wissen voneinander. Die zweite ist ein Weg: Wer will, findet hinüber.\n\nDie dritte hat Alwine mir geschrieben. „Die dritte“, schreibt sie, „brennt auch dann, wenn einer von beiden einmal schläft.“',
+      },
+      highSprings: {
+        title: 'Ein Brief von den Quellen',
+        body: 'Liebe Wacht,\n\nich habe aus allen sieben Quellen getrunken und kann sie immer noch nicht unterscheiden. Die Brunnenmeisterin war höflich enttäuscht.\n\nSie sucht die achte. Die habe, sagt sie, nach Rauch geschmeckt, und die Alten hätten ihr Wasser nur von dort geholt. Rauchiges Wasser, Wacht. Ich glaube, ich weiß, was an der achten Quelle stand.',
+      },
+      chainEight: {
+        title: 'Von unten gesehen',
+        body: 'Heute kam ein Händler durchs Tal, der die Hochlande nicht kennt. Er ist am Abend stehen geblieben und hat lange hinaufgesehen.\n\n„Wohnt dort jemand?“, hat er gefragt. Ich habe gesagt: „Seit Neuestem wieder.“ Er hat genickt, als sei das die vernünftigste Antwort der Welt, und hat sein Nachtlager so aufgeschlagen, dass er die Kette sehen konnte.',
+      },
+      highEagle: {
+        title: 'Was die Adler bauen',
+        body: 'Der Horstwächter hat mir einen alten Horst gezeigt, den die Adler aufgegeben haben. Unter den Ästen lag ein Stück Eisen, flach, mit einem Griff.\n\nEs ist ein Laternendeckel. Die Adler tragen alles zusammen, was glänzt. Irgendwo an dieser Wand hing einmal eine Laterne, so hoch, dass nur Vögel sie erreichen. Wer hängt eine Laterne dorthin? Jemand, der von sehr weit gesehen werden will.',
+      },
+      highSlate: {
+        title: 'Die richtige Seite',
+        body: 'Die Schieferspalterin hat eine Platte für mich aufgeschlagen, wie man ein Buch aufschlägt. Innen war ein Abdruck: eine Hand, fünf Finger, daneben eine Flamme, mit einem Nagel geritzt.\n\n„Davon gibt es viele“, hat sie gesagt. „In jeder Schicht eine.“ Ich habe gefragt, wie alt die unterste sei. Sie hat gelacht. So tief sei noch niemand gekommen.',
+      },
+      roadSixteen: {
+        title: 'Fenno bekommt Post',
+        body: 'Ein Greif hat einen Brief gebracht, der nicht an die Wacht gerichtet war, sondern an „den Jungen, der die Feuer zählt“. Fenno hat ihn dreimal gelesen und dann sehr gerade gesessen.\n\nEr ist vom Senn auf der Letzten Weide. Er schreibt, er zähle auch, von oben, und komme auf dieselbe Zahl. Fenno hat mir den Brief nicht gezeigt. Er hat ihn mir vorgelesen. Zweimal.',
+      },
+      highMist: {
+        title: 'Ein Brief aus dem Nebel',
+        body: 'Liebe Wacht,\n\nim Kessel sieht man die eigene Hand nicht. Der Nebelfänger findet sich mit einem Horn zurecht: ein Ton für „Ich bin hier“, zwei für „Komm“.\n\nHeute Nacht hat er einmal geblasen. Von der anderen Seite des Kessels kam ein Ton zurück. Er ist erschrocken, Wacht. Er wohnt hier allein.',
+      },
+      highPasture: {
+        title: 'Neun Feuer',
+        body: 'Der Senn sagt, von der Letzten Weide sehe man am Abend neun Feuer. Früher seien es mehr gewesen, sein Vater habe noch vierzehn gezählt.\n\nIch habe mit ihm bis zur Dunkelheit gewartet. Wir haben zwölf gezählt. Er hat lange nichts gesagt und dann seine Mütze abgenommen, vor niemandem im Besonderen.',
+      },
+      roadTwentyTwo: {
+        title: 'Nicht alle sind unsere',
+        body: 'Ich habe heute die Liste gemacht, die ich längst hätte machen sollen: jedes Feuer, das wir entzündet haben, mit Tag und Ort.\n\nDann bin ich auf den Turm gestiegen und habe gezählt. Es sind drei mehr. Fenno hat sich nie verzählt. Dort oben brennen Feuer, die niemand von uns angesteckt hat.',
+      },
+      highHeaps: {
+        title: 'Was die Alten übersahen',
+        body: 'Die Erzwäscherin wäscht den Abraum der alten Stollen. Meist findet sie Eisen, manchmal Kupfer. Gestern einen Schlüssel.\n\nEr sieht aus wie unserer, bis auf den Bart. Unserer hat drei Zacken, dieser vier. Ein Schlüssel für eine Tür, die ähnlich ist wie unsere und doch eine andere. Ich trage ihn jetzt in der Manteltasche und fasse öfter hin, als nötig wäre.',
+      },
+      chainThirteen: {
+        title: 'Die halbe Strecke',
+        body: 'Dreizehn Feuer in einer Reihe. Von hier bis zur Mitte der Hochlande ist keine Lücke mehr.\n\nDie Sternwarte meldet, man könne die Kette jetzt mit dem bloßen Auge vom Sternbild der Leiter unterscheiden, aber nur knapp. Ich nehme das als Lob.',
+      },
+      highCloister: {
+        title: 'Ein Brief aus dem Kloster',
+        body: 'Liebe Wacht,\n\nim Kloster spricht nur die Pförtnerin. Ich habe sie nach der Kerze im Fenster gefragt.\n\nSie brenne, sagt sie, für jemanden, der hinaufgegangen und nicht zurückgekommen sei. Seit wann? Sie hat im Buch nachgesehen. Seit zweihundertelf Jahren. Jeden Abend eine neue Kerze. Ich habe ihr den Schlüssel mit den vier Zacken gezeigt. Sie hat sehr lange hingesehen und dann zum ersten Mal an diesem Tag geschwiegen.',
+      },
+      highLarch: {
+        title: 'Loslassen',
+        body: 'Der Harzer sagt, die Lärche sei der einzige Nadelbaum, der im Herbst alles abwirft. Die anderen hielten fest und brächen im Schnee.\n\nIch habe an die Wacht gedacht, die den Schlüssel unter die Stufe legt und geht. Ich hatte das immer für ein Fortgehen gehalten. Vielleicht ist es das, was der Harzer meint.',
+      },
+      roadTwentyEight: {
+        title: 'Fenno will hinauf',
+        body: 'Fenno hat gefragt, wann er mit in die Hochlande dürfe. Ich habe gesagt: wenn jemand anderes unten das Feuer hält. Er hat gesagt, das sei ungerecht, und dann, nach einer Weile, dass er es verstehe.\n\nAm Abend stand er auf dem Turm und hat hinaufgeleuchtet, einmal kurz, einmal lang. Von der Letzten Weide kam es zurück. Er hat sich dort oben einen Freund gemacht, ohne einen Schritt zu gehen.',
+      },
+      highWatershed: {
+        title: 'Ein Brief von der Scheide',
+        body: 'Liebe Wacht,\n\nich stehe mit einem Fuß in jedem Meer, sagt die Pegelschreiberin, und sie meint es wörtlich. Links fließt alles zu uns ins Tal. Rechts fließt es fort, in ein Land, von dem ich nichts weiß.\n\nDie Feuer laufen hier nicht nach links. Sie laufen den Grat entlang und dann nach rechts hinunter. Wer sie gebaut hat, kam nicht von uns. Er kam zu uns.',
+      },
+      highCave: {
+        title: 'Eine Stadt ohne Himmel',
+        body: 'In der Höhlenstadt gibt es eine bemalte Wand. Sie zeigt einen Zug von Leuten mit Laternen, die einen Berg hinuntersteigen. Vorn geht eine Frau mit einem Schlüssel am Gürtel.\n\nDer Lampenträger sagt, das Bild sei schon alt gewesen, als die Stadt gegraben wurde. Die Leute auf der Wand gehen von rechts nach links. Auf uns zu.',
+      },
+      highGorge: {
+        title: 'Die Sprache der Laternen',
+        body: 'In der Schlucht ist es zu laut zum Reden, also spricht man mit Laternen. Die Stegmeisterin hat mir ihre Zeichen beigebracht: kurz, lang, verdeckt.\n\nEs sind dieselben, die Fenno vom Turm aus gibt. Ich habe ihn gefragt, woher er sie hat. Von Alwine. Und die? Von ihrer Meisterin. Niemand hat diese Zeichen erfunden. Sie sind mit den Feuern den Berg heruntergekommen.',
+      },
+      roadThirtySix: {
+        title: 'Die Hälfte der Stufen',
+        body: 'Sechsunddreißig Stufen brennen. Ich merke, dass ich abends nicht mehr zuerst auf unser eigenes Feuer sehe, sondern die Kette hinauf, bis dorthin, wo sie aufhört.\n\nFrüher habe ich ein Feuer gehütet. Jetzt hüte ich die Frage, wie weit es reicht. Alwine schreibt, das sei keine andere Arbeit, nur dieselbe von weiter oben.',
+      },
+      chainEighteen: {
+        title: 'Ein Zeichen von oben',
+        body: 'Heute Nacht hat die Kette geantwortet. Nicht eines unserer Feuer, sondern eines von den dreien, die wir nicht entzündet haben. Kurz, lang, verdeckt. Kurz, lang, verdeckt.\n\nFenno hat es als Erster gelesen, weil er der Einzige ist, der nie daran gezweifelt hat. Es heißt: „Ich bin hier.“',
+      },
+      highFirn: {
+        title: 'Ein Brief vom Firn',
+        body: 'Liebe Wacht,\n\nder Spurenleser hat mir im alten Schnee eine Fährte gezeigt. Stiefel, ein Stock, daneben etwas Kleines auf vier Pfoten. Sie führt hinauf und ist zweihundert Jahre alt, sagt er, auf zehn Jahre genau.\n\nDaneben läuft eine zweite, frische. Sie führt herunter. Sie ist von gestern.',
+      },
+      highFair: {
+        title: 'Der leere Platz',
+        body: 'Der Hirtenmarkt steht das ganze Jahr leer und ist trotzdem gefegt. Die Marktvögtin sagt, ein Platz, auf den niemand warte, werde zu einer Wiese.\n\nDieses Jahr sind die Hirten früher gekommen. Sie hätten, sagen sie, von ihren Weiden aus die Feuer gesehen und gedacht, es gebe etwas zu feiern. Sie hatten recht. Ich wusste es nur noch nicht.',
+      },
+      highPlateau: {
+        title: 'Der fehlende Stern',
+        body: 'Auf der Sternplatte sind Sternbilder in den Fels geritzt. Der Nachtschreiber vergleicht sie seit Jahren mit dem Himmel. Eines stimmt nicht: Die Leiter hat im Fels eine Sprosse mehr.\n\nHeute Nacht hat er mich geweckt. Die Sprosse sei wieder da. Es ist kein Stern. Es ist unser siebzehntes Feuer. Wer das geritzt hat, hat keine Sterne gezeichnet, sondern eine Straße, die schon einmal gebrannt hat.',
+      },
+      roadFortyFive: {
+        title: 'Fenno hält das Feuer',
+        body: 'Ich habe Fenno heute zum ersten Mal das Feuer allein gelassen, eine ganze Nacht. Er hat nicht geschlafen, behauptet er. Auf dem Tisch lagen am Morgen vier leere Becher und eine Liste: jede Stunde, jedes Feuer, ein Haken.\n\nUnter der letzten Zeile stand: „Alle da. Auch die fremden.“ Ich habe die Liste in die Chronik gelegt. Sie gehört hierher.',
+      },
+      highKiln: {
+        title: 'Ein Feuer, auf das jemand wartet',
+        body: 'Der Kalte Ofen ist so groß wie ein Haus. Die Aschenhüterin fegt ihn jeden Morgen aus, obwohl er kalt ist, seit irgendwer denken kann. „Ein Feuer, auf das niemand wartet, kommt nicht zurück“, sagt sie.\n\nIch habe gefragt, was hier gebrannt wurde. Sie hat mir einen Ziegel gezeigt, den ersten, mit einem Zeichen: eine Laterne. Hier wurden die Laternen gemacht, Wacht. Alle. Auch unsere.',
+      },
+      highBoundary: {
+        title: 'Ein Brief vom Grenzstein',
+        body: 'Liebe Wacht,\n\nauf dem Stein sind zwei Zeichen. Unsere Laterne auf der einen Seite. Auf der anderen eine Laterne mit vier Strahlen statt drei. Ich habe den Schlüssel danebengehalten. Vier Zacken.\n\nDer Grenzgänger hat endlich geredet. Drüben gebe es eine Wacht wie unsere. Sie habe ihre Feuer nie ausgehen lassen. Sie habe nur aufgehört, auf Antwort zu warten. Bis vor Kurzem.',
+      },
+      chainTwentyFour: {
+        title: 'Ein Feuer fehlt',
+        body: 'Vierundzwanzig Feuer in einer Reihe, vom Tal bis unter den letzten Grat. Es fehlt eines.\n\nFenno fragt jeden Abend, wann. Ich sage jeden Abend: bald. Wir wissen beide, dass ich es hinauszögere. Man steht nicht jeden Tag vor dem letzten Stück eines Weges, den vor zweihundert Jahren jemand angefangen hat.',
+      },
+      highFirstWatch: {
+        title: 'Die dritte Stufe',
+        body: 'Von der Ersten Warte stehen nur noch die Grundmauern. Eine Feuerschale. Eine Treppe mit drei Stufen, die nirgends mehr hinführt.\n\nIch habe unter die dritte Stufe gegriffen, ohne nachzudenken. Dort lag ein Schlüssel. Drei Zacken. Und ein Zettel, in einer Schrift, die ich aus unserer eigenen Chronik kenne, von der allerersten Seite: „Wenn du das liest, bist du neugierig, und mehr braucht es am Anfang nicht.“',
+      },
+      roadSixty: {
+        title: 'Der Weg der Feuer',
+        body: 'Diese Seite schreibe ich selbst. Die Straße brennt, vom Tal bis zur Ersten Warte, und weiter, den anderen Hang hinunter, in Feuern, die nicht unsere sind.\n\nWer hat die anderen Feuer entzündet? Niemand allein. Eine hat angefangen, eine hat weitergemacht, eine hat den Schlüssel unter die Stufe gelegt. Drüben wartet eine Wacht mit vier Strahlen. Alwine packt schon. Fenno sagt, diesmal komme er mit. Ich glaube, diesmal hat er recht.',
       },
     },
   },

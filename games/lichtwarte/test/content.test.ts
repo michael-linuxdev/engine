@@ -28,7 +28,7 @@ describe('Spiel: Inhalt', () => {
       expect(SLOTS.find((s) => s.id === id), id).toBeDefined()
     }
     expect(game.prestigeLayers).toHaveLength(3)
-    expect(CHRONICLE).toHaveLength(33)
+    expect(CHRONICLE).toHaveLength(73)
     const archive = game.metaShop.filter((m) => m.currency === 'runeShards')
     expect(archive).toHaveLength(10)
     expect(archive.reduce((a, m) => a + m.maxRank, 0)).toBe(163)

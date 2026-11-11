@@ -50,6 +50,14 @@ Entscheidung Michael: Jahr 2 wird gebaut, in derselben Qualität wie Jahr 1. Es 
 - **Lande-Liste:** nach Wellen gegliedert und aufklappbar; die neueste Welle steht offen.
 - **Noch offen in Jahr 2:** Buch 2 der Chronik (40 Seiten), Fest-Jahrgang 2, Taktung der Zeitalter für die Jahre 3 bis 5. Nicht gemessen: wie viele Lichtkiesel im zweiten Jahr anfallen (der Preis der Feuerstraße ist geschätzt), und der Simulator spielt weder Feuerstraße noch Fernfahrten.
 
+## Jahr 2, zweites Paket (2026-11-11)
+
+- **Buch 2 „Der Weg der Feuer“** ist geschrieben: 40 Seiten in fünf Kapiteln, de/en. Inhalt und Bogen stehen in `welt.md`.
+- Die Seiten gehen mit den Hochlanden (25), den Stufen der Feuerstraße (10) und ihrer längsten Kette (5) auf. Bei einem Hochland alle 11 bis 14 Tage kommt damit im Schnitt etwa alle 8 Tage eine Seite; wie dicht die Seiten der Feuerstraße dazwischen fallen, ist nicht gemessen.
+- Die Chronik ist nach Büchern gegliedert. Buch 2 steht bis zum ersten Hochland nur als eine Zeile im Inhalt; die Seitenzahl zählt erst dann bis 73.
+- Seiten aus den Hochlanden zeigen das Bild ihres Landes.
+- **Noch offen in Jahr 2:** Fest-Jahrgang 2, Taktung der Zeitalter für die Jahre 3 bis 5.
+
 ## Was „fünf Jahre“ hier heißt
 
 Maßstab ist eine Spielerin, die täglich kurz spielt (Profil „regular“). Über 1.825 Tage soll gelten:
