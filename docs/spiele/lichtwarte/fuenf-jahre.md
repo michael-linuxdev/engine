@@ -1,6 +1,6 @@
 # Inhalte für fünf Jahre
 
-Stand 2026-11-11. Entwurf zur Abstimmung, noch nichts davon gebaut. Entscheidung Michael: Die Jahre 1 bis 5 werden geplant und gebaut, alles danach bleibt Gerüst. Gefüllt wird mit Geschichte, neuen Landen, neuen Systemen und dem Jahreskreis; alle Texte entstehen hier auf Deutsch und Englisch.
+Stand 2026-11-11. Plan mit den Entscheidungen vom selben Tag, noch nichts davon gebaut. Entscheidung Michael: Die Jahre 1 bis 5 werden geplant und gebaut, alles danach bleibt Gerüst. Gefüllt wird mit Geschichte, neuen Landen, neuen Systemen und dem Jahreskreis; alle Texte entstehen hier auf Deutsch und Englisch.
 
 ## Wo wir stehen
 
@@ -61,8 +61,8 @@ Jedes Jahr ist ein **Buch** der Chronik mit eigener Frage, einer **Welle** Lande
 3. Jahres-Tabelle bauen und Jahr 2 als erstes ganzes Jahr liefern (Buch, Welle, Feuerstraße, Jahrgang).
 4. Jahre 3 bis 5 je als eigenes Paket, jeweils mit Messung.
 
-## Offene Entscheidungen
+## Entscheidungen (Michael, 2026-11-11)
 
-1. **Wodurch öffnet sich ein neues Jahr?** Durch Fortschritt (letztes Land der Welle) oder durch den Kalender (365 Tage nach dem ersten Start)?
-2. **Namen der späteren Lande:** Eigennamen mit Prüfung oder beschreibende Namen?
-3. **Reihenfolge:** erst messen oder gleich Jahr 1 schließen?
+1. **Ein neues Jahr öffnet sich durch Fortschritt:** mit dem letzten Land der Welle, nicht durch den Kalender.
+2. **Lande späterer Wellen tragen beschreibende Namen** („Das Hohe Moor“), keine Eigennamen. Damit entfällt für sie die Namensprüfung.
+3. **Zuerst wird gemessen:** Simulator auf fünf Jahre, heutiger Stand, erst dann wird gebaut.
