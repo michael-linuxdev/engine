@@ -51,7 +51,7 @@ export function simPlay(): (api: Api) => void {
 
     // Himmelskarte: jeden Stern eintragen, der geht
     for (const g of SKY_CHART.groups) {
-      const st = chartStatus(SKY_CHART, api.state().modules[CHART_ID] as ChartState | undefined, api.world(), g)
+      const st = chartStatus(SKY_CHART, api.state().modules[CHART_ID] as ChartState | undefined, api.world(), g, api.state().core.lastSeen)
       if (st.ready && api.act(CHART_ID, 'mark', { group: g.id })) api.record('sky', `${g.id} ${st.marked + 1}/${st.cells} für ${st.cost}`)
     }
 

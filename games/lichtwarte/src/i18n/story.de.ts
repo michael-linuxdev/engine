@@ -401,7 +401,7 @@ export const storyDe = {
       },
       skyOldChart: {
         title: 'Die alte Karte',
-        body: 'Acht Sterne. Ich habe die alte Karte jetzt neben die neue gehängt, und der Unterschied ist nicht mehr zu übersehen. Oben, in der Mitte des Himmels, stimmen sie überein. Am Rand hat die alte Karte einen ganzen Kranz von Sternen, die es bei mir nicht gibt.\n\nSie sind alle gleich hell gezeichnet. Sie stehen alle gleich hoch. Kein Himmel ordnet seine Sterne so.',
+        body: 'Neun Sterne. Ich habe die alte Karte jetzt neben die neue gehängt, und der Unterschied ist nicht mehr zu übersehen. Oben, in der Mitte des Himmels, stimmen sie überein. Am Rand hat die alte Karte einen ganzen Kranz von Sternen, die es bei mir nicht gibt.\n\nSie sind alle gleich hell gezeichnet. Sie stehen alle gleich hoch. Kein Himmel ordnet seine Sterne so.',
       },
       coastSeagrass: {
         title: 'Unter Wasser mähen',
@@ -421,7 +421,7 @@ export const storyDe = {
       },
       skyTwoSkies: {
         title: 'Zwei Himmel',
-        body: 'Dreizehn Sterne, und ich führe inzwischen zwei Karten. Auf der einen stehen die Sterne, die bleiben. Auf der anderen die am Rand, die flackern.\n\nGestern ist auf der zweiten einer dazugekommen. Einfach so, an einem Abend, an dem kein Stern aufgehen sollte. Heute kam ein Greif mit einem Brief von Fenno. Er schreibt von einem Mann, der eine Laterne ins Fenster gestellt hat, zum Berg hin.',
+        body: 'Vierzehn Sterne, und ich führe inzwischen zwei Karten. Auf der einen stehen die Sterne, die bleiben. Auf der anderen die am Rand, die flackern.\n\nGestern ist auf der zweiten einer dazugekommen. Einfach so, an einem Abend, an dem kein Stern aufgehen sollte. Heute kam ein Greif mit einem Brief von Fenno. Er schreibt von einem Mann, der eine Laterne ins Fenster gestellt hat, zum Berg hin.',
       },
       coastHarbour: {
         title: 'Vier Striche',
@@ -441,7 +441,7 @@ export const storyDe = {
       },
       skyLow: {
         title: 'Zu tief für Sterne',
-        body: 'Neunzehn Sterne auf der ersten Karte. Auf der zweiten, der mit den flackernden, sind es inzwischen sechs.\n\nIch habe gerechnet, mit dem Rohr und einem Faden. Die sechs stehen nicht am Himmel. Sie stehen darunter, hinter dem Grat, dort wo die Erde sich wegkrümmt und nur noch das Hellste herüberreicht. Ich habe die ganze Zeit keine Sterne gezählt. Ich habe die Küste gezählt.',
+        body: 'Zwanzig Sterne auf der ersten Karte. Auf der zweiten, der mit den flackernden, sind es inzwischen sechs.\n\nIch habe gerechnet, mit dem Rohr und einem Faden. Die sechs stehen nicht am Himmel. Sie stehen darunter, hinter dem Grat, dort wo die Erde sich wegkrümmt und nur noch das Hellste herüberreicht. Ich habe die ganze Zeit keine Sterne gezählt. Ich habe die Küste gezählt.',
       },
       coastPath: {
         title: 'Ein Weg für sechs Stunden',
@@ -465,7 +465,7 @@ export const storyDe = {
       },
       skyCount: {
         title: 'Was Fenno gesehen hat',
-        body: 'Sechsundzwanzig Sterne. Ich habe Fennos Brief dreimal gelesen und dann das Archiv aufgeschlossen. Dort liegen die Karten der Wächter vor uns, eine in jedem Fach. Ich habe sie nie nebeneinandergelegt.\n\nHeute habe ich es getan. Auf jeder ist der obere Himmel gleich. Auf jeder ist der Rand anders: einmal voll, einmal leer, einmal halb. Was wir ein Zeitalter nennen, ist ein Atemzug dieser Küste. Die Lange Nacht ist der Moment, in dem sie ausgeatmet hat.',
+        body: 'Achtundzwanzig Sterne. Ich habe Fennos Brief dreimal gelesen und dann das Archiv aufgeschlossen. Dort liegen die Karten der Wächter vor uns, eine in jedem Fach. Ich habe sie nie nebeneinandergelegt.\n\nHeute habe ich es getan. Auf jeder ist der obere Himmel gleich. Auf jeder ist der Rand anders: einmal voll, einmal leer, einmal halb. Was wir ein Zeitalter nennen, ist ein Atemzug dieser Küste. Die Lange Nacht ist der Moment, in dem sie ausgeatmet hat.',
       },
       coastArch: {
         title: 'Was man dem Meer schuldet',

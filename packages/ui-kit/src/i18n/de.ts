@@ -242,6 +242,7 @@ export const engineDe = {
     chartCells: (n: string, total: string) => `${n} von ${total} eingetragen`,
     chartMark: (cost: string, cur: string) => `Eintragen · ${cost} ${cur}`,
     chartFull: 'Vollständig',
+    chartWait: (time: string) => `Der nächste Punkt lässt sich in ${time} eintragen.`,
     chartUnknown: 'Noch nicht zu sehen',
     linksBonus: (pct: string) => `+${pct} % Ertrag`,
     linksChain: (n: string) => `Längste Kette: ${n}`,

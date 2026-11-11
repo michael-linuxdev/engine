@@ -399,7 +399,7 @@ export const storyEn: StoryStrings = {
       },
       skyOldChart: {
         title: 'The old chart',
-        body: 'Eight stars. I have now hung the old chart beside the new one, and the difference can no longer be overlooked. At the top, in the middle of the sky, they agree. At the edge the old chart has a whole wreath of stars that do not exist on mine.\n\nThey are all drawn equally bright. They all stand equally high. No sky arranges its stars like that.',
+        body: 'Nine stars. I have now hung the old chart beside the new one, and the difference can no longer be overlooked. At the top, in the middle of the sky, they agree. At the edge the old chart has a whole wreath of stars that do not exist on mine.\n\nThey are all drawn equally bright. They all stand equally high. No sky arranges its stars like that.',
       },
       coastSeagrass: {
         title: 'Mowing under water',
@@ -419,7 +419,7 @@ export const storyEn: StoryStrings = {
       },
       skyTwoSkies: {
         title: 'Two skies',
-        body: 'Thirteen stars, and by now I keep two charts. On one are the stars that stay. On the other the ones at the edge that flicker.\n\nYesterday one was added to the second. Just like that, on an evening when no star was due to rise. Today a griffin came with a letter from Fenno. He writes of a man who put a lantern in his window, facing the mountain.',
+        body: 'Fourteen stars, and by now I keep two charts. On one are the stars that stay. On the other the ones at the edge that flicker.\n\nYesterday one was added to the second. Just like that, on an evening when no star was due to rise. Today a griffin came with a letter from Fenno. He writes of a man who put a lantern in his window, facing the mountain.',
       },
       coastHarbour: {
         title: 'Four strokes',
@@ -439,7 +439,7 @@ export const storyEn: StoryStrings = {
       },
       skyLow: {
         title: 'Too low for stars',
-        body: 'Nineteen stars on the first chart. On the second, the one with the flickering ones, there are six by now.\n\nI did the sums, with the tube and a thread. The six are not in the sky. They stand below it, behind the ridge, where the earth curves away and only the brightest still reaches across. All this time I have not been counting stars. I have been counting the coast.',
+        body: 'Twenty stars on the first chart. On the second, the one with the flickering ones, there are six by now.\n\nI did the sums, with the tube and a thread. The six are not in the sky. They stand below it, behind the ridge, where the earth curves away and only the brightest still reaches across. All this time I have not been counting stars. I have been counting the coast.',
       },
       coastPath: {
         title: 'A path for six hours',
@@ -463,7 +463,7 @@ export const storyEn: StoryStrings = {
       },
       skyCount: {
         title: 'What Fenno saw',
-        body: 'Twenty-six stars. I read Fenno\'s letter three times and then unlocked the archive. The charts of the wardens before us lie there, one in each compartment. I had never laid them side by side.\n\nToday I did. On each the upper sky is the same. On each the edge is different: full once, empty once, half once. What we call an age is one breath of this coast. The Long Night is the moment when it has breathed out.',
+        body: 'Twenty-eight stars. I read Fenno\'s letter three times and then unlocked the archive. The charts of the wardens before us lie there, one in each compartment. I had never laid them side by side.\n\nToday I did. On each the upper sky is the same. On each the edge is different: full once, empty once, half once. What we call an age is one breath of this coast. The Long Night is the moment when it has breathed out.',
       },
       coastArch: {
         title: 'What one owes the sea',

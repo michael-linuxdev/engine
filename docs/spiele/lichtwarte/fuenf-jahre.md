@@ -111,6 +111,27 @@ Gemessen über 475 Tage, „regular“:
 - **Zeitalter:** In der Messung mit mitgespielten Systemen liegen sie in Jahr 2 stabil 32 bis 40 Tage auseinander (Tag 154, 192, 227, 259, 297, 337, 373, 409, 444). Das sind rund fünf Wochen; der Abstand wächst nicht mehr. Die Taktung bleibt deshalb, wie sie ist.
 - **Noch offen in Jahr 3:** die Messung über Jahr 3 (läuft).
 
+## Messung über die Jahre 2 und 3 (2026-11-11)
+
+`PLAY=1 npm run balance -- lichtwarte regular 19700` (821 Tage, „regular“, alle Systeme mitgespielt).
+
+| | Ergebnis |
+|---|---|
+| Feuerstraße (neue Regel) | Erstes Feuer an Tag 145, vier Tage nach dem ersten Hochland; danach etwa alle 13 Tage eine erste Stufe, ab Tag 231 dazu die zweiten Stufen. 43 Stufen bis Tag 475, 50 bis Tag 565. |
+| Seiten von Buch 2 | Tag 141 bis 467, Abstand 2 bis 14 Tage, meist 6 bis 7. Alle 40 Seiten gehen in Jahr 2 auf. |
+| Küstenlande | Tag 482, 496, 511, 527, 543, … 811 (Land 24 der Welle): eines alle 14 bis 17 Tage. Hochgerechnet endet die Welle um Tag 842; Jahr 3 dauert rund 360 Tage. |
+| Himmelskarte (ohne Wartezeit) | Nachttau bremst nicht (rund fünf am Tag, die Karte kostet zusammen rund 670). **Jedes Sternbild war am Tag seines Erscheinens voll**, die Seiten von Buch 3 fielen in Bündeln. |
+| Zeitalter | 23 bis Tag 811. Abstand in Jahr 2 rund 31 bis 38 Tage, in Jahr 3 36 bis 46 Tage. |
+| Nachttau | 3.666 verdient bis Tag 811 |
+| Größte Zahl | 7,8 · 10¹⁸ Glimmer; weit unter der Grenze |
+
+**Geändert nach dieser Messung:**
+- **Himmelskarte:** Nach jedem Stern braucht die Sternwarte drei Tage, bis der nächste eingetragen werden kann (`SKY_CHART_TUNING.waitDays`, Engine: `cooldownMs`). Ein Sternbild mit sechs Sternen trägt so gut zwei Wochen; das nächste erscheint nach etwa 31 Tagen.
+- **Buch 3:** Die Stern-Seiten gehen bei 1, 4, 9, 14, 20, 28, 34 und 43 Sternen auf (vorher 8, 13, 19, 26), damit sie nicht auf den Tag fallen, an dem ein Sternbild erscheint. Die Zahlen in den Texten sind angepasst.
+- **Buch 2:** Die letzte Seite geht erst auf, wenn auch die Erste Warte erreicht ist; gemessen wären die 40 Stufen 17 Tage früher gefallen als das Ende der Geschichte.
+- **Nicht geändert:** die Zeitalter. In Jahr 3 wächst der Abstand auf gut sechs Wochen; für die Jahre 4 und 5 sollte der späte Faktor (1,35) sinken.
+- Die Wartezeit der Himmelskarte ist noch nicht nachgemessen.
+
 ## Was „fünf Jahre“ hier heißt
 
 Maßstab ist eine Spielerin, die täglich kurz spielt (Profil „regular“). Über 1.825 Tage soll gelten:

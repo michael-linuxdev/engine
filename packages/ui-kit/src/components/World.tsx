@@ -279,23 +279,30 @@ export function LinksCard({ cfg, placeKey, visible, art, needLabel }: { cfg: Lin
  */
 export function ChartCard({ cfg, art, lockedText }: { cfg: ChartConfig; art?: (group: ChartGroup, marked: number) => ReactNode; lockedText?: (group: ChartGroup) => string }) {
   const ui = useUi()
-  const { world, dispatch } = useEngine(ui.rt)
+  const { world, dispatch, state } = useEngine(ui.rt)
   const s = world.get<ChartState>(CHART_ID)
   if (!s) return null
   const cur = ui.labels.currency(cfg.cost.currency)
   const pct = Math.round(cfg.perCell * chartCells(s) * 1000) / 10
-  const firstLocked = cfg.groups.find((g) => !chartStatus(cfg, s, world, g).open)
+  const now = state.core.lastSeen
+  const waitMs = Math.max(0, s.readyAt - now)
+  const firstLocked = cfg.groups.find((g) => !chartStatus(cfg, s, world, g, now).open)
   // Open groups, plus the next locked one as a goal
-  const shown = cfg.groups.filter((g) => chartStatus(cfg, s, world, g).open || g === firstLocked)
+  const shown = cfg.groups.filter((g) => chartStatus(cfg, s, world, g, now).open || g === firstLocked)
   return (
     <Card id="chart">
       <p className="ek-strong" data-testid="chart-total">
         {ui.t.live.chartDone(String(chartCompleted(cfg, s)), String(cfg.groups.length))} · {ui.t.live.linksBonus(ui.fmt(pct))}
       </p>
       <p className="ek-muted">{ui.t.live.chartRule(ui.fmt(Math.round(cfg.perCell * 1000) / 10))}</p>
+      {waitMs > 0 ? (
+        <p className="ek-note" data-testid="chart-wait">
+          {ui.t.live.chartWait(ui.duration(waitMs))}
+        </p>
+      ) : null}
       <ul className="ek-list">
         {shown.map((g) => {
-          const st = chartStatus(cfg, s, world, g)
+          const st = chartStatus(cfg, s, world, g, now)
           const l = ui.labels.content(`chart.${g.id}`)
           return (
             <li key={g.id} className={`ek-row ek-row--stack ek-chart${st.open ? '' : ' is-locked'}`} data-done={st.done ? 'true' : 'false'} data-testid={`chart-${g.id}`} data-marked={st.marked}>

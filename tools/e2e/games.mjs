@@ -391,18 +391,19 @@ export const GAMES = [
       assert(await r.getByTestId('chronicle-highFirst').getByText(T.chronicle.entries.highFirst.title).isVisible(), 'Chronik: erste Seite von Buch 2')
       await r.keyboard.press('Escape')
       await r.getByTestId('chronicle').waitFor({ state: 'detached' })
-      // Jahr 3: Mit dem ersten Küstenland öffnet sich die Himmelskarte; ein Stern kostet Nachttau, das nächste Sternbild bleibt verdeckt
+      // Jahr 3: Mit dem ersten Küstenland öffnet sich die Himmelskarte; ein Stern kostet Nachttau und Zeit, das nächste Sternbild bleibt verdeckt
       await r.evaluate((areas) => {
         const rt = window.__engine
         const s = rt.get()
         const land = { open: true, owned: Object.fromEntries(areas.map((a) => [`langerAbstieg_${a}`, 1])), balance: 0, grow: 0, thrift: 0, introSeen: true, openedAt: Date.now() }
-        rt.replace({ ...s, modules: { ...s.modules, regions: { regions: { ...s.modules.regions.regions, langerAbstieg: land } }, wallet: { ...s.modules.wallet, balances: { ...s.modules.wallet.balances, nightDew: 3 } } } })
+        rt.replace({ ...s, modules: { ...s.modules, regions: { regions: { ...s.modules.regions.regions, langerAbstieg: land } }, wallet: { ...s.modules.wallet, balances: { ...s.modules.wallet.balances, nightDew: 30 } } } })
         rt.dispatch('producers', 'buy', { id: 'kraeuterkate', count: 1 })
       }, Object.keys(T.realms.lands.langerAbstieg.areas))
       await r.getByTestId('card-chart').waitFor()
       await r.getByTestId('chart-mark-ladder').click()
       assert((await r.getByTestId('chart-ladder').getAttribute('data-marked')) === '1', 'Himmelskarte: erster Stern eingetragen')
-      assert(await r.getByTestId('chart-mark-ladder').isDisabled(), 'Himmelskarte: Der nächste Stern kostet mehr Nachttau, als da ist')
+      // Nachttau ist genug da: Die Sternwarte braucht nach jedem Stern Zeit, bis der nächste eingetragen werden kann
+      assert((await r.getByTestId('chart-mark-ladder').isDisabled()) && (await r.getByTestId('chart-wait').isVisible()), 'Himmelskarte: nach einem Stern heißt es warten')
       assert((await r.getByTestId('chart-key').innerText()).includes(T.realms.lands.salzterrassen.name) && (await r.getByTestId('chart-mark-key').count()) === 0, 'Himmelskarte: Das nächste Sternbild nennt nur, von wo es sich zeigt')
       // Meilensteine der Schichten stehen im Neubeginn-Tab
       await r.getByTestId('tab-prestige').click()
