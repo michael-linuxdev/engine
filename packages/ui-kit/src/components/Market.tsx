@@ -101,13 +101,14 @@ export function MarketPanel(props: MarketProps) {
   if (!s) return null
   return (
     <section className="ek-panel" aria-label={ui.labels.content('title.market').name} data-testid="market-view">
+      {/* What can be bought comes first: the gift, then the offers (with the test wallet), then the looks */}
       <GiftCard cfg={props.cfg} s={s} />
-      <AdCard {...props} s={s} />
-      <PassCard cfg={props.cfg} s={s} />
-      <SkipCard cfg={props.cfg} s={s} />
-      <BoostCard cfg={props.cfg} s={s} />
-      <StylesCard cfg={props.cfg} s={s} styleArt={props.styleArt} />
       <OffersCard {...props} s={s} />
+      <StylesCard cfg={props.cfg} s={s} styleArt={props.styleArt} />
+      <AdCard {...props} s={s} />
+      <BoostCard cfg={props.cfg} s={s} />
+      <SkipCard cfg={props.cfg} s={s} />
+      <PassCard cfg={props.cfg} s={s} />
     </section>
   )
 }
@@ -128,9 +129,11 @@ function GiftCard({ cfg, s }: { cfg: MarketConfig; s: MarketState }) {
 
 function AdCard({ cfg, s, adSeconds, wallet, onAd }: MarketProps & { s: MarketState }) {
   const ui = useUi()
-  const { dispatch } = useEngine(ui.rt)
+  const { dispatch, world } = useEngine(ui.rt)
   const reward = useRewardText()
   const [running, setRunning] = useState<{ choice: string; seconds: number } | null>(null)
+  // A choice that only pays income time is worth nothing while there is no income: leave it out.
+  const choices = cfg.ad.choices.filter((c) => (c.grant?.length ?? 0) > 0 || world.rate() > 0)
   const wait = adCooldownLeft(s, cfg, ui.rt.clock.now())
   return (
     <Card title={ui.t.market.ad} testId="card-ad">
@@ -139,7 +142,7 @@ function AdCard({ cfg, s, adSeconds, wallet, onAd }: MarketProps & { s: MarketSt
         <p>{ui.t.market.adRemoved}</p>
       ) : (
         <div className="ek-row-actions">
-          {cfg.ad.choices.map((c) => (
+          {choices.map((c) => (
             <Button key={c.id} size="small" data-testid={`ad-${c.id}`} title={ui.labels.content(`adChoice.${c.id}`).blurb} disabled={wait > 0 || !!running} onClick={() => {
                 const seconds = adSeconds()
                 onAd?.(c.id, seconds)

@@ -109,8 +109,12 @@ export const labels: UiLabels = {
     const i = key.indexOf('.')
     const realm = key.startsWith('realm') ? realmContent(key.slice(0, i), key.slice(i + 1)) : null
     if (realm) return realm
-    const table = NAMESPACES[key.slice(0, i)]?.()
-    return table?.[key.slice(i + 1)] ?? { name: key, blurb: '' }
+    const ns = key.slice(0, i)
+    const id = key.slice(i + 1)
+    // Fest-Sorten im Fest-Laden tragen den Namen ihres Sammlungs-Eintrags.
+    if (ns === 'festItem' && id.startsWith('variety_')) return labels.content(`entry.${id.slice(8)}`)
+    const table = NAMESPACES[ns]?.()
+    return table?.[id] ?? { name: key, blurb: '' }
   },
   currency: (id) => (t.currencies as Keyed<string>)[id] ?? id,
   producer: (id) => (t.producers as Keyed<{ name: string; blurb: string }>)[id] ?? { name: id, blurb: '' },

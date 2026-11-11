@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
-import { branchCost, isUnlocked, MODULE, nextMilestone, ownedOf, primaryCurrency, quote, type BranchesState, type ProducerDef } from '@engine/core'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { baseRate, branchCost, isUnlocked, milestoneMult, milestonesReached, MODULE, nextMilestone, ownedOf, primaryCurrency, quote, type BranchesState, type ProducerDef } from '@engine/core'
 import { useEngine } from '@engine/react'
 import { buyCount, useBuyMode } from '../buyMode'
 import { useUi } from '../useUi'
@@ -23,12 +23,32 @@ function useProducer(p: ProducerDef) {
   return { ui, world, level, unlocked, quote: shown, affordable, buy, dispatch }
 }
 
-/** Buy button for one producer (×1/×10/max from the toggle). */
+/**
+ * Buy button for one producer (×1/×10/max from the toggle). While the price is
+ * not yet affordable the button fills up like a loading bar, so the player sees
+ * how close the next level is. A purchase flashes briefly.
+ */
 export function BuyButton({ p, label }: { p: ProducerDef; label?: string }) {
-  const { ui, quote: q, affordable, buy, unlocked } = useProducer(p)
+  const { ui, world, level, quote: q, affordable, buy, unlocked } = useProducer(p)
+  const money = world.balance(primaryCurrency(world.def))
+  const ratio = !unlocked ? 0 : q.cost > 0 ? Math.max(0, Math.min(1, money / q.cost)) : 1
+  // Flash when the level rises (also through press-and-hold)
+  const [flash, setFlash] = useState(false)
+  const before = useRef(level)
+  useEffect(() => {
+    if (level > before.current) {
+      setFlash(true)
+      const id = setTimeout(() => setFlash(false), 220)
+      before.current = level
+      return () => clearTimeout(id)
+    }
+    before.current = level
+  }, [level])
+  const count = q.levels || 1
   return (
-    <Button data-testid={`buy-${p.id}`} className="ek-buy" repeat disabled={!unlocked || !affordable} onClick={buy}>
-      <span>{ui.t.upgrade.buy(`×${q.levels || 1}`)}</span>
+    <Button data-testid={`buy-${p.id}`} className={`ek-buy${affordable ? ' is-ready' : ''}${flash ? ' is-bought' : ''}`} repeat disabled={!unlocked || !affordable} onClick={buy}>
+      <span className="ek-buy__fill" style={{ width: `${Math.round(ratio * 100)}%` }} data-testid="buy-fill" data-ratio={Math.round(ratio * 100)} aria-hidden="true" />
+      <span className="ek-buy__label">{ui.t.upgrade.buy(count > 1 ? `×${count}` : '').trim()}</span>
       <span className="ek-visually-hidden">{label ?? ui.labels.producer(p.id).name}</span>
       <span className="ek-btn__cost">{ui.fmt(q.cost)}</span>
     </Button>
@@ -143,6 +163,14 @@ function UpgradeBody({ p, art, note, buyModes }: { p: ProducerDef; art?: ReactNo
   const branches = world.get<BranchesState>(MODULE.branches)?.ranks[p.id] ?? { efficiency: 0, capacity: 0 }
   const max = world.def.balance.branches.maxRank
   const milestone = m ? ui.t.upgrade.nextMilestone(String(m.at)) : ui.t.upgrade.allMilestones
+  const reached = milestonesReached(level, world.def.balance)
+  const rate = world.producerRate(p.id)
+  // What one more level adds (same bonuses, next level's base yield and milestone factor)
+  const base = baseRate(p, level) * milestoneMult(level, world.def.balance)
+  const gain = level > 0 && base > 0 ? rate * ((baseRate(p, level + 1) * milestoneMult(level + 1, world.def.balance)) / base - 1) : 0
+  const money = world.balance(primaryCurrency(world.def))
+  const next = quote(world, p.id, 1).cost
+  const missing = Math.max(0, next - money)
   return (
     <div className="ek-stack">
       {/* Compact like a card over the map: picture with level badge, yield and a short line beside it */}
@@ -155,7 +183,20 @@ function UpgradeBody({ p, art, note, buyModes }: { p: ProducerDef; art?: ReactNo
           </span>
         </div>
         <div className="ek-upgrade__info">
-          <strong className="ek-upgrade__rate">{ui.t.common.perSecond(ui.fmt(world.producerRate(p.id)))}</strong>
+          {reached > 0 ? (
+            <span className="ek-stars" data-testid="upgrade-stars" data-stars={reached}>
+              <span aria-hidden="true">
+                <span className="ek-stars__on">{'★'.repeat(Math.min(5, reached))}</span>
+                <span className="ek-stars__off">{'★'.repeat(Math.max(0, 5 - reached))}</span>
+                {reached > 5 ? ` +${reached - 5}` : ''}
+              </span>
+              <span className="ek-visually-hidden">{ui.t.upgrade.milestonesReached(String(reached))}</span>
+            </span>
+          ) : null}
+          <strong className="ek-upgrade__rate">
+            {ui.t.common.perSecond(ui.fmt(rate))}
+            {gain > 0 ? <span className="ek-upgrade__gain"> +{ui.t.common.perSecond(ui.fmt(gain))}</span> : null}
+          </strong>
           <span className="ek-muted">{note ?? l.blurb}</span>
         </div>
       </div>
@@ -165,28 +206,31 @@ function UpgradeBody({ p, art, note, buyModes }: { p: ProducerDef; art?: ReactNo
       </div>
       {buyModes ? <BuyModeToggle /> : null}
       <BuyButton p={p} />
-      {buyModes ? null : <p className="ek-muted ek-hold-hint">{ui.t.upgrade.holdHint}</p>}
+      {buyModes ? null : (
+        <p className="ek-muted ek-hold-hint" data-testid="buy-hint">
+          {missing > 0 ? ui.t.upgrade.needMore(ui.fmt(missing), ui.labels.currency(primaryCurrency(world.def))) : ui.t.upgrade.holdHint}
+        </p>
+      )}
       {level >= 1 ? (
-        <details className="ek-details ek-upgrade__branches">
-          <summary data-testid="branches-toggle">{ui.t.upgrade.branches}</summary>
-          <div className="ek-grid2">
-            {(['efficiency', 'capacity'] as const).map((kind) => {
-              const rank = branches[kind]
-              const cost = branchCost(p, kind, rank, world.def.balance)
-              const full = rank >= max
-              return (
-                <div key={kind} className="ek-card">
+        <section className="ek-upgrade__branches" aria-label={ui.t.upgrade.branches}>
+          {(['efficiency', 'capacity'] as const).map((kind) => {
+            const rank = branches[kind]
+            const cost = branchCost(p, kind, rank, world.def.balance)
+            const full = rank >= max
+            return (
+              <div key={kind} className="ek-card ek-branch">
+                <span className="ek-branch__head">
                   <strong>{ui.t.upgrade[kind]}</strong>
-                  <span className="ek-muted">{kind === 'efficiency' ? ui.t.upgrade.efficiencyBlurb : ui.t.upgrade.capacityBlurb}</span>
                   <Pips n={rank} max={max} />
-                  <Button size="small" variant="secondary" data-testid={`branch-${kind}`} disabled={full || world.balance(primaryCurrency(world.def)) < cost} onClick={() => dispatch(MODULE.branches, 'buy', { id: p.id, kind })}>
-                    {full ? ui.t.meta.maxed : ui.fmt(cost)}
-                  </Button>
-                </div>
-              )
-            })}
-          </div>
-        </details>
+                </span>
+                <span className="ek-muted ek-branch__blurb">{kind === 'efficiency' ? ui.t.upgrade.efficiencyBlurb : ui.t.upgrade.capacityBlurb}</span>
+                <Button size="small" variant="secondary" data-testid={`branch-${kind}`} disabled={full || world.balance(primaryCurrency(world.def)) < cost} onClick={() => dispatch(MODULE.branches, 'buy', { id: p.id, kind })}>
+                  {full ? ui.t.meta.maxed : ui.fmt(cost)}
+                </Button>
+              </div>
+            )
+          })}
+        </section>
       ) : null}
     </div>
   )

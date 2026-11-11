@@ -422,7 +422,8 @@ html:has(.ek-app) body {
   inset: 0;
   z-index: 50;
   overscroll-behavior: contain;
-  background: rgb(0 0 0 / 0.45);
+  /* --ek-drag: 1 → 0 while the sheet is pulled down; the dimming fades with it */
+  background: rgb(0 0 0 / calc(0.45 * var(--ek-drag, 1)));
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -806,10 +807,29 @@ html:has(.ek-app) body {
   gap: 2px;
   font-size: 0.86rem;
 }
-.ek-upgrade__branches .ek-grid2 {
-  margin-top: var(--space-2);
+.ek-upgrade__branches {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+.ek-branch {
+  gap: var(--space-1);
+  padding: var(--space-2);
+  min-width: 0;
+}
+.ek-branch__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1);
+}
+.ek-branch__blurb {
+  font-size: 0.8rem;
 }
 .ek-buy {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   touch-action: manipulation;
   user-select: none;
@@ -910,4 +930,55 @@ html:has(.ek-app) body {
 }
 .ek-gate__list li.is-moot {
   color: var(--ink-muted);
+}
+
+/* Buy button as a loading bar: fills up while the price is not yet affordable */
+.ek-buy__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--accent);
+  opacity: 0.22;
+  transition: width 0.3s linear;
+  pointer-events: none;
+}
+.ek-buy.is-ready .ek-buy__fill {
+  opacity: 0;
+}
+.ek-buy > span:not(.ek-buy__fill) {
+  position: relative;
+}
+.ek-upgrade__gain {
+  color: var(--accent);
+  font-size: 0.9em;
+}
+
+/* Update check: spinner in the button, answer as a marked note */
+.ek-spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: var(--space-2);
+  vertical-align: -0.15em;
+  border: 2px solid currentcolor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: ek-spin 0.8s linear infinite;
+}
+@keyframes ek-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.ek-update-note {
+  border-left: 4px solid var(--line);
+  font-weight: 600;
+}
+.ek-update-note--current,
+.ek-update-note--reloading {
+  border-left-color: var(--accent);
+}
+.ek-update-note--offline {
+  border-left-color: var(--danger);
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { decodeBackup, encodeBackup } from '@engine/core'
 import { browserFiles, checkForUpdate, copyText, readKey, usePrefs, useStore, writeKey, type PlaytestLog, type Prefs } from '@engine/react'
 import { useUi } from '../useUi'
@@ -94,7 +94,6 @@ function PlaytestBlock({ log }: { log: PlaytestLog }) {
   const s = ui.t.settings
   return (
     <>
-      <h3 className="ek-h3">{s.playtestTitle}</h3>
       <Toggle label={s.playtest} value={on} onChange={(v) => log.setEnabled(v)} testId="pref-playtest" />
       <p className="ek-muted">{s.playtestHint}</p>
       <Button
@@ -113,33 +112,43 @@ function PlaytestBlock({ log }: { log: PlaytestLog }) {
   )
 }
 
+/** Shortest time (ms) the update check shows as running. */
+const UPDATE_MIN_MS = 700
+
 /** Version line with "update now": pulls a new version right away and reloads into it. */
 function UpdateBlock({ version }: { version: string }) {
   const ui = useUi()
   const s = ui.t.settings
-  const [note, setNote] = useState('')
-  const [busy, setBusy] = useState(false)
+  const [state, setState] = useState<'idle' | 'checking' | 'reloading' | 'current' | 'offline'>('idle')
+  const note = useRef<HTMLParagraphElement>(null)
+  // The answer appears below the button, at the very end of the sheet: bring it into view
+  useEffect(() => {
+    if (state !== 'idle') note.current?.scrollIntoView({ block: 'nearest' })
+  }, [state])
   const run = async () => {
-    setBusy(true)
-    setNote(s.updateChecking)
-    const r = await checkForUpdate().catch(() => 'offline' as const)
+    setState('checking')
+    // The check often answers within milliseconds; keep "checking" visible long enough to be seen
+    const [r] = await Promise.all([checkForUpdate().catch(() => 'offline' as const), new Promise((done) => setTimeout(done, UPDATE_MIN_MS))])
     if (r === 'unsupported') {
       // No service worker (plain browser tab): a reload fetches the current version
+      setState('reloading')
       location.reload()
       return
     }
-    setNote(r === 'reloading' ? s.updateFound : r === 'offline' ? s.updateOffline : s.updateCurrent)
-    setBusy(false)
+    setState(r)
   }
+  const busy = state === 'checking' || state === 'reloading'
+  const text = state === 'checking' ? s.updateChecking : state === 'reloading' ? s.updateFound : state === 'offline' ? s.updateOffline : state === 'current' ? s.updateCurrent : ''
   return (
     <>
       <p className="ek-muted">{s.version(version)}</p>
       <Button variant="secondary" data-testid="app-update" disabled={busy} onClick={() => void run()}>
-        {s.update}
+        {busy ? <span className="ek-spinner" aria-hidden="true" /> : null}
+        {busy ? s.updateBusy : s.update}
       </Button>
-      {note ? (
-        <p role="status" className="ek-note" data-testid="app-update-note">
-          {note}
+      {text ? (
+        <p ref={note} role="status" className={`ek-note ek-update-note ek-update-note--${state}`} data-testid="app-update-note" data-state={state}>
+          {text}
         </p>
       ) : null}
     </>
@@ -152,6 +161,7 @@ export function SettingsSheet({ open, onClose, version, playtest }: { open: bool
   const s = ui.t.settings
   return (
     <Sheet open={open} title={s.title} onClose={onClose} testId="settings-sheet">
+      {/* Three short groups: display, sound, system. No number format, no font steps. */}
       <h3 className="ek-h3">{s.display}</h3>
       <div className="ek-field" role="radiogroup" aria-label={s.language}>
         <span>{s.language}</span>
@@ -163,29 +173,12 @@ export function SettingsSheet({ open, onClose, version, playtest }: { open: bool
           ))}
         </div>
       </div>
-      <div className="ek-field" role="radiogroup" aria-label={s.fontSize}>
-        <span>{s.fontSize}</span>
-        <div className="ek-segmented">
-          {([1, 1.15, 1.3] as const).map((f, i) => (
-            <button key={f} type="button" role="radio" aria-checked={p.fontScale === f} className={p.fontScale === f ? 'is-active' : ''} onClick={() => ui.prefs.update({ fontScale: f })}>
-              {[s.fontNormal, s.fontLarge, s.fontLarger][i]}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div className="ek-field" role="radiogroup" aria-label={s.numbers}>
-        <span>{s.numbers}</span>
-        <div className="ek-segmented">
-          {(['compact', 'scientific'] as const).map((n) => (
-            <button key={n} type="button" role="radio" aria-checked={p.numberStyle === n} className={p.numberStyle === n ? 'is-active' : ''} data-testid={`numbers-${n}`} onClick={() => ui.prefs.update({ numberStyle: n })}>
-              {n === 'compact' ? s.numbersCompact : s.numbersScientific}
-            </button>
-          ))}
-        </div>
-      </div>
+      <Toggle label={s.bigText} value={p.fontScale > 1} onChange={(v) => ui.prefs.update({ fontScale: v ? 1.15 : 1 })} testId="pref-bigtext" />
       <Toggle label={s.reducedMotion} value={p.reducedMotion} onChange={(v) => ui.prefs.update({ reducedMotion: v })} testId="pref-motion" />
+      <h3 className="ek-h3">{s.soundGroup}</h3>
       <Toggle label={s.sound} value={p.sound} onChange={(v) => ui.prefs.update({ sound: v })} testId="pref-sound" />
       <Toggle label={s.ambient} value={p.ambient} onChange={(v) => ui.prefs.update({ ambient: v })} testId="pref-ambient" />
+      <h3 className="ek-h3">{s.system}</h3>
       {playtest ? <PlaytestBlock log={playtest} /> : null}
       <UpdateBlock version={version} />
     </Sheet>

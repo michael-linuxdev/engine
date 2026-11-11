@@ -15,6 +15,16 @@ export const GAMES = [
     holdToBuy: true,
     /** axe auch für die Spiel-Fenster. */
     axeExtra: async (p, check) => {
+      // Das Archiv erscheint erst nach der ersten Mondwende: dafür einen solchen Stand setzen
+      await p.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        const layers = s.modules.prestige.layers.map((l, i) => (i === 0 ? { ...l, count: 1, sinceReset: 1 } : l))
+        rt.replace({ ...s, modules: { ...s.modules, prestige: { layers }, wallet: { ...s.modules.wallet, balances: { ...s.modules.wallet.balances, runeShards: 100 }, earned: { ...s.modules.wallet.earned, runeShards: 100 } } } })
+      })
+      await p.getByTestId('tab-shop').click()
+      await check('Archiv')
+      await p.getByTestId('tab-play').click()
       await p.getByTestId('slot-kraeuterkate').click()
       await p.getByTestId('upgrade-sheet').waitFor()
       await check('Ausbau Kräuterkate')
@@ -69,6 +79,10 @@ export const GAMES = [
       await q.getByTestId('slot-kraeuterkate').click()
       await q.getByTestId('upgrade-sheet').waitFor()
       await q.getByTestId('buy-kraeuterkate').click()
+      // Nach dem Kauf reicht das Geld nicht: Der Knopf zeigt als Ladebalken, wie weit es noch ist, darunter steht der fehlende Betrag
+      const fill = Number(await q.getByTestId('buy-fill').getAttribute('data-ratio'))
+      assert((await q.getByTestId('buy-kraeuterkate').isDisabled()) && fill >= 0 && fill < 100, `Ausbau-Knopf füllt sich als Ladebalken (${fill} %)`)
+      assert((await q.getByTestId('buy-hint').innerText()).includes(T.currencies.glimmer), 'unter dem Knopf steht, wie viel noch fehlt')
       await q.keyboard.press('Escape')
       await q.getByTestId('ftue').getByText(T.ftue.steps.burst.title).waitFor()
       await q.getByTestId('burst').click()
@@ -82,6 +96,29 @@ export const GAMES = [
       assert((await q.getByTestId('gate-all').innerText()).includes(T.layers.moonturn.name), 'Freilegen: die Mondwende steht als Bedingung da')
       await q.keyboard.press('Escape')
       await q.getByTestId('upgrade-sheet').waitFor({ state: 'detached' })
+      // Der Markt ist von Anfang an da, das Archiv erst nach der ersten Mondwende; in den Einstellungen gibt es kein Zahlenformat mehr
+      assert((await q.getByTestId('tab-market').count()) === 1 && (await q.getByTestId('tab-shop').count()) === 0, 'Markt ab Start, Archiv noch nicht')
+      await q.getByTestId('tab-market').click()
+      await q.getByTestId('card-gift').waitFor()
+      assert((await q.getByTestId('ad-glimmer').count()) === 1, 'Bonus-Video: mit Ertrag gibt es die Glimmer-Wahl')
+      // Ohne Ertrag wäre die Glimmer-Wahl „0 Glimmer“ wert: Sie fehlt dann, die Kiesel-Wahl bleibt
+      const bare = await browser.newContext(phone)
+      const z = await bare.newPage()
+      await z.goto(URL + '?installGate=0')
+      await z.getByTestId('intro-start').click()
+      await z.getByTestId('chronicle').waitFor({ timeout: 10_000 })
+      await z.keyboard.press('Escape')
+      await z.getByTestId('chronicle').waitFor({ state: 'detached' })
+      await z.getByTestId('tab-market').click()
+      await z.getByTestId('ad-pebbles').waitFor()
+      assert((await z.getByTestId('ad-glimmer').count()) === 0, 'Bonus-Video: ohne Ertrag keine Wahl mit 0 Glimmer')
+      await bare.close()
+      await q.getByTestId('tab-play').click()
+      await q.getByTestId('menu').click()
+      await q.getByTestId('menu-settings').click()
+      assert((await q.getByTestId('numbers-scientific').count()) === 0 && (await q.getByTestId('pref-bigtext').count()) === 1, 'Einstellungen aufgeräumt')
+      await q.keyboard.press('Escape')
+      await q.getByTestId('settings-sheet').waitFor({ state: 'detached' })
       // Chronik im Menü
       await q.getByTestId('menu').click()
       await q.getByTestId('menu-chronicle').click()
@@ -113,7 +150,7 @@ export const GAMES = [
       await r.getByTestId('tab-watch').click()
       await r.getByTestId('daily-claim').click()
       assert(await r.getByTestId('daily-claim').isDisabled(), 'Wachrunde nur einmal am Tag')
-      await r.getByTestId('card-fest').getByText(T.watch.fests.budding.name).waitFor()
+      await r.getByTestId('card-fest').getByRole('heading', { name: T.watch.fests.budding.name }).waitFor()
       await r.getByTestId('card-trials').waitFor()
       const deeds = await r.evaluate(() => window.__engine.get().modules.achievements.done)
       assert(deeds.includes('firstLight'), 'Tat „Erstes Licht“ erreicht')
@@ -145,8 +182,9 @@ export const GAMES = [
       await r.getByTestId('decor-blueBanner').getByRole('button').click()
       await r.getByTestId('decor-slot-0').selectOption('blueBanner')
       assert((await r.evaluate(() => window.__engine.get().modules.decor.placed[0])) === 'blueBanner', 'Banner aufgestellt')
-      await r.getByTestId('visitor-greet').click()
-      assert((await r.evaluate(() => window.__engine.get().modules.visitors.seen.fox)) === 1, 'Talgast begrüßt')
+      // Der Talgast hat keine Meldung mehr: Er wird auf der Karte selbst angetippt (weiter unten)
+      assert((await r.getByTestId('visitor-greet').count()) === 0 && (await r.getByTestId('chip-visitor').count()) === 0, 'keine Meldung zum Talgast')
+      await r.getByTestId('chip-omen').click()
       await r.getByTestId('omen-safe').click()
       assert((await r.evaluate(() => window.__engine.get().modules.choiceEvents.active)) === true, 'Omen gewählt')
       await r.getByTestId('tab-play').click()
@@ -157,20 +195,36 @@ export const GAMES = [
         const s = rt.get()
         rt.replace({ ...s, modules: { ...s.modules, visitors: { ...s.modules.visitors, current: 'fox', until: Date.now() + 60_000, nextAt: 0 } } })
       })
+      assert((await r.locator('[data-guest="fox"]').count()) === 1, 'der Fuchs ist als Fuchs zu sehen')
       await r.getByTestId('guest-greet').click()
-      assert((await r.evaluate(() => window.__engine.get().modules.visitors.seen.fox)) === 2, 'Talgast auf der Karte begrüßt')
+      assert((await r.evaluate(() => window.__engine.get().modules.visitors.seen.fox)) === 1, 'Talgast auf der Karte begrüßt')
+      await r.getByTestId('guest-thanks').waitFor()
       await r.waitForTimeout(600)
       assert((await r.getByTestId('guest-greet').count()) === 0 && (await r.evaluate(() => window.__engine.get().modules.visitors.current)) === '', 'Talgast bleibt nach dem Begrüßen fort')
       // Ausbau-Karte: klein über der Leiste, dunkelt die Kopfzeile nicht ab, Wisch nach unten schließt sie
       await r.getByTestId('slot-kraeuterkate').click()
       const card = await r.getByTestId('upgrade-sheet').boundingBox()
-      const screen = r.viewportSize()
-      assert(card.height <= screen.height * 0.6, `Ausbau-Karte bleibt klein (${Math.round(card.height)} von ${screen.height} px)`)
+      // Die Karte ist nur so hoch wie ihr Inhalt und lässt die Zahl oben links frei
+      const amount = await r.getByTestId('hud-amount').boundingBox()
+      assert(card.y >= amount.y + amount.height, `Ausbau-Karte verdeckt die Zahl oben nicht (Karte ab ${Math.round(card.y)}, Zahl bis ${Math.round(amount.y + amount.height)})`)
       assert((await r.locator('.ek-sheet-backdrop--clear').count()) === 1, 'Ausbau-Karte dunkelt die Talkarte und die Kopfzeile nicht ab')
+      // In der Karte wird nicht gescrollt, die Zweige sind immer sichtbar (nichts zum Aufklappen)
+      const inner = await r.evaluate(() => {
+        const b = document.querySelector('.ek-upgrade .ek-sheet__body')
+        return { fits: b.scrollHeight <= b.clientHeight, overflow: getComputedStyle(b).overflowY }
+      })
+      assert(inner.fits && inner.overflow === 'hidden', `Ausbau-Karte scrollt nicht (${JSON.stringify(inner)})`)
+      assert((await r.getByTestId('branch-efficiency').isVisible()) && (await r.locator('.ek-upgrade details').count()) === 0, 'Zweige sind immer aufgeklappt')
       const cdp = await w.newCDPSession(r)
       const sx = card.x + card.width / 2
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: sx, y: card.y + 20 }] })
       for (let i = 1; i <= 6; i++) await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: sx, y: card.y + 20 + i * 25 }] })
+      // Beim Ziehen folgt die Karte sichtbar dem Finger und verblasst (auch gegen die Einblend-Animation des Spiels)
+      const pulled = await r.evaluate(() => {
+        const el = document.querySelector('[data-testid="upgrade-sheet"]')
+        return { y: el.getBoundingClientRect().y, opacity: Number(getComputedStyle(el).opacity) }
+      })
+      assert(pulled.y > card.y + 100 && pulled.opacity < 0.9, `Karte folgt dem Wisch und verblasst (${JSON.stringify(pulled)}, Start ${card.y})`)
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
       await r.getByTestId('upgrade-sheet').waitFor({ state: 'detached' })
 
