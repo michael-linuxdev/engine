@@ -107,6 +107,11 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
     writeKey(flagsKey(p.rt), JSON.stringify(f))
   }
   useEffect(() => p.openRef?.(setOverlay), [p])
+  // Every view starts at its top: the scroll position of the last view must not carry over
+  useEffect(() => {
+    const main = document.getElementById('main')
+    if (main) main.scrollTop = 0
+  }, [tab])
   const playtest = p.playtest
   useEffect(() => playtest?.attach(p.rt), [playtest, p.rt])
   // The scientific notation is no longer offered: a stored choice falls back to the short form

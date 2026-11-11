@@ -323,7 +323,7 @@ export const engineDe = {
     days: (n: string) => (n === '1' ? '1 Tag' : `${n} Tage`),
   },
   market: {
-    look: 'Auf der Karte ansehen',
+    look: 'Ansehen',
     gift: 'Tagesgeschenk',
     giftBlurb: 'Einmal am Tag, kostenlos.',
     ad: 'Bonus-Video',

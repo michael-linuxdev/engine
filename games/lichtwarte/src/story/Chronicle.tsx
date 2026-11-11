@@ -68,7 +68,8 @@ export function ChronicleSheet({ open, onClose }: { open: boolean; onClose: () =
                     </li>
                   ) : (
                     <li key={x.id} className="lw-toc__locked" data-testid={`toc-locked-${x.id}`}>
-                      {t.chronicle.lockedPage} {x.clue ? clueText(x.clue) : ''}
+                      <span className="lw-toc__lock" aria-hidden="true" />
+                      <span>{x.clue ? clueText(x.clue) : t.chronicle.lockedPage}</span>
                     </li>
                   ),
                 )}

@@ -190,6 +190,14 @@ export const stringsEn: Strings = {
     },
   },
   world: {
+    guestHints: {
+      building: (name: string) => `Comes once this place is alive: ${name}.`,
+      buildingLevel: (name: string, level: string) => `Comes once ${name} is level ${level}.`,
+      night: 'Shows itself only at night.',
+      nightBuilding: (name: string) => `Shows itself at night once ${name} stands.`,
+      summer: 'Comes only in summer.',
+      winter: 'Comes only in winter.',
+    },
     decorPick: 'Tap a spot along the path.',
     decorDone: 'Done',
     entryHints: {

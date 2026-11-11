@@ -1370,3 +1370,43 @@ html:has(.ek-app) body {
   -webkit-user-select: text;
   -webkit-touch-callout: default;
 }
+
+/* Second UI pass: what stays / goes below each other on phones; style rows; details show that they open */
+@media (max-width: 480px) {
+  .ek-keeps {
+    grid-template-columns: 1fr;
+  }
+}
+.ek-style-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.ek-style-actions {
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.ek-details > summary {
+  list-style: none;
+  position: relative;
+  padding-right: 1.6em;
+}
+.ek-details > summary::-webkit-details-marker {
+  display: none;
+}
+.ek-details > summary::after {
+  content: '';
+  position: absolute;
+  right: 0.4em;
+  top: 50%;
+  width: 0.5em;
+  height: 0.5em;
+  margin-top: -0.4em;
+  border-right: 2px solid currentcolor;
+  border-bottom: 2px solid currentcolor;
+  transform: rotate(45deg);
+}
+.ek-details[open] > summary::after {
+  transform: rotate(-135deg);
+  margin-top: -0.1em;
+}

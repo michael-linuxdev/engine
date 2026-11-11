@@ -320,7 +320,7 @@ export const engineEn: EngineStrings = {
     days: (n) => (n === '1' ? '1 day' : `${n} days`),
   },
   market: {
-    look: 'See it on the map',
+    look: 'Preview',
     gift: 'Daily gift',
     giftBlurb: 'Once a day, free.',
     ad: 'Bonus video',

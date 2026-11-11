@@ -96,6 +96,22 @@ export const VOYAGES: VoyagesConfig = {
   ],
 }
 
+/** Was einen Gast anlockt, als Daten (für den Hinweis bei unbekannten Gästen; passt zu den Bedingungen in GUESTS). */
+export const GUEST_LURE: Record<string, { building?: string; level?: number; night?: boolean; season?: 'summer' | 'winter' }> = {
+  griffin: { building: 'greifenhorst' },
+  kobold: { building: 'schmiede' },
+  wisp: { night: true, building: 'quellschrein' },
+  fox: { building: 'holzlager', level: 10 },
+  hedgehog: { building: 'kraeuterkate', level: 25 },
+  owl: { night: true },
+  deer: { building: 'quellschrein', level: 5 },
+  otter: { building: 'quellschrein', level: 25 },
+  bat: { night: true, building: 'runenhalle' },
+  ibex: { building: 'steinbruch', level: 25 },
+  glowBeetle: { season: 'summer' },
+  snowHare: { season: 'winter' },
+}
+
 export const GUESTS: VisitorConfig = {
   list: [
     { id: 'griffin', when: (w) => ownedOf(w, 'greifenhorst') >= 1 },
