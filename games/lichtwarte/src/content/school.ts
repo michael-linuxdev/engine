@@ -3,7 +3,7 @@
  * einem Land zugeteilt. Dort bauen sie von selbst weiter: immer den schwächsten Bereich, den sich das Land
  * leisten kann, auch für die Zeit der Abwesenheit (bis zu zwölf Stunden). IDs gibt es keine; gezählt wird.
  */
-import { areaOpen, bulkCost, regionCostMult, REGIONS_ID, type RegionsState, type StewardsConfig, type WorldView } from '@engine/core'
+import { isFeatureOpen, areaOpen, bulkCost, regionCostMult, REGIONS_ID, type RegionsState, type StewardsConfig, type WorldView } from '@engine/core'
 import { CURRENCY } from '../ids'
 import { realmOpen } from './fireRoad'
 import { REALMS } from './realms'
@@ -11,11 +11,13 @@ import { REALMS } from './realms'
 const realmDef = new Map(REALMS.regions.map((r) => [r.id, r]))
 
 /**
- * Stellschrauben: 20 Lehrlinge. Der erste kostet 200 Lichkiesel und zwei Tage, jeder weitere 15 % mehr Kiesel
- * und 12 % mehr Zeit (der zwanzigste rund 2.800 Kiesel und 17 Tage; alle zusammen rund 20.500 Kiesel und
- * 144 Tage Ausbildung). Ein Schritt alle zehn Minuten, höchstens 72 Schritte nachgeholt (zwölf Stunden).
+ * Stellschrauben: 20 Lehrlinge. Der erste kostet 200 Lichtkiesel und vier Tage, jeder weitere 15 % mehr Kiesel
+ * und 12,5 % mehr Zeit (der zwanzigste rund 2.800 Kiesel und 37 Tage; alle zusammen rund 20.500 Kiesel und
+ * 305 Tage Ausbildung). Gemessen waren mit zwei Tagen und 12 % alle zwanzig nach 128 Tagen fertig, das Jahr der
+ * Inseln dauert aber rund 425 Tage; die Kiesel bremsen nicht (fuenf-jahre.md).
+ * Ein Schritt alle zehn Minuten, höchstens 72 Schritte nachgeholt (zwölf Stunden).
  */
-export const SCHOOL_TUNING = { max: 20, costBase: 200, costGrowth: 1.15, trainDays: 2, trainGrowth: 1.12, everyMin: 10, maxSteps: 72, perSteward: 0.01 }
+export const SCHOOL_TUNING = { max: 20, costBase: 200, costGrowth: 1.15, trainDays: 4, trainGrowth: 1.125, everyMin: 10, maxSteps: 72, perSteward: 0.01 }
 
 /** Der schwächste offene Bereich eines Landes, von dem sich mindestens eine Stufe bezahlen lässt, und wie viele Stufen (bis `steps`). */
 export function stewardJob(w: WorldView, id: string, steps: number): { area: string; count: number } | null {
@@ -45,6 +47,7 @@ export const SCHOOL: StewardsConfig = {
   everyMs: SCHOOL_TUNING.everyMin * 60_000,
   maxSteps: SCHOOL_TUNING.maxSteps,
   perSteward: SCHOOL_TUNING.perSteward,
+  open: (w) => isFeatureOpen(w, 'school'),
   canPost: realmOpen,
   work: (w, place, steps) => {
     const job = stewardJob(w, place, steps)

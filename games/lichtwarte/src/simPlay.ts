@@ -1,14 +1,17 @@
 /**
  * Was der Simulator für dieses Spiel zusätzlich spielt (`PLAY=1 npm run balance …`): Wachrunde, Aufträge,
- * Wochenplan, Tagesgeschenk, Fernfahrten, die Feuerstraße und die Himmelskarte. Er meldet dabei, was sonst niemand misst:
+ * Wochenplan, Tagesgeschenk, Fernfahrten, die Feuerstraße, die Himmelskarte, die Wächterschule und das Große Leuchtfeuer. Er meldet dabei, was sonst niemand misst:
  * jede neue Chronik-Seite, jede Stufe der Feuerstraße, die Festmarken je Fest und den Stand der Lichtkiesel.
  * Nur zum Messen; ändert die Taktung (mehr Belohnungen), deshalb nicht für die Zielkorridore.
  */
-import { CHART_ID, chartStatus, FESTS_ID, LINKS_ID, linkStatus, type ChartState, QUESTS_ID, voyageBack, voyageOpen, VOYAGES_ID, WALLET_ID, type EngineState, type FestsState, type LinksState, type QuestsState, type VoyagesState, type WalletState, type WorldView } from '@engine/core'
+import { MONUMENT_ID, monumentGivers, monumentStatus, type MonumentState, REGIONS_ID, type RegionsState, stewardCanTrain, stewardCost, STEWARDS_ID, type StewardsState, CHART_ID, chartStatus, FESTS_ID, LINKS_ID, linkStatus, type ChartState, QUESTS_ID, voyageBack, voyageOpen, VOYAGES_ID, WALLET_ID, type EngineState, type FestsState, type LinksState, type QuestsState, type VoyagesState, type WalletState, type WorldView } from '@engine/core'
 import { CHRONICLE } from './content/chronicle'
 import { FIRE_ROAD } from './content/fireRoad'
 import { SKY_CHART } from './content/skyChart'
 import { VOYAGES } from './content/world'
+import { BEACON_PLACES, GREAT_BEACON } from './content/beacon'
+import { REALM_IDS } from './content/realms'
+import { SCHOOL } from './content/school'
 import { CURRENCY } from './ids'
 
 interface Api {
@@ -53,6 +56,33 @@ export function simPlay(): (api: Api) => void {
     for (const g of SKY_CHART.groups) {
       const st = chartStatus(SKY_CHART, api.state().modules[CHART_ID] as ChartState | undefined, api.world(), g, api.state().core.lastSeen)
       if (st.ready && api.act(CHART_ID, 'mark', { group: g.id })) api.record('sky', `${g.id} ${st.marked + 1}/${st.cells} für ${st.cost}`)
+    }
+
+    // Wächterschule: ausbilden, sobald es geht; freie Lehrlinge ins jüngste offene Land ohne Lehrling
+    const sw = api.state().modules[STEWARDS_ID] as StewardsState | undefined
+    if (sw) {
+      if (stewardCanTrain(SCHOOL, sw, api.world())) {
+        const cost = stewardCost(SCHOOL, sw)
+        if (api.act(STEWARDS_ID, 'train')) api.record('train', `#${sw.trained + 1} für ${cost}`)
+      }
+      const regions = (api.state().modules[REGIONS_ID] as RegionsState | undefined)?.regions ?? {}
+      for (let slot = 0; slot < sw.trained; slot += 1) {
+        if (sw.posts[slot]) continue
+        const taken = new Set((api.state().modules[STEWARDS_ID] as StewardsState).posts)
+        const place = [...REALM_IDS].reverse().find((id) => regions[id]?.open && !taken.has(id))
+        if (place && api.act(STEWARDS_ID, 'post', { slot, place })) api.record('post', `#${slot + 1} nach ${place}`)
+      }
+    }
+
+    // Großes Leuchtfeuer: alle Lande geben lassen, die können
+    const mo = api.state().modules[MONUMENT_ID] as MonumentState | undefined
+    if (mo) {
+      const now = api.state().core.lastSeen
+      const givers = monumentGivers(GREAT_BEACON, mo, api.world(), BEACON_PLACES, now)
+      if (givers.length > 0 && api.act(MONUMENT_ID, 'give', { places: givers })) {
+        const after = monumentStatus(GREAT_BEACON, api.state().modules[MONUMENT_ID] as MonumentState, now)
+        if (after.stage > mo.stage) api.record('beacon', `Stufe ${after.stage}`)
+      }
     }
 
     // Chronik: neue Seiten

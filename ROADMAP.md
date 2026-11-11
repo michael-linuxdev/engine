@@ -118,9 +118,12 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 - [x] **Jahr 2:** 25 Hochlande (Tag 141 bis 467), Feuerstraße (Engine-Modul `links`), Buch 2 „Der Weg der Feuer“ (40 Seiten), Fest-Jahrgang 2.
 - [x] **Jahr 3:** 25 Ferne Küsten, Himmelskarte (Engine-Modul `chart`), Buch 3 „Die tiefe Zeit“ (40 Seiten), Fest-Jahrgang 3.
 - [x] **Messung mit mitgespielten Systemen** (`PLAY=1`): Seiten, Feuerstraße, Festmarken, Lichtkiesel. Zahlen in `docs/spiele/lichtwarte/fuenf-jahre.md`.
-- [ ] Jahr 4 „Die Lehrlinge“ (Wächterschule) und Jahr 5 „Das große Licht“ (Großes Leuchtfeuer).
-- [ ] Festmarken: Sie fließen weit über jeden Preis (Entscheidung offen: weniger je Mondwende oder höhere Preise).
-- [ ] Jahr 3 messen (Taktung der Küstenlande, Nachttau für die Himmelskarte).
+- [x] **Jahr 4:** 25 Inseln, Wächterschule (Engine-Modul `stewards`), Buch 4 „Die Lehrlinge“ (40 Seiten), Fest-Jahrgang 4.
+- [x] **Jahr 5:** 25 Lande am Rand der Karte, Großes Leuchtfeuer (Engine-Modul `monument`), Buch 5 „Das große Licht“ (40 Seiten), Fest-Jahrgang 5.
+- [x] Festmarken knapper: Mondwende 1, Wachrunde 5, Auftrag 2, Funken zählen nicht mehr (rund 850 statt über 4.000 je Fest).
+- [x] Jahr 3 gemessen (Küstenlande alle 14 bis 17 Tage, ein Stern alle drei Tage).
+- [x] Zeitalter etwa alle fünf Wochen (späte Schwelle 1,25 statt 1,35).
+- [ ] Jahre 4 und 5 nachmessen (Inseln, Rand der Karte, Lehrlinge, Stufen des Leuchtfeuers) und nachstellen.
 
 ---
 

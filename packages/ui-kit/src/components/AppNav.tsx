@@ -9,6 +9,8 @@ export interface NavItem {
   badge?: number | boolean
   /** Something waits there (a dot), as opposed to `badge` = new. Used for views that live in the menu. */
   dot?: boolean
+  /** One short line of status under the label of a menu tile ("12 of 60"). */
+  hint?: string
 }
 
 export interface MenuItem {
@@ -21,6 +23,8 @@ export interface MenuItem {
   icon?: ReactNode
   /** The entry opens a view in the main area (not an overlay). */
   view?: boolean
+  /** One short line of status under the label of a tile. */
+  hint?: string
   /** Quiet row below the tiles (save, legal, settings) instead of a tile. */
   quiet?: boolean
 }
@@ -48,6 +52,7 @@ export function AppNav({ items, active, onChange, menu, menuIcon, menuActive, me
       >
         {m.icon ? <span className="ek-menu__icon" aria-hidden="true">{m.icon}</span> : null}
         <span className="ek-menu__label">{m.label}</span>
+        {m.hint && !m.quiet && m.icon ? <span className="ek-menu__hint">{m.hint}</span> : null}
         {m.badge ? <span className="ek-badge ek-badge--inline">{t.common.new}</span> : m.dot ? <span className="ek-badge" aria-label={t.common.ready} /> : null}
       </button>
     </li>

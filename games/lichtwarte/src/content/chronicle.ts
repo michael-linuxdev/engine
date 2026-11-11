@@ -1,10 +1,10 @@
 /**
  * Chronik: Seiten erscheinen nach Fortschritt (Bedingung auf dem Spielstand). Texte in i18n/story.*.ts.
- * Buch 1 (sechs Kapitel) und Buch 2 „Der Weg der Feuer“ (fünf Kapitel, Jahr 2). Die ersten fünf Kapitel erzählen einen Bogen (docs/spiele/lichtwarte/welt.md): Alwines Aufbruch, die Mondwenden,
+ * Buch 1 (sechs Kapitel), danach je Jahr ein Buch mit fünf Kapiteln (Bücher 2 bis 5). Die ersten fünf Kapitel erzählen einen Bogen (docs/spiele/lichtwarte/welt.md): Alwines Aufbruch, die Mondwenden,
  * die Lange Nacht, der Weg aus Feuern durch die Lande, die Weitergabe der Wacht.
  * IDs nie ändern: Die gelesenen Seiten stehen als Gerätemerker unter diesen IDs.
  */
-import { layerStatus, MODULE, ownedOf, prestigeState, REGIONS_ID, type HelperState, type RegionsState, type WorldView, VOYAGES_ID, type VoyagesState, linkLevels, LINKS_ID, longestChain, type LinksState, CHART_ID, chartCells, chartCompleted, type ChartState } from '@engine/core'
+import { layerStatus, MODULE, ownedOf, prestigeState, REGIONS_ID, type HelperState, type RegionsState, type WorldView, VOYAGES_ID, type VoyagesState, linkLevels, LINKS_ID, longestChain, type LinksState, CHART_ID, chartCells, chartCompleted, type ChartState, STEWARDS_ID, type StewardsState, MONUMENT_ID, type MonumentState } from '@engine/core'
 import { FIRE_ROAD } from './fireRoad'
 import { SKY_CHART } from './skyChart'
 import { REALM_GROUPS, REALM_IDS } from './realms'
@@ -12,6 +12,8 @@ import { LAYER } from '../ids'
 
 const HIGHLAND_IDS = REALM_IDS.slice(REALM_GROUPS[4].from, REALM_GROUPS[4].to)
 const COAST_IDS = REALM_IDS.slice(REALM_GROUPS[5].from, REALM_GROUPS[5].to)
+const ISLE_IDS = REALM_IDS.slice(REALM_GROUPS[6].from, REALM_GROUPS[6].to)
+const RIM_IDS = REALM_IDS.slice(REALM_GROUPS[7].from, REALM_GROUPS[7].to)
 
 export type ChronicleId =
   | 'welcome' | 'firstBuild' | 'holzlager' | 'steinbruch' | 'spring' | 'moonturnReady'
@@ -25,15 +27,21 @@ export type ChronicleId =
   | 'highFirst' | 'roadFirst' | 'highStair' | 'roadThree' | 'highSaddle' | 'chainThree' | 'highTarn' | 'highJuniper' | 'highBridge' | 'roadEight' | 'highGoat' | 'highCircle' | 'roadTwelve' | 'highSprings' | 'chainEight' | 'highEagle' | 'highSlate' | 'roadSixteen' | 'highMist' | 'highPasture' | 'roadTwentyTwo' | 'highHeaps' | 'chainThirteen' | 'highCloister' | 'highLarch' | 'roadTwentyEight' | 'highWatershed' | 'highCave' | 'highGorge' | 'roadThirtySix' | 'chainEighteen' | 'highFirn' | 'highFair' | 'highPlateau' | 'roadFortyFive' | 'highKiln' | 'highBoundary' | 'chainTwentyFour' | 'highFirstWatch' | 'roadSixty'
   // Buch 3 · Die tiefe Zeit (Jahr 3, nur anhängen)
   | 'coastDescent' | 'skyFirst' | 'coastWood' | 'coastSalt' | 'conLadder' | 'coastMill' | 'skyEdge' | 'coastCliffs' | 'coastBoats' | 'coastPilot' | 'skyOldChart' | 'coastSeagrass' | 'conSecond' | 'coastBuoy' | 'coastNets' | 'skyTwoSkies' | 'coastHarbour' | 'conThird' | 'coastLightship' | 'coastKiln' | 'skyLow' | 'coastPath' | 'coastBirds' | 'conFifth' | 'coastVillage' | 'coastCharts' | 'skyCount' | 'coastArch' | 'coastGlow' | 'conSeventh' | 'coastRose' | 'skyRing' | 'coastHorn' | 'coastBottles' | 'conNinth' | 'coastObservatory' | 'skyReturn' | 'coastCauseway' | 'coastFourRays' | 'conAll'
+  // Buch 4 · Die Lehrlinge (Jahr 4, nur anhängen)
+  | 'isleSchool' | 'trainedFirst' | 'isleSister' | 'postedFirst' | 'isleTwins' | 'trainedSecond' | 'isleHerring' | 'isleSheep' | 'isleShards' | 'trainedFour' | 'isleTwoTowers' | 'postedThree' | 'isleEggs' | 'isleHalf' | 'trainedSix' | 'isleGarden' | 'isleYard' | 'postedFive' | 'isleSilent' | 'trainedNine' | 'isleWhite' | 'isleFresh' | 'postedEight' | 'isleMills' | 'isleLetters' | 'trainedTwelve' | 'isleRope' | 'postedEleven' | 'isleKites' | 'isleSeals' | 'trainedSixteen' | 'isleBlack' | 'isleNames' | 'isleOutermost' | 'postedFifteen' | 'isleTrial' | 'trainedTwenty' | 'isleNoFire' | 'postedNineteen' | 'isleNewWatch'
+  // Buch 5 · Das große Licht (Jahr 5, nur anhängen)
+  | 'rimOpenSea' | 'stageOne' | 'rimDrifting' | 'rimWhales' | 'stageTwo' | 'rimIce' | 'rimAurora' | 'stageThree' | 'rimMarket' | 'stageFive' | 'rimCoral' | 'rimSandbank' | 'stageSeven' | 'rimRoots' | 'rimBuoys' | 'stageNine' | 'rimForeign' | 'stageEleven' | 'rimDunes' | 'rimWell' | 'stageThirteen' | 'rimStoneWood' | 'rimMirror' | 'stageFifteen' | 'rimWindTowers' | 'stageEighteen' | 'rimLamps' | 'rimBridges' | 'stageTwentyOne' | 'rimCloud' | 'rimCrater' | 'stageTwentyFour' | 'rimObservatories' | 'rimLastHarbour' | 'stageTwentySeven' | 'rimWholeMap' | 'rimSite' | 'stageTwentyNine' | 'rimBeacon' | 'stageThirty'
 
-export type ChapterId = 'key' | 'remains' | 'wakes' | 'night' | 'handover' | 'firstYear' | 'upward' | 'traces' | 'otherFires' | 'coldKiln' | 'firstWatch' | 'descent' | 'lights' | 'twoLists' | 'deepTime' | 'fourRays'
-export const CHAPTERS: readonly ChapterId[] = ['key', 'remains', 'wakes', 'night', 'handover', 'firstYear', 'upward', 'traces', 'otherFires', 'coldKiln', 'firstWatch', 'descent', 'lights', 'twoLists', 'deepTime', 'fourRays']
+export type ChapterId = 'key' | 'remains' | 'wakes' | 'night' | 'handover' | 'firstYear' | 'upward' | 'traces' | 'otherFires' | 'coldKiln' | 'firstWatch' | 'descent' | 'lights' | 'twoLists' | 'deepTime' | 'fourRays' | 'school' | 'candidates' | 'lessons' | 'names' | 'newWatch' | 'beyondChart' | 'foreignFires' | 'everyStone' | 'thousandLamps' | 'greatLight'
+export const CHAPTERS: readonly ChapterId[] = ['key', 'remains', 'wakes', 'night', 'handover', 'firstYear', 'upward', 'traces', 'otherFires', 'coldKiln', 'firstWatch', 'descent', 'lights', 'twoLists', 'deepTime', 'fourRays', 'school', 'candidates', 'lessons', 'names', 'newWatch', 'beyondChart', 'foreignFires', 'everyStone', 'thousandLamps', 'greatLight']
 
 /** Bücher der Chronik: je Jahr eines (Kapitel in Reihenfolge). Neue Bücher nur anhängen. */
-export const BOOKS: readonly { id: 'watch' | 'wayOfFires' | 'deepTime'; chapters: readonly ChapterId[] }[] = [
+export const BOOKS: readonly { id: 'watch' | 'wayOfFires' | 'deepTime' | 'apprentices' | 'greatLight'; chapters: readonly ChapterId[] }[] = [
   { id: 'watch', chapters: ['key', 'remains', 'wakes', 'night', 'handover', 'firstYear'] },
   { id: 'wayOfFires', chapters: ['upward', 'traces', 'otherFires', 'coldKiln', 'firstWatch'] },
   { id: 'deepTime', chapters: ['descent', 'lights', 'twoLists', 'deepTime', 'fourRays'] },
+  { id: 'apprentices', chapters: ['school', 'candidates', 'lessons', 'names', 'newWatch'] },
+  { id: 'greatLight', chapters: ['beyondChart', 'foreignFires', 'everyStone', 'thousandLamps', 'greatLight'] },
 ]
 
 /** Wer schreibt: Alwine in die Chronik, Alwine als Brief (vom Greif gebracht), Fenno als Brief (ab Buch 3), oder die Wacht selbst. */
@@ -65,6 +73,11 @@ export type Clue =
   | { kind: 'coasts'; n: number }
   | { kind: 'sky'; n: number }
   | { kind: 'constellations'; n: number }
+  | { kind: 'isles'; n: number }
+  | { kind: 'trained'; n: number }
+  | { kind: 'posted'; n: number }
+  | { kind: 'rim'; n: number }
+  | { kind: 'beacon'; n: number }
 
 const turns = (w: WorldView) => prestigeState(w).layers[0].count
 const nights = (w: WorldView) => prestigeState(w).layers[1]?.count ?? 0
@@ -204,6 +217,98 @@ export const CHRONICLE: readonly ChronicleEntry[] = [
   { id: 'coastCauseway', chapter: 'fourRays', art: 'realm:langerDamm', voice: 'letterFenno', open: (w) => coastsOpen(w) >= 24, clue: { kind: 'coasts', n: 24 } },
   { id: 'coastFourRays', chapter: 'fourRays', art: 'realm:warteDerVierStrahlen', voice: 'letter', open: (w) => coastsOpen(w) >= 25, clue: { kind: 'coasts', n: 25 } },
   { id: 'conAll', chapter: 'fourRays', art: 'dawn', voice: 'you', open: (w) => skyDone(w) >= 12, clue: { kind: 'constellations', n: 12 } },
+
+  // Buch 4 · Die Lehrlinge: mit den Inseln (isle), den ausgebildeten (trained) und den entsandten Lehrlingen (posted).
+  { id: 'isleSchool', chapter: 'school', art: 'realm:schulinsel', voice: 'letterFenno', open: (w) => islesOpen(w) >= 1, clue: { kind: 'isles', n: 1 } },
+  { id: 'trainedFirst', chapter: 'school', art: 'apprentice', voice: 'you', open: (w) => trained(w) >= 1, clue: { kind: 'trained', n: 1 } },
+  { id: 'isleSister', chapter: 'school', art: 'realm:kleineSchwester', voice: 'letter', open: (w) => islesOpen(w) >= 2, clue: { kind: 'isles', n: 2 } },
+  { id: 'postedFirst', chapter: 'school', art: 'fires', voice: 'you', open: (w) => posted(w) >= 1, clue: { kind: 'posted', n: 1 } },
+  { id: 'isleTwins', chapter: 'school', art: 'realm:zwillingsinseln', voice: 'letterFenno', open: (w) => islesOpen(w) >= 3, clue: { kind: 'isles', n: 3 } },
+  { id: 'trainedSecond', chapter: 'school', art: 'apprentice', voice: 'you', open: (w) => trained(w) >= 2, clue: { kind: 'trained', n: 2 } },
+  { id: 'isleHerring', chapter: 'school', art: 'realm:heringsinsel', voice: 'letter', open: (w) => islesOpen(w) >= 4, clue: { kind: 'isles', n: 4 } },
+  { id: 'isleSheep', chapter: 'school', art: 'realm:schafinsel', voice: 'letterFenno', open: (w) => islesOpen(w) >= 5, clue: { kind: 'isles', n: 5 } },
+
+  { id: 'isleShards', chapter: 'candidates', art: 'realm:scherbeninsel', voice: 'letter', open: (w) => islesOpen(w) >= 6, clue: { kind: 'isles', n: 6 } },
+  { id: 'trainedFour', chapter: 'candidates', art: 'apprentice', voice: 'you', open: (w) => trained(w) >= 4, clue: { kind: 'trained', n: 4 } },
+  { id: 'isleTwoTowers', chapter: 'candidates', art: 'realm:inselDerZweiTuerme', voice: 'letterFenno', open: (w) => islesOpen(w) >= 7, clue: { kind: 'isles', n: 7 } },
+  { id: 'postedThree', chapter: 'candidates', art: 'fires', voice: 'you', open: (w) => posted(w) >= 3, clue: { kind: 'posted', n: 3 } },
+  { id: 'isleEggs', chapter: 'candidates', art: 'realm:eierinsel', voice: 'letter', open: (w) => islesOpen(w) >= 8, clue: { kind: 'isles', n: 8 } },
+  { id: 'isleHalf', chapter: 'candidates', art: 'realm:halbeInsel', voice: 'letterFenno', open: (w) => islesOpen(w) >= 9, clue: { kind: 'isles', n: 9 } },
+  { id: 'trainedSix', chapter: 'candidates', art: 'apprentice', voice: 'you', open: (w) => trained(w) >= 6, clue: { kind: 'trained', n: 6 } },
+  { id: 'isleGarden', chapter: 'candidates', art: 'realm:garteninsel', voice: 'letter', open: (w) => islesOpen(w) >= 10, clue: { kind: 'isles', n: 10 } },
+
+  { id: 'isleYard', chapter: 'lessons', art: 'realm:werftinsel', voice: 'letterFenno', open: (w) => islesOpen(w) >= 11, clue: { kind: 'isles', n: 11 } },
+  { id: 'postedFive', chapter: 'lessons', art: 'stars', voice: 'you', open: (w) => posted(w) >= 5, clue: { kind: 'posted', n: 5 } },
+  { id: 'isleSilent', chapter: 'lessons', art: 'realm:stilleInsel', voice: 'letter', open: (w) => islesOpen(w) >= 12, clue: { kind: 'isles', n: 12 } },
+  { id: 'trainedNine', chapter: 'lessons', art: 'apprentice', voice: 'you', open: (w) => trained(w) >= 9, clue: { kind: 'trained', n: 9 } },
+  { id: 'isleWhite', chapter: 'lessons', art: 'realm:weisseInsel', voice: 'letterFenno', open: (w) => islesOpen(w) >= 13, clue: { kind: 'isles', n: 13 } },
+  { id: 'isleFresh', chapter: 'lessons', art: 'realm:suesswasserinsel', voice: 'letter', open: (w) => islesOpen(w) >= 14, clue: { kind: 'isles', n: 14 } },
+  { id: 'postedEight', chapter: 'lessons', art: 'fires', voice: 'you', open: (w) => posted(w) >= 8, clue: { kind: 'posted', n: 8 } },
+  { id: 'isleMills', chapter: 'lessons', art: 'realm:muehleninsel', voice: 'letterFenno', open: (w) => islesOpen(w) >= 15, clue: { kind: 'isles', n: 15 } },
+
+  { id: 'isleLetters', chapter: 'names', art: 'realm:inselDerBriefe', voice: 'letter', open: (w) => islesOpen(w) >= 16, clue: { kind: 'isles', n: 16 } },
+  { id: 'trainedTwelve', chapter: 'names', art: 'apprentice', voice: 'you', open: (w) => trained(w) >= 12, clue: { kind: 'trained', n: 12 } },
+  { id: 'isleRope', chapter: 'names', art: 'realm:seilerinsel', voice: 'letterFenno', open: (w) => islesOpen(w) >= 17, clue: { kind: 'isles', n: 17 } },
+  { id: 'postedEleven', chapter: 'names', art: 'fires', voice: 'you', open: (w) => posted(w) >= 11, clue: { kind: 'posted', n: 11 } },
+  { id: 'isleKites', chapter: 'names', art: 'realm:inselDerDrachen', voice: 'letter', open: (w) => islesOpen(w) >= 18, clue: { kind: 'isles', n: 18 } },
+  { id: 'isleSeals', chapter: 'names', art: 'realm:robbeninsel', voice: 'letterFenno', open: (w) => islesOpen(w) >= 19, clue: { kind: 'isles', n: 19 } },
+  { id: 'trainedSixteen', chapter: 'names', art: 'apprentice', voice: 'you', open: (w) => trained(w) >= 16, clue: { kind: 'trained', n: 16 } },
+  { id: 'isleBlack', chapter: 'names', art: 'realm:schwarzeInsel', voice: 'letter', open: (w) => islesOpen(w) >= 20, clue: { kind: 'isles', n: 20 } },
+
+  { id: 'isleNames', chapter: 'newWatch', art: 'realm:inselDerNamen', voice: 'letter', open: (w) => islesOpen(w) >= 21, clue: { kind: 'isles', n: 21 } },
+  { id: 'isleOutermost', chapter: 'newWatch', art: 'realm:aeussersteInsel', voice: 'letterFenno', open: (w) => islesOpen(w) >= 22, clue: { kind: 'isles', n: 22 } },
+  { id: 'postedFifteen', chapter: 'newWatch', art: 'stars', voice: 'you', open: (w) => posted(w) >= 15, clue: { kind: 'posted', n: 15 } },
+  { id: 'isleTrial', chapter: 'newWatch', art: 'realm:pruefungsinsel', voice: 'letter', open: (w) => islesOpen(w) >= 23, clue: { kind: 'isles', n: 23 } },
+  { id: 'trainedTwenty', chapter: 'newWatch', art: 'apprentice', voice: 'you', open: (w) => trained(w) >= 20, clue: { kind: 'trained', n: 20 } },
+  { id: 'isleNoFire', chapter: 'newWatch', art: 'realm:inselOhneFeuer', voice: 'letterFenno', open: (w) => islesOpen(w) >= 24, clue: { kind: 'isles', n: 24 } },
+  { id: 'postedNineteen', chapter: 'newWatch', art: 'fires', voice: 'you', open: (w) => posted(w) >= 19, clue: { kind: 'posted', n: 19 } },
+  { id: 'isleNewWatch', chapter: 'newWatch', art: 'realm:neueWarte', voice: 'letter', open: (w) => islesOpen(w) >= 25, clue: { kind: 'isles', n: 25 } },
+
+  // Buch 5 · Das große Licht: mit den Landen am Rand der Karte (rim) und den Stufen des Großen Leuchtfeuers (stage).
+  { id: 'rimOpenSea', chapter: 'beyondChart', art: 'realm:offenesMeer', voice: 'letter', open: (w) => rimOpen(w) >= 1, clue: { kind: 'rim', n: 1 } },
+  { id: 'stageOne', chapter: 'beyondChart', art: 'tower', voice: 'you', open: (w) => beaconStages(w) >= 1, clue: { kind: 'beacon', n: 1 } },
+  { id: 'rimDrifting', chapter: 'beyondChart', art: 'realm:treibendeInsel', voice: 'letterFenno', open: (w) => rimOpen(w) >= 2, clue: { kind: 'rim', n: 2 } },
+  { id: 'rimWhales', chapter: 'beyondChart', art: 'realm:walweg', voice: 'letter', open: (w) => rimOpen(w) >= 3, clue: { kind: 'rim', n: 3 } },
+  { id: 'stageTwo', chapter: 'beyondChart', art: 'fires', voice: 'you', open: (w) => beaconStages(w) >= 2, clue: { kind: 'beacon', n: 2 } },
+  { id: 'rimIce', chapter: 'beyondChart', art: 'realm:eisrand', voice: 'letterFenno', open: (w) => rimOpen(w) >= 4, clue: { kind: 'rim', n: 4 } },
+  { id: 'rimAurora', chapter: 'beyondChart', art: 'realm:nordlichtfeld', voice: 'letter', open: (w) => rimOpen(w) >= 5, clue: { kind: 'rim', n: 5 } },
+  { id: 'stageThree', chapter: 'beyondChart', art: 'stars', voice: 'you', open: (w) => beaconStages(w) >= 3, clue: { kind: 'beacon', n: 3 } },
+
+  { id: 'rimMarket', chapter: 'foreignFires', art: 'realm:schwimmenderMarkt', voice: 'letterFenno', open: (w) => rimOpen(w) >= 6, clue: { kind: 'rim', n: 6 } },
+  { id: 'stageFive', chapter: 'foreignFires', art: 'archive', voice: 'you', open: (w) => beaconStages(w) >= 5, clue: { kind: 'beacon', n: 5 } },
+  { id: 'rimCoral', chapter: 'foreignFires', art: 'realm:korallengarten', voice: 'letter', open: (w) => rimOpen(w) >= 7, clue: { kind: 'rim', n: 7 } },
+  { id: 'rimSandbank', chapter: 'foreignFires', art: 'realm:stadtAufDerSandbank', voice: 'letterFenno', open: (w) => rimOpen(w) >= 8, clue: { kind: 'rim', n: 8 } },
+  { id: 'stageSeven', chapter: 'foreignFires', art: 'fires', voice: 'you', open: (w) => beaconStages(w) >= 7, clue: { kind: 'beacon', n: 7 } },
+  { id: 'rimRoots', chapter: 'foreignFires', art: 'realm:wurzelwald', voice: 'letter', open: (w) => rimOpen(w) >= 9, clue: { kind: 'rim', n: 9 } },
+  { id: 'rimBuoys', chapter: 'foreignFires', art: 'realm:bojenkette', voice: 'letterFenno', open: (w) => rimOpen(w) >= 10, clue: { kind: 'rim', n: 10 } },
+  { id: 'stageNine', chapter: 'foreignFires', art: 'tower', voice: 'you', open: (w) => beaconStages(w) >= 9, clue: { kind: 'beacon', n: 9 } },
+
+  { id: 'rimForeign', chapter: 'everyStone', art: 'realm:fremdeKueste', voice: 'letter', open: (w) => rimOpen(w) >= 11, clue: { kind: 'rim', n: 11 } },
+  { id: 'stageEleven', chapter: 'everyStone', art: 'stars', voice: 'you', open: (w) => beaconStages(w) >= 11, clue: { kind: 'beacon', n: 11 } },
+  { id: 'rimDunes', chapter: 'everyStone', art: 'realm:duenenmeer', voice: 'letterFenno', open: (w) => rimOpen(w) >= 12, clue: { kind: 'rim', n: 12 } },
+  { id: 'rimWell', chapter: 'everyStone', art: 'realm:brunnenstadt', voice: 'letter', open: (w) => rimOpen(w) >= 13, clue: { kind: 'rim', n: 13 } },
+  { id: 'stageThirteen', chapter: 'everyStone', art: 'apprentice', voice: 'you', open: (w) => beaconStages(w) >= 13, clue: { kind: 'beacon', n: 13 } },
+  { id: 'rimStoneWood', chapter: 'everyStone', art: 'realm:steinernerWald', voice: 'letterFenno', open: (w) => rimOpen(w) >= 14, clue: { kind: 'rim', n: 14 } },
+  { id: 'rimMirror', chapter: 'everyStone', art: 'realm:spiegelsee', voice: 'letter', open: (w) => rimOpen(w) >= 15, clue: { kind: 'rim', n: 15 } },
+  { id: 'stageFifteen', chapter: 'everyStone', art: 'tower', voice: 'you', open: (w) => beaconStages(w) >= 15, clue: { kind: 'beacon', n: 15 } },
+
+  { id: 'rimWindTowers', chapter: 'thousandLamps', art: 'realm:windtuerme', voice: 'letterFenno', open: (w) => rimOpen(w) >= 16, clue: { kind: 'rim', n: 16 } },
+  { id: 'stageEighteen', chapter: 'thousandLamps', art: 'fires', voice: 'you', open: (w) => beaconStages(w) >= 18, clue: { kind: 'beacon', n: 18 } },
+  { id: 'rimLamps', chapter: 'thousandLamps', art: 'realm:terrassenDerLampen', voice: 'letter', open: (w) => rimOpen(w) >= 17, clue: { kind: 'rim', n: 17 } },
+  { id: 'rimBridges', chapter: 'thousandLamps', art: 'realm:haengendeBruecken', voice: 'letterFenno', open: (w) => rimOpen(w) >= 18, clue: { kind: 'rim', n: 18 } },
+  { id: 'stageTwentyOne', chapter: 'thousandLamps', art: 'dawn', voice: 'you', open: (w) => beaconStages(w) >= 21, clue: { kind: 'beacon', n: 21 } },
+  { id: 'rimCloud', chapter: 'thousandLamps', art: 'realm:wolkenwald', voice: 'letter', open: (w) => rimOpen(w) >= 19, clue: { kind: 'rim', n: 19 } },
+  { id: 'rimCrater', chapter: 'thousandLamps', art: 'realm:kraterrand', voice: 'letterFenno', open: (w) => rimOpen(w) >= 20, clue: { kind: 'rim', n: 20 } },
+  { id: 'stageTwentyFour', chapter: 'thousandLamps', art: 'stars', voice: 'you', open: (w) => beaconStages(w) >= 24, clue: { kind: 'beacon', n: 24 } },
+
+  { id: 'rimObservatories', chapter: 'greatLight', art: 'realm:stadtDerSternwarten', voice: 'letter', open: (w) => rimOpen(w) >= 21, clue: { kind: 'rim', n: 21 } },
+  { id: 'rimLastHarbour', chapter: 'greatLight', art: 'realm:letzterHafen', voice: 'letter', open: (w) => rimOpen(w) >= 22, clue: { kind: 'rim', n: 22 } },
+  { id: 'stageTwentySeven', chapter: 'greatLight', art: 'archive', voice: 'you', open: (w) => beaconStages(w) >= 27, clue: { kind: 'beacon', n: 27 } },
+  { id: 'rimWholeMap', chapter: 'greatLight', art: 'realm:hausDerGanzenKarte', voice: 'letter', open: (w) => rimOpen(w) >= 23, clue: { kind: 'rim', n: 23 } },
+  { id: 'rimSite', chapter: 'greatLight', art: 'realm:bauplatz', voice: 'letter', open: (w) => rimOpen(w) >= 24, clue: { kind: 'rim', n: 24 } },
+  { id: 'stageTwentyNine', chapter: 'greatLight', art: 'fires', voice: 'you', open: (w) => beaconStages(w) >= 29, clue: { kind: 'beacon', n: 29 } },
+  { id: 'rimBeacon', chapter: 'greatLight', art: 'realm:grossesLeuchtfeuer', voice: 'letter', open: (w) => rimOpen(w) >= 25, clue: { kind: 'rim', n: 25 } },
+  { id: 'stageThirty', chapter: 'greatLight', art: 'key', voice: 'you', open: (w) => beaconStages(w) >= 30, clue: { kind: 'beacon', n: 30 } },
 ]
 
 function voyagesDone(w: WorldView): number {
@@ -239,3 +344,14 @@ function skyStars(w: WorldView): number {
 function skyDone(w: WorldView): number {
   return chartCompleted(SKY_CHART, w.get<ChartState | undefined>(CHART_ID))
 }
+
+function groupOpen(w: WorldView, ids: readonly string[]): number {
+  const regions = w.get<RegionsState | undefined>(REGIONS_ID)?.regions ?? {}
+  return ids.filter((id) => regions[id]?.open).length
+}
+
+const islesOpen = (w: WorldView) => groupOpen(w, ISLE_IDS)
+const rimOpen = (w: WorldView) => groupOpen(w, RIM_IDS)
+const trained = (w: WorldView) => w.get<StewardsState | undefined>(STEWARDS_ID)?.trained ?? 0
+const posted = (w: WorldView) => (w.get<StewardsState | undefined>(STEWARDS_ID)?.posts ?? []).filter((p) => p !== '').length
+const beaconStages = (w: WorldView) => w.get<MonumentState | undefined>(MONUMENT_ID)?.stage ?? 0

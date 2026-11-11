@@ -272,6 +272,185 @@ export function DecorArt({ id, m }: { id: string; m: Mood }) {
           <Glow x={0} y={-20} r={9} m={m} />
         </g>
       )
+    // ── Fest-Jahrgang 4 (Inseln, Wächterschule) ──
+    case 'frostBench':
+      return (
+        <g>
+          <rect x={-10} y={-9} width={20} height={3} fill={P.woodLight} {...line} />
+          <path d="M-8 -6 v6 M8 -6 v6" {...line} />
+          <rect x={-10} y={-11} width={20} height={2} fill={P.snow} stroke={P.outline} strokeWidth={0.5} />
+          <rect x={-9} y={-18} width={18} height={3} fill={P.woodDark} {...line} />
+          <path d="M-7 -15 v4 M7 -15 v4" {...line} />
+        </g>
+      )
+    case 'chalkBoard':
+      return (
+        <g>
+          <path d="M-8 0 l3 -8 M8 0 l-3 -8" {...line} />
+          <rect x={-10} y={-24} width={20} height={16} rx={1} fill={P.slate} {...line} />
+          <path d="M-6 -19 h2 M-2 -19 h6 M-6 -14 h8" stroke={P.snow} strokeWidth={STROKE.fine * 1.4} strokeLinecap="round" />
+        </g>
+      )
+    case 'appleSapling':
+      return (
+        <g>
+          <path d="M0 0 v-14" stroke={P.woodDark} strokeWidth={STROKE.bold} strokeLinecap="round" />
+          <circle cx={0} cy={-19} r={7} fill={P.grassLight} {...line} />
+          {[[-3, -20], [3, -17], [1, -23]].map(([x, y]) => (
+            <circle key={`${x}${y}`} cx={x} cy={y} r={1.5} fill={P.blossom} stroke={P.outline} strokeWidth={0.4} />
+          ))}
+          <path d="M-4 0 l4 -3 l4 3" fill="none" stroke={P.woodLight} strokeWidth={STROKE.fine} />
+        </g>
+      )
+    case 'ropeWalk':
+      return (
+        <g>
+          <path d="M-9 0 l2 -14 l2 14 M5 0 l2 -14 l2 14" fill="none" {...line} />
+          <path d="M-7 -13 q7 5 14 0" fill="none" stroke={P.thatch} strokeWidth={STROKE.bold} strokeLinecap="round" />
+          <path d="M-5 -11.5 l1 -1.5 M-1 -10.5 l1 -1.5 M3 -11 l1 -1.5" stroke={P.thatchDark} strokeWidth={0.6} />
+          <circle cx={-7} cy={-15} r={2} fill={P.metal} stroke={P.outline} strokeWidth={0.6} />
+        </g>
+      )
+    case 'glassJar':
+      return (
+        <g>
+          <path d="M-6 0 q-3 -8 0 -15 h12 q3 7 0 15 z" fill={P.waterLight} opacity={0.7} {...line} />
+          {[[-3, -4], [2, -3], [0, -8], [-2, -11], [3, -10]].map(([x, y]) => (
+            <ellipse key={`${x}${y}`} cx={x} cy={y} rx={2} ry={1.4} fill={P.grassLight} stroke={P.grassDark} strokeWidth={0.4} />
+          ))}
+          <rect x={-5} y={-18} width={10} height={3} rx={1} fill={P.metalLight} stroke={P.outline} strokeWidth={0.6} />
+        </g>
+      )
+    case 'signLantern':
+      return (
+        <g>
+          <line x1={0} y1={0} x2={0} y2={-12} {...line} />
+          <Lantern x={0} y={-12} m={m} />
+          <path d="M5 -20 h6 M5 -16 h3 M5 -12 h6" stroke={P.glowSoft} strokeWidth={STROKE.fine * 1.5} strokeLinecap="round" />
+          <rect x={-7} y={-22} width={3} height={9} fill={P.woodDark} stroke={P.outline} strokeWidth={0.6} />
+          <Glow x={0} y={-17} r={8} m={m} />
+        </g>
+      )
+    case 'smallBoat':
+      return (
+        <g>
+          <path d="M-8 0 l2 -4 M8 0 l-2 -4" {...line} />
+          <path d="M-12 -12 q12 12 24 0 l-3 8 h-18 z" fill={P.woodLight} {...line} />
+          <path d="M-9 -8 h18" stroke={P.woodDark} strokeWidth={0.7} />
+          <rect x={-1} y={-9} width={5} height={4} fill={P.windowDark} stroke={P.outline} strokeWidth={0.5} />
+        </g>
+      )
+    case 'sealRock':
+      return (
+        <g>
+          <path d="M-11 0 q0 -10 8 -10 h8 q6 2 6 10 z" fill={P.stone} {...line} />
+          <path d="M-7 -10 q2 -7 8 -6 q4 1 6 5 q-6 3 -14 1 z" fill={P.stoneDark} {...line} />
+          <circle cx={4} cy={-13} r={0.8} fill={P.snow} />
+          <path d="M7 -11 l3 -2" stroke={P.outline} strokeWidth={0.6} />
+        </g>
+      )
+    case 'nameStone':
+      return (
+        <g>
+          <path d="M-7 0 v-16 q7 -8 14 0 v16 z" fill={P.stoneLight} {...line} />
+          <path d="M-3 -17 l6 4 M3 -17 l-6 4 M0 -18.5 v7 M-3.5 -15 h7" stroke={P.stoneDark} strokeWidth={STROKE.fine} strokeLinecap="round" />
+          <circle cx={0} cy={-15} r={1.2} fill={P.glowSoft} />
+          <path d="M-4 -7 h8" stroke={P.stoneDark} strokeWidth={0.5} strokeDasharray="1 1.5" />
+        </g>
+      )
+    // ── Fest-Jahrgang 5 (Rand der Karte, Großes Leuchtfeuer) ──
+    case 'iceLantern':
+      return (
+        <g>
+          <path d="M-8 0 l2 -14 h12 l2 14 z" fill={P.waterLight} opacity={0.85} {...line} />
+          <path d="M-4 -12 l-1 9 M3 -12 l1 8" stroke={P.snow} strokeWidth={0.7} />
+          <circle cx={0} cy={-6} r={2.2} fill={P.glowHot} />
+          <Glow x={0} y={-7} r={9} m={m} />
+        </g>
+      )
+    case 'redStone':
+      return (
+        <g>
+          <path d="M-9 0 l1 -9 q8 -5 16 0 l1 9 z" fill={P.roof} {...line} />
+          <path d="M0 -6 v-4 M0 -6 h4 M0 -6 h-4 M0 -6 v3 M0 -6 l2.5 2" stroke={P.paper} strokeWidth={STROKE.fine * 1.3} strokeLinecap="round" />
+        </g>
+      )
+    case 'reedRaft':
+      return (
+        <g>
+          <rect x={-11} y={-5} width={22} height={5} rx={2} fill={P.thatch} {...line} />
+          <path d="M-7 -5 v5 M-2 -5 v5 M3 -5 v5 M8 -5 v5" stroke={P.thatchDark} strokeWidth={0.6} />
+          <path d="M-6 -5 q-1 -9 1 -14 M-3 -5 q1 -8 0 -12 M0 -5 q2 -7 3 -11" fill="none" stroke={P.grassDark} strokeWidth={STROKE.fine * 1.3} strokeLinecap="round" />
+          <rect x={4} y={-8} width={6} height={3} fill={P.grassLight} stroke={P.outline} strokeWidth={0.5} />
+        </g>
+      )
+    case 'grassBridge':
+      return (
+        <g>
+          <path d="M-11 0 v-14 M11 0 v-14" {...line} />
+          <path d="M-11 -12 q11 9 22 0" fill="none" stroke={P.thatch} strokeWidth={STROKE.bold} strokeLinecap="round" />
+          <path d="M-11 -6 q11 8 22 0" fill="none" stroke={P.thatchDark} strokeWidth={STROKE.main} strokeLinecap="round" />
+          <path d="M-6 -9.5 v6 M0 -7.5 v5.5 M6 -9.5 v6" stroke={P.thatchDark} strokeWidth={0.6} />
+          {[[-3, -8], [3, -8]].map(([x, y]) => (
+            <circle key={x} cx={x} cy={y} r={1.3} fill={P.blossom} stroke={P.outline} strokeWidth={0.4} />
+          ))}
+        </g>
+      )
+    case 'lampTerrace':
+      return (
+        <g>
+          <path d="M-11 0 v-5 h7 v-5 h7 v-5 h8 v15 z" fill={P.stoneLight} {...line} />
+          {[[-8, -7], [-1, -12], [7, -17]].map(([x, y]) => (
+            <g key={x}>
+              <rect x={x - 1.5} y={y} width={3} height={2} fill={P.metal} stroke={P.outline} strokeWidth={0.4} />
+              <circle cx={x} cy={y - 1.5} r={1.3} fill={P.glowHot} />
+            </g>
+          ))}
+          <Glow x={-1} y={-13} r={10} m={m} />
+        </g>
+      )
+    case 'buoyChain':
+      return (
+        <g>
+          <path d="M-12 -3 q6 3 12 0 q6 -3 12 0" fill="none" stroke={P.water} strokeWidth={STROKE.main} />
+          {[-8, 0, 8].map((x) => (
+            <g key={x}>
+              <path d={`M${x - 3} -3 l1.5 -7 h3 l1.5 7 z`} fill={P.ember} stroke={P.outline} strokeWidth={0.7} />
+              <circle cx={x} cy={-12} r={1.4} fill={P.glowHot} />
+            </g>
+          ))}
+          <Glow x={0} y={-12} r={9} m={m} />
+        </g>
+      )
+    case 'smallAnchor':
+      return (
+        <g>
+          <path d="M0 -20 v18 M-7 -8 q0 7 7 7 q7 0 7 -7 M-4 -15 h8" fill="none" stroke={P.outline} strokeWidth={STROKE.bold + 2} strokeLinecap="round" />
+          <path d="M0 -20 v18 M-7 -8 q0 7 7 7 q7 0 7 -7 M-4 -15 h8" fill="none" stroke={P.metalLight} strokeWidth={STROKE.bold} strokeLinecap="round" />
+          <circle cx={0} cy={-22} r={2.3} fill="none" stroke={P.outline} strokeWidth={STROKE.main} />
+          <path d="M-5 0 h10" stroke={P.grassDark} strokeWidth={STROKE.main} strokeLinecap="round" />
+        </g>
+      )
+    case 'windPipe':
+      return (
+        <g>
+          <path d="M-5 0 l1 -24 h8 l1 24 z" fill={P.stone} {...line} />
+          <path d="M-2 -20 h4 M-2 -15 h4 M-2 -10 h4" stroke={P.windowDark} strokeWidth={STROKE.main} strokeLinecap="round" />
+          <path d="M7 -20 q3 -2 5 0 M7 -15 q3 -2 6 0" fill="none" stroke={P.mist} strokeWidth={STROKE.fine * 1.3} strokeLinecap="round" />
+        </g>
+      )
+    case 'beaconModel':
+      return (
+        <g>
+          <path d="M-6 0 l2 -18 h8 l2 18 z" fill={P.stoneLight} {...line} />
+          <path d="M-5 -6 h10 M-4.4 -12 h8.8" stroke={P.stoneDark} strokeWidth={0.6} />
+          <rect x={-2} y={-5} width={3} height={3} fill={P.roof} stroke={P.outline} strokeWidth={0.4} />
+          <rect x={-5} y={-21} width={10} height={3} fill={P.woodDark} stroke={P.outline} strokeWidth={0.6} />
+          <path d="M0 -24 l-11 -3 M0 -24 l11 -3 M0 -24 l-12 3 M0 -24 l12 3 M0 -24 v-6" stroke={P.glowSoft} strokeWidth={STROKE.fine * 1.5} strokeLinecap="round" opacity={0.8} />
+          <circle cx={0} cy={-24} r={2.4} fill={P.glowHot} />
+          <Glow x={0} y={-24} r={10} m={m} />
+        </g>
+      )
     default:
       return null
   }

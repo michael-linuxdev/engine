@@ -29,6 +29,11 @@ export const storyDe = {
       coasts: (n: string) => `Öffnet sich mit ${n} Küstenlanden.`,
       sky: (n: string) => `Öffnet sich mit ${n} Sternen auf der Himmelskarte.`,
       constellations: (n: string) => `Öffnet sich mit ${n} vollständigen Sternbildern.`,
+      isles: (n: string) => `Öffnet sich mit ${n} Inseln.`,
+      trained: (n: string) => `Öffnet sich mit ${n} ausgebildeten Lehrlingen.`,
+      posted: (n: string) => `Öffnet sich mit ${n} Lehrlingen in einem eigenen Land.`,
+      rim: (n: string) => `Öffnet sich mit ${n} Landen am Rand der Karte.`,
+      beacon: (n: string) => `Öffnet sich mit ${n} Stufen des Großen Leuchtfeuers.`,
     },
     menu: 'Chronik',
     title: 'Chronik der Wächterin',
@@ -44,9 +49,9 @@ export const storyDe = {
     close: 'Buch schließen',
     page: (n: string, total: string) => `Seite ${n} von ${total}`,
     chapter: (n: string, name: string) => `Kapitel ${n} · ${name}`,
-    books: { watch: 'Buch 1 · Die Wacht', wayOfFires: 'Buch 2 · Der Weg der Feuer', deepTime: 'Buch 3 · Die tiefe Zeit' },
+    books: { watch: 'Buch 1 · Die Wacht', wayOfFires: 'Buch 2 · Der Weg der Feuer', deepTime: 'Buch 3 · Die tiefe Zeit', apprentices: 'Buch 4 · Die Lehrlinge', greatLight: 'Buch 5 · Das große Licht' },
     bookShort: (n: string) => `Buch ${n}`,
-    bookLocked: { wayOfFires: 'Beginnt mit dem ersten Hochland.', deepTime: 'Beginnt jenseits der Ersten Warte.' },
+    bookLocked: { wayOfFires: 'Beginnt mit dem ersten Hochland.', deepTime: 'Beginnt jenseits der Ersten Warte.', apprentices: 'Beginnt mit der ersten Insel.', greatLight: 'Beginnt hinter der Äußersten Insel.' },
     chapters: {
       key: 'Der Schlüssel',
       remains: 'Was bleibt',
@@ -64,6 +69,16 @@ export const storyDe = {
       twoLists: 'Zwei Listen',
       deepTime: 'Die tiefe Zeit',
       fourRays: 'Vier Strahlen',
+      school: 'Die Schulinsel',
+      candidates: 'Wer kommt',
+      lessons: 'Was man nicht lehren kann',
+      names: 'Namen',
+      newWatch: 'Die Neue Warte',
+      beyondChart: 'Hinter der Karte',
+      foreignFires: 'Fremde Feuer',
+      everyStone: 'Ein Stein aus jedem Land',
+      thousandLamps: 'Tausend Lampen',
+      greatLight: 'Das große Licht',
     },
     comeback: { title: 'Da bist du ja', body: 'Lange nichts gehört. Die Warte hat geglimmt, ich habe aufgepasst. Hier, für den Weg: ein paar Lichtkiesel.' },
     entries: {
@@ -518,6 +533,326 @@ export const storyDe = {
       conAll: {
         title: 'Die tiefe Zeit',
         body: 'Die Himmelskarte ist fertig, alle zwölf Bilder. Ich habe sie neben die Lederkarte gehängt. Oben gleichen sie sich Stern für Stern. Am Rand fehlt meiner noch viel zum geschlossenen Ring. Aber er wächst, und zum ersten Mal weiß jemand, warum.\n\nWas sah die Sternwarte, bevor die Sterne fehlten? Nachbarn. Alwine schreibt, sie bleibe den Winter über unten und lehre das Mädchen, was es noch nicht weiß. Fenno schreibt, er lehre es auch. Ich fürchte, wir werden bald mehr Lehrlinge haben als Laternen. Es gibt Schlimmeres.',
+      },
+      isleSchool: {
+        title: 'Eine Schule',
+        body: 'Hallo Wacht,\n\nwir haben eine Schule gefunden. Also ein Haus mit Bänken und eine Frau, die seit Jahren auf Schüler wartet. Die vom Damm will nicht, dass ich ihren Namen in einen Brief schreibe, also schreibe ich: die vom Damm. Sie hat sich in die erste Bank gesetzt.\n\nDie Schulmeisterin hat mich angesehen und gefragt, was ich unterrichte. Ich habe gesagt, ich sei der Lehrling. Sie hat gesagt: „Nicht mehr lange.“',
+      },
+      trainedFirst: {
+        title: 'Der erste',
+        body: 'Heute ist jemand den Berg heraufgekommen, mit einem Brief von Fenno in der Hand. Darin stand nur: „Der kann Laternen putzen und stellt keine dummen Fragen. Bring ihm den Rest bei.“\n\nIch habe vier Tage gebraucht. Am Ende konnte er alle Zeichen, und ich hatte zum ersten Mal erklärt, was ich bisher nur getan habe. Es ist erstaunlich, wie wenig man von seiner eigenen Arbeit weiß, bis jemand danach fragt.',
+      },
+      isleSister: {
+        title: 'Zehn Minuten',
+        body: 'Liebe Wacht,\n\ndie Insel ist so klein, dass ich sie in zehn Minuten umrundet hatte. Der Fährknecht sitzt hier jeden Abend, obwohl er nur Wasser holen will.\n\nIch habe ihn gefragt, ob er eine Wacht haben möchte. Er hat lange aufs Meer gesehen. „Ich habe schon eine“, hat er gesagt. „Ich wusste nur nicht, dass man das so nennt.“ Ich fange an zu glauben, dass wir die Leute nicht suchen müssen. Wir müssen es ihnen nur sagen.',
+      },
+      postedFirst: {
+        title: 'Ein eigenes Land',
+        body: 'Der erste Lehrling ist heute losgezogen, in ein Land, das ich ihm auf der Karte gezeigt habe. Er hat die Laterne mitgenommen, die ich ihm gegeben habe, und meinen zweitbesten Mantel, den ich ihm nicht gegeben habe.\n\nAm Abend war dort ein neues Licht in der Kette. Es hat zweimal geflackert, als wüsste es nicht recht, ob es darf. Dann hat es gehalten.',
+      },
+      isleTwins: {
+        title: 'Zur selben Minute',
+        body: 'Hallo Wacht,\n\nhier wohnen zwei Brüder auf zwei Inseln und reden nicht miteinander. Seit zwanzig Jahren. Aber sie zünden jeden Abend zur selben Minute ihre Laternen an. Ich habe es mit Alwines Uhr nachgemessen.\n\nIch habe den linken gefragt, warum. Er hat gesagt, er wolle nicht, dass der andere glaubt, er sei nachlässig. Der rechte hat dasselbe gesagt. Die vom Damm meint, das sei auch eine Art, sich gern zu haben.',
+      },
+      trainedSecond: {
+        title: 'Was man nicht lehren kann',
+        body: 'Die zweite Schülerin kann alles besser als der erste. Sie putzt die Linse schneller, sie liest die Zeichen flüssiger, und sie fragt nie zweimal.\n\nGestern Nacht ging ein Sturm. Sie hat das Feuer gehalten, tadellos. Aber sie hat kein einziges Mal aus dem Fenster gesehen, ob drüben noch jemand brennt. Ich weiß nicht, wie man das lehrt. Ich weiß nicht einmal, ob ich es gelernt habe oder ob es schon da war.',
+      },
+      isleHerring: {
+        title: 'Fässer für die Geduld',
+        body: 'Liebe Wacht,\n\nder Fassbinder sagt, der Hering komme, wann er wolle, und ein Fischer sei jemand, der das aushält. Die meisten jungen Leute hier gehen fort, weil sie es nicht aushalten.\n\nGeblieben ist ein Mädchen, das die Fässer zählt, jeden Abend, auch wenn keins dazugekommen ist. Fenno hat ihr unsere Zeichen gezeigt. Sie konnte sie nach einer Stunde. Sie hat gesagt, das sei wie Zählen, nur dass jemand zurückzählt.',
+      },
+      isleSheep: {
+        title: 'Was ein Lamm weitersagt',
+        body: 'Hallo Wacht,\n\ndie Schafe hier fressen Tang. Die Schäferin sagt, sie habe es einem einzigen Lamm beigebracht, als sie klein war, und das habe es den anderen gezeigt. Jetzt können es alle, und keines weiß mehr, von wem.\n\nIch habe gesagt, das sei ja wie bei uns. Alwine hat gelacht und gefragt, wer von uns beiden das Lamm sei. Ich habe gesagt: du. Sie hat gesagt, das habe sie befürchtet.',
+      },
+      isleShards: {
+        title: 'Was einmal eine Laterne war',
+        body: 'Liebe Wacht,\n\ndas Meer wirft hier Glas an, rund und matt. Der Glassammler behält die grünen Stücke. Er sagt, grün sei das Glas der alten Laternen gewesen.\n\nEr hat einen Krug voll. Ich habe ihn gefragt, was er damit vorhat. „Wenn es genug ist“, hat er gesagt, „mache ich eine neue daraus.“ Wie viel genug sei? Er wusste es nicht. Fenno hat nachgezählt und gesagt, es reiche seit Jahren.',
+      },
+      trainedFour: {
+        title: 'Vier',
+        body: 'Vier sind ausgebildet. Die Küche ist zu klein geworden, und irgendwer hat meinen Becher benutzt.\n\nIch habe heute Abend zugehört, wie sie über mich reden, wenn sie glauben, ich sei oben. Sie machen nach, wie ich die Stufen zähle. Ich wusste nicht, dass ich die Stufen zähle. Alwine hat es getan. Ich muss es von ihr haben.',
+      },
+      isleTwoTowers: {
+        title: 'Welches ist das richtige?',
+        body: 'Hallo Wacht,\n\nauf einer Insel stehen zwei Türme, und eine Frau hält beide Feuer, weil ihr nie jemand gesagt hat, welches das richtige ist. Jede Nacht zweimal die Treppe. Seit elf Jahren.\n\nIch habe gesagt, ich könne ja mal nachfragen. Die vom Damm hat mich gegen das Schienbein getreten. Später hat sie gesagt: „Sie will es nicht wissen. Wenn eins das falsche wäre, müsste sie es ausmachen.“',
+      },
+      postedThree: {
+        title: 'Drei Lichter mehr',
+        body: 'Drei Lehrlinge haben jetzt ein eigenes Land. Ich sehe ihre Feuer von hier, und ich erkenne jedes. Der erste hält seines zu klein, aus Sparsamkeit. Die zweite hält ihres zu groß, aus Stolz. Der dritte vergisst es bis zur letzten Minute und ist dann pünktlich.\n\nIch habe keinem etwas gesagt. Alwine hat mir auch nie gesagt, dass meines schief brennt. Ich habe es erst gemerkt, als ich es von außen sah.',
+      },
+      isleEggs: {
+        title: 'Ein Handel',
+        body: 'Liebe Wacht,\n\nder Eiersammler nimmt aus jedem zehnten Nest ein Ei und legt einen Fisch hinein. Er sagt, die Vögel hätten das vorgeschlagen. Ich habe gelacht. Er nicht.\n\n„Wer etwas nimmt, ohne etwas dazulassen“, hat er gesagt, „kommt genau einmal.“ Fenno hat das aufgeschrieben. Er schreibt neuerdings Dinge auf. Ich habe ihm nicht gesagt, dass so eine Chronik anfängt.',
+      },
+      isleHalf: {
+        title: 'Die Stunde, in der man es bereut',
+        body: 'Hallo Wacht,\n\nich bin zu spät losgegangen. Es gibt hier eine Insel, zu der man bei Ebbe laufen kann, und eine Frau, die genau weiß, bis wann. Ich wusste es besser. Ich wusste es nicht besser.\n\nSie hat mich herausgezogen und kein Wort gesagt. Am Abend hat sie mir gezeigt, wie man die Flut an den Vögeln abliest. Die vom Damm sagt, das sei meine beste Unterrichtsstunde gewesen, weil ich diesmal der war, der nass ist.',
+      },
+      trainedSix: {
+        title: 'Wer kommt',
+        body: 'Sechs. Ich habe mir aufgeschrieben, woher sie kamen. Zwei hat Fenno geschickt. Eine stand eines Morgens vor der Tür und sagte, sie habe das Feuer gesehen. Einer ist der Sohn des Händlers, der damals im Tal sein Lager so aufschlug, dass er die Kette sah.\n\nKeiner von ihnen ist gekommen, weil er eine Wacht haben wollte. Sie sind gekommen, weil sie eine gesehen haben.',
+      },
+      isleGarden: {
+        title: 'Kerne aus dem Tal',
+        body: 'Liebe Wacht,\n\nauf einer Insel weit draußen wachsen Apfelbäume. Der Gärtner sagt, jemand habe die ersten Kerne aus einem Tal in den Bergen mitgebracht, vor sehr langer Zeit.\n\nIch habe einen Apfel gegessen. Wacht, es ist unsere Sorte. Die vom Hang hinter der Kräuterkate, die so sauer ist, dass nur wir sie mögen. Wer immer vor zweihundertelf Jahren den Berg hinaufging, ist vorher hier gewesen und hat Heimweh gehabt.',
+      },
+      isleYard: {
+        title: 'Das letzte Brett',
+        body: 'Hallo Wacht,\n\ndie Bootsbauerin baut Boote bis auf ein Brett. Das letzte muss der setzen, der damit fährt. Sie sagt, sonst sei es ihr Boot und nicht seins, und dann passe er nicht darauf auf.\n\nIch habe heute ein Brett gesetzt. Es ist ein kleines Boot. Die vom Damm hat den Namen draufgemalt, den verrate ich nicht. Aber er ist kurz, und es ist ein Pilz.',
+      },
+      postedFive: {
+        title: 'Von selbst',
+        body: 'Fünf Lande werden jetzt von jemandem gepflegt, der nicht ich bin. Ich habe heute zum ersten Mal einen ganzen Tag lang nichts für sie getan, und am Abend war alles ein Stück weiter als am Morgen.\n\nEs ist ein seltsames Gefühl. Ein bisschen wie überflüssig sein. Alwine schreibt, das sei das Gefühl, auf das sie dreißig Jahre hingearbeitet habe, und ich solle es gefälligst genießen.',
+      },
+      isleSilent: {
+        title: 'Ohne ein Wort',
+        body: 'Liebe Wacht,\n\nauf dieser Insel wird nicht gesprochen, wegen der brütenden Vögel. Die Frau, die hier lebt, redet mit Laternen. Unsere Zeichen, und noch dreißig mehr, die ich nicht kannte. Eines heißt „Ich sehe dich“. Eines heißt „Schlaf ruhig, ich bin wach“.\n\nIch habe alle abgeschrieben. Wacht, wir haben zweihundert Jahre lang mit drei Zeichen gelebt. Es ist, als hätte man nur „ja“, „nein“ und „hier“ gehabt.',
+      },
+      trainedNine: {
+        title: 'Neue Zeichen',
+        body: 'Neun. Alwines Liste mit den dreißig Zeichen hängt jetzt in der Küche. Die Lehrlinge konnten sie nach einer Woche. Ich brauche länger.\n\nHeute Nacht hat mir der erste von seinem Land aus etwas herübergeleuchtet, das ich nachschlagen musste. Es hieß: „Schlaf ruhig, ich bin wach.“ Ich bin trotzdem aufgeblieben. Aber ich habe mich dabei hingesetzt.',
+      },
+      isleWhite: {
+        title: 'Weiß',
+        body: 'Hallo Wacht,\n\nhier ist alles weiß gestrichen. Häuser, Steine, der Baum. Der Maler sagt, eine weiße Insel sehe man auch ohne Feuer. Ich habe gefragt, warum er dann trotzdem eins hat.\n\n„Bei Tag sieht man die Insel“, hat er gesagt. „Bei Nacht sieht man, dass jemand da ist. Das ist nicht dasselbe.“ Ich habe den Satz zwei Lehrlingen geschickt, die mich gefragt haben, wozu sie das Feuer brauchen, wenn ihr Land eh jeder kennt.',
+      },
+      isleFresh: {
+        title: 'Neuigkeiten',
+        body: 'Liebe Wacht,\n\ndie Wasserträgerin nimmt für ihr Wasser nichts als Neuigkeiten. Sie wusste von dir, bevor ich den Mund aufgemacht hatte. Sie wusste von der Feuerstraße, von der Himmelskarte und davon, dass Fenno ins Watt gefallen ist.\n\nIch habe gefragt, was sie mit all dem tut. „Weitergeben“, hat sie gesagt. „An den Nächsten, der Wasser braucht. Was glaubst du, woher die Leute wissen, dass sie zu euch können?“',
+      },
+      postedEight: {
+        title: 'Der erste Fehler',
+        body: 'Heute Nacht ist eines der neuen Feuer ausgegangen. Eine Stunde lang war dort, wo das achte Land liegt, nichts. Ich habe am Fenster gestanden und mich nicht gerührt.\n\nDann ging links davon ein Licht an und aus, an und aus: der Nachbar, der hinüberrief. Und dann brannte es wieder. Am Morgen kam ein Greif mit vier Wörtern: „Eingeschlafen. Kommt nicht wieder vor.“ Es wird wieder vorkommen. Dafür gibt es Nachbarn.',
+      },
+      isleMills: {
+        title: 'Elf Inseln, ein Müller',
+        body: 'Hallo Wacht,\n\nder Müller hier mahlt für elf Inseln und erkennt jede am Mehl. Er hat mir mit verbundenen Augen gesagt, von welcher Insel ich das Brot in der Tasche hatte.\n\nIch habe gefragt, wie man das lernt. Er hat gesagt: „Gar nicht. Man macht es vierzig Jahre.“ Ich habe gesagt, so lange hätte ich nicht. Die vom Damm hat gesagt, ich hätte genau so lange. Manchmal ist sie unheimlich.',
+      },
+      isleLetters: {
+        title: 'Wem man schreiben sollte',
+        body: 'Liebe Wacht,\n\nalle Post des Inselmeers geht durch ein Haus. Die Postmeisterin liest nichts, sagt sie. Dann hat sie mir einen Stapel hingelegt: Briefe, die an „die Wacht“ gerichtet sind, ohne Ort. Vierzig Stück, aus zwanzig Jahren.\n\nLeute, die fragen, ob es das noch gibt. Ob man kommen darf. Ob man zu alt ist. Sie hat sie nie zugestellt, weil sie nicht wusste, wohin. Wacht, ich beantworte sie alle. Es wird ein langer Winter.',
+      },
+      trainedTwelve: {
+        title: 'Zu alt',
+        body: 'Zwölf. Die zwölfte ist zweiundsechzig. Sie hat vor zwanzig Jahren einen Brief geschrieben und nie eine Antwort bekommen. Alwines Antwort kam im Herbst. Im Frühjahr stand sie vor der Tür.\n\nSie hat länger gebraucht als die anderen, für die Treppe und für die Zeichen. Aber sie ist die Einzige, die nachts aus dem Fenster sieht, ohne dass ich es ihr gesagt hätte. Sie sagt, sie habe zwanzig Jahre lang geübt, auf ein Licht zu warten.',
+      },
+      isleRope: {
+        title: 'Rückwärts',
+        body: 'Hallo Wacht,\n\nder Seiler geht den ganzen Tag rückwärts. Beim Seildrehen muss man das. Er sagt, man sehe dabei die ganze Zeit, was man schon gemacht hat, und nie, wo man hingeht.\n\nIch habe gesagt, das sei doch furchtbar. Er hat gesagt, er finde es beruhigend. Alwine hat mich später gefragt, was ich sehe, wenn ich zurückschaue. Ich habe angefangen aufzuzählen und nach einer Weile gemerkt, dass sie eingeschlafen war. Es war eine lange Liste.',
+      },
+      postedEleven: {
+        title: 'Eine Wacht ist kein Turm',
+        body: 'Elf Lehrlinge sind in elf Landen. Zwei von ihnen haben gar keinen Turm. Einer hängt seine Laterne in einen Baum, eine stellt ihre auf ein Boot.\n\nIch wollte ihnen zuerst schreiben, das gehe nicht. Dann habe ich an das Leuchtschiff gedacht, von dem Fenno erzählt hat, und an die Drachen, von denen Alwine schreibt. Eine Wacht ist kein Turm. Ich hätte es wissen müssen. Unserer war auch nur der Ort, an dem zufällig der Schlüssel lag.',
+      },
+      isleKites: {
+        title: 'Ein Feuer am Himmel',
+        body: 'Liebe Wacht,\n\nüber dieser Insel stehen nachts Drachen mit Lichtern. Die Drachenbauerin sagt, ein Feuer am Himmel sehe man weiter als eins am Boden, solange der Wind hält.\n\nUnd wenn er nicht hält? „Dann“, hat sie gesagt, „renne ich.“ Sie hat mir die Narben an den Knien gezeigt. Ich habe selten jemanden gesehen, der so genau weiß, wofür er fällt.',
+      },
+      isleSeals: {
+        title: 'Die Fehlende',
+        body: 'Hallo Wacht,\n\nder Robbenwächter zählt seine Robben nicht. Er sagt, wer zählt, merke nur, dass eine fehlt. Wer sie kennt, weiß, welche.\n\nGestern fehlte eine. Er ist bei Sturm hinausgefahren, und ich bin mit, weil die vom Damm schon im Boot saß. Wir haben sie gefunden, in einem Netz. Ich habe auf der Rückfahrt überlegt, ob ich wüsste, welches unserer Feuer fehlt, wenn eins fehlt. Ich glaube ja. Schreib mir, ob du es auch weißt.',
+      },
+      trainedSixteen: {
+        title: 'Ja, ich weiß es',
+        body: 'Sechzehn. Fenno hat gefragt, ob ich wüsste, welches Feuer fehlt, wenn eins fehlt. Ich habe es heute Nacht geprüft. Ich habe die Augen geschlossen und sie aufgesagt, von hier bis zum Meer, jedes mit dem, der es hält.\n\nIch weiß es. Ich weiß sogar, welches zu früh brennt und welches zu sparsam. Ich habe Fenno geschrieben: ja. Und dass er mir fehlt. Das zweite habe ich wieder durchgestrichen und dann doch stehen lassen.',
+      },
+      isleBlack: {
+        title: 'Ein Feuer von unten',
+        body: 'Liebe Wacht,\n\ndie Insel ist aus schwarzem Stein und innen noch warm. Der Mann, der hier Kürbisse zieht, sagt, sein Feuer brenne von unten und brauche ihn nicht.\n\n„Warum bleibst du dann?“, hat Fenno gefragt. Der Mann hat eine Weile überlegt. „Damit jemand sagen kann, dass es warm ist“, hat er gesagt. Die vom Damm hat genickt. Ich glaube, die beiden haben gerade etwas über unsere Arbeit begriffen, wofür ich länger gebraucht habe.',
+      },
+      isleNames: {
+        title: 'Ein Stein mit einem Namen',
+        body: 'Liebe Wacht,\n\nes gibt eine Insel, auf der für jede Wacht ein Stein steht. Ich habe meine Meisterin gefunden. Und ihre. Und elf davor. Der erste Stein trägt keinen Namen, nur das Zeichen mit den vier Strahlen.\n\nNeben dem Stein meiner Meisterin steht ein leerer. Die Namenshüterin hat mich angesehen und den Meißel hingehalten. Ich habe den Kopf geschüttelt. „Noch nicht“, habe ich gesagt. Sie hat gesagt: „Das sagen alle. Der Stein kann warten.“',
+      },
+      isleOutermost: {
+        title: 'Ein Licht, weit draußen',
+        body: 'Hallo Wacht,\n\nwir sind auf der letzten Insel. Dahinter ist auf der Karte nichts. Der Mann hier sagt, die Karte sei von Leuten, die nie hier waren. Er sieht nachts manchmal ein Licht, weit draußen. Er hat ein Buch darüber: Datum, Uhrzeit, wie lange.\n\nIch habe heute Nacht mit ihm gewacht. Um zwei war es da. Ich habe meine Laterne genommen. Kurz, lang, verdeckt. Es hat nicht geantwortet. Aber es ist auch nicht ausgegangen.',
+      },
+      postedFifteen: {
+        title: 'Wem man eine Wacht gibt',
+        body: 'Fünfzehn Lande, fünfzehn Lehrlinge. Ich habe heute versucht aufzuschreiben, wonach ich sie ausgesucht habe, damit der Nächste es leichter hat.\n\nIch bin nicht weit gekommen. Die Geschickten waren nicht die Besten. Die Mutigen auch nicht. Am Ende steht auf dem Blatt nur ein Satz, und der ist nicht von mir, sondern von einem Maler auf einer weißen Insel: Bei Nacht soll man sehen, dass jemand da ist.',
+      },
+      isleTrial: {
+        title: 'Eine Nacht',
+        body: 'Liebe Wacht,\n\nwer hier eine Wacht will, verbringt eine Nacht allein mit einem Feuer. Die Prüferin sieht nicht hin. Am Morgen fragt sie nur eines: „Wem willst du es zeigen?“\n\nDie vom Damm ist gestern hinübergerudert. Sie hält seit einem Jahr ein Feuer allein, sie hätte es nicht gebraucht. Am Morgen hat die Prüferin gefragt. Die vom Damm hat auf Fenno gezeigt, der am Ufer stand und so tat, als habe er nicht die ganze Nacht dort gestanden.',
+      },
+      trainedTwenty: {
+        title: 'Zwanzig',
+        body: 'Zwanzig. Die Schule ist voll, und ich bilde vorerst niemanden mehr aus. Nicht, weil es genug wären. Sondern weil die ersten inzwischen selbst jemanden bei sich haben, der Laternen putzt und keine dummen Fragen stellt.\n\nIch habe gezählt: Von hier aus sehe ich mehr Feuer, als ich je entzündet habe. Die meisten davon hat jemand angesteckt, den ich nicht kenne, weil ihn jemand gelehrt hat, den ich gelehrt habe.',
+      },
+      isleNoFire: {
+        title: 'Für die Erste, die bleibt',
+        body: 'Hallo Wacht,\n\nes gibt einen Turm, der fertig ist und nie gebrannt hat. Öl im Keller, Docht in der Lampe, Holz gestapelt. An der Tür ein Zettel: „Für die Erste, die bleibt.“\n\nWir standen zu dritt davor. Alwine hat nichts gesagt. Ich habe nichts gesagt, und du weißt, wie schwer mir das fällt. Die vom Damm hat den Zettel abgenommen, gefaltet und eingesteckt. Dann hat sie mich gefragt, ob ich ein Streichholz habe.',
+      },
+      postedNineteen: {
+        title: 'Ein neuer Stern am Rand',
+        body: 'Heute Nacht ist am Rand der Himmelskarte ein gelber Punkt dazugekommen, weiter draußen als alle anderen. Ich habe ihn mit Tinte eingetragen, ohne zu warten.\n\nEr flackert. Er ist ein wenig zu groß, aus Stolz, und ein wenig schief. Ich würde ihn unter tausend erkennen, obwohl ich ihn noch nie gesehen habe. Er brennt wie alles, was Fenno je angezündet hat.',
+      },
+      isleNewWatch: {
+        title: 'Die Lehrlinge',
+        body: 'Liebe Wacht,\n\ndie Neue Warte brennt seit einer Woche. Sie halten sie zu zweit, die vom Damm und Fenno, abwechselnd, und streiten darüber, wer dran ist. Ich habe ihnen den Schlüssel mit den vier Zacken gegeben. Fenno hat ihn unter die dritte Stufe gelegt, bevor ich etwas sagen konnte.\n\nWem gibt man eine Wacht? Dem, der bleibt. Und der am Morgen jemandem zeigen will, dass sie noch brennt. Ich komme nach Hause, Wacht. Stell einen zweiten Becher hin.',
+      },
+      rimOpenSea: {
+        title: 'Ein Winter',
+        body: 'Liebe Wacht,\n\nich habe gesagt, ich komme nach Hause, und ich bin gekommen. Einen Winter lang. Du hast es ertragen, dass ich deine Stufen nachzähle, und ich habe ertragen, dass du es besser machst als ich. Dann kam die Nachricht von der Äußersten Insel: Das Licht weit draußen hat geantwortet.\n\nVerzeih mir den Becher, der jetzt wieder leer steht. Die Steuerfrau hält auf etwas zu, das nur sie sieht. Ich sitze im Bug und sehe es inzwischen auch.',
+      },
+      stageOne: {
+        title: 'Der erste Stein',
+        body: 'Aus der Mitte der Karte kam eine Bitte, mit einem fremden Greif: ein Stein aus jedem Land, für einen Turm, den alle sehen sollen. Ich habe den Lehrlingen geschrieben. Acht Lande haben gegeben, was sie in sechs Stunden schaffen.\n\nUnser Stein ist der von der dritten Stufe. Ich habe ihn selbst herausgehoben. Darunter lag nichts mehr. Der Schlüssel ist ja unterwegs. Es hat sich trotzdem angefühlt, als gäbe ich etwas her, das mir nicht gehört.',
+      },
+      rimDrifting: {
+        title: 'Dieselbe Insel',
+        body: 'Hallo Wacht,\n\nich bin dran mit Reisen, sie ist dran mit dem Feuer. Wir haben gelost. Ich glaube, sie hat geschummelt, damit ich fahre.\n\nWir liegen an einer Insel aus Schilf. Der Floßbauer flickt jeden Tag eine Ecke. In einem Jahr ist nichts mehr von der alten übrig, sagt er, und es ist trotzdem dieselbe. Alwine hat gefragt, woran man das merkt. „Daran, dass keiner weggegangen ist“, hat er gesagt.',
+      },
+      rimWhales: {
+        title: 'In den dunklen Jahren',
+        body: 'Liebe Wacht,\n\ndie Wale ziehen hier immer auf derselben Linie. Die Walruferin sagt, sie folgten den Feuern am Ufer. In den dunklen Jahren seien sie im Kreis geschwommen, wochenlang.\n\nIch habe gefragt, welche Jahre sie meint. Sie hat sie mir aufgezählt. Wacht, es sind meine. Die Jahre, in denen ich allein war und das Feuer nur noch glomm. Ich habe nicht gewusst, dass jemand so weit draußen darauf gewartet hat.',
+      },
+      stageTwo: {
+        title: 'Was ein Land gibt',
+        body: 'Die zweite Stufe hat elf Lande gebraucht. Ich habe zugesehen, was jedes schickt. Das Moor schickt Torf. Die Schieferbrüche schicken Platten für das Dach. Die Heringsinsel hat ein Fass geschickt, und niemand weiß, wofür. Die Baumeisterin hat es eingemauert.\n\n„Ich sortiere nicht“, schreibt sie. „Wer anfängt zu sortieren, was dazugehört, baut am Ende einen Turm für sich allein.“',
+      },
+      rimIce: {
+        title: 'Wegen des Lichts',
+        body: 'Hallo Wacht,\n\nes ist so kalt, dass meine Tinte friert. Ich schreibe mit Kohle. Der Eisfischer schlägt jeden Morgen dasselbe Loch frei und stellt eine Laterne daneben. Die Fische kämen wegen des Lichts, sagt er.\n\nIch habe gefragt, ob das nicht ein bisschen gemein sei. Er hat gesagt, er nehme drei und füttere dreißig. Dann hat er mir einen gegeben. Ich weiß jetzt nicht, zu welchen ich gehöre.',
+      },
+      rimAurora: {
+        title: 'Öfter, als der Zufall erlaubt',
+        body: 'Liebe Wacht,\n\nder Himmel hängt hier voller Farben, und eine Frau schreibt sie mit wie Zeichen. Ich habe gelächelt. Dann hat sie mir ihre Bücher gezeigt. Kurz, lang, verdeckt. Hunderte Male, in zwanzig Jahren.\n\nIch glaube nicht, dass der Himmel mit uns spricht. Ich glaube aber auch nicht mehr, dass wir die Zeichen erfunden haben. Vielleicht haben die Ersten sie nur abgeschrieben, in einer Nacht wie dieser.',
+      },
+      stageThree: {
+        title: 'Acht Tage',
+        body: 'Nach jeder Stufe muss der Mörtel acht Tage ruhen. Ich bin schlecht im Warten, das weiß jeder, der mir je beim Kochen zugesehen hat.\n\nAber es sind gute acht Tage. Die Lande, die gegeben haben, füllen ihre Lager wieder. Die, die noch nicht dran waren, fragen, wann sie dürfen. Gestern hat ein Lehrling geschrieben, sein Land habe „leider erst zweimal“ gegeben. Als wäre es ein Vorrecht. Vielleicht ist es eins.',
+      },
+      rimMarket: {
+        title: 'Drei Strahlen',
+        body: 'Hallo Wacht,\n\nhundert Boote, und auf jedem will mir jemand etwas verkaufen. Ich habe eine Laterne für sie gekauft, eine mit drei Strahlen. Der Händler sagt, die seien wieder gefragt. Vor zehn Jahren habe er sie als Altglas verkauft.\n\nIch habe ihn gefragt, was sich geändert hat. Er hat mit dem Daumen über die Schulter gezeigt, dorthin, woher wir kommen. „Es ist heller geworden da hinten“, hat er gesagt. „Das spricht sich herum.“',
+      },
+      stageFive: {
+        title: 'Die Liste der Geber',
+        body: 'Fünf Stufen. Ich führe eine Liste, welches Land wie oft gegeben hat, und habe heute gemerkt, dass ich sie falsch führe. Ich hatte sie nach der Menge geordnet.\n\nDie Kleine Schwester gibt in sechs Stunden so viel, wie die Schieferbrüche in einer Minute brechen. Aber es hat jedes Mal gegeben. Ich habe die Liste neu geschrieben, nach dem Alphabet. So steht keiner oben.',
+      },
+      rimCoral: {
+        title: 'Die steht da richtig',
+        body: 'Liebe Wacht,\n\nich bin getaucht. In meinem Alter. Die Taucherin hat mich an einem Seil hinabgelassen wie einen Anker. Unten steht eine Laterne mit vier Strahlen, ganz eingewachsen, und kleine Fische wohnen darin.\n\nIch wollte sie heraufholen. Sie ist das Älteste, was ich je von uns gesehen habe. Die Taucherin hat den Kopf geschüttelt. Oben hat sie gesagt: „Die steht da richtig.“ Sie hat recht. Nicht alles, was man findet, muss man mitnehmen. Ich lerne das spät.',
+      },
+      rimSandbank: {
+        title: 'Eine Stadt, die mitgeht',
+        body: 'Hallo Wacht,\n\ndie Sandbank wandert, und die Stadt wandert mit. Am einen Ende neue Pfähle, am anderen alte heraus. Ich habe einen Tag lang Pfähle geschleppt. Der Pfahlsetzer sagt, in sechzig Jahren sei die Stadt einmal um sich selbst herum.\n\nIch habe gefragt, ob es nicht einfacher wäre, auf Fels zu bauen. „Einfacher schon“, hat er gesagt. „Aber dann wären wir die, die dageblieben sind. So sind wir die, die zusammengeblieben sind.“',
+      },
+      stageSeven: {
+        title: 'Ein Stein, den ich nicht kenne',
+        body: 'Bei der siebten Stufe lag ein Stein dabei, den keines unserer Lande geschickt hat. Rot, mit einem eingeritzten Zeichen: vier Strahlen und ein fünfter, kürzer.\n\nDie Baumeisterin schreibt, er sei eines Morgens einfach dagelegen. Sie habe ihn eingemauert wie alle anderen. Ich habe lange auf die Zeichnung gesehen. Irgendwo baut jemand mit, von dem ich nichts weiß. Und der von uns weiß.',
+      },
+      rimRoots: {
+        title: 'Nur bei Nacht',
+        body: 'Liebe Wacht,\n\nein Wald, der im Meer steht. Bei Tag sieht jede Wurzel aus wie die andere, und selbst die Krabbenfängerin verirrt sich. Bei Nacht, mit der Laterne am Bug, kennt sie jeden Weg.\n\n„Bei Tag sehe ich zu viel“, sagt sie. „Bei Nacht nur das, was mein Licht erreicht. Das genügt immer bis zur nächsten Wurzel.“ Ich habe an all die Jahre gedacht, in denen ich wissen wollte, wohin das alles führt. Es hätte bis zur nächsten Wurzel gereicht.',
+      },
+      rimBuoys: {
+        title: 'Dieselbe Idee, nur nasser',
+        body: 'Hallo Wacht,\n\neine Kette aus Lichtern quer durch die Meerenge. Der Bojenwart hat von unserer Feuerstraße gehört und will alles wissen. Ich habe ihm aufgezeichnet, wie ein Feuer das nächste hält.\n\nEr hat mir aufgezeichnet, was er tut, wenn eine Boje abreißt: Die beiden Nachbarn brennen doppelt so hell, bis sie wieder hängt. Das machen wir nicht. Das sollten wir machen. Ich schicke dir die Zeichnung mit. Sie ist nass geworden, dieselbe Idee eben.',
+      },
+      stageNine: {
+        title: 'Über den Bäumen',
+        body: 'Neun Stufen. Die Baumeisterin schreibt, der Turm sei jetzt höher als die Bäume, und man sehe von oben das erste Mal zwei Feuer zugleich: eines im Norden, eines im Süden.\n\nIch habe Fennos nasse Zeichnung an die Wand gehängt. Seit gestern brennen bei uns die Nachbarn doppelt, wenn eines ausfällt. Es ist in der ersten Nacht schon gebraucht worden. Niemand hat es gemerkt außer mir. So soll es sein.',
+      },
+      rimForeign: {
+        title: 'Drei Wörter für Wacht',
+        body: 'Liebe Wacht,\n\nhier steht nichts auf unseren Karten, und ich verstehe kein Wort. Die Leute zünden ihr Feuer mit der linken Hand an. Die Dolmetscherin sagt, sie hätten drei Wörter für „Wacht“: eines für die, die man hält, eines für die, die man bekommt, und eines für die, die man weitergibt.\n\nFür „allein“ haben sie keines. Ich habe versucht, es zu erklären. Sie haben mich angesehen, höflich und ratlos, und mir dann noch einen Teller gebracht.',
+      },
+      stageEleven: {
+        title: 'Wem der Turm gehört',
+        body: 'Ein Händler hat mich heute gefragt, wem das Leuchtfeuer am Ende gehöre. Er meinte es praktisch: Wer zahlt das Öl?\n\nIch habe nachgezählt, wer gegeben hat. Es ist niemand dabei, dem es nicht gehört. Und es ist niemand dabei, dem es mehr gehört als dem Land mit dem Heringsfass. Ich habe dem Händler gesagt, das Öl zahle der, der gerade welches habe. Er fand das unordentlich. Er hat dann aber ein Fass dagelassen.',
+      },
+      rimDunes: {
+        title: 'Holz für Unbekannt',
+        body: 'Hallo Wacht,\n\nSand, überall. In meinen Stiefeln, in meinem Brot, in diesem Brief. Der Karawanenführer reist nachts nach Feuern auf den höchsten Dünen. Er weiß nicht, wer sie anzündet. Er lässt jedes Mal Holz da.\n\nIch habe gefragt, ob er nie nachgesehen hat. „Wozu?“, hat er gesagt. „Er weiß nicht, wer das Holz bringt. So sind wir quitt.“ Ich habe auch ein Scheit dagelassen. Jetzt gehöre ich dazu und weiß nicht, wozu.',
+      },
+      rimWell: {
+        title: 'Ein Stern im Boden',
+        body: 'Liebe Wacht,\n\neine Stadt um einen einzigen Brunnen. Nachts lässt die Wächterin eine Laterne am Seil hinab, damit man das Wasser sieht. Von den Dächern aus sieht es aus, als brenne ein Stern im Boden.\n\nIch habe sie gefragt, warum sie das Licht nicht einfach oben hinstellt. Sie hat gesagt: „Oben weiß jeder, dass die Stadt da ist. Unten muss man zeigen, dass noch Wasser da ist. Ein Feuer gehört dahin, wo die Sorge ist.“',
+      },
+      stageThirteen: {
+        title: 'Wer nicht geben kann',
+        body: 'Ein Land hat diesmal nicht gegeben. Sein Lager war leer, der Lehrling dort ist krank gewesen. Er hat sich in drei Briefen entschuldigt.\n\nIch habe ihm geschrieben, was mir Alwine einmal geschrieben hat, als ich eine Nacht verschlafen hatte: Eine Kette, die nur hält, wenn keiner je fehlt, ist keine Kette, sondern ein Glücksfall. Die Stufe ist trotzdem fertig geworden. Zwei andere Lande haben, ohne dass ich fragte, eher gegeben.',
+      },
+      rimStoneWood: {
+        title: 'Ruß, und darüber wieder Holz',
+        body: 'Hallo Wacht,\n\nBäume aus Stein. Der Steinförster zählt Ringe an den Bruchstellen und ist bei einem Stamm seit elf Jahren nicht fertig. Er hat mir eine Schicht gezeigt, tief innen: schwarz. Ruß. Der Wald hat einmal gebrannt.\n\nUnd darüber: wieder Holz. Hunderte Ringe. Ich habe an unseren kalten Ofen gedacht und an die dunklen Jahre. Von innen sieht es aus wie das Ende. Von außen ist es ein Strich, und danach geht es weiter.',
+      },
+      rimMirror: {
+        title: 'Der untere Himmel',
+        body: 'Liebe Wacht,\n\nein See, so flach und still, dass man nachts zwischen zwei Himmeln geht. Die Salzläuferin kennt den unteren besser als den oberen. Am Rand, wo die niedrigen Sterne stehen, hätten früher viele gefehlt, sagt sie. Neuerdings fehlten weniger.\n\nIch bin stehen geblieben, mitten auf dem See. Wacht, die niedrigen Sterne am Rand. Das sind keine Sterne. Das wissen wir doch. Sie sieht von hier aus deine Arbeit, gespiegelt, und zählt sie mit.',
+      },
+      stageFifteen: {
+        title: 'Die Hälfte',
+        body: 'Fünfzehn Stufen. Die Hälfte. Die Baumeisterin hat eine Zeichnung geschickt, auf der der Turm so hoch ist wie das Blatt, und daneben einen Punkt: ein Mensch.\n\nIch habe sie den Lehrlingen in der Küche gezeigt. Einer hat gefragt, ob wir das je fertig sehen. Die Zweiundsechzigjährige hat gelacht und gesagt, sie habe vor zu bleiben, bis es brennt, und er solle sich gefälligst anschließen.',
+      },
+      rimWindTowers: {
+        title: 'Der dreizehnte Ton',
+        body: 'Hallo Wacht,\n\nzwölf hohle Türme, die im Wind singen. Der Turmstimmer klettert den ganzen Tag herum und verstellt Klappen. Heute Abend haben zum ersten Mal seit dem Frühjahr alle zwölf gestimmt.\n\nUnd dann war da noch ein Ton. Tiefer. Von keinem Turm. Ich habe ihn im Bauch gespürt. Der Turmstimmer hat genickt, als sei das selbstverständlich: „Den baut keiner. Der kommt, wenn alle da sind.“ Ich muss dauernd daran denken, was das für Feuer heißt.',
+      },
+      stageEighteen: {
+        title: 'Was Fenno gehört hat',
+        body: 'Fenno schreibt von einem dreizehnten Ton, den niemand gebaut hat. Ich habe es der Rechenmeisterin in der Stadt der Sternwarten geschrieben, weil sie die Einzige ist, die so etwas nachrechnet.\n\nIhre Antwort kam heute. Eine Zeile: „Wenn genug Feuer brennen, sieht man von jedem aus mindestens zwei andere. Dann gibt es keinen dunklen Weg mehr zwischen zwei Menschen. Ich weiß nicht, wie man das nennt. Aber es fehlen noch einundvierzig.“',
+      },
+      rimLamps: {
+        title: 'Ein Abend im Jahr',
+        body: 'Liebe Wacht,\n\nein Berghang voller Lampen, und sie brennen nur an einem Abend im Jahr alle zugleich. Die Lampenputzerin putzt dafür das ganze Jahr. Ich habe gefragt, ob das nicht ein schlechter Tausch sei.\n\nSie hat mich mitgenommen, heute, an dem Abend. Ich schreibe dir nicht, wie es aussah. Ich könnte es nicht. Ich schreibe dir nur, dass ich dreißig Jahre lang ein einziges Feuer gehalten habe und heute Abend zum ersten Mal verstanden habe, wofür.',
+      },
+      rimBridges: {
+        title: 'Was man erneuern muss',
+        body: 'Hallo Wacht,\n\nBrücken aus Gras, zwischen den Gipfeln. Jedes Jahr neu. Ich habe drei Tage lang Gras gedreht, bis meine Hände aussahen wie die des Seilers. Der Brückenflechter sagt, eine Brücke, die man nie erneuern müsse, vergesse man.\n\nIch habe ihm vom Leuchtfeuer erzählt, aus Stein, für immer. Er hat die Stirn gerunzelt. „Und wer kommt dann jedes Jahr zusammen?“, hat er gefragt. Ich wusste keine Antwort. Weißt du eine?',
+      },
+      stageTwentyOne: {
+        title: 'Eine Antwort für den Brückenflechter',
+        body: 'Fenno fragt, wer jedes Jahr zusammenkommt, wenn der Turm aus Stein ist und für immer hält. Ich habe eine Woche darüber nachgedacht.\n\nDann habe ich der Baumeisterin geschrieben. Ihr Vorschlag: Das Feuer oben bekommt keinen Vorrat. Kein Keller, kein Lager. Was es brennt, bringt jedes Land selbst, jedes Jahr, an einem Abend. Der Turm hält. Das Feuer muss man erneuern. Ich habe dem Brückenflechter geschrieben, er habe gerade mitgebaut.',
+      },
+      rimCloud: {
+        title: 'Jeder hält jemanden',
+        body: 'Liebe Wacht,\n\nein Wald in den Wolken. Pflanzen, die auf Pflanzen wachsen, die auf Pflanzen wachsen. Die Nebelgärtnerin hat mir eine gezeigt, die ganz oben sitzt und den Boden nie berührt hat.\n\n„Hier hält jeder jemanden“, hat sie gesagt. „Sonst fiele alles herunter.“ Ich habe gefragt, wer den Untersten hält. Sie hat auf die Wurzeln gezeigt, die von ganz oben wieder herabhängen, bis in die Erde. Es ist ein Kreis, Wacht. Es gibt keinen Untersten.',
+      },
+      rimCrater: {
+        title: 'Gesellschaft',
+        body: 'Hallo Wacht,\n\nein Berg mit einem Feuer darin, das keiner angezündet hat. Der Mann am Rand sagt, er bewache es nicht. Er leiste ihm Gesellschaft. Seit neunzehn Jahren.\n\nIch habe eine Nacht neben ihm gesessen. Wir haben nichts geredet. Gegen Morgen hat er gesagt: „Ihr macht das Gleiche. Ihr glaubt nur, ihr macht mehr.“ Ich wollte widersprechen. Dann habe ich an sie gedacht, allein am Feuer, und dass ich nach Hause will.',
+      },
+      stageTwentyFour: {
+        title: 'Fenno fährt heim',
+        body: 'Fenno hat geschrieben, er fahre zurück zur Neuen Warte. Er habe genug gesehen, und sie habe lange genug allein gesessen. Den Rest der Reise mache Alwine ohne ihn.\n\nIch habe heute Nacht hinübergesehen. Der gelbe Punkt am Rand, der etwas zu groß brennt, hat einmal kurz doppelt so hell geleuchtet. Dann wieder wie immer. Er ist angekommen. Ich habe das neue Zeichen dafür nachgeschlagen: „Ich sehe dich.“ Es steht jetzt als erstes auf der Liste.',
+      },
+      rimObservatories: {
+        title: 'Wie viele es braucht',
+        body: 'Liebe Wacht,\n\neine Stadt, in der jedes Haus eine Kuppel hat. Die Rechenmeisterin kennt deine Listen besser als ich. Sie hat an die Wand geschrieben, wie viele Feuer es braucht, bis der Rand des Himmels überall geschlossen ist.\n\nDarunter steht, wie viele brennen. Die zweite Zahl hat sie so oft ausgewischt und neu geschrieben, dass die Wand dort heller ist. Es fehlen noch neun. Sie hat mir die Kreide gegeben und gesagt, wenn es so weit sei, dürfe ich.',
+      },
+      rimLastHarbour: {
+        title: 'Wo man bleiben kann',
+        body: 'Liebe Wacht,\n\nvon hier fährt niemand mehr weiter. Der Ankerschmied schmiedet trotzdem Anker. Ich habe ihm zugesehen und gefragt, für wen.\n\n„Für dich zum Beispiel“, hat er gesagt und mir einen kleinen in die Hand gelegt, nicht größer als ein Schlüssel. „Du fährst seit Jahren. Irgendwann musst du sagen, wo.“ Ich habe ihn in die Tasche gesteckt, zu dem Meißel von der Insel der Namen. Meine Taschen füllen sich mit Dingen, die auf mich warten.',
+      },
+      stageTwentySeven: {
+        title: 'Neun fehlen',
+        body: 'Neun Feuer fehlen noch, schreibt Alwine. Ich habe die Karte auf den Küchentisch gelegt und mit den Lehrlingen gesucht, wo es noch dunkel ist. Wir haben sieben Stellen gefunden.\n\nFür jede hat sich jemand gemeldet, noch bevor ich gefragt habe. Die Zweiundsechzigjährige nimmt die am weitesten entfernte. Sie sagt, sie habe am längsten gewartet, also dürfe sie am weitesten gehen. Zwei Stellen finden wir nicht. Vielleicht sind es nicht unsere.',
+      },
+      rimWholeMap: {
+        title: 'Eine Kerze für jedes Feuer',
+        body: 'Liebe Wacht,\n\nein Saal, dessen Boden die ganze Karte ist. Ich bin über das Meer gegangen, in Strümpfen, und habe unser Tal gefunden. Dort steckt eine Kerze. Sie brennt. Die Kartenhüterin sagt, es sei die älteste hier, und sie habe sie in den dunklen Jahren nie gelöscht, obwohl keine Nachricht kam.\n\n„Ich hätte es gemerkt, wenn sie aus wäre“, hat sie gesagt. Ich habe gefragt, wie. Sie hat die Schultern gehoben. Ich habe mich neben die Kerze gesetzt und eine Weile nichts gesagt.',
+      },
+      rimSite: {
+        title: 'Der Stein von der dritten Stufe',
+        body: 'Liebe Wacht,\n\nich stehe am Fuß des Turms. Die Baumeisterin hat mir gezeigt, wo unser Stein sitzt: ganz unten, in der ersten Reihe, neben einem Heringsfass. Ich habe die Hand daraufgelegt. Dreißig Jahre bin ich über ihn hinweggestiegen.\n\nZwei rote Steine sind auch dabei, mit dem fünften Strahl. Sie weiß nicht, von wem. „Sie kommen nachts“, sagt sie, „und sie kommen von draußen.“ Morgen wird die letzte Stufe gesetzt. Dann ruht er. Dann sehen wir.',
+      },
+      stageTwentyNine: {
+        title: 'Der Abend davor',
+        body: 'Alle Lande haben ihr Holz geschickt, jedes ein Bündel, wie es die Baumeisterin wollte. Unseres ist von dem Apfelbaum hinter der Kräuterkate, dem sauren.\n\nHeute Nacht brennt bei uns jedes Feuer, das wir haben. Ich habe sie gezählt, zweimal, mit geschlossenen Augen. Keines fehlt. Die Rechenmeisterin hat geschrieben, an ihrer Wand stünden jetzt zwei gleiche Zahlen. Alwine habe die Kreide gehalten und eine ganze Weile gebraucht.',
+      },
+      rimBeacon: {
+        title: 'Das große Licht',
+        body: 'Liebe Wacht,\n\nes brennt. Es hat so viele Strahlen, wie es Wachten gibt. Ich habe unseren gesucht und gefunden: Er ist ein wenig schief.\n\nUnd dann, Wacht, gegen Mitternacht: draußen, hinter dem Rand, wo auf keiner Karte etwas steht. Ein Licht. Dann zwei. Dann eine ganze Kette. Kurz, lang, verdeckt. Sie haben gewartet, bis wir vollständig sind. Ich habe den kleinen Anker hier in den Boden gesteckt. Ich bleibe. Komm mich besuchen. Die Tür hat kein Schloss.',
+      },
+      stageThirty: {
+        title: 'Für wen auch immer',
+        body: 'Was geschieht, wenn alle Feuer zugleich brennen? Man sieht, dass man nie die Einzigen war. Und dahinter fängt eine Karte an, die noch niemand gezeichnet hat.\n\nFenno hat den Schlüssel zurückgeschickt. Ich habe einen neuen Stein in die dritte Stufe gesetzt und ihn daruntergelegt, mit einem Zettel. Ich habe lange überlegt, was daraufstehen soll. Dann habe ich abgeschrieben, was auf meinem stand: Wenn du das liest, bist du neugierig. Mehr braucht es am Anfang nicht.',
       },
     },
   },

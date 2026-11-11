@@ -51,7 +51,10 @@ describe('stewards', () => {
     const x = setup(100)
     let s: EngineState = { ...x.s, modules: { ...x.s.modules, stewards: { trained: 2, until: 0, posts: ['', ''], workedAt: T0 } } }
     // A place takes one steward; a closed place takes none
+    worked.length = 0
     s = dispatch(x.def, s, { module: 'stewards', type: 'post', payload: { slot: 0, place: 'moor' } }, x.clock).state
+    // A newly posted steward starts at once with one step
+    expect(worked).toEqual([{ place: 'moor', steps: 1 }])
     expect(st(dispatch(x.def, s, { module: 'stewards', type: 'post', payload: { slot: 1, place: 'moor' } }, x.clock).state).posts).toEqual(['moor', ''])
     expect(st(dispatch(x.def, s, { module: 'stewards', type: 'post', payload: { slot: 1, place: 'closed' } }, x.clock).state).posts).toEqual(['moor', ''])
     worked.length = 0
@@ -74,5 +77,15 @@ describe('stewards', () => {
     const clock = createManualClock(T0)
     expect(m.parse({ trained: 2, posts: ['a', 'a', 'b'], until: 5, workedAt: 7 }, { clock } as never, {} as never)).toEqual({ trained: 2, until: 5, posts: ['a', ''], workedAt: 7 })
     expect(m.parse(null, { clock } as never, {} as never)).toEqual({ trained: 0, until: 0, posts: [], workedAt: T0 })
+  })
+
+  it('a closed system trains nobody', () => {
+    let open = false
+    const gated = { ...cfg, open: () => open }
+    const def = testGame({ modules: [...standardModules(), stewardsModule(gated)] })
+    const x = setup(100)
+    expect(st(dispatch(def, x.s, { module: 'stewards', type: 'train' }, x.clock).state).until).toBe(0)
+    open = true
+    expect(st(dispatch(def, x.s, { module: 'stewards', type: 'train' }, x.clock).state).until).toBe(T0 + DAY)
   })
 })

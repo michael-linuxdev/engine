@@ -106,3 +106,41 @@ Frage des Buchs: **Was sah die Sternwarte, bevor die Sterne fehlten?** 40 Seiten
 **Stimmen:** Briefe von Alwine, Briefe von Fenno (neu, eigene Unterschrift), Seiten der Wacht aus der Sternwarte.
 
 **Wie die Seiten aufgehen:** 25 mit je einem Küstenland, 8 mit Sternen der Himmelskarte (1, 4, 9, 14, 20, 28, 34, 43), 7 mit vollständigen Sternbildern (1, 2, 3, 5, 7, 9, 12). Die Zahlen in den Texten folgen diesen Schwellen.
+
+## Buch 4 · Die Lehrlinge (Jahr 4)
+
+Frage des Buchs: **Wem gibt man eine Wacht?** 40 Seiten in fünf Kapiteln, Deutsch und Englisch.
+
+| Kapitel | Inhalt |
+|---|---|
+| 1 · Die Schulinsel | Alwine, Fenno und das Mädchen vom Damm fahren ins Inselmeer und finden eine Schule ohne Schüler. Im Tal bildet die Wacht ihren ersten Lehrling aus und merkt, wie wenig sie über die eigene Arbeit sagen kann. |
+| 2 · Wer kommt | Niemand kommt, weil er eine Wacht haben will. Sie kommen, weil sie eine gesehen haben. Auf einer Insel weit draußen wächst die saure Apfelsorte aus dem Tal: Wer vor 211 Jahren den Berg hinaufging, kam von hier. |
+| 3 · Was man nicht lehren kann | Geschick lässt sich lehren, das Hinübersehen zum Nachbarn nicht. Auf der Stillen Insel gibt es dreißig Laternenzeichen statt drei („Ich sehe dich“, „Schlaf ruhig, ich bin wach“). Das erste Feuer eines Lehrlings fällt aus, der Nachbar ruft hinüber. |
+| 4 · Namen | Vierzig unbeantwortete Briefe „an die Wacht“; die zwölfte Schülerin ist zweiundsechzig. Eine Wacht ist kein Turm: Laterne im Baum, auf dem Boot, am Drachen. Die Wacht kennt jedes Feuer und den, der es hält. |
+| 5 · Die Neue Warte | Die Insel der Namen (ein Stein für jede Wacht, einer ist leer), ein Licht hinter der Äußersten Insel, das nicht antwortet, und ein fertiger Turm, der nie gebrannt hat: „Für die Erste, die bleibt.“ Das Mädchen vom Damm und Fenno halten ihn gemeinsam. |
+
+**Antwort:** Dem, der bleibt, und der am Morgen jemandem zeigen will, dass sie noch brennt. Alwine kündigt an, nach Hause zu kommen. Aufbruch für Buch 5: das Licht weit draußen.
+
+**Stimmen:** Briefe von Alwine und Fenno aus dem Inselmeer, Seiten der Wacht aus der Küche der Warte. Das Mädchen vom Damm bekommt bewusst keinen Namen („die vom Damm“).
+
+**Wie die Seiten aufgehen:** 25 mit je einer Insel, 8 mit ausgebildeten Lehrlingen (1, 2, 4, 6, 9, 12, 16, 20), 7 mit Lehrlingen in einem eigenen Land (1, 3, 5, 8, 11, 15, 19).
+
+## Buch 5 · Das große Licht (Jahr 5)
+
+Frage des Buchs: **Was geschieht, wenn alle Feuer zugleich brennen?** 40 Seiten in fünf Kapiteln, Deutsch und Englisch.
+
+| Kapitel | Inhalt |
+|---|---|
+| 1 · Hinter der Karte | Alwine war einen Winter zu Hause; dann hat das Licht weit draußen geantwortet, und sie fährt wieder. Aus der Mitte der Karte kommt die Bitte um einen Stein aus jedem Land. Der Stein des Tals ist der von der dritten Stufe. |
+| 2 · Fremde Feuer | Draußen kennt man die Wacht schon („Es ist heller geworden da hinten“). Unter den Steinen liegt ein roter, den kein eigenes Land geschickt hat: vier Strahlen und ein fünfter. Von der Bojenkette lernt die Feuerstraße, dass Nachbarn doppelt brennen, wenn eines ausfällt. |
+| 3 · Ein Stein aus jedem Land | Die Fremde Küste hat drei Wörter für „Wacht“ und keines für „allein“. Der Turm gehört allen, die gegeben haben, und keinem mehr als dem kleinsten Land. Wer einmal nicht geben kann, fehlt nicht. |
+| 4 · Tausend Lampen | Zwölf Windtürme ergeben einen dreizehnten Ton, den niemand gebaut hat. Die Rechenmeisterin: Brennen genug Feuer, sieht man von jedem zwei andere, und es gibt keinen dunklen Weg mehr zwischen zwei Menschen. Das Feuer oben bekommt keinen Vorrat; jedes Land bringt sein Holz jedes Jahr selbst. Fenno fährt heim zur Neuen Warte. |
+| 5 · Das große Licht | Im Haus der Ganzen Karte brennt für das Tal die älteste Kerze. Die letzte Stufe wird gesetzt, alle Feuer brennen, und hinter dem Rand antwortet eine ganze Kette. Alwine bleibt beim Leuchtfeuer. Die Wacht legt den Schlüssel wieder unter die dritte Stufe, mit dem Zettel vom Anfang. |
+
+**Antwort:** Man sieht, dass man nie die Einzigen war. Dahinter beginnt eine Karte, die noch niemand gezeichnet hat (Aufbruch für spätere Jahre). Das Ende schließt an die erste Seite von Buch 1 an („Für wen auch immer“).
+
+**Stimmen:** Briefe von Alwine, Briefe von Fenno (er und das Mädchen vom Damm wechseln sich an der Neuen Warte ab), Seiten der Wacht.
+
+**Wie die Seiten aufgehen:** 25 mit je einem Land am Rand der Karte, 15 mit Stufen des Großen Leuchtfeuers (1, 2, 3, 5, 7, 9, 11, 13, 15, 18, 21, 24, 27, 29, 30). Die letzte Seite geht mit der dreißigsten Stufe auf.
+
+**Abweichung vom ersten Plan:** Die Lange Nacht kehrt in Buch 5 nicht zurück. Das Buch erzählt den Bau und das Licht von draußen; die dunklen Jahre kommen als Erinnerung vor (Walweg, Steinerner Wald, die Kerze im Haus der Ganzen Karte).

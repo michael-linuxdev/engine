@@ -21,6 +21,8 @@ export interface StewardsConfig {
   maxSteps: number
   /** Income added per trained steward (0.01 = +1 %). */
   perSteward: number
+  /** Is the whole system open yet? (default: always) */
+  open?: (w: WorldView) => boolean
   /** May a steward be posted here? */
   canPost: (w: WorldView, place: string) => boolean
   /** The work of one steward at its place for `steps` steps, or null if there is nothing to do. */
@@ -47,9 +49,9 @@ export function stewardTrainMs(cfg: StewardsConfig, s: StewardsState): number {
   return Math.round(cfg.trainMs.base * Math.pow(cfg.trainMs.growth, s.trained))
 }
 
-/** A new training can start now (none running, not at the limit, price covered). */
+/** A new training can start now (system open, none running, not at the limit, price covered). */
 export function stewardCanTrain(cfg: StewardsConfig, s: StewardsState, w: WorldView): boolean {
-  return s.until === 0 && s.trained < cfg.max && w.balance(cfg.cost.currency) >= stewardCost(cfg, s)
+  return (cfg.open ? cfg.open(w) : true) && s.until === 0 && s.trained < cfg.max && w.balance(cfg.cost.currency) >= stewardCost(cfg, s)
 }
 
 /** A trained steward without a post. */
@@ -112,7 +114,9 @@ export function stewardsModule(cfg: StewardsConfig): EngineModule<StewardsState>
         if (to && (list.includes(to) || !cfg.canPost(w, to))) return s
         if (list[i] === to) return s
         list[i] = to
-        return act({ ...s, posts: list }, { events: [{ type: 'steward.posted', slot: i, place: to }] })
+        // A newly posted steward starts at once (one step), so the post shows an effect without waiting for the next round
+        const job = to ? cfg.work(w, to, 1) : null
+        return act({ ...s, posts: list }, { events: [{ type: 'steward.posted', slot: i, place: to }], dispatch: job ? [job] : [] })
       },
     },
     playtestEvents: ['steward.training', 'steward.trained', 'steward.posted'],

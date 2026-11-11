@@ -3,7 +3,7 @@
  * jedes Land einmal aus seinem eigenen Vorrat (sechs Stunden seines Ertrags); die Stufe ist fertig, wenn
  * genug Lande gegeben haben. Danach muss sie acht Tage ruhen. Jede Stufe gibt Ertrag.
  */
-import { regionRate, REGIONS_ID, type MonumentConfig, type RegionsState, type WorldView } from '@engine/core'
+import { isFeatureOpen, regionRate, REGIONS_ID, type MonumentConfig, type RegionsState, type WorldView } from '@engine/core'
 import { REALM_IDS, REALMS } from './realms'
 
 const realmDef = new Map(REALMS.regions.map((r) => [r.id, r]))
@@ -29,6 +29,7 @@ export const GREAT_BEACON: MonumentConfig = {
   need: (stage) => BEACON_TUNING.needBase + BEACON_TUNING.needStep * stage,
   setMs: BEACON_TUNING.setDays * 86_400_000,
   perStage: BEACON_TUNING.perStage,
+  open: (w) => isFeatureOpen(w, 'greatBeacon'),
   pay: (w, place) => (realmCanGive(w, place) ? { module: REGIONS_ID, type: 'pay', payload: { region: place, seconds: BEACON_TUNING.shareHours * 3600, tag: TAG } } : null),
   paid: { type: 'region.paid', place: (e) => (e.tag === TAG && typeof e.region === 'string' ? e.region : null) },
 }

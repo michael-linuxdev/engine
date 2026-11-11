@@ -71,4 +71,11 @@ describe('monument', () => {
     expect(m.effects?.({ stage: 0, given: [], readyAt: 0 }, {} as never)).toEqual([])
     expect(m.effects?.({ stage: 2, given: [], readyAt: 0 }, {} as never)).toEqual([{ id: 'monument', target: 'income', op: 'mul', value: 1.1, labelKey: 'effect.monument' }])
   })
+
+  it('a closed system asks nobody', () => {
+    poor = []
+    const x = setup()
+    expect(monumentGivers({ ...cfg, open: () => false }, mo(x.s), view(x.def, x.s), ['a', 'b'], x.clock.now())).toEqual([])
+    expect(monumentGivers({ ...cfg, open: () => true }, mo(x.s), view(x.def, x.s), ['a', 'b'], x.clock.now())).toEqual(['a', 'b'])
+  })
 })
