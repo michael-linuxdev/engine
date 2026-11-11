@@ -209,6 +209,7 @@ export const gameDe = {
     pickCard: 'Wähle ein Sternbild',
     unknown: 'Noch nicht gefunden',
     titles: {
+      voyages: { name: 'Fernfahrten', blurb: 'Die Greife fliegen in ferne Lande. Schick einen los und hol später ab, was er mitbringt.' },
       collection: { name: 'Bestiarium & Kräuterkunde', blurb: 'Was du im Tal findest. Jeder Fund macht die Warte ein wenig heller.' },
       alchemy: { name: 'Alchemie', blurb: 'Zwei Funde in den Kessel, ein paar Stunden Geduld.' },
       guests: { name: 'Talgäste', blurb: 'Wer das Tal besucht, solange du hier bist.' },
@@ -218,6 +219,14 @@ export const gameDe = {
       omens: { name: 'Omen', blurb: 'Das Tal fragt dich um Rat.' },
       greatWorks: { name: 'Großwerke', blurb: 'Große Bauten, die bleiben. Bezahlt mit Glimmer und Runensplittern.' },
       world: { name: 'Tal', blurb: 'Was es im Tal zu finden gibt.' },
+    },
+    voyages: {
+      moorPost: { name: 'Post ins Moor', blurb: 'Ein kurzer Flug zu Ragna und zurück.' },
+      passLetters: { name: 'Briefe über den Pass', blurb: 'Über den Nebelpass zu den Almen.' },
+      coastNews: { name: 'Kunde von der Küste', blurb: 'Bis zum Leuchtfeuer am Meer.' },
+      oldMap: { name: 'Das Kartenstück', blurb: 'Dorthin, wo die alte Karte endet.' },
+      farFires: { name: 'Ferne Feuer', blurb: 'Von Hügel zu Hügel, bis keines mehr zu sehen ist.' },
+      skyRoute: { name: 'Der Weg über die Wolken', blurb: 'Ein ganzer Tag. Der Greif entscheidet, wann er umkehrt.' },
     },
     categories: {
       herbal: { name: 'Kräuterkunde', blurb: 'Kräuter des Dämmertals.' },
@@ -352,6 +361,7 @@ export const gameDe = {
     },
   },
   fx: {
+    voyageBack: (name: string) => `Der Greif ist zurück: ${name}`,
     weekly: 'Wochenplan geschafft: Bonus eingesammelt',
     spent: (amount: string) => `−${amount}`,
     gained: (amount: string, cur: string) => `+${amount} ${cur}`,
@@ -380,6 +390,8 @@ export const gameDe = {
     wheel: (name: string) => `Sternenrad: ${name}`,
   },
   soon: {
+    voyage: (time: string) => `Greif unterwegs: noch ${time}`,
+    voyageBack: 'Der Greif ist zurück. Hol ab, was er bringt.',
     brew: (time: string) => `Kessel: fertig in ${time}`,
     brewDone: 'Kessel: fertig, hol das Ergebnis ab',
     boost: (time: string) => `Leuchtöl: noch ${time}`,

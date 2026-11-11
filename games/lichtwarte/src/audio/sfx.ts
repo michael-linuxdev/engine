@@ -45,6 +45,7 @@ export const SFX_EVENTS: Readonly<Record<string, string | ((e: EngineEvent) => s
   'offline.claimed': 'claim',
   'weekend.claimed': 'claim',
   'weekly.claimed': 'claim',
+  'voyage.returned': 'letter',
   'flash.claimed': 'claim',
   'level.up': 'level',
   'quest.claimed': 'chime',

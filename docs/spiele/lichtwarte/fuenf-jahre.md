@@ -36,7 +36,9 @@ Nach Tag 90 tragen nur Meisterschafts-Sterne, Schicht-Meilensteine und der Woche
 
 - **Lande 35 bis 50** sind gebaut. Gemessen öffnen sie sich alle drei Tage von Tag 93 bis Tag 138. Fester Inhalt reicht damit bis Tag 138.
 - **Zeitalter:** Die Schwelle wächst ab dem vierten flach (Knie 3, danach 1,35). Zwei Jahre gemessen (vor der Änderung an den Funden): 15 Zeitalter an Tag 28, 46, 79, 120, 162, 200, 236, 270, 313, 363, 408, 458, 507, 562, 625. Im ersten Jahr liegt der Abstand bei fünf bis sechs Wochen, im zweiten wächst er auf neun. Ziel waren vier bis fünf Wochen; für die Jahre 3 bis 5 muss der Faktor noch kleiner werden.
-- Nach Tag 138 tragen weiter nur Zeitalter, Sterne, Meilensteine und der Wochenplan. Die Fernfahrten und das sechste Kapitel fehlen noch.
+- **Fernfahrten** sind gebaut: Sobald die Greife Briefe tragen (Greifenhorst Stufe 10), fliegt je ein Greif eine von sechs Fahrten (2 bis 24 Stunden) und bringt Lichtkiesel, Runensplitter oder Glimmer mit. Spätere Fahrten öffnen sich mit der Zahl der abgeschlossenen (1, 3, 6, 10, 15).
+- **Kapitel 6 „Das erste Jahr“** ist geschrieben: sechs Seiten nach 1, 3, 6, 10, 15 und 20 Fernfahrten. Bei einer Fahrt am Tag fällt die letzte Seite nach etwa drei Wochen; „ein Jahr“ ist es nur dem Namen nach.
+- Nach Tag 138 tragen Zeitalter, Sterne, Meilensteine, der Wochenplan und die Fernfahrten. **Jahr 1 hat damit weiterhin ein Loch ab etwa Tag 140 bis Tag 365**: Dort gibt es nur wiederkehrende Ziele, kein neues Land und keine neue Seite. Der Simulator spielt die Fernfahrten noch nicht.
 
 ## Was „fünf Jahre“ hier heißt
 

@@ -138,6 +138,8 @@ function clueText(c: Clue): string {
       return t.chronicle.clue.realms(String(c.n))
     case 'helper':
       return t.chronicle.clue.helper
+    case 'voyages':
+      return t.chronicle.clue.voyages(String(c.n))
   }
 }
 

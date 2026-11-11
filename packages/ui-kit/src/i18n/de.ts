@@ -237,6 +237,10 @@ export const engineDe = {
     privacyPage: 'Datenschutzerklärung als Seite',
   },
   live: {
+    voyagesDone: (n: string) => `Abgeschlossene Fahrten: ${n}`,
+    voyageLeft: (time: string) => `Zurück in ${time}`,
+    voyageLocked: (n: string) => `Öffnet sich nach ${n} Fahrten`,
+    voyageSend: 'Losschicken',
     decorEdit: 'Auf der Karte aufstellen',
     cardNow: (per: string) => `Für dein Tal jetzt: ${per}`,
     cardSkip: 'Ohne Karte weiter',

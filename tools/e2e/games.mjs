@@ -226,6 +226,23 @@ export const GAMES = [
       await r.getByTestId('brew').click()
       assert((await r.evaluate(() => window.__engine.get().modules.combine.recipe)) === 'glowTea', 'Alchemie: Rezept braut')
       await r.getByTestId('decor-blueBanner').getByRole('button').click()
+      // Fernfahrten: ein Greif fliegt los, kommt nach seiner Zeit zurück und bringt etwas mit; die erste Fahrt öffnet eine Chronik-Seite
+      await r.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        rt.replace({ ...s, modules: { ...s.modules, featureUnlocks: { unlocked: [...new Set([...s.modules.featureUnlocks.unlocked, 'voyages'])] } } })
+      })
+      await r.getByTestId('voyage-send-moorPost').click()
+      await r.getByTestId('voyage-running').waitFor()
+      assert(await r.getByTestId('voyage-send-passLetters').isDisabled(), 'Fernfahrten: nur eine zur Zeit, spätere erst nach abgeschlossenen')
+      await r.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        rt.replace({ ...s, modules: { ...s.modules, voyages: { ...s.modules.voyages, until: Date.now() - 1000 } } })
+      })
+      await r.getByTestId('voyage-collect').click()
+      assert((await r.evaluate(() => window.__engine.get().modules.voyages.done)) === 1, 'Fernfahrt abgeschlossen und gezählt')
+      await r.getByTestId('toast').filter({ hasText: T.world.voyages.moorPost.name }).waitFor()
       // Schmuck wird auf der Karte selbst aufgestellt: Platz antippen, Stück wählen, „Fertig“ führt zurück
       await r.getByTestId('decor-edit').click()
       await r.getByTestId('decor-bar').waitFor()

@@ -13,7 +13,7 @@ Die **Chronik der Wächterin Alwine**. Sie war deine Vorgängerin und hat jahrze
 - **Ton:** warm, knapp, mit leisem Humor, nie belehrend. Kurze Sätze, keine Fachsprache.
 - **Haltung:** Alwine erklärt nicht die Mechanik, sondern was die Mechanik *bedeutet*. Ein Beispiel: „Was du baust, vergeht — was du lernst, bleibt im Archiv.“
 
-## Die Erzählung (fünf Kapitel, 27 Seiten)
+## Die Erzählung (sechs Kapitel, 33 Seiten)
 
 Texte: `games/lichtwarte/src/i18n/story.de.ts` / `story.en.ts`. Bedingungen und Kapitel: `src/content/chronicle.ts`.
 
@@ -26,6 +26,7 @@ Texte: `games/lichtwarte/src/i18n/story.de.ts` / `story.en.ts`. Bedingungen und 
 | 3 · Das Tal erwacht | Greifenhorst bis Sternwarte, Lehrling | Die Greife bringen Alwines Briefe. Fenno kehrt zurück. Am Rand des Himmels fehlen Sterne: Die Lange Nacht kommt, einmal in jedem Menschenalter. |
 | 4 · Die Lange Nacht | erste Lange Nacht, Lande | Die Wacht trägt das Feuer durch die Nacht. Am Morgen antworten Feuer auf den Hügeln: „Ein Feuer allein ist nur ein Feuer. Viele Feuer sind ein Weg.“ |
 | 5 · Die Wacht weitergeben | Zeitalter | Fenno übernimmt. Alwine kommt den Weg herunter, an allen Laternen vorbei, und ist diesmal der Gast. Die letzte Seite schreibt die Wacht selbst — es ist wieder die erste Seite. |
+| 6 · Das erste Jahr | Fernfahrten der Greife (1 bis 20) | Briefe zurück aus den Landen, das leere Fach der Kartenstube füllt sich Stück für Stück, Fenno und die Greife. Die letzte Seite schreibt die Wacht selbst: Hinter den Bergen liegt Land, das auf keiner Karte steht. |
 
 **Regeln:**
 

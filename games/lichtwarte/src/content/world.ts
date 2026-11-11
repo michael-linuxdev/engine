@@ -6,7 +6,7 @@
 import {
   ownedOf, prestigeState, REGIONS_ID, type RegionsState,
   type AlbumConfig, type CardConfig, type ChoiceConfig, type CollectionConfig, type CollectionEntry, type CombineConfig, type DecorConfig,
-  type FeatureDef, type ProjectDef, type VisitorConfig, type WorldView,
+  type FeatureDef, type ProjectDef, type VisitorConfig, type WorldView, type VoyagesConfig,
 } from '@engine/core'
 import { omenFor } from '../scene/weather'
 import { CURRENCY, LAYER } from '../ids'
@@ -78,6 +78,23 @@ function hourOf(w: WorldView): number {
 }
 const isNight = (w: WorldView) => hourOf(w) >= 21 || hourOf(w) < 5
 const month = (w: WorldView) => new Date(w.core.lastSeen).getMonth() + 1
+
+const HOUR = 3_600_000
+
+/**
+ * Fernfahrten der Greife (Fünf-Jahres-Plan, Jahr 1): eine Fahrt zur Zeit, Stunden echter Zeit.
+ * Weitere Fahrten öffnen sich mit der Zahl der abgeschlossenen. Alle lassen sich wiederholen.
+ */
+export const VOYAGES: VoyagesConfig = {
+  list: [
+    { id: 'moorPost', durationMs: 2 * HOUR, fromDone: 0, grant: [pebbles(5)], seconds: 600 },
+    { id: 'passLetters', durationMs: 4 * HOUR, fromDone: 1, grant: [pebbles(8)], seconds: 1200 },
+    { id: 'coastNews', durationMs: 8 * HOUR, fromDone: 3, grant: [pebbles(12), shards(3)] },
+    { id: 'oldMap', durationMs: 12 * HOUR, fromDone: 6, grant: [pebbles(20)], seconds: 3600 },
+    { id: 'farFires', durationMs: 16 * HOUR, fromDone: 10, grant: [pebbles(30), shards(6)] },
+    { id: 'skyRoute', durationMs: 24 * HOUR, fromDone: 15, grant: [pebbles(45)], seconds: 7200 },
+  ],
+}
 
 export const GUESTS: VisitorConfig = {
   list: [
@@ -203,5 +220,7 @@ export const WORLD_FEATURES: FeatureDef[] = [
   { id: 'constellations', when: (w) => turns(w) >= 6 },
   { id: 'omens', when: (w) => turns(w) >= 4 },
   { id: 'greatWorks', when: (w) => turns(w) >= 7 },
+  // Fernfahrten: sobald die Greife Briefe tragen (wie die Chronik-Seite „Ein Brief aus dem Moor“)
+  { id: 'voyages', when: (w) => ownedOf(w, 'greifenhorst') >= 10 },
   { id: 'realms', when: (w) => Object.values(w.get<RegionsState | undefined>(REGIONS_ID)?.regions ?? {}).some((r) => r.open) },
 ]

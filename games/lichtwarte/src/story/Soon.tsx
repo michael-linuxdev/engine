@@ -1,5 +1,5 @@
 /** „Bald fertig“ oben im Menü: laufende Zeiten auf einen Blick (Kessel, Verstärker, Omen, Sternenfenster). */
-import { CHOICES_ID, COMBINE_ID, FLASH_ID, MARKET_ID, type ChoiceState, type CombineState, type FlashState, type MarketState } from '@engine/core'
+import { CHOICES_ID, COMBINE_ID, FLASH_ID, MARKET_ID, VOYAGES_ID, type ChoiceState, type CombineState, type FlashState, type MarketState, type VoyagesState } from '@engine/core'
 import { useEngine } from '@engine/react'
 import { useUi } from '@engine/ui'
 import { t } from '../runtime'
@@ -18,6 +18,8 @@ export function Soon() {
   if (omen?.active && omen.until > now) rows.push({ id: 'omen', text: t.soon.omen(ui.duration(omen.until - now)) })
   const flash = world.get<FlashState | undefined>(FLASH_ID)
   if (flash?.active && flash.endsAt > now) rows.push({ id: 'flash', text: t.soon.flash(ui.duration(flash.endsAt - now)) })
+  const voyage = world.get<VoyagesState | undefined>(VOYAGES_ID)
+  if (voyage?.active) rows.push({ id: 'voyage', text: voyage.until > now ? t.soon.voyage(ui.duration(voyage.until - now)) : t.soon.voyageBack })
   if (!rows.length) return null
   return (
     <section className="lw-soon" aria-label={ui.t.nav.soon} data-testid="menu-soon">

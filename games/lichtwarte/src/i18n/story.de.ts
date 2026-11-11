@@ -22,6 +22,7 @@ export const storyDe = {
       near: (layer: string) => `Öffnet sich, wenn sie näher rückt: ${layer}.`,
       realms: (n: string) => `Öffnet sich mit ${n} Landen.`,
       helper: 'Öffnet sich, wenn jemand bei der Arbeit hilft.',
+      voyages: (n: string) => `Öffnet sich nach ${n} Fernfahrten.`,
     },
     menu: 'Chronik',
     title: 'Chronik der Wächterin',
@@ -41,6 +42,7 @@ export const storyDe = {
       wakes: 'Das Tal erwacht',
       night: 'Die Lange Nacht',
       handover: 'Die Wacht weitergeben',
+      firstYear: 'Das erste Jahr',
     },
     comeback: { title: 'Da bist du ja', body: 'Lange nichts gehört. Die Warte hat geglimmt, ich habe aufgepasst. Hier, für den Weg: ein paar Lichtkiesel.' },
     entries: {
@@ -151,6 +153,30 @@ export const storyDe = {
       epilogue: {
         title: 'Die erste Seite',
         body: 'Diese Seite ist nicht von Alwine. Sie hat mir die Feder hingelegt und gesagt, die erste Seite der Chronik habe sie selbst nur abgeschrieben, von ihrer Meisterin, und die von ihrer.\n\nAlso: Wenn du das liest, hast du den Schlüssel unter der dritten Stufe gefunden. Gut. Dann bist du neugierig, und mehr braucht es am Anfang nicht.',
+      },
+      voyageFirst: {
+        title: 'Ein Brief zurück',
+        body: 'Liebe Wacht,\n\ndein Greif ist angekommen, zerzaust und sehr zufrieden mit sich. Ragna hat ihm einen Fisch gegeben, den er nicht mochte, und einen zweiten, den er mochte.\n\nSchick ihn ruhig wieder los. Ein Feuer, das Briefe schreibt, ist in den Landen eine Neuigkeit. Und Neuigkeiten gehen hier langsam, aber sie kommen an.',
+      },
+      voyageMaps: {
+        title: 'Das Fach füllt sich',
+        body: 'Jeder Greif bringt ein Stück Karte mit. Kein ganzes Blatt, nur eine Ecke, einen Flusslauf, einen Namen in fremder Schrift.\n\nIch habe das leere Fach in der Kartenstube aufgeschlossen. Leg die Stücke hinein, wie sie kommen. Eine Karte, die man selbst zusammensetzt, vergisst man nicht mehr.',
+      },
+      voyageFenno: {
+        title: 'Fenno und die Greife',
+        body: 'Fenno hat den Greifen Namen gegeben. Sie hören nicht darauf, aber er behauptet, sie täten es heimlich.\n\nGestern hat er einem von ihnen den Weg nach Norden erklärt, mit beiden Armen und sehr laut. Der Greif ist nach Süden geflogen und pünktlich zurückgekommen. Fenno sagt, genau so habe er es gemeint.',
+      },
+      voyageCoast: {
+        title: 'Ein Brief von der Küste',
+        body: 'Liebe Wacht,\n\nhier unten riecht alles nach Salz, sogar die Briefe. Der Feuerwärter hat gefragt, wer bei uns im Tal das Licht hält. Ich habe gesagt: jemand, der nachts noch einmal nach den Laternen sieht.\n\nEr hat genickt und sein eigenes Feuer höher gedreht. So spricht man hier miteinander.',
+      },
+      voyageFires: {
+        title: 'Fünfzehn Flüge',
+        body: 'Ich habe nachgezählt: fünfzehn Flüge, und kein Greif ist leer zurückgekommen. Mal ein Kartenstück, mal ein Gruß, einmal nur eine Feder von einem Vogel, den hier niemand kennt.\n\nFrüher dachte ich, eine Wacht steht still und hält ein Feuer. Heute weiß ich, dass sie auch Wege offen hält.',
+      },
+      voyageYear: {
+        title: 'Nach einem Jahr',
+        body: 'Diese Seite schreibe ich selbst. Ein Jahr ist um, vielleicht auch etwas mehr oder weniger. Im Tal zählt niemand so genau.\n\nAlwine sitzt auf der Bank und sagt, das erste Jahr sei das leichte. Fenno widerspricht ihr, weil er immer widerspricht. Über den Bergen liegt Land, das auf keiner unserer Karten steht. Die Greife kennen den Weg schon.',
       },
     },
   },
