@@ -10,10 +10,11 @@ import {
   adCooldownLeft, giftReady, MARKET_ID, passTierClaimable, primaryCurrency, skipHoursLeft,
   type Amount, type MarketConfig, type MarketReward, type MarketState,
 } from '@engine/core'
-import { useEngine, useStore, type TestWallet } from '@engine/react'
+import { readKey, useEngine, useStore, writeKey, type TestWallet } from '@engine/react'
 import { useUi } from '../useUi'
 import { Button } from './Button'
 import { ProgressBar } from './ProgressBar'
+import { Sheet } from './Sheet'
 
 function Card({ title, children, testId }: { title: string; children: ReactNode; testId: string }) {
   return (
@@ -36,10 +37,34 @@ export interface MarketProps {
   adSeconds: () => number
   /** Small preview of a style (optional). */
   styleArt?: (id: string) => ReactNode
-  /** Called for every test purchase decision (playtest log). */
-  onTestPurchase?: (offer: string, cents: number, ok: boolean) => void
-  /** Called when a bonus video starts (playtest log). */
-  onAd?: (choice: string, seconds: number) => void
+  /** Called for every answer in the test purchase dialog (playtest log), with the test money left before it. */
+  onTestPurchase?: (offer: string, cents: number, answer: TestBuyAnswer, leftCents: number) => void
+  /** Called when a bonus video starts and when it ends or is cancelled (playtest log). */
+  onAd?: (choice: string, seconds: number, phase: 'start' | 'done' | 'cancelled') => void
+  /** Storage key that remembers the last sub tab (optional). */
+  rememberKey?: string
+}
+
+/** Answers of the test purchase dialog: bought, declined, would have bought (money short), closed without answer. */
+export type TestBuyAnswer = 'yes' | 'no' | 'wouldBuy' | 'closed'
+
+const MARKET_TABS = ['free', 'boosts', 'styles', 'offers'] as const
+type MarketTab = (typeof MARKET_TABS)[number]
+
+/** Pay button for the soft currency; while the balance is short, the missing amount stands below it. */
+function PayButton({ cfg, cost, disabled, onPay, testId }: { cfg: MarketConfig; cost: number; disabled?: boolean; onPay: () => void; testId?: string }) {
+  const ui = useUi()
+  const { world } = useEngine(ui.rt)
+  const cur = ui.labels.currency(cfg.currency)
+  const missing = cost - world.balance(cfg.currency)
+  return (
+    <div className="ek-pay">
+      <Button size="small" data-testid={testId} disabled={disabled || missing > 0} onClick={onPay}>
+        {ui.t.market.pay(ui.fmt(cost), cur)}
+      </Button>
+      {missing > 0 && !disabled ? <span className="ek-pay__need">{ui.t.market.need(ui.fmt(missing))}</span> : null}
+    </div>
+  )
 }
 
 function usePrice() {
@@ -63,7 +88,7 @@ function amountText(ui: ReturnType<typeof useUi>, g: Amount): string {
 }
 
 /** Blocking countdown of the mock video; the reward follows when it ends. */
-export function AdOverlay({ seconds, onDone, testPhase }: { seconds: number; onDone: () => void; testPhase: boolean }) {
+export function AdOverlay({ seconds, onDone, onCancel, testPhase }: { seconds: number; onDone: () => void; onCancel?: () => void; testPhase: boolean }) {
   const ui = useUi()
   const [left, setLeft] = useState(seconds)
   const done = useRef(onDone)
@@ -89,6 +114,11 @@ export function AdOverlay({ seconds, onDone, testPhase }: { seconds: number; onD
         <ProgressBar ratio={1 - left / Math.max(1, seconds)} label={ui.t.market.adRunning} />
         <p aria-live="polite">{ui.t.market.adLeft(String(left))}</p>
         {testPhase ? <p className="ek-muted">{ui.t.market.adTestNote}</p> : null}
+        {onCancel ? (
+          <Button variant="secondary" size="small" data-testid="ad-cancel" onClick={onCancel}>
+            {ui.t.market.adCancel}
+          </Button>
+        ) : null}
       </div>
     </div>
   )
@@ -98,17 +128,46 @@ export function MarketPanel(props: MarketProps) {
   const ui = useUi()
   const { world } = useEngine(ui.rt)
   const s = world.get<MarketState>(MARKET_ID)
+  const [tab, setTab] = useState<MarketTab>(() => {
+    const saved = props.rememberKey ? readKey(props.rememberKey) : null
+    return MARKET_TABS.find((x) => x === saved) ?? 'free'
+  })
   if (!s) return null
+  const pick = (x: MarketTab) => {
+    setTab(x)
+    if (props.rememberKey) writeKey(props.rememberKey, x)
+  }
+  const { cfg } = props
   return (
     <section className="ek-panel" aria-label={ui.labels.content('title.market').name} data-testid="market-view">
-      {/* What can be bought comes first: the gift, then the offers (with the test wallet), then the looks */}
-      <GiftCard cfg={props.cfg} s={s} />
-      <OffersCard {...props} s={s} />
-      <StylesCard cfg={props.cfg} s={s} styleArt={props.styleArt} />
-      <AdCard {...props} s={s} />
-      <BoostCard cfg={props.cfg} s={s} />
-      <SkipCard cfg={props.cfg} s={s} />
-      <PassCard cfg={props.cfg} s={s} />
+      {/* Always in view: what the player owns, then the four shelves */}
+      <div className="ek-market-head">
+        <p className="ek-market-balance" data-testid="market-balance">
+          {ui.t.market.balance(ui.fmt(world.balance(cfg.currency)), ui.labels.currency(cfg.currency))}
+        </p>
+        <div className="ek-segmented ek-market-tabs" role="tablist" aria-label={ui.labels.content('title.market').name}>
+          {MARKET_TABS.map((x) => (
+            <button key={x} type="button" role="tab" aria-selected={tab === x} className={tab === x ? 'is-active' : ''} data-testid={`market-tab-${x}`} onClick={() => pick(x)}>
+              {ui.t.market.tabs[x]}
+            </button>
+          ))}
+        </div>
+      </div>
+      {tab === 'free' ? (
+        <>
+          <GiftCard cfg={cfg} s={s} />
+          <AdCard {...props} s={s} />
+          <PassCard cfg={cfg} s={s} />
+        </>
+      ) : null}
+      {tab === 'boosts' ? (
+        <>
+          <BoostCard cfg={cfg} s={s} />
+          <SkipCard cfg={cfg} s={s} />
+        </>
+      ) : null}
+      {tab === 'styles' ? <StylesCard cfg={cfg} s={s} styleArt={props.styleArt} /> : null}
+      {tab === 'offers' ? <OffersCard {...props} s={s} /> : null}
     </section>
   )
 }
@@ -137,29 +196,32 @@ function AdCard({ cfg, s, adSeconds, wallet, onAd }: MarketProps & { s: MarketSt
   const wait = adCooldownLeft(s, cfg, ui.rt.clock.now())
   return (
     <Card title={ui.t.market.ad} testId="card-ad">
-      <p className="ek-muted">{ui.t.market.adBlurb}</p>
-      {s.adsRemoved ? (
-        <p>{ui.t.market.adRemoved}</p>
-      ) : (
-        <div className="ek-row-actions">
-          {choices.map((c) => (
-            <Button key={c.id} size="small" data-testid={`ad-${c.id}`} title={ui.labels.content(`adChoice.${c.id}`).blurb} disabled={wait > 0 || !!running} onClick={() => {
-                const seconds = adSeconds()
-                onAd?.(c.id, seconds)
-                setRunning({ choice: c.id, seconds })
-              }}>
-              {ui.t.market.adWatch(reward(c))}
-            </Button>
-          ))}
-        </div>
-      )}
-      {wait > 0 && !s.adsRemoved ? <p className="ek-muted">{ui.t.market.adCooldown(ui.duration(wait))}</p> : null}
+      {/* Without ads the bonus stays: it is handed out right away, no video */}
+      <p className="ek-muted">{s.adsRemoved ? ui.t.market.adRemoved : ui.t.market.adBlurb}</p>
+      <div className="ek-row-actions">
+        {choices.map((c) => (
+          <Button key={c.id} size="small" data-testid={`ad-${c.id}`} title={ui.labels.content(`adChoice.${c.id}`).blurb} disabled={wait > 0 || !!running} onClick={() => {
+              if (s.adsRemoved) return void dispatch(MARKET_ID, 'watchAd', { choice: c.id })
+              const seconds = adSeconds()
+              onAd?.(c.id, seconds, 'start')
+              setRunning({ choice: c.id, seconds })
+            }}>
+            {s.adsRemoved ? ui.t.market.adClaim(reward(c)) : ui.t.market.adWatch(reward(c))}
+          </Button>
+        ))}
+      </div>
+      {wait > 0 ? <p className="ek-muted">{s.adsRemoved ? ui.t.market.adClaimCooldown(ui.duration(wait)) : ui.t.market.adCooldown(ui.duration(wait))}</p> : null}
       {running ? (
         <AdOverlay
           seconds={running.seconds}
           testPhase={!!wallet}
           onDone={() => {
+            onAd?.(running.choice, running.seconds, 'done')
             dispatch(MARKET_ID, 'watchAd', { choice: running.choice })
+            setRunning(null)
+          }}
+          onCancel={() => {
+            onAd?.(running.choice, running.seconds, 'cancelled')
             setRunning(null)
           }}
         />
@@ -209,7 +271,6 @@ function SkipCard({ cfg, s }: { cfg: MarketConfig; s: MarketState }) {
   const ui = useUi()
   const { world, dispatch } = useEngine(ui.rt)
   const left = skipHoursLeft(s, cfg, ui.rt.clock)
-  const cur = ui.labels.currency(cfg.currency)
   return (
     <Card title={ui.t.market.skips} testId="card-skips">
       <p className="ek-muted">{ui.t.market.skipsBlurb}</p>
@@ -225,9 +286,7 @@ function SkipCard({ cfg, s }: { cfg: MarketConfig; s: MarketState }) {
                 <span className="ek-muted">{l.blurb}</span>
                 <span className="ek-muted">{ui.t.market.hours(ui.fmt(k.hours))} · {ui.fmt(world.rate() * Math.max(0, hours) * 3600)}</span>
               </div>
-              <Button size="small" disabled={hours <= 0 || world.balance(cfg.currency) < k.cost} onClick={() => dispatch(MARKET_ID, 'skip', { id: k.id })}>
-                {ui.t.market.pay(ui.fmt(k.cost), cur)}
-              </Button>
+              <PayButton cfg={cfg} cost={k.cost} disabled={hours <= 0} onPay={() => dispatch(MARKET_ID, 'skip', { id: k.id })} />
             </li>
           )
         })}
@@ -238,9 +297,8 @@ function SkipCard({ cfg, s }: { cfg: MarketConfig; s: MarketState }) {
 
 function BoostCard({ cfg, s }: { cfg: MarketConfig; s: MarketState }) {
   const ui = useUi()
-  const { world, dispatch } = useEngine(ui.rt)
+  const { dispatch } = useEngine(ui.rt)
   const now = ui.rt.clock.now()
-  const cur = ui.labels.currency(cfg.currency)
   const rows = [
     { id: 'boost', action: 'boost', cost: cfg.boost.cost, until: s.boostUntil, mult: cfg.boost.mult },
     { id: 'circle', action: 'circle', cost: cfg.circle.cost, until: s.circleUntil, mult: s.circleOn ? s.circleMult : cfg.circle.mult },
@@ -258,9 +316,7 @@ function BoostCard({ cfg, s }: { cfg: MarketConfig; s: MarketState }) {
                 <span>{ui.t.live.boost(`×${ui.fmt(r.mult)}`)}</span>
                 {r.until > now ? <span className="ek-note">{ui.t.market.boostActive(ui.duration(r.until - now))}</span> : null}
               </div>
-              <Button size="small" disabled={world.balance(cfg.currency) < r.cost} onClick={() => dispatch(MARKET_ID, r.action)}>
-                {ui.t.market.pay(ui.fmt(r.cost), cur)}
-              </Button>
+              <PayButton cfg={cfg} cost={r.cost} onPay={() => dispatch(MARKET_ID, r.action)} />
             </li>
           )
         })}
@@ -272,7 +328,6 @@ function BoostCard({ cfg, s }: { cfg: MarketConfig; s: MarketState }) {
 function StylesCard({ cfg, s, styleArt }: { cfg: MarketConfig; s: MarketState; styleArt?: (id: string) => ReactNode }) {
   const ui = useUi()
   const { world, dispatch } = useEngine(ui.rt)
-  const cur = ui.labels.currency(cfg.currency)
   return (
     <Card title={ui.t.market.styles} testId="card-styles">
       <p className="ek-muted">{ui.t.market.stylesBlurb}</p>
@@ -294,9 +349,7 @@ function StylesCard({ cfg, s, styleArt }: { cfg: MarketConfig; s: MarketState; s
                   {s.equipped === c.id ? ui.t.market.equipped : ui.t.market.equip}
                 </Button>
               ) : (
-                <Button size="small" disabled={!open || world.balance(cfg.currency) < c.cost} onClick={() => dispatch(MARKET_ID, 'buyCosmetic', { id: c.id })}>
-                  {ui.t.market.pay(ui.fmt(c.cost), cur)}
-                </Button>
+                <PayButton cfg={cfg} cost={c.cost} disabled={!open} testId={`style-buy-${c.id}`} onPay={() => dispatch(MARKET_ID, 'buyCosmetic', { id: c.id })} />
               )}
             </li>
           )
@@ -311,8 +364,21 @@ function OffersCard({ cfg, s, storeEnabled, wallet, prices, onTestPurchase }: Ma
   const { dispatch } = useEngine(ui.rt)
   const price = usePrice()
   const w = useStore(wallet ?? NO_WALLET)
+  const [asking, setAsking] = useState<string | null>(null)
+  const [bought, setBought] = useState<string | null>(null)
   const now = ui.rt.clock.now()
   const left = wallet ? wallet.left(now) : 0
+  const askCents = asking ? (prices[asking] ?? 0) : 0
+  // Every answer goes to the log; only "yes" spends test money and hands out the offer
+  const answer = (a: TestBuyAnswer) => {
+    if (!asking || !wallet) return
+    const id = asking
+    setAsking(null)
+    onTestPurchase?.(id, askCents, a, left)
+    if (a !== 'yes' || !wallet.spend(askCents, ui.rt.clock.now())) return
+    dispatch(MARKET_ID, 'buyOffer', { id })
+    setBought(id)
+  }
   return (
     <Card title={ui.t.market.offers} testId="card-offers">
       <p className="ek-muted">{ui.t.market.offersBlurb}</p>
@@ -322,12 +388,16 @@ function OffersCard({ cfg, s, storeEnabled, wallet, prices, onTestPurchase }: Ma
           <p className="ek-muted">{ui.t.market.walletNote}</p>
         </>
       ) : null}
+      {bought ? (
+        <p role="status" className="ek-note" data-testid="offer-bought">
+          {ui.t.market.testBought(ui.labels.content(`offer.${bought}`).name)}
+        </p>
+      ) : null}
       <ul className="ek-list">
         {cfg.offers.map((o) => {
           const l = ui.labels.content(`offer.${o.id}`)
           const cents = prices[o.id] ?? 0
           const done = (o.once && s.offers.includes(o.id)) || (o.removeAds && s.adsRemoved) || (o.passPremium && s.passPremium)
-          const canTest = !!wallet && cents <= left
           return (
             <li key={o.id} className="ek-row" data-testid={`offer-${o.id}`}>
               <div className="ek-row__main">
@@ -338,21 +408,43 @@ function OffersCard({ cfg, s, storeEnabled, wallet, prices, onTestPurchase }: Ma
               <Button
                 size="small"
                 data-testid={`offer-buy-${o.id}`}
-                disabled={!!done || (!storeEnabled && !canTest)}
+                disabled={!!done || (!storeEnabled && !wallet)}
                 onClick={() => {
                   if (storeEnabled) return void dispatch(MARKET_ID, 'buyOffer', { id: o.id })
-                  if (!wallet) return
-                  const ok = wallet.spend(cents, ui.rt.clock.now())
-                  onTestPurchase?.(o.id, cents, ok)
-                  if (ok) dispatch(MARKET_ID, 'buyOffer', { id: o.id })
+                  // Test phase: never book on the first tap, ask first
+                  setBought(null)
+                  setAsking(o.id)
                 }}
               >
-                {done ? ui.t.market.owned : storeEnabled ? price(cents) : wallet ? (canTest ? ui.t.market.testBuy(price(cents)) : ui.t.market.walletEmpty) : ui.t.market.soon}
+                {done ? ui.t.market.owned : storeEnabled ? price(cents) : wallet ? ui.t.market.testBuy(price(cents)) : ui.t.market.soon}
               </Button>
             </li>
           )
         })}
       </ul>
+      <Sheet open={!!asking} title={ui.t.market.ask.title} onClose={() => answer('closed')} testId="testbuy-sheet">
+        {asking ? (
+          <>
+            <p className="ek-strong">{ui.t.market.ask.question(ui.labels.content(`offer.${asking}`).name, price(askCents))}</p>
+            <p className="ek-muted">{ui.t.market.ask.honest}</p>
+            <p data-testid="testbuy-left">{ui.t.market.ask.left(price(left))}</p>
+            {askCents <= left ? (
+              <div className="ek-row-actions">
+                <Button data-testid="testbuy-yes" onClick={() => answer('yes')}>{ui.t.market.ask.yes}</Button>
+                <Button variant="secondary" data-testid="testbuy-no" onClick={() => answer('no')}>{ui.t.market.ask.no}</Button>
+              </div>
+            ) : (
+              <>
+                <p className="ek-note">{ui.t.market.ask.short}</p>
+                <div className="ek-row-actions">
+                  <Button data-testid="testbuy-would" onClick={() => answer('wouldBuy')}>{ui.t.market.ask.wouldBuy}</Button>
+                  <Button variant="secondary" data-testid="testbuy-no" onClick={() => answer('no')}>{ui.t.market.ask.no}</Button>
+                </div>
+              </>
+            )}
+          </>
+        ) : null}
+      </Sheet>
     </Card>
   )
 }

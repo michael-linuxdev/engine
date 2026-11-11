@@ -13,8 +13,8 @@ export function Hud({ primaryId, icon, extra, goalText }: { primaryId: string; i
   const ratio = goal.kind === 'unlock' || goal.kind === 'milestone' || goal.kind === 'prestigeProgress' ? goal.ratio : 1
   return (
     <header className="ek-hud">
-      <button type="button" className="ek-hud__amount" data-testid="hud-amount-btn" onClick={() => ui.open('mult')}>
-        {icon ? <span className="ek-hud__icon" aria-hidden="true">{icon}</span> : null}
+      <button type="button" className="ek-hud__amount" data-fx="hud" data-fx-x="0.72" data-testid="hud-amount-btn" onClick={() => ui.open('mult')}>
+        {icon ? <span className="ek-hud__icon" data-fx="hud-icon" aria-hidden="true">{icon}</span> : null}
         <span className="ek-hud__value" data-testid="hud-amount">
           {ui.fmt(state.core.primary)}
         </span>

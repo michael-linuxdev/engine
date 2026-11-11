@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { DAILY_ID, dailyStatus, isFeatureOpen, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
+import { DAILY_ID, dailyStatus, isFeatureOpen, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
 import { connectSfx, currentStep, useEngine, useStore, useSteps } from '@engine/react'
 import { CardPicker, FtueCoach, GameShell, Hud, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
@@ -10,11 +10,13 @@ import { TIER_LEVELS } from './art/registry'
 import { DISTRIBUTION, TEST_PHASE } from './distribution'
 import { CHRONICLE } from './content/chronicle'
 import { DAILY } from './content/live'
+import { MARKET } from './content/market'
 import { Notices } from './story/Notices'
 import { WatchView } from './story/Watch'
 import { WorldTab } from './story/WorldTab'
 import { RealmsTab } from './story/RealmsTab'
 import { MarketTab } from './story/MarketTab'
+import { feedback } from './story/feedback'
 import { ftueSteps } from './content/ftue'
 import { CURRENCY, game } from './game'
 import { ambience, chronicleRead, ftue, i18n, labels, playtest, prefs, rt, sfx, t, tabsSeen } from './runtime'
@@ -183,12 +185,13 @@ export function App() {
         />
       }
       play={<Play onOpen={setSelected} />}
+      feedback={feedback}
       navIcons={{ play: <IconTower />, prestige: <IconMoon />, shop: <IconArchive />, menu: <IconMenu /> }}
       menu={[{ id: 'chronicle', label: t.chronicle.menu, icon: <IconBook />, onSelect: () => setChronicle(true), badge: unread }]}
       menuIcons={{ save: <IconSave />, settings: <IconGear />, legal: <IconScroll /> }}
       tabs={[
         // Der Markt steht von Anfang an offen (Tagesgeschenk, Stile, Testgeld)
-        { item: { id: 'market', label: t.trade.tab, icon: <IconPouch /> }, view: <MarketTab /> },
+        { item: { id: 'market', label: t.trade.tab, icon: <IconPouch />, badge: marketReady(world.get<MarketState>(MARKET_ID), MARKET, rt.clock) }, view: <MarketTab /> },
         ...(isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, icon: <IconLantern />, badge: watchBadge(world) }, view: <WatchView /> }] : []),
         ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab, icon: <IconLeaf /> }, view: <WorldTab /> }] : []),
         ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab, icon: <IconMap /> }, view: <RealmsTab /> }] : []),

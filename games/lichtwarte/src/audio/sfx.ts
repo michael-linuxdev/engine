@@ -35,6 +35,9 @@ export const SFX_VIBRATE: Readonly<Record<string, number>> = { spark: 8, build: 
 /** Welches Engine-Ereignis welchen Effekt spielt. */
 export const SFX_EVENTS: Readonly<Record<string, string | ((e: EngineEvent) => string | null)>> = {
   'burst.used': 'spark',
+  'surprise.found': 'chime',
+  'choice.made': 'chime',
+  'combine.fizzle': 'letter',
   'producer.bought': 'build',
   'region.bought': 'build',
   'meta.bought': 'build',

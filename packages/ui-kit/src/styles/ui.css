@@ -982,3 +982,152 @@ html:has(.ek-app) body {
 .ek-update-note--offline {
   border-left-color: var(--danger);
 }
+
+/* Market: balance and shelves stay in view; missing amount below a pay button */
+.ek-market-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  background: var(--bg);
+}
+.ek-market-balance {
+  margin: 0;
+  font-weight: 700;
+}
+.ek-market-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.ek-market-tabs button {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0 var(--space-1);
+}
+.ek-pay {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex: none;
+}
+.ek-pay__need {
+  font-size: 0.8em;
+  color: var(--ink-muted);
+}
+
+/* Feedback layer: toasts below the HUD, rising numbers, flights to the HUD amount */
+.ek-fx {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+}
+.ek-fx__toasts {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 5.5rem);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-3);
+}
+.ek-toast {
+  margin: 0;
+  max-width: 100%;
+  padding: var(--space-2) var(--space-4);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--surface);
+  font-weight: 700;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.ek-fx__float,
+.ek-fx__fly {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--accent);
+  text-shadow: 0 0 6px var(--surface), 0 0 2px var(--surface);
+}
+.ek-fx--spend {
+  color: var(--danger);
+}
+.ek-fx--info {
+  color: var(--ink);
+}
+.ek-fx__fly {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  box-shadow: 0 0 10px 3px var(--accent-2);
+}
+[data-fx='hud'].is-flash {
+  filter: brightness(1.25);
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.ek-reduced-motion) .ek-toast {
+    animation: ek-toast 0.25s ease-out both;
+  }
+  :root:not(.ek-reduced-motion) .ek-fx__float {
+    animation: ek-float 1.3s ease-out both;
+  }
+  :root:not(.ek-reduced-motion) .ek-fx__fly {
+    animation: ek-fly 0.8s cubic-bezier(0.5, 0, 0.7, 0.6) both;
+  }
+  :root:not(.ek-reduced-motion) [data-fx='hud'] {
+    transition: filter 0.2s ease-out, transform 0.2s ease-out;
+  }
+  :root:not(.ek-reduced-motion) [data-fx='hud'].is-flash {
+    transform: scale(1.04);
+  }
+}
+@keyframes ek-toast {
+  from {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes ek-float {
+  0% {
+    transform: translate(-50%, -30%) scale(0.8);
+    opacity: 0;
+  }
+  15% {
+    transform: translate(-50%, -70%) scale(1.1);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -130%) scale(1);
+    opacity: 0;
+  }
+}
+@keyframes ek-fly {
+  0% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--fx-dx)), calc(-50% + var(--fx-dy))) scale(0.5);
+    opacity: 0.2;
+  }
+}
