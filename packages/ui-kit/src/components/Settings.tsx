@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { decodeBackup, encodeBackup } from '@engine/core'
-import { browserFiles, copyText, readKey, usePrefs, useStore, writeKey, type PlaytestLog, type Prefs } from '@engine/react'
+import { browserFiles, checkForUpdate, copyText, readKey, usePrefs, useStore, writeKey, type PlaytestLog, type Prefs } from '@engine/react'
 import { useUi } from '../useUi'
 import { Button } from './Button'
 import { Sheet } from './Sheet'
@@ -113,6 +113,39 @@ function PlaytestBlock({ log }: { log: PlaytestLog }) {
   )
 }
 
+/** Version line with "update now": pulls a new version right away and reloads into it. */
+function UpdateBlock({ version }: { version: string }) {
+  const ui = useUi()
+  const s = ui.t.settings
+  const [note, setNote] = useState('')
+  const [busy, setBusy] = useState(false)
+  const run = async () => {
+    setBusy(true)
+    setNote(s.updateChecking)
+    const r = await checkForUpdate().catch(() => 'offline' as const)
+    if (r === 'unsupported') {
+      // No service worker (plain browser tab): a reload fetches the current version
+      location.reload()
+      return
+    }
+    setNote(r === 'reloading' ? s.updateFound : r === 'offline' ? s.updateOffline : s.updateCurrent)
+    setBusy(false)
+  }
+  return (
+    <>
+      <p className="ek-muted">{s.version(version)}</p>
+      <Button variant="secondary" data-testid="app-update" disabled={busy} onClick={() => void run()}>
+        {s.update}
+      </Button>
+      {note ? (
+        <p role="status" className="ek-note" data-testid="app-update-note">
+          {note}
+        </p>
+      ) : null}
+    </>
+  )
+}
+
 export function SettingsSheet({ open, onClose, version, playtest }: { open: boolean; onClose: () => void; version: string; playtest?: PlaytestLog }) {
   const ui = useUi()
   const p: Prefs = usePrefs(ui.prefs)
@@ -154,7 +187,7 @@ export function SettingsSheet({ open, onClose, version, playtest }: { open: bool
       <Toggle label={s.sound} value={p.sound} onChange={(v) => ui.prefs.update({ sound: v })} testId="pref-sound" />
       <Toggle label={s.ambient} value={p.ambient} onChange={(v) => ui.prefs.update({ ambient: v })} testId="pref-ambient" />
       {playtest ? <PlaytestBlock log={playtest} /> : null}
-      <p className="ek-muted">{s.version(version)}</p>
+      <UpdateBlock version={version} />
     </Sheet>
   )
 }
