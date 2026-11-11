@@ -9,6 +9,13 @@ import { storyDe } from './story.de'
 
 export const gameDe = {
   app: {
+    menuHint: {
+      realms: (open: string, total: string) => `${open} von ${total}`,
+      world: (found: string, total: string) => `${found} von ${total}`,
+      chronicle: (pages: string) => `${pages} Seiten`,
+      watchWaiting: 'Etwas wartet',
+      watchDone: 'Alles erledigt',
+    },
     tabPlay: 'Tal',
     title: BRAND.de as string,
     tagline: 'Richte die alte Turmwarte wieder auf — das Licht kehrt zurück, auch wenn du fort bist.',

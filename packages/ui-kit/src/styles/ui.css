@@ -367,7 +367,8 @@ html:has(.ek-app) body {
   background: var(--surface);
   border-top: 1px solid var(--line);
   padding-bottom: env(safe-area-inset-bottom);
-  min-height: var(--tabbar-h);
+  /* The safe area comes on top of the bar height (border-box would swallow it and leave a gap above the bar) */
+  min-height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
 }
 .ek-tab {
   position: relative;
@@ -987,6 +988,12 @@ html:has(.ek-app) body {
 }
 .ek-menu__icon {
   display: inline-flex;
+}
+
+.ek-menu__hint {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--ink-muted);
 }
 
 /* The "new" badge sits in the corner so every tile keeps the same height */

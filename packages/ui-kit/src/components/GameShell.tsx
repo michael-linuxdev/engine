@@ -184,7 +184,7 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
     playtest?.record('app.tab', { tab: id })
   }
   const menu: MenuItem[] = [
-    ...(p.menuViews ?? []).map((x) => ({ id: x.item.id, label: x.item.label, icon: x.item.icon, badge: !!x.item.badge, dot: x.item.dot, view: true, onSelect: () => go(x.item.id) })),
+    ...(p.menuViews ?? []).map((x) => ({ id: x.item.id, label: x.item.label, icon: x.item.icon, badge: !!x.item.badge, dot: x.item.dot, hint: x.item.hint, view: true, onSelect: () => go(x.item.id) })),
     ...(p.menu ?? []),
     { id: 'save', label: t.save.menu, icon: p.menuIcons?.save, quiet: true, dot: remind, onSelect: () => setOverlay('save') },
     { id: 'settings', label: t.settings.menu, icon: p.menuIcons?.settings, quiet: true, onSelect: () => setOverlay('settings') },

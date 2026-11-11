@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { layerForecast, WHEEL_ID, type WheelState, voyageBack, VOYAGES_ID, bestBuy, countAffordableMeta, formatNumber, NUMBER_LOCALES, DAILY_ID, dailyStatus, isFeatureOpen, prestigeReady, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type OfflineState, type VoyagesState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
+import { layerForecast, WHEEL_ID, type WheelState, voyageBack, VOYAGES_ID, bestBuy, countAffordableMeta, formatNumber, NUMBER_LOCALES, DAILY_ID, dailyStatus, isFeatureOpen, prestigeReady, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type OfflineState, type VoyagesState, type ProducerDef, type QuestsState, type WorldView, COLLECTIONS_ID, type CollectionsState, REGIONS_ID, type RegionsState } from '@engine/core'
 import { connectSfx, currentStep, useEngine, useStore, useSteps } from '@engine/react'
 import { CardPicker, ChallengesCard, FtueCoach, GameShell, Hud, MetaShopPanel, Sheet, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
@@ -10,7 +10,8 @@ import { TIER_LEVELS } from './art/registry'
 import { DISTRIBUTION, TEST_PHASE } from './distribution'
 import { CHRONICLE } from './content/chronicle'
 import { DAILY, STAR_WHEEL, TRIALS } from './content/live'
-import { CONSTELLATIONS } from './content/world'
+import { COLLECTION, CONSTELLATIONS } from './content/world'
+import { REALM_IDS } from './content/realms'
 import { MARKET } from './content/market'
 import { Notices } from './story/Notices'
 import { WatchView } from './story/Watch'
@@ -48,6 +49,12 @@ function voyageWaiting(w: WorldView): boolean {
 }
 
 /** Abzeichen am Wacht-Tab: Wachrunde offen oder Auftrag fertig. */
+function foundCount(w: WorldView): number {
+  return Object.values(w.get<CollectionsState | undefined>(COLLECTIONS_ID)?.found ?? {}).filter((n) => n > 0).length
+}
+function openRealmCount(w: WorldView): number {
+  return Object.values(w.get<RegionsState | undefined>(REGIONS_ID)?.regions ?? {}).filter((r) => r.open).length
+}
 function watchBadge(w: WorldView): boolean {
   const d = w.get<DailyState>(DAILY_ID)
   const q = w.get<QuestsState>(QUESTS_ID)
@@ -344,11 +351,11 @@ export function App() {
       shopVisible={false}
       tabs={[{ item: { id: 'market', label: t.trade.tab, icon: <IconPouch />, badge: marketReady(world.get<MarketState>(MARKET_ID), MARKET, rt.clock) }, view: <MarketTab onPreviewStyle={(id) => { setPreviewStyle(id); setTab('play') }} /> }]}
       menuViews={[
-        ...(isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, icon: <IconLantern />, badge: !seen.includes('watch'), dot: watchBadge(world) }, view: <WatchView /> }] : []),
-        ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab, icon: <IconLeaf />, badge: !seen.includes('world'), dot: voyageWaiting(world) }, view: <WorldTab onDecorEdit={() => { setDecorEdit(true); setTab('play') }} /> }] : []),
-        ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab, icon: <IconMap />, badge: !seen.includes('realms') }, view: <RealmsTab /> }] : []),
+        ...(isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, icon: <IconLantern />, badge: !seen.includes('watch'), dot: watchBadge(world), hint: watchBadge(world) ? t.app.menuHint.watchWaiting : t.app.menuHint.watchDone }, view: <WatchView /> }] : []),
+        ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab, icon: <IconLeaf />, badge: !seen.includes('world'), dot: voyageWaiting(world), hint: t.app.menuHint.world(fmtShort(foundCount(world)), fmtShort(COLLECTION.entries.length)) }, view: <WorldTab onDecorEdit={() => { setDecorEdit(true); setTab('play') }} /> }] : []),
+        ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab, icon: <IconMap />, badge: !seen.includes('realms'), hint: t.app.menuHint.realms(fmtShort(openRealmCount(world)), fmtShort(REALM_IDS.length)) }, view: <RealmsTab /> }] : []),
       ]}
-      menu={[{ id: 'chronicle', label: t.chronicle.menu, icon: <IconBook />, onSelect: () => setChronicle(true), badge: unread }]}
+      menu={[{ id: 'chronicle', label: t.chronicle.menu, icon: <IconBook />, onSelect: () => setChronicle(true), badge: unread, hint: t.app.menuHint.chronicle(fmtShort(CHRONICLE.filter((e) => e.open(world)).length)) }]}
       menuTop={<Soon />}
       menuIcons={{ save: <IconSave />, settings: <IconGear />, legal: <IconScroll /> }}
       // Alles zum Neubeginn steht im Mondwende-Tab: das Archiv (sobald es dort etwas gibt) und die Prüfungen

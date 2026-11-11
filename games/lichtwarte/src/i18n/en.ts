@@ -7,6 +7,13 @@ import type { Strings } from './de'
 export const stringsEn: Strings = {
   ...engineEn,
   app: {
+    menuHint: {
+      realms: (open: string, total: string) => `${open} of ${total}`,
+      world: (found: string, total: string) => `${found} of ${total}`,
+      chronicle: (pages: string) => `${pages} pages`,
+      watchWaiting: 'Something is waiting',
+      watchDone: 'All done',
+    },
     tabPlay: 'Valley',
     title: BRAND.en,
     tagline: 'Raise the old watchtower again — the light returns, even while you are away.',
