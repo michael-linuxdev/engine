@@ -132,6 +132,20 @@ Gemessen über 475 Tage, „regular“:
 - **Nicht geändert:** die Zeitalter. In Jahr 3 wächst der Abstand auf gut sechs Wochen; für die Jahre 4 und 5 sollte der späte Faktor (1,35) sinken.
 - **Nachgemessen (675 Tage, mit Wartezeit):** ein Stern alle drei Tage. Die Leiter ist an Tag 500 vollständig, der Schlüssel an Tag 523, die Laterne an Tag 562, der Greif an Tag 596, die Glocke an Tag 619, das Boot an Tag 652. Die Seiten von Buch 3 liegen bis Tag 668 3 bis 16 Tage auseinander, meist etwa eine Woche; nur am ersten Tag von Jahr 3 gehen zwei zugleich auf (ein Brief und die erste Stern-Seite).
 
+## Erster Testlauf und Bindung (2026-11-11)
+
+Ein Tester, ein Tag: 9 Sitzungen, knapp 80 Minuten, 3 Mondwenden. Auffällig: nach der dritten Mondwende vier Besuche ohne neues Ziel, an neun Besuchen eine Wachrunde und drei Aufträge, zwei Blicke in die Sammlung bei fünf Funden, 17 von 44 Gästen nie begrüßt.
+
+Daraus umgesetzt (Entscheidung Michael):
+1. **Ziel-Zeile mit Ausblick:** Unter dem Ziel steht, was die nächste Mondwende öffnet und wie lange es etwa noch dauert.
+2. **Was wartet, steht im Tal:** Marken für Wachrunde, fertige Aufträge, Wochenplan, Tagesgeschenk und zurückgekehrten Greif; ein Tipp sammelt ein.
+3. **Aufträge im Tal:** als Marke, nur wenn einer fertig ist.
+4. **Funde:** Die Meldung nennt den Stand des Satzes; neue Funde stehen als Marke im Tal und beim Betreten oben in der Sammlung.
+5. **Gäste warten**, bis man sie begrüßt.
+6. **Sternenrad:** Das laufende Ergebnis steht als Marke im Tal; Antippen zeigt die Wirkung.
+
+Dazu: **Festmarken knapper.** Eine Mondwende gibt 1 statt 15 Marken. Erwartet sind damit 600 bis 1.200 je Fest statt 4.500 bis 14.500; nicht nachgemessen.
+
 ## Was „fünf Jahre“ hier heißt
 
 Maßstab ist eine Spielerin, die täglich kurz spielt (Profil „regular“). Über 1.825 Tage soll gelten:

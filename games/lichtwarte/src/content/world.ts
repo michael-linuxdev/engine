@@ -167,6 +167,8 @@ export const GUEST_LURE: Record<string, { building?: string; level?: number; nig
 }
 
 export const GUESTS: VisitorConfig = {
+  // Ein Gast bleibt, bis man ihn begrüßt: Im ersten Testlauf ging ein gutes Drittel ungesehen wieder (17 von 44)
+  waits: true,
   list: [
     { id: 'griffin', when: (w) => ownedOf(w, 'greifenhorst') >= 1 },
     { id: 'kobold', when: (w) => ownedOf(w, 'schmiede') >= 1 },

@@ -74,7 +74,8 @@ export function ValleyMap({ onOpen, children, today, letter, preview, decorEdit 
   const lit = levels.map((l) => l > 0)
   const beacon = beaconLevel(lit.filter(Boolean).length, prestigeState(world).layers[0]?.count ?? 0)
   const visitors = world.get<VisitorsState>(VISITORS_ID)
-  const guest = visitors?.current && visitors.until > state.core.lastSeen ? visitors.current : null
+  // Der Gast wartet, bis man ihn begrüßt (GUESTS.waits); ohne das ginge er nach seiner Zeit
+  const guest = visitors?.current && (GUESTS.waits || visitors.until > state.core.lastSeen) ? visitors.current : null
   const helper = (world.get<HelperState>(MODULE.helper)?.rank ?? 0) >= 1
   // Nach dem ersten Zeitalter sitzt Alwine auf der Bank vor der Kräuterkate
   const alwine = (prestigeState(world).layers[2]?.count ?? 0) >= 1

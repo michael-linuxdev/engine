@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { voyageBack, VOYAGES_ID, bestBuy, countAffordableMeta, formatNumber, NUMBER_LOCALES, DAILY_ID, dailyStatus, isFeatureOpen, prestigeReady, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type OfflineState, type VoyagesState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
+import { layerForecast, WHEEL_ID, type WheelState, voyageBack, VOYAGES_ID, bestBuy, countAffordableMeta, formatNumber, NUMBER_LOCALES, DAILY_ID, dailyStatus, isFeatureOpen, prestigeReady, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type OfflineState, type VoyagesState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
 import { connectSfx, currentStep, useEngine, useStore, useSteps } from '@engine/react'
 import { CardPicker, ChallengesCard, FtueCoach, GameShell, Hud, MetaShopPanel, Sheet, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
@@ -20,8 +20,10 @@ import { MarketTab } from './story/MarketTab'
 import { feedback } from './story/feedback'
 import { Soon } from './story/Soon'
 import { ftueSteps } from './content/ftue'
-import { CURRENCY, game } from './game'
-import { ambience, chronicleRead, ftue, i18n, labels, playtest, prefs, rt, sfx, t, tabsSeen } from './runtime'
+import { CURRENCY, game, LAYER } from './game'
+import { nextTurnOpens } from './content/turns'
+import { waitingPills, type WaitingActs } from './story/waiting'
+import { ambience, chronicleRead, findsSeen, ftue, i18n, labels, playtest, prefs, rt, sfx, t, tabsSeen } from './runtime'
 import { SFX_EVENTS } from './audio/sfx'
 import { IMPRINT, PRIVACY_PAGE } from './legal'
 import { ValleyMap, type MapExtras } from './scene/ValleyMap'
@@ -130,11 +132,15 @@ function useCoachActive(): boolean {
 
 type CoachActs = Partial<Record<string, () => void>>
 
-function NoticeArea({ onEvents, onPrestige, compact, acts }: { onEvents: () => void; onPrestige: () => void; compact: boolean; acts: CoachActs }) {
+function NoticeArea({ onEvents, onPrestige, compact, acts, waiting }: { onEvents: () => void; onPrestige: () => void; compact: boolean; acts: CoachActs; waiting: WaitingActs }) {
   const active = useCoachActive()
+  const ui = useUi()
+  const { world } = useEngine(ui.rt)
+  useStore(findsSeen)
   return (
     <div className="lw-notices">
-      <Notices coach={active ? <Coach acts={acts} /> : null} onEvents={onEvents} onPrestige={onPrestige} compact={compact} />
+      {/* Solange der Einstieg läuft, bleibt es bei ihm: keine Marken daneben */}
+      <Notices coach={active ? <Coach acts={acts} /> : null} onEvents={onEvents} onPrestige={onPrestige} compact={compact} waiting={active ? [] : waitingPills(world, waiting)} />
     </div>
   )
 }
@@ -203,11 +209,38 @@ function GameOverlays({ selected, onClose, chronicleOpen, setChronicle, ceremony
   )
 }
 
+/** „Nächste Mondwende (in etwa 40 min): öffnet Omen, Jahreskreis-Folio“; ist sie schon bereit, nur „Öffnet: …“. */
+function turnNote(w: WorldView, ready: boolean, duration: (ms: number) => string): string | null {
+  const o = nextTurnOpens(w)
+  if (!o) return null
+  const names = [...o.producers.map((id) => labels.producer(id).name), ...o.systems.map((id) => labels.content(`title.${id}`).name)].join(', ')
+  if (ready) return t.play.turnOpensNow(names)
+  const fc = layerForecast(w, LAYER.moonturn, 0)
+  const eta = fc && fc.secondsToGate > 0 && Number.isFinite(fc.secondsToGate) ? duration(fc.secondsToGate * 1000) : null
+  return eta ? t.play.turnOpensIn(eta, names) : t.play.turnOpens(names)
+}
+
+/** Was das Sternenrad gerade bewirkt (aus der Marke im Tal). */
+function WheelBuffSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const ui = useUi()
+  const { world } = useEngine(ui.rt)
+  const buff = world.get<WheelState | undefined>(WHEEL_ID)?.buff
+  if (!buff) return null
+  const l = labels.content(`wheel.${buff}`)
+  return (
+    <Sheet open={open} title={labels.content('title.wheel').name} onClose={onClose} testId="wheel-buff-sheet">
+      <p className="ek-strong">{l.name}</p>
+      <p>{l.blurb}</p>
+    </Sheet>
+  )
+}
+
 export function App() {
   const [selected, setSelected] = useState<string | null>(null)
   const [chronicleOpen, setChronicle] = useState(false)
   const [ceremony, setCeremony] = useState<{ layer: string; payout: number } | null>(null)
   const [wheelOpen, setWheelOpen] = useState(false)
+  const [wheelInfo, setWheelInfo] = useState(false)
   const [tab, setTab] = useState('play')
   const read = useStore(chronicleRead)
   const { world } = useEngine(rt)
@@ -271,6 +304,9 @@ export function App() {
             if (g.kind === 'unlock' || g.kind === 'milestone') setSelected(g.id)
             else if (g.kind === 'prestige' || g.kind === 'prestigeProgress') openTab('prestige')
           }}
+          // Zweite Zeile: was die nächste Mondwende öffnet und wie weit sie noch weg ist. Im ersten Testlauf
+          // folgten auf die dritte Mondwende vier Besuche ohne ein neues Ziel vor Augen.
+          goalNote={(g, ui) => turnNote(world, g.kind === 'prestige', ui.duration)}
           goalText={(g) =>
             g.kind === 'unlock'
               ? t.play.goalUnlock(labels.producer(g.id).name)
@@ -320,7 +356,7 @@ export function App() {
         ...(archiveOpen ? [{ id: 'archive', label: t.effectLabels.archive, view: <MetaShopPanel title={t.effectLabels.archive} branchVisible={branchVisible} /> }] : []),
         ...(isFeatureOpen(world, 'trials') ? [{ id: 'trials', label: labels.content('title.trials').name, view: <ChallengesCard cfg={TRIALS} /> }] : []),
       ]}
-      notice={<NoticeArea onEvents={() => openTab('watch')} onPrestige={() => openTab('prestige')} compact acts={{ welcome: () => setChronicle(true), build: () => setSelected('kraeuterkate'), unlock: () => setSelected('holzlager'), prestige: () => openTab('prestige') }} />}
+      notice={<NoticeArea onEvents={() => openTab('watch')} onPrestige={() => openTab('prestige')} compact waiting={{ openWorld: () => openTab('world'), openWheel: () => setWheelInfo(true) }} acts={{ welcome: () => setChronicle(true), build: () => setSelected('kraeuterkate'), unlock: () => setSelected('holzlager'), prestige: () => openTab('prestige') }} />}
       welcomeArt={<ComebackLetter />}
       welcomeExtra={<Soon />}
       onWelcomePick={setSelected}
@@ -348,6 +384,7 @@ export function App() {
             }}
           />
           <WheelSheet open={wheelOpen && !ceremony && !chronicleOpen} onClose={() => setWheelOpen(false)} cfg={STAR_WHEEL} />
+          <WheelBuffSheet open={wheelInfo} onClose={() => setWheelInfo(false)} />
           <RankSheet open={rankOpen} onClose={() => setRankOpen(false)} />
           <CardPicker open={!wheelOpen && !ceremony && !chronicleOpen && cardsWaiting(world)} cfg={CONSTELLATIONS} />
         </>

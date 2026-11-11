@@ -436,6 +436,8 @@ export interface Pill {
   text: string
   icon?: ReactNode
   onOpen?: () => void
+  /** `claim`: something waits to be collected with this tap. */
+  tone?: 'claim'
 }
 
 /**
@@ -459,7 +461,7 @@ export function EventPills({ onOpen, extra = [], icons = {} }: { onOpen: () => v
   return (
     <div className="ek-pills">
       {shown.map((p) => (
-        <button key={p.id} type="button" className="ek-pill" data-testid={`pill-${p.id}`} onClick={p.onOpen ?? onOpen}>
+        <button key={p.id} type="button" className={`ek-pill${p.tone ? ` ek-pill--${p.tone}` : ''}`} data-testid={`pill-${p.id}`} onClick={p.onOpen ?? onOpen}>
           {p.icon ?? icons[p.id] ? <span className="ek-pill__icon" aria-hidden="true">{p.icon ?? icons[p.id]}</span> : null}
           {p.text}
         </button>
