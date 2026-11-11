@@ -239,6 +239,7 @@ export const engineEn: EngineStrings = {
     chartCells: (n, total) => `${n} of ${total} entered`,
     chartMark: (cost, cur) => `Enter · ${cost} ${cur}`,
     chartFull: 'Complete',
+    chartWait: (time) => `The next point can be entered in ${time}.`,
     chartUnknown: 'Not visible yet',
     linksBonus: (pct) => `+${pct}% income`,
     linksChain: (n) => `Longest chain: ${n}`,

@@ -156,7 +156,8 @@ export const CHRONICLE: readonly ChronicleEntry[] = [
   { id: 'highBoundary', chapter: 'firstWatch', art: 'realm:grenzstein', voice: 'letter', open: (w) => highlandsOpen(w) >= 24, clue: { kind: 'highlands', n: 24 } },
   { id: 'chainTwentyFour', chapter: 'firstWatch', art: 'fires', voice: 'you', open: (w) => roadChain(w) >= 24, clue: { kind: 'chain', n: 24 } },
   { id: 'highFirstWatch', chapter: 'firstWatch', art: 'realm:ersteWarte', open: (w) => highlandsOpen(w) >= 25, clue: { kind: 'highlands', n: 25 } },
-  { id: 'roadSixty', chapter: 'firstWatch', art: 'dawn', voice: 'you', open: (w) => roadLevels(w) >= 40, clue: { kind: 'road', n: 40 } },
+  // Die letzte Seite des Buchs blickt auf die Erste Warte zurück: erst, wenn auch sie erreicht ist (gemessen fielen 40 Stufen 17 Tage früher)
+  { id: 'roadSixty', chapter: 'firstWatch', art: 'dawn', voice: 'you', open: (w) => roadLevels(w) >= 40 && highlandsOpen(w) >= HIGHLAND_IDS.length, clue: { kind: 'road', n: 40 } },
 
   // Buch 3 · Die tiefe Zeit: mit den Fernen Küsten (coast), den Sternen der Himmelskarte (sky) und ihren vollständigen Sternbildern (con)
   { id: 'coastDescent', chapter: 'descent', art: 'realm:langerAbstieg', voice: 'letter', open: (w) => coastsOpen(w) >= 1, clue: { kind: 'coasts', n: 1 } },
@@ -170,25 +171,25 @@ export const CHRONICLE: readonly ChronicleEntry[] = [
 
   { id: 'coastBoats', chapter: 'lights', art: 'realm:bootsfriedhof', voice: 'letterFenno', open: (w) => coastsOpen(w) >= 6, clue: { kind: 'coasts', n: 6 } },
   { id: 'coastPilot', chapter: 'lights', art: 'realm:lotsenturm', voice: 'letter', open: (w) => coastsOpen(w) >= 7, clue: { kind: 'coasts', n: 7 } },
-  { id: 'skyOldChart', chapter: 'lights', art: 'archive', voice: 'you', open: (w) => skyStars(w) >= 8, clue: { kind: 'sky', n: 8 } },
+  { id: 'skyOldChart', chapter: 'lights', art: 'archive', voice: 'you', open: (w) => skyStars(w) >= 9, clue: { kind: 'sky', n: 9 } },
   { id: 'coastSeagrass', chapter: 'lights', art: 'realm:seegraswiesen', voice: 'letterFenno', open: (w) => coastsOpen(w) >= 8, clue: { kind: 'coasts', n: 8 } },
   { id: 'conSecond', chapter: 'lights', art: 'key', voice: 'you', open: (w) => skyDone(w) >= 2, clue: { kind: 'constellations', n: 2 } },
   { id: 'coastBuoy', chapter: 'lights', art: 'realm:glockentonne', voice: 'letter', open: (w) => coastsOpen(w) >= 9, clue: { kind: 'coasts', n: 9 } },
   { id: 'coastNets', chapter: 'lights', art: 'realm:netzmacherdorf', voice: 'letterFenno', open: (w) => coastsOpen(w) >= 10, clue: { kind: 'coasts', n: 10 } },
-  { id: 'skyTwoSkies', chapter: 'lights', art: 'stars', voice: 'you', open: (w) => skyStars(w) >= 13, clue: { kind: 'sky', n: 13 } },
+  { id: 'skyTwoSkies', chapter: 'lights', art: 'stars', voice: 'you', open: (w) => skyStars(w) >= 14, clue: { kind: 'sky', n: 14 } },
 
   { id: 'coastHarbour', chapter: 'twoLists', art: 'realm:sturmhafen', voice: 'letter', open: (w) => coastsOpen(w) >= 11, clue: { kind: 'coasts', n: 11 } },
   { id: 'conThird', chapter: 'twoLists', art: 'stars', voice: 'you', open: (w) => skyDone(w) >= 3, clue: { kind: 'constellations', n: 3 } },
   { id: 'coastLightship', chapter: 'twoLists', art: 'realm:leuchtschiff', voice: 'letterFenno', open: (w) => coastsOpen(w) >= 12, clue: { kind: 'coasts', n: 12 } },
   { id: 'coastKiln', chapter: 'twoLists', art: 'realm:muschelkalkofen', voice: 'letter', open: (w) => coastsOpen(w) >= 13, clue: { kind: 'coasts', n: 13 } },
-  { id: 'skyLow', chapter: 'twoLists', art: 'stars', voice: 'you', open: (w) => skyStars(w) >= 19, clue: { kind: 'sky', n: 19 } },
+  { id: 'skyLow', chapter: 'twoLists', art: 'stars', voice: 'you', open: (w) => skyStars(w) >= 20, clue: { kind: 'sky', n: 20 } },
   { id: 'coastPath', chapter: 'twoLists', art: 'realm:wattenweg', voice: 'letterFenno', open: (w) => coastsOpen(w) >= 14, clue: { kind: 'coasts', n: 14 } },
   { id: 'coastBirds', chapter: 'twoLists', art: 'realm:vogelinsel', voice: 'letter', open: (w) => coastsOpen(w) >= 15, clue: { kind: 'coasts', n: 15 } },
   { id: 'conFifth', chapter: 'twoLists', art: 'stars', voice: 'you', open: (w) => skyDone(w) >= 5, clue: { kind: 'constellations', n: 5 } },
 
   { id: 'coastVillage', chapter: 'deepTime', art: 'realm:versunkenesDorf', voice: 'letter', open: (w) => coastsOpen(w) >= 16, clue: { kind: 'coasts', n: 16 } },
   { id: 'coastCharts', chapter: 'deepTime', art: 'realm:hausDerSeekarten', voice: 'letterFenno', open: (w) => coastsOpen(w) >= 17, clue: { kind: 'coasts', n: 17 } },
-  { id: 'skyCount', chapter: 'deepTime', art: 'archive', voice: 'you', open: (w) => skyStars(w) >= 26, clue: { kind: 'sky', n: 26 } },
+  { id: 'skyCount', chapter: 'deepTime', art: 'archive', voice: 'you', open: (w) => skyStars(w) >= 28, clue: { kind: 'sky', n: 28 } },
   { id: 'coastArch', chapter: 'deepTime', art: 'realm:walknochenbogen', voice: 'letter', open: (w) => coastsOpen(w) >= 18, clue: { kind: 'coasts', n: 18 } },
   { id: 'coastGlow', chapter: 'deepTime', art: 'realm:strandDerLichter', voice: 'letterFenno', open: (w) => coastsOpen(w) >= 19, clue: { kind: 'coasts', n: 19 } },
   { id: 'conSeventh', chapter: 'deepTime', art: 'stars', voice: 'you', open: (w) => skyDone(w) >= 7, clue: { kind: 'constellations', n: 7 } },

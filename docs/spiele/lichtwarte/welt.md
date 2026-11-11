@@ -105,4 +105,4 @@ Frage des Buchs: **Was sah die Sternwarte, bevor die Sterne fehlten?** 40 Seiten
 
 **Stimmen:** Briefe von Alwine, Briefe von Fenno (neu, eigene Unterschrift), Seiten der Wacht aus der Sternwarte.
 
-**Wie die Seiten aufgehen:** 25 mit je einem Küstenland, 8 mit Sternen der Himmelskarte (1, 4, 8, 13, 19, 26, 34, 43), 7 mit vollständigen Sternbildern (1, 2, 3, 5, 7, 9, 12). Die Zahlen in den Texten folgen diesen Schwellen.
+**Wie die Seiten aufgehen:** 25 mit je einem Küstenland, 8 mit Sternen der Himmelskarte (1, 4, 9, 14, 20, 28, 34, 43), 7 mit vollständigen Sternbildern (1, 2, 3, 5, 7, 9, 12). Die Zahlen in den Texten folgen diesen Schwellen.

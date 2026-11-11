@@ -26,8 +26,12 @@ export const CONSTELLATION_STARS: Record<string, readonly (readonly [number, num
   watch: [[50, 10], [50, 36], [36, 62], [64, 62]],
 }
 
-/** Stellschrauben: 74 Sterne; der erste kostet 2 Nachttau, der letzte rund 25, alle zusammen rund 670. */
-export const SKY_CHART_TUNING = { costBase: 2, costGrowth: 1.035, perCell: 0.005 }
+/**
+ * Stellschrauben: 74 Sterne; der erste kostet 2 Nachttau, der letzte rund 25, alle zusammen rund 670.
+ * Gemessen bremst der Nachttau nicht (rund fünf am Tag): Ohne Wartezeit war jedes Sternbild am Tag seines
+ * Erscheinens voll. Deshalb braucht die Sternwarte nach jedem Stern drei Tage, bis der nächste eingetragen werden kann.
+ */
+export const SKY_CHART_TUNING = { costBase: 2, costGrowth: 1.035, perCell: 0.005, waitDays: 3 }
 
 const EFFECTS: Record<string, { target: string; value: number }> = {
   ladder: { target: 'income', value: 1.05 },
@@ -56,5 +60,6 @@ export const SKY_CHART: ChartConfig = {
   groups: CONSTELLATION_IDS.map((id) => ({ id, cells: CONSTELLATION_STARS[id].length, effect: EFFECTS[id] })),
   cost: { currency: CURRENCY.nightDew, base: SKY_CHART_TUNING.costBase, growth: SKY_CHART_TUNING.costGrowth },
   perCell: SKY_CHART_TUNING.perCell,
+  cooldownMs: SKY_CHART_TUNING.waitDays * 86_400_000,
   open: (w: WorldView, id: string) => realmOpen(w, constellationRealm(id)),
 }
