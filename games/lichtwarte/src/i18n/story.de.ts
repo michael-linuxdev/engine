@@ -12,6 +12,17 @@ export const storyDe = {
     cta: 'Die Warte aufschließen',
   },
   chronicle: {
+    contents: 'Inhalt',
+    resume: (title: string) => `Weiterlesen: ${title}`,
+    lockedPage: 'Noch nicht geschrieben.',
+    clue: {
+      build: (name: string) => `Öffnet sich mit: ${name}.`,
+      buildLevel: (name: string, level: string) => `Öffnet sich mit: ${name} auf Stufe ${level}.`,
+      turns: (n: string, layer: string) => `Öffnet sich nach ${n}× ${layer}.`,
+      near: (layer: string) => `Öffnet sich, wenn sie näher rückt: ${layer}.`,
+      realms: (n: string) => `Öffnet sich mit ${n} Landen.`,
+      helper: 'Öffnet sich, wenn jemand bei der Arbeit hilft.',
+    },
     menu: 'Chronik',
     title: 'Chronik der Wächterin',
     unread: 'Neue Seite',

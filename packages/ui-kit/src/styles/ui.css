@@ -1294,3 +1294,32 @@ html:has(.ek-app) body {
 .ek-welcome-picks {
   margin: var(--space-2) 0;
 }
+
+/* Percent ring for open tasks; finished rows step back; plain list inside a note */
+.ek-ring {
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: radial-gradient(closest-side, var(--surface) 76%, transparent 78%), conic-gradient(var(--accent) calc(var(--p) * 1%), var(--surface-2) 0);
+}
+.ek-row.is-done {
+  opacity: 0.65;
+}
+.ek-plain-list {
+  margin: var(--space-1) 0 0;
+  padding-left: 1.1em;
+}
+
+/* Category head with its own bar inside the summary */
+.ek-details summary:has(.ek-details__head) {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-1) 0;
+}

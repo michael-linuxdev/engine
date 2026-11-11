@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  achievementsModule, calendarFestsModule, challengesModule, createManualClock, createState, dailyModule, dayNumber, dispatch, featureUnlocksModule, festAt, festKey,
+  achievementsModule, calendarFestsModule, challengesModule, createManualClock, createState, dailyModule, dayNumber, dispatch, featureUnlocksModule, festAt, festKey, nextFest,
   flashModule, inWeekend, localDayKey, ownedOf, prestige, questsModule, standardModules, tick, view, weekendModule, weekKey, wheelModule,
   type EngineState, type GameDefinition, type ManualClock,
 } from '../src'
@@ -142,6 +142,14 @@ describe('timed events', () => {
 })
 
 describe('calendar fests', () => {
+  it('names the fest that starts next, wrapping the year', () => {
+    const f = (id: string, from: [number, number], to: [number, number]) => ({ id, from, to, major: false })
+    const cfg = { fests: [f('spring', [3, 1], [3, 31]), f('summer', [6, 1], [6, 30]), f('winter', [12, 20], [1, 20])], shop: {}, earn: {} }
+    expect(nextFest(cfg, createManualClock(Date.UTC(2027, 2, 10, 12)))?.id).toBe('summer')
+    expect(nextFest(cfg, createManualClock(Date.UTC(2027, 7, 1, 12)))?.id).toBe('winter')
+    // In the winter fest (it wraps the year end) the next one is spring
+    expect(nextFest(cfg, createManualClock(Date.UTC(2027, 0, 5, 12)))?.id).toBe('spring')
+  })
   it('fest by date (also across the year end), tokens per instance, shop', () => {
     const def = game()
     const cfg = { fests: [{ id: 'winter', from: [12, 20] as [number, number], to: [1, 20] as [number, number], major: true }], shop: {}, earn: {} }

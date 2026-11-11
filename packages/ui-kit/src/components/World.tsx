@@ -28,6 +28,13 @@ function Card({ id, children }: { id: string; children: ReactNode }) {
   )
 }
 
+/** From this many missing entries on a category says how close the set is. */
+const NEAR_SET = 3
+
+/**
+ * Collection overview: total in percent, one bar per category with "N more for the set".
+ * Unknown entries tell what brings them (`entryHint.<id>` from the game), never their name.
+ */
 export function CollectionCard({ cfg }: { cfg: CollectionConfig }) {
   const ui = useUi()
   const { world } = useEngine(ui.rt)
@@ -36,13 +43,21 @@ export function CollectionCard({ cfg }: { cfg: CollectionConfig }) {
   const all = collectionProgress(s, cfg)
   return (
     <Card id="collection">
-      <p className="ek-strong">{ui.t.live.found(String(all.found), String(all.total))}</p>
+      <p className="ek-strong" data-testid="collection-total">
+        {ui.t.live.found(String(all.found), String(all.total))} · {ui.t.live.percent(String(Math.floor((all.found / Math.max(1, all.total)) * 100)))}
+      </p>
+      <ProgressBar ratio={all.found / Math.max(1, all.total)} label={ui.labels.content('title.collection').name} />
       {cats.map((c) => {
         const pr = collectionProgress(s, cfg, c)
+        const left = pr.total - pr.found
         return (
           <details key={c} className="ek-details" data-testid={`category-${c}`}>
             <summary>
-              {ui.labels.content(`category.${c}`).name} · {pr.found}/{pr.total}
+              <span className="ek-details__head">
+                {ui.labels.content(`category.${c}`).name} · {pr.found}/{pr.total}
+                {left === 0 ? <span className="ek-badge ek-badge--inline">{ui.t.live.setDone}</span> : left <= NEAR_SET ? <span className="ek-muted" data-testid={`set-left-${c}`}> · {ui.t.live.setLeft(String(left))}</span> : null}
+              </span>
+              <ProgressBar ratio={pr.found / Math.max(1, pr.total)} label={ui.labels.content(`category.${c}`).name} />
             </summary>
             <ul className="ek-grid-list">
               {cfg.entries
@@ -50,10 +65,11 @@ export function CollectionCard({ cfg }: { cfg: CollectionConfig }) {
                 .map((e) => {
                   const n = s?.found[e.id] ?? 0
                   const l = ui.labels.content(`entry.${e.id}`)
+                  const hint = ui.labels.content(`entryHint.${e.id}`)
                   return (
                     <li key={e.id} className={`ek-tile${n ? '' : ' is-locked'}`} data-testid={`entry-${e.id}`}>
                       <strong>{n ? l.name : '?'}</strong>
-                      <span className="ek-muted">{n ? l.blurb : ui.t.live.unknownEntry}</span>
+                      <span className="ek-muted">{n ? l.blurb : hint.name === `entryHint.${e.id}` ? ui.t.live.unknownEntry : hint.name}</span>
                     </li>
                   )
                 })}
@@ -65,6 +81,10 @@ export function CollectionCard({ cfg }: { cfg: CollectionConfig }) {
   )
 }
 
+/**
+ * Combining two finds: while it runs a bar with the time left; below, all recipes as a grid.
+ * A known recipe shows its parts and result; an unknown one only hints at where its parts come from.
+ */
 export function CombineCard({ cfg, entries }: { cfg: CombineConfig; entries: CollectionConfig }) {
   const ui = useUi()
   const { world, dispatch, state } = useEngine(ui.rt)
@@ -87,11 +107,18 @@ export function CombineCard({ cfg, entries }: { cfg: CombineConfig; entries: Col
       </select>
     </label>
   )
+  const running = cfg.recipes.find((r) => r.id === s.recipe)
+  const left = Math.max(0, s.until - state.core.lastSeen)
+  const name = (id: string) => ui.labels.content(`entry.${id}`).name
+  const category = (id: string) => ui.labels.content(`category.${entries.entries.find((e) => e.id === id)?.category ?? ''}`).name
+  // A part the player owns is named; an unknown part only by where it belongs
+  const part = (id: string) => (found[id] ? name(id) : ui.t.live.partFrom(category(id)))
   return (
     <Card id="alchemy">
       {s.recipe ? (
         <>
-          <p>{ui.t.live.brewing(ui.duration(Math.max(0, s.until - state.core.lastSeen)))}</p>
+          <p data-testid="brew-running">{ui.t.live.brewing(ui.duration(left))}</p>
+          <ProgressBar ratio={running ? 1 - left / Math.max(1, running.durationMs) : 0} label={ui.t.live.brewing(ui.duration(left))} />
           <Button variant="secondary" onClick={() => dispatch(COMBINE_ID, 'skip')}>
             {ui.t.live.finishNow} ({cfg.skipCost.amount} {ui.labels.currency(cfg.skipCost.currency)})
           </Button>
@@ -107,6 +134,27 @@ export function CombineCard({ cfg, entries }: { cfg: CombineConfig; entries: Col
           </Button>
         </>
       )}
+      <details className="ek-details" data-testid="recipes">
+        <summary>{ui.t.live.recipes(String(cfg.recipes.filter((r) => found[r.result]).length), String(cfg.recipes.length))}</summary>
+        <ul className="ek-grid-list">
+          {cfg.recipes.map((r) => {
+            const known = !!found[r.result]
+            return (
+              <li key={r.id} className={`ek-tile${known ? '' : ' is-locked'}`} data-testid={`recipe-${r.id}`}>
+                <strong>{known ? name(r.result) : '?'}</strong>
+                <span className="ek-muted">
+                  {known ? `${name(r.a)} + ${name(r.b)}` : `${part(r.a)} + ${part(r.b)}`}
+                </span>
+                {!known && found[r.a] && found[r.b] && !s.recipe ? (
+                  <Button size="small" variant="secondary" data-testid={`recipe-try-${r.id}`} onClick={() => dispatch(COMBINE_ID, 'start', { a: r.a, b: r.b })}>
+                    {ui.t.live.brew}
+                  </Button>
+                ) : null}
+              </li>
+            )
+          })}
+        </ul>
+      </details>
     </Card>
   )
 }

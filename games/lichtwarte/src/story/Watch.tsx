@@ -2,7 +2,7 @@
 import { isFeatureOpen } from '@engine/core'
 import { useEngine } from '@engine/react'
 import { AchievementsCard, DailyCard, FestCard, FlashCard, QuestsCard, useUi, WeekendCard } from '@engine/ui'
-import { DAILY, DEEDS, FESTIVALS } from '../content/live'
+import { DAILY, DEEDS, FESTIVALS, QUESTS } from '../content/live'
 
 export function WatchView() {
   const ui = useUi()
@@ -10,7 +10,7 @@ export function WatchView() {
   return (
     <section className="ek-panel" aria-label={ui.labels.content('title.daily').name} data-testid="watch-view">
       <DailyCard cfg={DAILY} />
-      <QuestsCard />
+      <QuestsCard cfg={QUESTS} />
       {isFeatureOpen(world, 'events') ? (
         <>
           <WeekendCard />
