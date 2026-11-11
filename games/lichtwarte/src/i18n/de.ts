@@ -398,6 +398,15 @@ export const gameDe = {
   hud: {
     turnSoon: (layer: string, time: string) => `${layer} in ${time}`,
   },
+  purse: {
+    title: 'Deine Vorräte',
+    what: {
+      glowPebbles: 'Für den Markt: Verstärker, Zeitsprünge und Talstile. Es gibt sie für Wachrunde, Aufträge, Taten und Sterne.',
+      runeShards: 'Der Lohn der Mondwende. Damit füllst du das Archiv, und das bleibt.',
+      nightDew: 'Fällt nur nach einer Langen Nacht. Für das Archiv der Nacht.',
+      forebearLight: 'Bleibt von jedem Zeitalter. Für das, was alle nach dir stärkt.',
+    },
+  },
   trade: {
     previewing: (name: string) => `Vorschau: ${name}. Zurück zum Markt`,
     tab: 'Markt',

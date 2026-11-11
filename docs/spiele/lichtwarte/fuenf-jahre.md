@@ -1,0 +1,68 @@
+# Inhalte für fünf Jahre
+
+Stand 2026-11-11. Entwurf zur Abstimmung, noch nichts davon gebaut. Entscheidung Michael: Die Jahre 1 bis 5 werden geplant und gebaut, alles danach bleibt Gerüst. Gefüllt wird mit Geschichte, neuen Landen, neuen Systemen und dem Jahreskreis; alle Texte entstehen hier auf Deutsch und Englisch.
+
+## Wo wir stehen
+
+| | Heute |
+|---|---|
+| Gemessene Spielzeit | bis Tag 90 (nur Profil „regular“) |
+| Lande | 34, das letzte öffnet an Tag 90 |
+| Chronik | 27 Seiten in 5 Kapiteln, die Erzählung ist mit dem zweiten Zeitalter zu Ende |
+| Zeitalter | etwa eines je 4 bis 5 Wochen, Meilensteine bis zum 50. |
+| Jahreskreis | 9 Lichterfeste, 13 Fest-Sorten, ein Folio mit 12 Zielen je Jahreszeit |
+
+Nach Tag 90 tragen nur Meisterschafts-Sterne, Schicht-Meilensteine und der Wochenplan. Das ist nicht gemessen.
+
+## Was „fünf Jahre“ hier heißt
+
+Maßstab ist eine Spielerin, die täglich kurz spielt (Profil „regular“). Über 1.825 Tage soll gelten:
+
+- **Alle 3 bis 4 Tage ein neues Ziel.** Als neues Ziel zählt: ein Land, eine Chronik-Seite, ein Zeitalter, ein Fest, eine Stufe eines Jahres-Systems.
+- **Kein Loch über 7 Tage.**
+- **Jedes Jahr etwas, das es vorher nicht gab:** ein Buch der Chronik, eine Welle Lande, ein System, ein Fest-Jahrgang.
+
+Rechnung je Jahr: 25 Lande (alle 14 bis 15 Tage) + 40 Chronik-Seiten (alle 9 Tage) + 9 Feste + etwa 10 Zeitalter + rund 20 Stufen des Jahres-Systems = etwa 105 Ziele, also eines alle 3,5 Tage.
+
+## Die fünf Jahre
+
+Jedes Jahr ist ein **Buch** der Chronik mit eigener Frage, einer **Welle** Lande mit eigenem Landschaftsbild und einem **System**, das im Jahr danach bleibt.
+
+| Jahr | Buch und Frage | Lande | Neues System | Jahreskreis |
+|---|---|---|---|---|
+| 1 · Die Wacht | „Wo ist Alwine, und warum glimmt das Feuer nur noch?“ (vorhanden) Dazu ein sechstes Kapitel: das erste Jahr der neuen Wacht mit Fenno. | 35 bis 50 fertigstellen (Tag 90 bis 180), danach alle zwei Wochen eines | **Fernfahrten:** Die Greife fliegen Aufträge in ferne Lande (8 bis 24 Stunden), bringen Funde, Briefe und Kartenstücke. | Jahrgang 1 (vorhanden) |
+| 2 · Der Weg der Feuer | „Wer hat die anderen Feuer entzündet?“ Alwine findet Spuren einer Wacht vor ihrer Lehrerin. | Welle 2: die Hochlande (25) | **Feuerstraße:** Benachbarte Lande werden verbunden. Jede Verbindung braucht Sterne in beiden Landen und stärkt die ganze Kette. | Jahrgang 2: je Fest eine neue Sorte und ein neues Stück Schmuck |
+| 3 · Die tiefe Zeit | „Was sah die Sternwarte, bevor die Sterne fehlten?“ | Welle 3: die Küstenlande (25) | **Himmelskarte:** Die Sternwarte füllt eine Karte des Himmels, Feld für Feld, über Monate. Jedes Sternbild darauf ist dauerhaft. | Jahrgang 3, dazu Sternschnuppen-Nächte |
+| 4 · Die Lehrlinge | „Wem gibt man eine Wacht?“ Fenno bildet selbst aus. | Welle 4: die Inseln (25) | **Wächterschule:** Lehrlinge werden ausgebildet und einem Land zugeteilt, das sie dann selbst pflegen. | Jahrgang 4, dazu ein Schulfest |
+| 5 · Das große Licht | „Was geschieht, wenn alle Feuer zugleich brennen?“ Die Lange Nacht kehrt zurück, diesmal für alle Lande. | Welle 5: der Rand der Karte (25) | **Großes Leuchtfeuer:** ein Bauwerk über das ganze Jahr, an dem alle Lande mitbauen. Sein Abschluss ist das Ende von Buch 5. | Jahrgang 5, dazu die Nacht aller Feuer |
+
+**Jahre 6 und später (nur Gerüst):** dieselbe Form. Ein Jahr besteht aus einem Buch (5 Kapitel, 40 Seiten), einer Welle (25 Lande), einem System und einem Fest-Jahrgang. Die Engine bekommt dafür eine Jahres-Tabelle; ein neues Jahr ist dann Inhalt, kein Umbau.
+
+## Was dafür gebaut werden muss
+
+1. **Messung bis Tag 1.825.** Der Simulator misst heute 90 Tage in etwa 50 Sekunden; fünf Jahre brauchen rund 17 Minuten. Ohne diese Messung ist jede Taktung geraten.
+2. **Zahlenraum.** Die Engine begrenzt Werte auf 1e300. Ob das Wachstum über fünf Jahre darunter bleibt, zeigt erst die Messung. Falls nicht, müssen die späten Wellen flacher wachsen.
+3. **Jahres-Tabelle** in der Engine (Wellen, Bücher, Jahrgänge anhängbar; IDs nur anhängen).
+4. **Vier neue Systeme** (Feuerstraße, Himmelskarte, Wächterschule, Großes Leuchtfeuer) und die Fernfahrten. Jedes ist ein eigenes Engine-Modul mit Tests und Spielstand-Startwert.
+5. **Texte:** etwa 200 Chronik-Seiten, 116 Lande mit Namen, Figur und Einleitung, je zwei Sprachen.
+6. **Bilder:** je Welle ein Landschaftsrahmen (heute gibt es einen), je System ein Fenster.
+
+## Risiken
+
+- **Namen.** Jeder Eigenname braucht eine Websuche und eine Zeile in `docs/marken/pruefung.md`. Für 116 Lande ist das der größte Einzelposten; heute stehen dort schon 45 Namen als ungeprüft. Ausweg: Lande späterer Wellen bekommen beschreibende Namen („Das Dritte Hochmoor“) statt Eigennamen.
+- **Textmenge.** 200 Seiten im Ton der ersten 27 sind machbar, aber nicht in einem Zug zu prüfen. Vorschlag: buchweise liefern und lesen.
+- **Spielstände.** Jedes neue Modul und jede neue Welle muss alte Stände verlustfrei laden (Fixture je Format-Änderung).
+- **Nur „regular“ ist gemessen.** Wer viel spielt, ist schneller durch; wer selten spielt, sieht das Ende von Jahr 1 vielleicht nie.
+
+## Vorgeschlagene Reihenfolge
+
+1. Messung auf 5 Jahre erweitern und den heutigen Stand messen (zeigt das wahre Loch nach Tag 90).
+2. Jahr 1 schließen: Lande 35 bis 50, Fernfahrten, sechstes Kapitel.
+3. Jahres-Tabelle bauen und Jahr 2 als erstes ganzes Jahr liefern (Buch, Welle, Feuerstraße, Jahrgang).
+4. Jahre 3 bis 5 je als eigenes Paket, jeweils mit Messung.
+
+## Offene Entscheidungen
+
+1. **Wodurch öffnet sich ein neues Jahr?** Durch Fortschritt (letztes Land der Welle) oder durch den Kalender (365 Tage nach dem ersten Start)?
+2. **Namen der späteren Lande:** Eigennamen mit Prüfung oder beschreibende Namen?
+3. **Reihenfolge:** erst messen oder gleich Jahr 1 schließen?

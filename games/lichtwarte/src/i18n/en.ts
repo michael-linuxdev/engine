@@ -396,6 +396,15 @@ export const stringsEn: Strings = {
   hud: {
     turnSoon: (layer: string, time: string) => `${layer} in ${time}`,
   },
+  purse: {
+    title: 'Your stores',
+    what: {
+      glowPebbles: 'For the market: boosters, time skips and valley styles. You get them for the Watch Round, errands, deeds and stars.',
+      runeShards: 'The reward of the Moonturn. They fill the archive, and that stays.',
+      nightDew: 'Falls only after a Long Night. For the archive of the night.',
+      forebearLight: 'Remains from every age. For what strengthens everyone after you.',
+    },
+  },
   trade: {
     previewing: (name: string) => `Preview: ${name}. Back to the market`,
     tab: 'Market',

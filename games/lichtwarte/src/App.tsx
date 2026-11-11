@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { bestBuy, countAffordableMeta, formatNumber, NUMBER_LOCALES, DAILY_ID, dailyStatus, isFeatureOpen, prestigeReady, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type OfflineState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
 import { connectSfx, currentStep, useEngine, useStore, useSteps } from '@engine/react'
-import { CardPicker, ChallengesCard, FtueCoach, GameShell, Hud, MetaShopPanel, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
+import { CardPicker, ChallengesCard, FtueCoach, GameShell, Hud, MetaShopPanel, Sheet, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
 import { BuildingArt } from './art/Building'
 import { IconBook, IconGear, IconLantern, IconLeaf, IconMap, IconMenu, IconMoon, IconPouch, IconSave, IconScroll, IconTower } from './art/icons'
@@ -62,22 +62,44 @@ function Play({ onOpen, today, letter, preview, decorEdit }: { onOpen: (id: stri
   )
 }
 
-/** Nebenwährungen klein unter dem Glimmer, sobald es sie einmal gab. */
+/** Nebenwährungen klein unter dem Glimmer, sobald es sie einmal gab. Antippen erklärt, was sie sind. */
 function SideCurrencies() {
   const ui = useUi()
   const { world } = useEngine(ui.rt)
+  const [open, setOpen] = useState(false)
   const earned = world.get<{ earned: Record<string, number> }>(MODULE.wallet)?.earned ?? {}
   const list = [CURRENCY.glowPebbles, CURRENCY.runeShards, CURRENCY.nightDew, CURRENCY.forebearLight].filter((c) => (earned[c] ?? 0) > 0)
-  // Eine Zeile: farbiger Punkt und Zahl; der Name steht für Screenreader und als Tooltip dabei
+  if (!list.length) return null
+  // Eine Zeile: farbiger Punkt und Zahl; die Namen stehen im Fenster dahinter
   return (
     <>
-      {list.map((c) => (
-        <span key={c} className={`lw-cur lw-cur--${c}`} data-testid={`hud-${c}`} title={ui.labels.currency(c)}>
-          <i aria-hidden="true" />
-          <strong>{ui.fmt(world.balance(c))}</strong>
-          <span className="ek-visually-hidden">{ui.labels.currency(c)}</span>
-        </span>
-      ))}
+      <button type="button" className="lw-purse" data-testid="hud-purse" onClick={() => setOpen(true)}>
+        <span className="ek-visually-hidden">{t.purse.title}:</span>
+        {list.map((c) => (
+          <span key={c} className={`lw-cur lw-cur--${c}`} data-testid={`hud-${c}`}>
+            <i aria-hidden="true" />
+            <strong>{ui.fmt(world.balance(c))}</strong>
+            <span className="ek-visually-hidden">{ui.labels.currency(c)}</span>
+          </span>
+        ))}
+      </button>
+      <Sheet open={open} title={t.purse.title} onClose={() => setOpen(false)} testId="purse-sheet">
+        <ul className="ek-list">
+          {list.map((c) => (
+            <li key={c} className="ek-row">
+              <span className={`lw-cur lw-cur--${c}`} aria-hidden="true">
+                <i />
+              </span>
+              <div className="ek-row__main">
+                <strong>
+                  {ui.fmt(world.balance(c))} {ui.labels.currency(c)}
+                </strong>
+                <span className="ek-muted">{(t.purse.what as Record<string, string>)[c]}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Sheet>
     </>
   )
 }

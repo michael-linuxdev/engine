@@ -46,8 +46,8 @@ export const LANTERNS: { x: number; y: number }[] = SLOTS.map((s) => {
   return { x: trailX(y) + (s.x < 50 ? 13 : -13), y }
 })
 
-/** Schmuck-Plätze (Banner & Steine) entlang des Weges. */
-export const DECOR_SLOTS: { x: number; y: number }[] = [94.5, 83, 72.5, 67.5, 62, 57, 52, 47].map((y, i) => {
+/** Schmuck-Plätze (Banner & Steine) entlang des Weges. Der unterste liegt über dem Funkenruf-Knopf, nicht dahinter. */
+export const DECOR_SLOTS: { x: number; y: number }[] = [88, 83, 77.5, 72.5, 67.5, 62, 57, 52].map((y, i) => {
   const py = (y / 100) * MAP_H
   return { x: Math.round(((trailX(py) + (i % 2 ? 15 : -15)) / MAP_W) * 1000) / 10, y }
 })
@@ -89,4 +89,4 @@ export function guestSpot(until: number): { x: number; y: number } {
 export const GUEST_SPOT = GUEST_SPOTS[0]
 
 /** Wo der Umschlag liegt, wenn ein Brief wartet: am Fuß der Warte. */
-export const LETTER_SPOT = { x: 212, y: 286 } as const
+export const LETTER_SPOT = { x: 204, y: 272 } as const

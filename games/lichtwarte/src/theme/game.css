@@ -1465,3 +1465,18 @@ body {
 .lw-app:has(.lw-map[data-edit]) .lw-notices {
   display: none;
 }
+
+/* Vorräte: die Zeile unter dem Glimmer ist ein Knopf (öffnet die Erklärung) */
+.lw-purse {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 28px;
+  padding: 2px var(--space-2);
+  border: none;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--parchment) 80%, transparent);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
