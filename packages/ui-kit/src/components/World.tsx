@@ -11,6 +11,8 @@ import {
   type DecorConfig, type DecorState, type ProjectDef, type ProjectsState, type VisitorConfig, type VisitorsState,
   primaryCurrency, voyageBack, voyageOpen, VOYAGES_ID, type VoyagesConfig, type VoyagesState,
   CHART_ID, chartCells, chartCompleted, chartStatus, type ChartConfig, type ChartGroup, type ChartState,
+  MONUMENT_ID, monumentGivers, monumentStatus, type MonumentConfig, type MonumentState,
+  STEWARDS_ID, stewardCanTrain, stewardCost, stewardTrainMs, type StewardsConfig, type StewardsState,
   LINKS_ID, linksMult, linkStatus, longestChain, type LinkDef, type LinksConfig, type LinksState,
 } from '@engine/core'
 import { useEngine } from '@engine/react'
@@ -332,6 +334,121 @@ export function ChartCard({ cfg, art, lockedText }: { cfg: ChartConfig; art?: (g
           )
         })}
       </ul>
+    </Card>
+  )
+}
+
+/**
+ * Stewards: train one at a time, then post each to a place. `places` are the candidates (the game filters),
+ * `placeKey` their label namespace. Names: `title.stewards`, `title.steward` (one of them).
+ */
+export function StewardsCard({ cfg, places, placeKey }: { cfg: StewardsConfig; places: readonly string[]; placeKey: string }) {
+  const ui = useUi()
+  const { world, dispatch, state } = useEngine(ui.rt)
+  const s = world.get<StewardsState>(STEWARDS_ID)
+  const [pick, setPick] = useState<number | null>(null)
+  if (!s) return null
+  const now = state.core.lastSeen
+  const cur = ui.labels.currency(cfg.cost.currency)
+  const one = ui.labels.content('title.steward').name
+  const posts = Array.from({ length: s.trained }, (_, i) => s.posts[i] ?? '')
+  const free = places.filter((p) => !posts.includes(p) && cfg.canPost(world, p))
+  const training = s.until > 0
+  return (
+    <Card id="stewards">
+      <p className="ek-strong" data-testid="stewards-total">
+        {ui.t.live.stewardsTrained(String(s.trained), String(cfg.max))} · {ui.t.live.linksBonus(String(Math.round(cfg.perSteward * s.trained * 100)))}
+      </p>
+      {training ? (
+        <div className="ek-note" data-testid="steward-training">
+          <ProgressBar ratio={1 - (s.until - now) / Math.max(1, stewardTrainMs(cfg, s))} label={one} />
+          <span>{ui.t.live.stewardLeft(ui.duration(Math.max(0, s.until - now)))}</span>
+        </div>
+      ) : s.trained < cfg.max ? (
+        <div className="ek-pass__line">
+          <span className="ek-muted">{ui.t.live.stewardTakes(ui.duration(stewardTrainMs(cfg, s)))}</span>
+          <Button size="small" data-testid="steward-train" disabled={!stewardCanTrain(cfg, s, world)} onClick={() => dispatch(STEWARDS_ID, 'train')}>
+            {ui.t.live.stewardTrain(ui.fmt(stewardCost(cfg, s)), cur)}
+          </Button>
+        </div>
+      ) : null}
+      <ul className="ek-list">
+        {posts.map((place, i) => (
+          <li key={i} className="ek-row" data-testid={`steward-${i}`} data-post={place}>
+            <div className="ek-row__main">
+              <strong>
+                {one} {i + 1}
+              </strong>
+              <span className={place ? undefined : 'ek-muted'}>{place ? ui.t.live.stewardAt(ui.labels.content(`${placeKey}.${place}`).name) : ui.t.live.stewardNoPost}</span>
+            </div>
+            <Button size="small" variant={place ? 'secondary' : 'primary'} data-testid={`steward-post-${i}`} onClick={() => setPick(i)}>
+              {place ? ui.t.live.stewardMove : ui.t.live.stewardPost}
+            </Button>
+          </li>
+        ))}
+      </ul>
+      <Sheet open={pick !== null} title={pick !== null ? `${one} ${pick + 1}` : one} onClose={() => setPick(null)} testId="steward-sheet">
+        <p className="ek-muted">{ui.t.live.stewardRule}</p>
+        <ul className="ek-list">
+          {pick !== null && posts[pick] ? (
+            <li className="ek-row">
+              <div className="ek-row__main">
+                <strong>{ui.t.live.stewardRecall}</strong>
+              </div>
+              <Button size="small" variant="secondary" data-testid="steward-recall" onClick={() => { dispatch(STEWARDS_ID, 'post', { slot: pick, place: '' }); setPick(null) }}>
+                {ui.t.live.stewardRecall}
+              </Button>
+            </li>
+          ) : null}
+          {free.map((p) => (
+            <li key={p} className="ek-row">
+              <div className="ek-row__main">
+                <strong>{ui.labels.content(`${placeKey}.${p}`).name}</strong>
+              </div>
+              <Button size="small" data-testid={`steward-to-${p}`} onClick={() => { if (pick !== null) dispatch(STEWARDS_ID, 'post', { slot: pick, place: p }); setPick(null) }}>
+                {ui.t.live.stewardPost}
+              </Button>
+            </li>
+          ))}
+        </ul>
+      </Sheet>
+    </Card>
+  )
+}
+
+/** Monument: the stage, who has given, the wait, and one button that asks every place that can give. `art` shows the work at its stage. */
+export function MonumentCard({ cfg, places, art }: { cfg: MonumentConfig; places: readonly string[]; art?: (stage: number) => ReactNode }) {
+  const ui = useUi()
+  const { world, dispatch, state } = useEngine(ui.rt)
+  const s = world.get<MonumentState>(MONUMENT_ID)
+  if (!s) return null
+  const now = state.core.lastSeen
+  const st = monumentStatus(cfg, s, now)
+  const givers = monumentGivers(cfg, s, world, places, now)
+  return (
+    <Card id="monument">
+      {art?.(st.stage)}
+      <p className="ek-strong" data-testid="monument-stage">
+        {ui.t.live.monumentStage(String(st.stage), String(st.stages))} · {ui.t.live.linksBonus(String(Math.round(cfg.perStage * st.stage * 100)))}
+      </p>
+      {st.done ? (
+        <p data-testid="monument-done">{ui.t.live.monumentDone}</p>
+      ) : st.waitMs > 0 ? (
+        <p className="ek-note" data-testid="monument-wait">
+          {ui.t.live.monumentWait(ui.duration(st.waitMs))}
+        </p>
+      ) : (
+        <>
+          <ProgressBar ratio={st.given / st.need} label={ui.labels.content('title.monument').name} />
+          <div className="ek-pass__line">
+            <span>{ui.t.live.monumentGiven(String(st.given), String(st.need))}</span>
+            <Button size="small" data-testid="monument-give" disabled={givers.length === 0} onClick={() => dispatch(MONUMENT_ID, 'give', { places: givers })}>
+              {ui.t.live.monumentAsk(String(Math.min(givers.length, st.need - st.given)))}
+            </Button>
+          </div>
+          <p className="ek-muted">{ui.t.live.monumentRule}</p>
+        </>
+      )}
     </Card>
   )
 }

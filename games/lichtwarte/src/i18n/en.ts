@@ -219,6 +219,9 @@ export const stringsEn: Strings = {
     unknown: 'Not found yet',
     titles: {
       chart: { name: 'Sky Chart', blurb: 'The observatory enters the sky, star by star. Paid for with Nightdew.' },
+      stewards: { name: 'Warden School', blurb: 'Train apprentices and give each one a realm. There they keep building on their own, even while you are away.' },
+      steward: { name: 'Apprentice', blurb: 'Someone learning the watch.' },
+      monument: { name: 'The Great Beacon', blurb: 'A tower made of the stones of every realm. Each realm gives once per stage; then the stage has to set.' },
       links: { name: 'Road of Fires', blurb: 'Link neighbouring realms. Each fire between them needs progress on both sides and strengthens the whole chain.' },
       voyages: { name: 'Far Flights', blurb: 'The griffins fly to distant realms. Send one off and collect later what it brings back.' },
       collection: { name: 'Bestiary & Herbal', blurb: 'What you find in the valley. Every find makes the watch a little brighter.' },
@@ -246,6 +249,7 @@ export const stringsEn: Strings = {
       watch: { name: 'The Watch', blurb: 'Gives: +10% income.' },
     },
     roadNeed: ['', 'the seventh area at level 25', 'one star', 'two stars'],
+    systemsEarlier: 'Earlier systems',
     chartLocked: (realm: string) => `Shows itself from there: ${realm}.`,
     voyages: {
       moorPost: { name: 'Post to the bog', blurb: 'A short flight to Ragna and back.' },
@@ -427,6 +431,9 @@ export const stringsEn: Strings = {
   },
   fx: {
     chartDone: (name: string) => `Constellation complete: ${name}`,
+    stewardTrained: (n: string) => `Apprentice ${n} is trained`,
+    beaconStage: (n: string) => `Great Beacon: stage ${n} stands`,
+    beaconDone: 'The Great Beacon is burning',
     linkLit: (a: string, b: string) => `Road of Fires: ${a} ↔ ${b}`,
     foundLeft: (name: string, left: string, set: string) => `New find: ${name} · ${left} to go for the set “${set}”`,
     foundSet: (name: string, set: string) => `New find: ${name} · set “${set}” complete`,

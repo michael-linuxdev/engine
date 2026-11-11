@@ -407,6 +407,35 @@ export const GAMES = [
       // Nachttau ist genug da: Die Sternwarte braucht nach jedem Stern Zeit, bis der nächste eingetragen werden kann
       assert((await r.getByTestId('chart-mark-ladder').isDisabled()) && (await r.getByTestId('chart-wait').isVisible()), 'Himmelskarte: nach einem Stern heißt es warten')
       assert((await r.getByTestId('chart-key').innerText()).includes(T.realms.lands.salzterrassen.name) && (await r.getByTestId('chart-mark-key').count()) === 0, 'Himmelskarte: Das nächste Sternbild nennt nur, von wo es sich zeigt')
+      // Jahr 4: Mit der Schulinsel öffnet sich die Wächterschule; ein ausgebildeter Lehrling bekommt ein Land und baut dort von selbst
+      await r.evaluate((areas) => {
+        const rt = window.__engine
+        const s = rt.get()
+        const land = { open: true, owned: Object.fromEntries(areas.map((a) => [`schulinsel_${a}`, 1])), balance: 1e12, grow: 0, thrift: 0, introSeen: true, openedAt: Date.now() }
+        rt.replace({ ...s, modules: { ...s.modules, regions: { regions: { ...s.modules.regions.regions, schulinsel: land } }, stewards: { trained: 1, until: 0, posts: [''], workedAt: Date.now() - 3_600_000 } } })
+        rt.dispatch('producers', 'buy', { id: 'kraeuterkate', count: 1 })
+      }, Object.keys(T.realms.lands.schulinsel.areas))
+      await r.getByTestId('card-stewards').waitFor()
+      // Die früheren Systeme (Himmelskarte, Feuerstraße) sind jetzt eingeklappt
+      assert((await r.getByTestId('systems-earlier').count()) === 1 && !(await r.getByTestId('card-chart').isVisible().catch(() => false)), 'Lande: frühere Systeme sind eingeklappt')
+      await r.getByTestId('steward-post-0').click()
+      await r.getByTestId('steward-to-schulinsel').click()
+      assert((await r.getByTestId('steward-0').getAttribute('data-post')) === 'schulinsel', 'Wächterschule: Lehrling hat seinen Posten')
+      await r.waitForFunction(() => Object.values(window.__engine.get().modules.regions.regions.schulinsel.owned).some((n) => n > 1), null, { timeout: 5000 })
+      // Jahr 5: Das Große Leuchtfeuer nimmt je Stufe von jedem Land einmal; „Alle fragen“ sammelt ein
+      await r.evaluate((areas) => {
+        const rt = window.__engine
+        const s = rt.get()
+        const land = { open: true, owned: Object.fromEntries(areas.map((a) => [`offenesMeer_${a}`, 5])), balance: 1e30, grow: 0, thrift: 0, introSeen: true, openedAt: Date.now() }
+        const regions = Object.fromEntries(Object.entries(s.modules.regions.regions).map(([id, x]) => [id, x.open ? { ...x, balance: 1e30 } : x]))
+        rt.replace({ ...s, modules: { ...s.modules, regions: { regions: { ...regions, offenesMeer: land } } } })
+        rt.dispatch('producers', 'buy', { id: 'kraeuterkate', count: 1 })
+      }, Object.keys(T.realms.lands.offenesMeer.areas))
+      await r.getByTestId('card-monument').waitFor()
+      await r.getByTestId('monument-give').click()
+      const given = await r.evaluate(() => window.__engine.get().modules.monument.given.length)
+      assert(given >= 3, `Großes Leuchtfeuer: mehrere Lande haben gegeben (${given})`)
+      assert(await r.getByTestId('monument-give').isDisabled(), 'Großes Leuchtfeuer: jedes Land gibt nur einmal je Stufe')
       // Meilensteine der Schichten stehen im Neubeginn-Tab
       await r.getByTestId('tab-prestige').click()
       assert((await r.getByTestId('milestones-ages').getAttribute('data-reached')) === '0', 'Meilensteine des Zeitalters sichtbar')

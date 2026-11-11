@@ -5,7 +5,7 @@
  * Inhalts-IDs sind stabil und stehen in ids.lock.json — nie ändern, nur anhängen.
  */
 import {
-  achievementsModule, calendarFestsModule, challengesModule, choiceEventsModule, collectionsModule, combineModule, dailyModule, regionsModule, marketModule, decorModule, layerCardsModule, projectsModule, seasonAlbumModule, visitorsModule, defaultBalance, featureUnlocksModule, flashModule, questsModule, standardModules, chartModule, linksModule, voyagesModule, weeklyPlanModule,
+  achievementsModule, calendarFestsModule, challengesModule, choiceEventsModule, collectionsModule, combineModule, dailyModule, regionsModule, marketModule, decorModule, layerCardsModule, projectsModule, seasonAlbumModule, visitorsModule, defaultBalance, featureUnlocksModule, flashModule, questsModule, standardModules, chartModule, linksModule, monumentModule, stewardsModule, voyagesModule, weeklyPlanModule,
   weekendModule, wheelModule, type GameDefinition, type GateAtom, type MetaItemDef, type ProducerDef,
 } from '@engine/core'
 import { BRAND } from './brand'
@@ -17,6 +17,8 @@ export { REALMS }
 export { simPlay } from './simPlay'
 import { FIRE_ROAD } from './content/fireRoad'
 import { SKY_CHART } from './content/skyChart'
+import { SCHOOL } from './content/school'
+import { GREAT_BEACON } from './content/beacon'
 import { ALCHEMY, COLLECTION, CONSTELLATIONS, DECOR, FOLIO, GREAT_WORKS, GUESTS, OMENS, WORLD_FEATURES, VOYAGES } from './content/world'
 
 export const PRODUCER_IDS = [
@@ -233,6 +235,8 @@ function liveModules() {
     voyagesModule(VOYAGES),
     linksModule(FIRE_ROAD),
     chartModule(SKY_CHART),
+    stewardsModule(SCHOOL),
+    monumentModule(GREAT_BEACON),
     // P9 Lande
     regionsModule(REALMS),
     marketModule(MARKET),

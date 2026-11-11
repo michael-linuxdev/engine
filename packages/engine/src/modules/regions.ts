@@ -225,6 +225,17 @@ export function regionsModule(cfg: RegionConfig): EngineModule<RegionsState> {
         if (r.balance < cost) return s
         return update(s, region!, { [kind]: r[kind] + 1, balance: r.balance - cost })
       },
+      /** A region pays `seconds` of its current yield from its balance (for a shared work of the game). */
+      pay: (s, p, _ctx, w) => {
+        const { region, seconds, tag } = (p ?? {}) as { region?: string; seconds?: number; tag?: string }
+        const def = byId.get(region ?? '')
+        const r = def && s.regions[def.id]
+        const secs = Number(seconds)
+        if (!def || !r?.open || !(secs > 0)) return s
+        const amount = regionRate(cfg, def, r, w) * secs
+        if (!(amount > 0) || r.balance < amount) return s
+        return act(update(s, def.id, { balance: r.balance - amount }), { events: [{ type: 'region.paid', region: def.id, seconds: secs, tag: tag ?? '' }] })
+      },
       seeIntro: (s, p) => {
         const id = (p as { region?: string } | undefined)?.region ?? ''
         return s.regions[id] && !s.regions[id].introSeen ? update(s, id, { introSeen: true }) : s

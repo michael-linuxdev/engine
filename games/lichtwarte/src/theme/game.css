@@ -1559,3 +1559,13 @@ p.lw-toc__locked {
   display: grid;
   gap: 2px;
 }
+
+/* Lande: frühere Jahres-Systeme eingeklappt */
+.lw-systems > summary {
+  padding: 0 var(--space-3);
+}
+.lw-greatbeacon {
+  display: block;
+  width: 100%;
+  height: auto;
+}

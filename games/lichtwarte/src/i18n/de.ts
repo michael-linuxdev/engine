@@ -221,6 +221,9 @@ export const gameDe = {
     unknown: 'Noch nicht gefunden',
     titles: {
       chart: { name: 'Himmelskarte', blurb: 'Die Sternwarte trägt den Himmel ein, Stern für Stern. Bezahlt wird mit Nachttau.' },
+      stewards: { name: 'Wächterschule', blurb: 'Bilde Lehrlinge aus und gib jedem ein Land. Dort bauen sie von selbst weiter, auch wenn du fort bist.' },
+      steward: { name: 'Lehrling', blurb: 'Wer bei der Wacht lernt.' },
+      monument: { name: 'Das Große Leuchtfeuer', blurb: 'Ein Turm aus den Steinen aller Lande. Jedes Land gibt für jede Stufe einmal, dann muss sie ruhen.' },
       links: { name: 'Feuerstraße', blurb: 'Verbinde benachbarte Lande. Jedes Feuer dazwischen braucht Fortschritt auf beiden Seiten und stärkt die ganze Kette.' },
       voyages: { name: 'Fernfahrten', blurb: 'Die Greife fliegen in ferne Lande. Schick einen los und hol später ab, was er mitbringt.' },
       collection: { name: 'Bestiarium & Kräuterkunde', blurb: 'Was du im Tal findest. Jeder Fund macht die Warte ein wenig heller.' },
@@ -248,6 +251,7 @@ export const gameDe = {
       watch: { name: 'Die Warte', blurb: 'Gibt: +10 % Ertrag.' },
     },
     roadNeed: ['', 'der siebte Bereich auf Stufe 25', 'ein Stern', 'zwei Sterne'],
+    systemsEarlier: 'Frühere Systeme',
     chartLocked: (realm: string) => `Zeigt sich von dort: ${realm}.`,
     voyages: {
       moorPost: { name: 'Post ins Moor', blurb: 'Ein kurzer Flug zu Ragna und zurück.' },
@@ -429,6 +433,9 @@ export const gameDe = {
   },
   fx: {
     chartDone: (name: string) => `Sternbild vollständig: ${name}`,
+    stewardTrained: (n: string) => `Lehrling ${n} ist ausgebildet`,
+    beaconStage: (n: string) => `Großes Leuchtfeuer: Stufe ${n} steht`,
+    beaconDone: 'Das Große Leuchtfeuer brennt',
     linkLit: (a: string, b: string) => `Feuerstraße: ${a} ↔ ${b}`,
     foundLeft: (name: string, left: string, set: string) => `Neuer Fund: ${name} · noch ${left} bis zum Satz „${set}“`,
     foundSet: (name: string, set: string) => `Neuer Fund: ${name} · Satz „${set}“ vollständig`,
