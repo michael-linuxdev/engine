@@ -10,12 +10,14 @@ import {
   type AlbumConfig, type AlbumState, type CardConfig, type CardsState, type ChoiceState, type CollectionConfig, type CollectionsState, type CombineConfig, type CombineState,
   type DecorConfig, type DecorState, type ProjectDef, type ProjectsState, type VisitorConfig, type VisitorsState,
   primaryCurrency, voyageBack, voyageOpen, VOYAGES_ID, type VoyagesConfig, type VoyagesState,
+  LINKS_ID, linksMult, linkStatus, longestChain, type LinkDef, type LinksConfig, type LinksState,
 } from '@engine/core'
 import { useEngine } from '@engine/react'
 import { useUi } from '../useUi'
 import { Button } from './Button'
 import { ProgressBar } from './ProgressBar'
 import { Sheet } from './Sheet'
+import { Stars } from './Regions'
 
 function Card({ id, children }: { id: string; children: ReactNode }) {
   const ui = useUi()
@@ -209,6 +211,54 @@ export function VoyagesCard({ cfg }: { cfg: VoyagesConfig }) {
               </div>
               <Button size="small" data-testid={`voyage-send-${v.id}`} disabled={!open || !!s.active} onClick={() => dispatch(VOYAGES_ID, 'send', { id: v.id })}>
                 {ui.t.live.voyageSend}
+              </Button>
+            </li>
+          )
+        })}
+      </ul>
+    </Card>
+  )
+}
+
+/**
+ * Chain of links between places. `placeKey` is the label namespace of the places (`realm` → `realm.<id>`),
+ * `visible` hides links the player cannot know yet, `art` is the game's picture of the chain.
+ */
+export function LinksCard({ cfg, placeKey, visible, art }: { cfg: LinksConfig; placeKey: string; visible?: (def: LinkDef) => boolean; art?: ReactNode }) {
+  const ui = useUi()
+  const { world, dispatch } = useEngine(ui.rt)
+  const s = world.get<LinksState>(LINKS_ID)
+  if (!s) return null
+  const shown = cfg.list.filter((l) => !visible || visible(l))
+  const open = shown.filter((l) => (s.levels[l.id] ?? 0) < cfg.needs.length)
+  const full = shown.length - open.length
+  const cur = ui.labels.currency(cfg.cost.currency)
+  const pct = Math.round((linksMult(cfg, s) - 1) * 100)
+  return (
+    <Card id="links">
+      {art}
+      <p className="ek-strong" data-testid="links-total">
+        {ui.t.live.linksBonus(String(pct))} · {ui.t.live.linksChain(String(longestChain(cfg, s)))}
+      </p>
+      <p className="ek-muted">{ui.t.live.linksRule(String(Math.round(cfg.perLevel * 100)), String(Math.round(cfg.perChain * 100)))}</p>
+      {full > 0 ? <p className="ek-muted" data-testid="links-full">{ui.t.live.linksFull(String(full))}</p> : null}
+      <ul className="ek-list">
+        {open.map((l) => {
+          const st = linkStatus(cfg, s, world, l)
+          const need = st.need ?? 0
+          const starsOk = st.haveA >= need && st.haveB >= need
+          const a = ui.labels.content(`${placeKey}.${l.a}`).name
+          const b = ui.labels.content(`${placeKey}.${l.b}`).name
+          return (
+            <li key={l.id} className="ek-row ek-row--stack" data-testid={`link-${l.id}`} data-level={st.level}>
+              <div className="ek-row__main">
+                <strong>
+                  {a} ↔ {b} <Stars n={st.level} max={st.max} testId={`link-level-${l.id}`} />
+                </strong>
+                <span className={starsOk ? undefined : 'ek-muted'}>{ui.t.live.linkNeed(String(need), a, String(Math.min(st.haveA, need)), b, String(Math.min(st.haveB, need)))}</span>
+              </div>
+              <Button size="small" data-testid={`link-light-${l.id}`} disabled={!st.ready} onClick={() => dispatch(LINKS_ID, 'light', { id: l.id })}>
+                {ui.t.live.linkLight(ui.fmt(st.cost), cur)}
               </Button>
             </li>
           )

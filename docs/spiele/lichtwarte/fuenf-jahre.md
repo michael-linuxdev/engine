@@ -40,6 +40,16 @@ Nach Tag 90 tragen nur Meisterschafts-Sterne, Schicht-Meilensteine und der Woche
 - **Kapitel 6 „Das erste Jahr“** ist geschrieben: sechs Seiten nach 1, 3, 6, 10, 15 und 20 Fernfahrten. Bei einer Fahrt am Tag fällt die letzte Seite nach etwa drei Wochen; „ein Jahr“ ist es nur dem Namen nach.
 - Nach Tag 138 tragen Zeitalter, Sterne, Meilensteine, der Wochenplan und die Fernfahrten. **Jahr 1 hat damit weiterhin ein Loch ab etwa Tag 140 bis Tag 365**: Dort gibt es nur wiederkehrende Ziele, kein neues Land und keine neue Seite. Der Simulator spielt die Fernfahrten noch nicht.
 
+## Jahr 2, erstes Paket (2026-11-11)
+
+Entscheidung Michael: Jahr 2 wird gebaut, in derselben Qualität wie Jahr 1. Es kommt in vier Paketen; dies ist das erste.
+
+- **Welle 5 · Die Hochlande:** 25 Lande (51 bis 75) mit beschreibenden Namen, je einer Figur ohne Eigennamen, Einleitung, zehn Bereichen und eigenem Bild, de/en. Sie haben einen eigenen Bildrahmen (steile Gipfel mit Schnee, Wolkenband, steiniger Boden). Das letzte ist „Die Erste Warte“.
+- **Taktung (gemessen, „regular“, 225 Tage):** Das erste Hochland öffnet sich an Tag 141, danach alle 11 bis 14 Tage eines (Tag 152, 165, 179, 192, 206, 220). Hochgerechnet reicht die Welle bis etwa Tag 466. Stellschraube: `REALM_TUNING.highCost = 3`.
+- **Feuerstraße (neues System, Engine-Modul `links`):** 25 Verbindungen vom letzten Land des ersten Jahres bis zur Ersten Warte, je drei Stufen. Eine Stufe braucht entsprechend viele Sterne in beiden Landen und kostet Lichtkiesel (15, je Stufe 3 % mehr; alle 75 Stufen zusammen rund 4.100). Jede Stufe gibt +2 % Ertrag, jedes Glied der längsten lückenlosen Kette noch +1 %. Voll ausgebaut sind das +175 %.
+- **Lande-Liste:** nach Wellen gegliedert und aufklappbar; die neueste Welle steht offen.
+- **Noch offen in Jahr 2:** Buch 2 der Chronik (40 Seiten), Fest-Jahrgang 2, Taktung der Zeitalter für die Jahre 3 bis 5. Nicht gemessen: wie viele Lichtkiesel im zweiten Jahr anfallen (der Preis der Feuerstraße ist geschätzt), und der Simulator spielt weder Feuerstraße noch Fernfahrten.
+
 ## Was „fünf Jahre“ hier heißt
 
 Maßstab ist eine Spielerin, die täglich kurz spielt (Profil „regular“). Über 1.825 Tage soll gelten:

@@ -11,8 +11,19 @@ export const REALM_IDS = ['moorgrund', 'kieselbach', 'birkenhang', 'felsenkamm',
   'nebelpass', 'hochalm', 'gletscherblick', 'tannengrat', 'murmelstein', 'kristallgrotte', 'hangdorf', 'talauen', 'muehlenbach', 'toepferwinkel', 'glaserhuette', 'weberdorf', 'faerberbach', 'glockengiesserei', 'papiermuehle', 'uhrmacherturm', 'brueckenstadt', 'markthafen', 'leuchtfeuer', 'muschelbucht', 'duenenland', 'seehundbank',
   // Welle 4 (35–50): Küste, alte Höfe und der Weg nach oben — nur anhängen
   'sturmkap', 'nordlichtinsel', 'bernsteinstrand', 'treibholzhafen', 'nebelinseln', 'walgesang', 'rosenhof', 'hirschgarten', 'schlossruine', 'bibliotheksberg', 'orgelklause', 'teehaus', 'kuppelstadt', 'wolkenmarkt', 'sternenpfad', 'himmelswarte',
+  // Welle 5 (51–75): die Hochlande, Jahr 2 — nur anhängen. Beschreibende Namen, keine Eigennamen.
+  'hohesMoor', 'steinerneTreppe', 'windsattel', 'schwarzerSee', 'wacholderhang', 'zerbrocheneBruecke', 'ziegenpfad', 'alterSteinkreis', 'siebenQuellen', 'adlerwand', 'schieferbruch', 'nebelkessel', 'letzteWeide', 'roteHalde', 'stillesKloster', 'laerchenwald', 'wasserscheide', 'hoehlenstadt', 'donnerschlucht', 'firnfeld', 'hirtenmarkt', 'sternplatte', 'kalterOfen', 'grenzstein', 'ersteWarte',
 ] as const
 export type RealmId = (typeof REALM_IDS)[number]
+
+/** Wellen als aufklappbare Gruppen der Lande-Liste (Index in REALM_IDS, `to` exklusiv). Nur anhängen. */
+export const REALM_GROUPS = [
+  { id: 'near', from: 0, to: 11 },
+  { id: 'pass', from: 11, to: 22 },
+  { id: 'crafts', from: 22, to: 33 },
+  { id: 'cape', from: 33, to: 49 },
+  { id: 'highlands', from: 49, to: 74 },
+] as const
 
 /** Bereichs-IDs je Land (10, in Reihenfolge). */
 export const REALM_AREAS: Record<RealmId, readonly string[]> = {
@@ -65,6 +76,31 @@ export const REALM_AREAS: Record<RealmId, readonly string[]> = {
   wolkenmarkt: ['ropeBridge', 'hangingStall', 'basketLift', 'kiteMast', 'scalesHouse', 'awningRow', 'cloudCistern', 'balloonDock', 'nightBazaar', 'marketBeacon'],
   sternenpfad: ['trailHead', 'cairnRow', 'restHut', 'starSteps', 'windGap', 'lanternLine', 'highBridge', 'silentTarn', 'lastCamp', 'pathBeacon'],
   himmelswarte: ['cloudGate', 'oldStairs', 'windRoom', 'starLens', 'keepersBench', 'logRoom', 'skyGarden', 'bellLoft', 'firePan', 'skyBeacon'],
+  hohesMoor: ['plankTrack', 'coldCut', 'turfStack', 'heatherHut', 'ravenPost', 'blackPool', 'dryingFrames', 'sundewBank', 'oldHearth', 'moorFire'],
+  steinerneTreppe: ['firstStep', 'restNiche', 'handRope', 'waterStep', 'carvedMark', 'broomHut', 'landing', 'echoBend', 'thousandthStep', 'stairFire'],
+  windsattel: ['windWall', 'flagLine', 'stormHut', 'whistleStone', 'kiteLoft', 'rainGauge', 'saddleRest', 'cloudLadder', 'weatherBook', 'saddleFire'],
+  schwarzerSee: ['stonePier', 'rowBoat', 'rushBelt', 'iceCellar', 'fishRacks', 'stillBay', 'islandCairn', 'divingBell', 'starMirror', 'tarnFire'],
+  wacholderhang: ['berryRows', 'smokeHut', 'dryingLoft', 'resinPots', 'goatGate', 'herbBundles', 'stoneTerrace', 'oldStump', 'scentCellar', 'slopeFire'],
+  zerbrocheneBruecke: ['firstArch', 'stoneCrane', 'mortarPit', 'ropeLine', 'buildersHut', 'keystone', 'gapPlank', 'farPier', 'signalHorn', 'bridgeFire'],
+  ziegenpfad: ['saltStone', 'nightPen', 'cheeseShelf', 'narrowLedge', 'bellTree', 'kidShelter', 'hornGate', 'cliffSpring', 'lanternStaff', 'trackFire'],
+  alterSteinkreis: ['gateStones', 'fallenStone', 'mossRing', 'shadowLine', 'countersHut', 'bowlStone', 'sunGap', 'tallStone', 'emptyPlace', 'circleFire'],
+  siebenQuellen: ['sweetSpring', 'ironSpring', 'coldSpring', 'cupHouse', 'mossChannel', 'washStones', 'warmSpring', 'singingSpring', 'hiddenSpring', 'springFire'],
+  adlerwand: ['ropeAnchor', 'lowEyrie', 'watchLedge', 'featherStore', 'basketLift', 'windHole', 'highEyrie', 'fledgeRock', 'skyRing', 'wallFire'],
+  schieferbruch: ['quarryFace', 'splittingBench', 'slateSled', 'roofersYard', 'chalkHut', 'writingSlabs', 'spoilHeap', 'imprintWall', 'deepLevel', 'quarryFire'],
+  nebelkessel: ['mistNets', 'dripTrough', 'cisternHouse', 'rimPath', 'hornPost', 'fernGarden', 'whitePond', 'ropeRail', 'clearWindow', 'hollowFire'],
+  letzteWeide: ['summerHut', 'milkingStone', 'hayCrib', 'dogBench', 'butterCellar', 'stormPen', 'gentianField', 'farView', 'snowMarker', 'pastureFire'],
+  roteHalde: ['washTrough', 'redKnoll', 'oldAdit', 'sortingTable', 'cartTrack', 'stampMill', 'rustPond', 'propStore', 'assayHut', 'heapFire'],
+  stillesKloster: ['gateLodge', 'herbCourt', 'candleRoom', 'quietWalk', 'copyDesk', 'breadOven', 'bellCord', 'guestCell', 'windowLight', 'cloisterFire'],
+  laerchenwald: ['tappingCuts', 'needleFloor', 'shingleShed', 'woodSled', 'charcoalRing', 'antHill', 'goldClearing', 'oldGiant', 'seedLoft', 'larchFire'],
+  wasserscheide: ['ridgeLine', 'leftBrook', 'rightBrook', 'gaugePost', 'writersHut', 'partingStone', 'rainBarrel', 'twoBridges', 'seaMap', 'divideFire'],
+  hoehlenstadt: ['mouthGate', 'lampNiches', 'rockLane', 'cisternHall', 'mushroomBeds', 'echoMarket', 'smokeShaft', 'paintedWall', 'deepSquare', 'townFire'],
+  donnerschlucht: ['firstWalkway', 'sprayHut', 'chainRail', 'signLanterns', 'gorgeWheel', 'rainbowLedge', 'hangingBridge', 'deafRock', 'fallsGate', 'gorgeFire'],
+  firnfeld: ['snowPoles', 'sledDepot', 'iceSteps', 'windScoop', 'trackersTent', 'layerPit', 'blueCrack', 'summerSnow', 'oldTrail', 'firnFire'],
+  hirtenmarkt: ['tetherPosts', 'woolScales', 'cheeseRow', 'storyBench', 'bellStall', 'dancingFloor', 'lostChest', 'handshakeStone', 'fairPole', 'fairFire'],
+  sternplatte: ['smoothRock', 'scratchedBear', 'chalkLines', 'nightDesk', 'windbreak', 'waterMirror', 'missingStar', 'sightingStones', 'skyBook', 'plateauFire'],
+  kalterOfen: ['kilnMouth', 'ashPit', 'bellowsHouse', 'woodStacks', 'sootWall', 'flue', 'keepersRoom', 'firstBrick', 'warmStone', 'kilnFire'],
+  grenzstein: ['markedStone', 'twoPaths', 'tollBench', 'walkersHut', 'signPost', 'exchangeTable', 'farGate', 'unknownMark', 'meetingGround', 'borderFire'],
+  ersteWarte: ['foundations', 'thirdStep', 'fireBowl', 'oldChronicle', 'scaffoldRing', 'wardenStone', 'newWalls', 'lanternRoom', 'openDoor', 'firstFire'],
 }
 
 /**
@@ -73,12 +109,14 @@ export const REALM_AREAS: Record<RealmId, readonly string[]> = {
  * zwischen zwei Landen bald über zehn Tage. `lateYieldGrowth` liegt knapp unter
  * `landGrowth`: Die Abstände wachsen nur noch von zwei auf drei Tage.
  * Lande vor `lateFrom` bleiben unverändert (frühe Taktung bis Tag 35).
+ * Hochlande (Jahr 2, ab `highFrom`): `highCost` macht jeden Bereich teurer, damit ein Land dort
+ * gut eine Woche trägt statt drei Tage (Messung in fuenf-jahre.md).
  */
-export const REALM_TUNING = { costBase: 10, costStep: 10, costScale: 1.17, rateStep: 4.5, landGrowth: 1.15, openLevel: 25, lateFrom: 12, lateYield: 1.75, lateYieldGrowth: 1.145 }
+export const REALM_TUNING = { costBase: 10, costStep: 10, costScale: 1.17, rateStep: 4.5, landGrowth: 1.15, openLevel: 25, lateFrom: 12, lateYield: 1.75, lateYieldGrowth: 1.145, highFrom: 49, highCost: 3 }
 const lateYield = (land: number) => (land < REALM_TUNING.lateFrom ? 1 : REALM_TUNING.lateYield * Math.pow(REALM_TUNING.lateYieldGrowth, land - REALM_TUNING.lateFrom))
 const ladder = (id: string, k: number, land: number): ProducerDef => ({
   id,
-  baseCost: Math.round(REALM_TUNING.costBase * Math.pow(REALM_TUNING.costStep, k) * Math.pow(REALM_TUNING.landGrowth, land)),
+  baseCost: Math.round(REALM_TUNING.costBase * Math.pow(REALM_TUNING.costStep, k) * Math.pow(REALM_TUNING.landGrowth, land) * (land >= REALM_TUNING.highFrom ? REALM_TUNING.highCost : 1)),
   costScale: REALM_TUNING.costScale,
   baseRate: Math.pow(REALM_TUNING.rateStep, k) * lateYield(land),
 })

@@ -60,4 +60,5 @@ export const NAMES: readonly ProperName[] = [
   { id: 'styleSolsticeSheen', de: 'Sonnwendschein', en: "Solstice Sheen", kind: 'item' },
   { id: 'styleLanternParade', de: 'Laternenzug', en: "Lantern Parade", kind: 'item' },
   { id: 'styleStarOfLights', de: 'Lichterstern', en: "Star of Lights", kind: 'item' },
+  { id: 'fireRoad', de: 'Feuerstraße', en: 'Road of Fires', kind: 'system' },
 ]

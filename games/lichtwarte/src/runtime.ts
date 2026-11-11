@@ -99,6 +99,10 @@ function realmContent(ns: string, rest: string): { name: string; blurb: string }
     const name = land(rest.slice(0, i))?.areas[rest.slice(i + 1)]
     return name ? { name, blurb: '' } : null
   }
+  if (ns === 'realmGroup') {
+    const name = (t.realms.groups as Record<string, string>)[rest]
+    return name ? { name, blurb: '' } : null
+  }
   const l = land(rest)
   if (!l) return null
   if (ns === 'realm') return { name: l.name, blurb: l.intro }

@@ -215,6 +215,7 @@ export const stringsEn: Strings = {
     pickCard: 'Choose a constellation',
     unknown: 'Not found yet',
     titles: {
+      links: { name: 'Road of Fires', blurb: 'Link neighbouring realms. Each fire between them needs stars on both sides and strengthens the whole chain.' },
       voyages: { name: 'Far Flights', blurb: 'The griffins fly to distant realms. Send one off and collect later what it brings back.' },
       collection: { name: 'Bestiary & Herbal', blurb: 'What you find in the valley. Every find makes the watch a little brighter.' },
       alchemy: { name: 'Alchemy', blurb: 'Two finds in the cauldron, a few hours of patience.' },
@@ -367,6 +368,7 @@ export const stringsEn: Strings = {
     },
   },
   fx: {
+    linkLit: (a: string, b: string) => `Road of Fires: ${a} ↔ ${b}`,
     voyageBack: (name: string) => `The griffin is back: ${name}`,
     weekly: 'Weekly plan done: bonus collected',
     spent: (amount: string) => `−${amount}`,

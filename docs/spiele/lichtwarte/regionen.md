@@ -73,6 +73,15 @@ Engine-Modul `regions` (P9): eigene Unterwirtschaft mit eigener Währung, 10 Ber
 | IV | 41–49 | Die alten Höfe und der Weg nach oben |
 | Finale | 50 | Die Himmelswarte |
 
+## Welle 5 · Die Hochlande (Jahr 2) ✓
+
+Lande 51 bis 75, IDs in `content/realms.ts`: `hohesMoor`, `steinerneTreppe`, `windsattel`, `schwarzerSee`, `wacholderhang`, `zerbrocheneBruecke`, `ziegenpfad`, `alterSteinkreis`, `siebenQuellen`, `adlerwand`, `schieferbruch`, `nebelkessel`, `letzteWeide`, `roteHalde`, `stillesKloster`, `laerchenwald`, `wasserscheide`, `hoehlenstadt`, `donnerschlucht`, `firnfeld`, `hirtenmarkt`, `sternplatte`, `kalterOfen`, `grenzstein`, `ersteWarte`.
+
+- Beschreibende Namen („Das Hohe Moor“), Figuren ohne Eigennamen („Die Torfstecherin“). Damit entfällt die Namensprüfung.
+- Roter Faden: In jedem Hochland findet sich eine Spur einer Wacht, die älter ist als die im Tal. Das letzte Land ist die Erste Warte.
+- Taktung: ein Hochland alle 11 bis 14 Tage (`REALM_TUNING.highCost`), Messung in `fuenf-jahre.md`.
+- Die Lande-Liste zeigt die Wellen als aufklappbare Gruppen (`REALM_GROUPS`).
+
 ## Freischaltung und Taktung (umgesetzt)
 
 - **Land 2:** nach der ersten Langen Nacht (oder nach 20 Mondwenden).
