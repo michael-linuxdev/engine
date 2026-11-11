@@ -7,7 +7,7 @@ import { currentMood } from './scene/mood'
 import { currentWeather } from './scene/weather'
 import type { UiLabels } from '@engine/ui'
 import { TEST_BUDGET_CENTS, TEST_WALLET_ENABLED } from './content/market'
-import { ALCHEMY, COLLECTION, FEST_VARIETIES } from './content/world'
+import { ALCHEMY, COLLECTION, FEST_VARIETIES, GUEST_LURE } from './content/world'
 import { game } from './game'
 import { stringsDe, type Strings } from './i18n/de'
 
@@ -118,6 +118,24 @@ function entryHint(id: string): { name: string; blurb: string } {
   return { name, blurb: '' }
 }
 
+/** Was einen noch unbekannten Talgast anlockt (ohne seinen Namen zu verraten). */
+function guestHint(id: string): { name: string; blurb: string } {
+  const lure = GUEST_LURE[id]
+  if (!lure) return { name: `guestHint.${id}`, blurb: '' }
+  const h = t.world.guestHints
+  const building = lure.building ? ((t.producers as Keyed<{ name: string }>)[lure.building]?.name ?? '') : ''
+  const name = lure.season
+    ? h[lure.season]
+    : lure.night
+      ? building
+        ? h.nightBuilding(building)
+        : h.night
+      : lure.level
+        ? h.buildingLevel(building, String(lure.level))
+        : h.building(building)
+  return { name, blurb: '' }
+}
+
 export const labels: UiLabels = {
   content: (key) => {
     const i = key.indexOf('.')
@@ -127,6 +145,7 @@ export const labels: UiLabels = {
     const id = key.slice(i + 1)
     // Fest-Sorten im Fest-Laden tragen den Namen ihres Sammlungs-Eintrags.
     if (ns === 'entryHint') return entryHint(id)
+    if (ns === 'guestHint') return guestHint(id)
     if (ns === 'festEarn') return { name: (t.watch.festEarn as Keyed<string>)[id] ?? key, blurb: '' }
     if (ns === 'festItem' && id.startsWith('variety_')) return labels.content(`entry.${id.slice(8)}`)
     const table = NAMESPACES[ns]?.()

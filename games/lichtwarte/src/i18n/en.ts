@@ -190,6 +190,14 @@ export const stringsEn: Strings = {
     },
   },
   world: {
+    guestHints: {
+      building: (name: string) => `Comes once this place is alive: ${name}.`,
+      buildingLevel: (name: string, level: string) => `Comes once ${name} is level ${level}.`,
+      night: 'Shows itself only at night.',
+      nightBuilding: (name: string) => `Shows itself at night once ${name} stands.`,
+      summer: 'Comes only in summer.',
+      winter: 'Comes only in winter.',
+    },
     decorPick: 'Tap a spot along the path.',
     decorDone: 'Done',
     entryHints: {
@@ -385,7 +393,6 @@ export const stringsEn: Strings = {
     style: (name: string) => `New valley style: ${name}`,
     pass: 'Festival week tier collected',
     window: 'Reward collected',
-    wheel: (name: string) => `Star wheel: ${name}`,
   },
   soon: {
     voyage: (time: string) => `Griffin away: ${time} left`,

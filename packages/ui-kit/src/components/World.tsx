@@ -228,10 +228,12 @@ export function GuestsCard({ cfg }: { cfg: VisitorConfig }) {
         {cfg.list.map((v) => {
           const n = s?.seen[v.id] ?? 0
           const l = ui.labels.content(`guest.${v.id}`)
+          // What draws an unknown guest (from the game), never its name
+          const hint = ui.labels.content(`guestHint.${v.id}`)
           return (
             <li key={v.id} className={`ek-tile${n ? '' : ' is-locked'}`} data-testid={`guest-${v.id}`}>
               <strong>{n ? l.name : '?'}</strong>
-              <span className="ek-muted">{n ? ui.t.live.seenTimes(String(n)) : ui.t.live.unknownEntry}</span>
+              <span className="ek-muted">{n ? ui.t.live.seenTimes(String(n)) : hint.name === `guestHint.${v.id}` ? ui.t.live.unknownEntry : hint.name}</span>
             </li>
           )
         })}

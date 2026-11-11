@@ -145,6 +145,7 @@ function UpgradeBody({ p, art, note, buyModes }: { p: ProducerDef; art?: ReactNo
   const m = nextMilestone(level, world.def.balance)
   if (!unlocked) {
     const g = gateChecks(p.unlock, ui, world)
+    const allMet = g.all.every((x) => x.ok)
     return (
       <div className="ek-stack">
         <div className="ek-upgrade__top">
@@ -154,9 +155,10 @@ function UpgradeBody({ p, art, note, buyModes }: { p: ProducerDef; art?: ReactNo
           </div>
         </div>
         <h3 className="ek-h3">{ui.t.upgrade.unlockTitle}</h3>
-        {/* Checklist: what already holds and what is still missing */}
-        {g.all.length ? <GateList title={ui.t.upgrade.gateAll} items={g.all} testId="gate-all" /> : null}
-        {g.any.length ? <GateList title={ui.t.upgrade.gateAny} items={g.any} testId="gate-any" done={g.any.some((x) => x.ok)} /> : null}
+        {/* One list at a time: first what is still missing of the fixed conditions, then the alternatives.
+            Showing both read as a contradiction ("level 1" met next to "level 25" missing for the same producer). */}
+        {allMet ? null : <GateList title={ui.t.upgrade.gateAll} items={g.all} testId="gate-all" />}
+        {allMet && g.any.length ? <GateList title={ui.t.upgrade.gateAny} items={g.any} testId="gate-any" done={g.any.some((x) => x.ok)} /> : null}
       </div>
     )
   }

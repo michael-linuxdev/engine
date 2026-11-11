@@ -339,25 +339,29 @@ function StylesCard({ cfg, s, styleArt, onPreview }: { cfg: MarketConfig; s: Mar
           const owned = s.owned.includes(c.id)
           const open = !c.when || c.when(world, ui.rt.clock)
           return (
-            <li key={c.id} className={`ek-row${owned || open ? '' : ' is-locked'}`} data-testid={`style-${c.id}`}>
-              {styleArt ? <span className="ek-row__art" aria-hidden="true">{styleArt(c.id)}</span> : null}
-              <div className="ek-row__main">
-                <strong>{l.name}</strong>
-                <span className="ek-muted">{l.blurb}</span>
-                {!owned && !open ? <span className="ek-muted">{ui.t.market.festOnly}</span> : null}
-                {onPreview && s.equipped !== c.id ? (
-                  <button type="button" className="ek-link" data-testid={`style-look-${c.id}`} onClick={() => onPreview(c.id)}>
-                    {ui.t.market.look}
-                  </button>
-                ) : null}
+            <li key={c.id} className={`ek-row ek-row--stack${owned || open ? '' : ' is-locked'}`} data-testid={`style-${c.id}`}>
+              <div className="ek-style-head">
+                {styleArt ? <span className="ek-row__art" aria-hidden="true">{styleArt(c.id)}</span> : null}
+                <div className="ek-row__main">
+                  <strong>{l.name}</strong>
+                  <span className="ek-muted">{l.blurb}</span>
+                  {!owned && !open ? <span className="ek-muted">{ui.t.market.festOnly}</span> : null}
+                </div>
               </div>
-              {owned ? (
-                <Button size="small" variant="secondary" data-testid={`style-equip-${c.id}`} disabled={s.equipped === c.id} onClick={() => dispatch(MARKET_ID, 'equip', { id: c.id })}>
-                  {s.equipped === c.id ? ui.t.market.equipped : ui.t.market.equip}
-                </Button>
-              ) : (
-                <PayButton cfg={cfg} cost={c.cost} disabled={!open} testId={`style-buy-${c.id}`} onPay={() => dispatch(MARKET_ID, 'buyCosmetic', { id: c.id })} />
-              )}
+              <div className="ek-row-actions ek-style-actions">
+                {onPreview && s.equipped !== c.id ? (
+                  <Button size="small" variant="ghost" data-testid={`style-look-${c.id}`} onClick={() => onPreview(c.id)}>
+                    {ui.t.market.look}
+                  </Button>
+                ) : null}
+                {owned ? (
+                  <Button size="small" variant="secondary" data-testid={`style-equip-${c.id}`} disabled={s.equipped === c.id} onClick={() => dispatch(MARKET_ID, 'equip', { id: c.id })}>
+                    {s.equipped === c.id ? ui.t.market.equipped : ui.t.market.equip}
+                  </Button>
+                ) : (
+                  <PayButton cfg={cfg} cost={c.cost} disabled={!open} testId={`style-buy-${c.id}`} onPay={() => dispatch(MARKET_ID, 'buyCosmetic', { id: c.id })} />
+                )}
+              </div>
             </li>
           )
         })}

@@ -3,11 +3,12 @@
  * flash windows, calendar fest shop, wheel, event pills, hint bubble.
  * Engine-neutral: titles and names come from `labels.content(key)`.
  */
+import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import {
   ACHIEVEMENTS_ID, CHALLENGES_ID, challengeAvailable, DAILY_ID, dailyStatus, FESTS_ID, festAt, festDaysLeft, festShop, FLASH_ID, nextFest, primaryCurrency, localDayKey, QUESTS_ID, WEEKEND_ID, WEEKLY_ID, weeklyDone, WHEEL_ID,
   type AchievementDef, type AchievementsState, type ChallengeConfig, type ChallengesState, type DailyConfig, type DailyState, type FestConfig, type FestsState,
-  type Amount, type FlashState, type QuestConfig, type QuestsState, type WeeklyPlanConfig, type WeeklyPlanState, type WeekendState, type WheelState,
+  type Amount, type FlashState, type QuestConfig, type QuestsState, type WeeklyPlanConfig, type WeeklyPlanState, type WeekendState, type WheelConfig, type WheelState,
 } from '@engine/core'
 import { useEngine } from '@engine/react'
 import { useUi } from '../useUi'
@@ -300,22 +301,129 @@ export function FestCard({ cfg }: { cfg: FestConfig }) {
   )
 }
 
-/** Wheel after a prestige: spin, see the result. */
-export function WheelSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+/** Full turns before the wheel settles, and how long that takes. */
+const WHEEL_TURNS = 4
+const WHEEL_MS = 2600
+const WHEEL_TONES = 4
+
+function wheelPoint(deg: number, r: number): [number, number] {
+  const a = ((deg - 90) * Math.PI) / 180
+  return [Math.round(Math.cos(a) * r * 100) / 100, Math.round(Math.sin(a) * r * 100) / 100]
+}
+
+/** Segment angles follow the weights, so the picture shows the real odds. */
+function wheelSlices(cfg: WheelConfig) {
+  const total = cfg.segments.reduce((a, x) => a + x.weight, 0) || 1
+  let at = 0
+  return cfg.segments.map((seg, i) => {
+    const from = at
+    at += (seg.weight / total) * 360
+    return { seg, i, from, to: at, mid: (from + at) / 2 }
+  })
+}
+
+function calmMotion(): boolean {
+  return document.documentElement.classList.contains('ek-reduced-motion') || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
+/** Wheel after a prestige: spin, watch it settle under the pointer, read the result. */
+export function WheelSheet({ open, onClose, cfg }: { open: boolean; onClose: () => void; cfg: WheelConfig }) {
   const ui = useUi()
   const { world, dispatch } = useEngine(ui.rt)
   const s = world.get<WheelState>(WHEEL_ID)
+  const [rot, setRot] = useState(0)
+  const [phase, setPhase] = useState<'idle' | 'spinning' | 'done'>('idle')
+  const [won, setWon] = useState('')
+  const timer = useRef<number | undefined>(undefined)
+  useEffect(() => () => window.clearTimeout(timer.current), [])
   if (!s) return null
   const t = ui.labels.content('title.wheel')
+  const slices = wheelSlices(cfg)
+  const close = () => {
+    window.clearTimeout(timer.current)
+    setPhase('idle')
+    setWon('')
+    onClose()
+  }
+  const spin = () => {
+    if (phase === 'spinning' || !dispatch(WHEEL_ID, 'spin')) return
+    const id = ui.rt.world().get<WheelState>(WHEEL_ID)?.last ?? ''
+    const hit = slices.find((x) => x.seg.id === id)
+    setWon(id)
+    if (!hit || calmMotion()) {
+      if (hit) setRot(-hit.mid)
+      setPhase('done')
+      return
+    }
+    // Land the middle of the won segment under the pointer at the top
+    setRot((r) => r + WHEEL_TURNS * 360 + ((360 - (((r + hit.mid) % 360) + 360) % 360) % 360))
+    setPhase('spinning')
+    timer.current = window.setTimeout(() => setPhase('done'), WHEEL_MS)
+  }
+  const shown = phase === 'done' ? won : ''
   return (
-    <Sheet open={open} title={t.name} onClose={onClose} testId="wheel-sheet">
+    <Sheet open={open} title={t.name} onClose={close} testId="wheel-sheet">
       <p>{t.blurb}</p>
-      <div className={`ek-wheel${s.last ? ' is-spun' : ''}`} aria-hidden="true" />
-      <p>{ui.t.live.spins(String(s.spins))}</p>
-      {s.last ? <p className="ek-strong">{ui.t.live.result(ui.labels.content(`wheel.${s.last}`).name)}</p> : null}
-      <Button data-testid="wheel-spin" disabled={s.spins <= 0} onClick={() => dispatch(WHEEL_ID, 'spin')}>
-        {ui.t.live.spin}
-      </Button>
+      <div className={`ek-wheel is-${phase}`} aria-hidden="true">
+        <svg viewBox="-120 -124 240 244" className="ek-wheel__svg">
+          <circle r="112" className="ek-wheel__rim" />
+          <g className="ek-wheel__disc" style={{ transform: `rotate(${rot}deg)`, transitionDuration: `${WHEEL_MS}ms` }}>
+            {slices.map(({ seg, i, from, to, mid }) => {
+              const [x0, y0] = wheelPoint(from, 100)
+              const [x1, y1] = wheelPoint(to, 100)
+              const [mx, my] = wheelPoint(mid, 62)
+              return (
+                <g key={seg.id} className={`ek-wheel__seg ek-wheel__seg--${i % WHEEL_TONES}${shown === seg.id ? ' is-won' : ''}`}>
+                  <path d={`M0 0L${x0} ${y0}A100 100 0 ${to - from > 180 ? 1 : 0} 1 ${x1} ${y1}Z`} />
+                  <g transform={`translate(${mx} ${my}) rotate(${mid})`} className="ek-wheel__mark">
+                    {seg.kind === 'buff' ? (
+                      <path d="M0 -15L4 -5L15 -4L7 3L9 14L0 8L-9 14L-7 3L-15 -4L-4 -5Z" />
+                    ) : (
+                      <path d="M0 -15L11 0L0 15L-11 0Z" />
+                    )}
+                  </g>
+                </g>
+              )
+            })}
+            {slices.map(({ seg, from }) => {
+              const [x, y] = wheelPoint(from, 106)
+              return <circle key={seg.id} cx={x} cy={y} r="4.5" className="ek-wheel__stud" />
+            })}
+            <circle r="17" className="ek-wheel__hub" />
+            <circle r="6" className="ek-wheel__pin" />
+          </g>
+          <path d="M-13 -122L13 -122L0 -94Z" className="ek-wheel__pointer" />
+        </svg>
+      </div>
+      <p className="ek-wheel__result" role="status" data-testid="wheel-result">
+        {shown ? (
+          <>
+            <strong>{ui.labels.content(`wheel.${shown}`).name}</strong>
+            <span>{ui.labels.content(`wheel.${shown}`).blurb}</span>
+          </>
+        ) : (
+          <span className="ek-muted">{phase === 'spinning' ? ui.t.live.spinning : ui.t.live.spinAsk}</span>
+        )}
+      </p>
+      {phase === 'done' && s.spins <= 0 ? (
+        <Button data-testid="wheel-done" onClick={close}>
+          {ui.t.live.spinDone}
+        </Button>
+      ) : (
+        <Button data-testid="wheel-spin" disabled={s.spins <= 0 || phase === 'spinning'} onClick={spin}>
+          {s.spins > 1 ? ui.t.live.spinMore(String(s.spins)) : ui.t.live.spin}
+        </Button>
+      )}
+      <ul className="ek-wheel__legend">
+        {slices.map(({ seg, i }) => (
+          <li key={seg.id} className={shown === seg.id ? 'is-won' : undefined}>
+            <i className={`ek-wheel__dot ek-wheel__dot--${i % WHEEL_TONES}`} aria-hidden="true" />
+            <span>
+              <strong>{ui.labels.content(`wheel.${seg.id}`).name}</strong> {ui.labels.content(`wheel.${seg.id}`).blurb}
+            </span>
+          </li>
+        ))}
+      </ul>
     </Sheet>
   )
 }

@@ -192,6 +192,14 @@ export const gameDe = {
     },
   },
   world: {
+    guestHints: {
+      building: (name: string) => `Kommt, wenn es hier lebendig wird: ${name}.`,
+      buildingLevel: (name: string, level: string) => `Kommt, sobald ${name} Stufe ${level} hat.`,
+      night: 'Zeigt sich nur nachts.',
+      nightBuilding: (name: string) => `Zeigt sich nachts, wenn ${name} steht.`,
+      summer: 'Kommt nur im Sommer.',
+      winter: 'Kommt nur im Winter.',
+    },
     decorPick: 'Tippe einen Platz am Weg an.',
     decorDone: 'Fertig',
     entryHints: {
@@ -387,7 +395,6 @@ export const gameDe = {
     style: (name: string) => `Neuer Talstil: ${name}`,
     pass: 'Festwochen-Stufe eingesammelt',
     window: 'Belohnung eingesammelt',
-    wheel: (name: string) => `Sternenrad: ${name}`,
   },
   soon: {
     voyage: (time: string) => `Greif unterwegs: noch ${time}`,

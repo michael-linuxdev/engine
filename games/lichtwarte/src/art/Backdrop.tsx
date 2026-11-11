@@ -147,13 +147,83 @@ function Hills({ m }: { m: Mood }) {
 
 const RIVER = `M314 ${HORIZON + 2} C 300 262, 348 288, 338 324 S 352 404, 334 442 S 358 520, 340 574 S 352 622, 344 ${H + 6}`
 
+/** Schilf am Ufer: (x, y) Fußpunkt, drei Halme mit Kolben. */
+const REEDS: [number, number][] = [[326, 300], [352, 350], [322, 420], [356, 470], [324, 548], [356, 600]]
+/** Trittsteine und ein Holzsteg über den Bach. */
+const BRIDGE = { x: 343, y: 506 } as const
+
 function River({ m }: { m: Mood }) {
   const frozen = m.season === 'winter'
+  const reed = frozen ? P.stone : P.grassDark
   return (
-    <g fill="none" strokeLinecap="round">
-      <path d={RIVER} stroke={P.outline} strokeWidth={15} opacity={0.2} />
-      <path d={RIVER} stroke={frozen ? P.snowShade : P.water} strokeWidth={11.5} />
-      <path className="lw-river" d={RIVER} stroke={frozen ? P.white : P.waterLight} strokeWidth={2.4} strokeDasharray="7 15" opacity={0.85} />
+    <g>
+      <g fill="none" strokeLinecap="round">
+        <path d={RIVER} stroke={P.outline} strokeWidth={15} opacity={0.2} />
+        <path d={RIVER} stroke={frozen ? P.snowShade : P.water} strokeWidth={11.5} />
+        <path className="lw-river" d={RIVER} stroke={frozen ? P.white : P.waterLight} strokeWidth={2.4} strokeDasharray="7 15" opacity={0.85} />
+        {/* Glanzlichter: kurze helle Striche neben der Strömung */}
+        <path d={RIVER} stroke={P.white} strokeWidth={1} strokeDasharray="2 31" strokeDashoffset={9} opacity={frozen ? 0.5 : 0.55} transform="translate(2.5 0)" />
+      </g>
+      {/* Holzsteg: zwei Bohlen, Geländerpfosten, ein Schatten auf dem Wasser */}
+      <g transform={`translate(${BRIDGE.x} ${BRIDGE.y})`}>
+        <ellipse cx={0} cy={3} rx={13} ry={3} fill={P.outline} opacity={0.18} />
+        <path d="M-14 -1 q14 -6 28 0 v4 q-14 -6 -28 0 z" fill={P.woodLight} stroke={P.outline} strokeWidth={STROKE.fine} strokeLinejoin="round" />
+        <path d="M-9 -2 v-6 M0 -4 v-6 M9 -2 v-6 M-9 -8 q9 -4 18 0" fill="none" stroke={P.woodDark} strokeWidth={STROKE.fine * 1.6} strokeLinecap="round" />
+      </g>
+      {REEDS.map(([x, y], i) => (
+        <g key={i} stroke={reed} strokeWidth={STROKE.fine * 1.3} strokeLinecap="round" fill="none">
+          <path d={`M${x} ${y} q-1 -7 -3 -11 M${x + 2} ${y} v-13 M${x + 4} ${y} q1 -6 3 -9`} />
+          <path d={`M${x + 2} ${y - 13} v-3`} stroke={P.woodDark} strokeWidth={STROKE.fine * 2.6} />
+        </g>
+      ))}
+    </g>
+  )
+}
+
+/**
+ * Wiesenleben: Blumeninseln, ein paar Feldsteine und Zaunstücke am Weg. Feste Stellen abseits der
+ * Bauplätze und Schilder; im Winter liegen dort Schneehauben.
+ */
+// Alle Stellen liegen dicht neben dem Weg (abwechselnd links und rechts): Dort steht nie ein Bauwerk oder Schild.
+const beside = (y: number, off: number): [number, number] => [trailX(y) + off, y]
+const BLOOMS: [number, number][] = [beside(300, -30), beside(330, 28), beside(376, -30), beside(420, 30), beside(456, -28), beside(500, 30), beside(536, -30), beside(572, 28), beside(604, -34), beside(616, 34)]
+const STONES: [number, number][] = [beside(352, 30), beside(440, -32), beside(520, 32), beside(590, -30)]
+// Zaunstücke weiter außen (die Schmuck-Plätze liegen direkt am Weg)
+const FENCES: [number, number, number][] = [[trailX(612) - 42, 612, -1], [trailX(412) - 40, 412, -1]]
+
+function Meadow({ m }: { m: Mood }) {
+  const winter = m.season === 'winter'
+  // Blütenfarben je Jahreszeit: Frühling rosa, Sommer gelb, Herbst glutrot
+  const petal = m.season === 'spring' ? P.blossom : m.season === 'autumn' ? P.ember : P.glowHot
+  return (
+    <g>
+      {BLOOMS.map(([x, y], i) =>
+        winter ? (
+          <ellipse key={i} cx={x} cy={y} rx={6} ry={2.2} fill={P.snow} opacity={0.8} />
+        ) : (
+          <g key={i}>
+            <ellipse cx={x} cy={y} rx={8} ry={2.6} fill={P.grassDark} opacity={0.55} />
+            {[[-5, -2], [0, -4.5], [5, -2], [-2, 0.5], [3, 0.5]].map(([dx, dy], k) => (
+              <g key={k}>
+                <circle cx={x + dx} cy={y + dy} r={2.3} fill={k === 1 || k === 3 ? P.white : petal} />
+                <circle cx={x + dx} cy={y + dy} r={0.8} fill={k === 1 || k === 3 ? P.glowHot : P.white} />
+              </g>
+            ))}
+          </g>
+        ),
+      )}
+      {STONES.map(([x, y], i) => (
+        <g key={i}>
+          <path d={`M${x - 6} ${y} l2 -5 l6 -1 l4 4 l-1 2 z`} fill={P.stone} stroke={P.outline} strokeWidth={STROKE.fine} strokeLinejoin="round" />
+          <path d={`M${x - 3} ${y - 5} l5 -1 l1 3 z`} fill={winter ? P.snow : P.stoneLight} opacity={0.8} />
+        </g>
+      ))}
+      {FENCES.map(([x, y, dir], i) => (
+        <g key={i} stroke={P.woodDark} strokeWidth={STROKE.fine * 1.6} strokeLinecap="round" fill="none">
+          <path d={`M${x} ${y} v-7 M${x + dir * 9} ${y - 1} v-7 M${x + dir * 18} ${y - 2} v-7`} />
+          <path d={`M${x} ${y - 5} l${dir * 18} -2 M${x} ${y - 2} l${dir * 18} -2`} stroke={P.woodLight} />
+        </g>
+      ))}
     </g>
   )
 }
@@ -286,6 +356,7 @@ export function Backdrop({ m, id = 'map', lit, beacon = 2, orb = true }: Backdro
       <Treeline m={m} />
       <River m={m} />
       <Trail />
+      <Meadow m={m} />
       <Watchtower m={m} beacon={beacon} />
       <Trees m={m} />
       {LANTERNS.map((l, i) => (

@@ -159,20 +159,56 @@ export function Bush({ x, y, s = 1, m }: { x: number; y: number; s?: number; m: 
 }
 
 /** Wildnis: Dornen, Geröll und Nebel auf einem noch gesperrten Platz. */
+/**
+ * Wildnis eines gesperrten Platzes, in drei deutlich verschiedenen Arten:
+ * 0 Dornendickicht, 1 Geröllhalde mit Findling, 2 Nebelsenke mit kahlem Baum.
+ */
 export function Wilds({ variant, m }: { variant: number; m: Mood }) {
   const k = variant % 3
+  const night = m.daypart === 'night'
+  const mist = (
+    <g className="lw-wildmist" fill={P.mist}>
+      <ellipse cx={-4} cy={-7} rx={17} ry={5} opacity={night ? 0.22 : 0.4} />
+      <ellipse cx={7} cy={-11} rx={13} ry={4} opacity={night ? 0.16 : 0.3} />
+    </g>
+  )
+  if (k === 1) {
+    return (
+      <g>
+        <ellipse cx={0} cy={-1} rx={24} ry={7} fill={P.rubble} opacity={0.6} />
+        <path d="M-10 -1 l3 -13 l9 -5 l8 6 l2 12 z" fill={P.stone} {...fine} />
+        <path d="M-7 -14 l9 -5 l3 8 l-8 3 z" fill={P.stoneLight} opacity={0.7} />
+        <path d="M-20 -1 l2 -6 l6 -1 l3 5 z" fill={P.stoneDark} {...fine} />
+        <path d="M11 -1 l2 -7 l6 0 l3 6 z" fill={P.stoneDark} {...fine} />
+        <path d="M-2 -8 l4 3 M3 -12 l-2 5" stroke={P.outline} strokeWidth={STROKE.fine} opacity={0.5} strokeLinecap="round" />
+        <path d="M-23 0 q1 -5 3 0 M20 0 q2 -6 3 0" fill="none" stroke={P.grassDark} strokeWidth={STROKE.fine} strokeLinecap="round" />
+      </g>
+    )
+  }
+  if (k === 2) {
+    return (
+      <g>
+        <ellipse cx={0} cy={-1} rx={24} ry={7} fill={P.rubble} opacity={0.45} />
+        <path d="M2 -1 v-16 M2 -11 l-7 -6 M2 -13 l6 -7 M-5 -17 l-3 -1 M8 -20 l3 0 M2 -17 l-2 -5" fill="none" stroke={P.thorn} strokeWidth={STROKE.bold} strokeLinecap="round" />
+        <path d="M-16 -1 l2 -4 l4 0 l2 4 z" fill={P.stoneDark} {...fine} />
+        <path d="M-22 0 q1 -5 3 0 M16 0 q2 -6 3 0 M10 0 q1 -4 2 0" fill="none" stroke={P.grassDark} strokeWidth={STROKE.fine} strokeLinecap="round" />
+        <g className="lw-wildmist" fill={P.mist}>
+          <ellipse cx={-2} cy={-5} rx={22} ry={6} opacity={night ? 0.3 : 0.55} />
+          <ellipse cx={8} cy={-10} rx={16} ry={5} opacity={night ? 0.22 : 0.42} />
+          <ellipse cx={-10} cy={-12} rx={11} ry={3.5} opacity={night ? 0.16 : 0.32} />
+        </g>
+      </g>
+    )
+  }
   return (
     <g>
       <ellipse cx={0} cy={-1} rx={23} ry={7} fill={P.rubble} opacity={0.55} />
       <path d="M-15 -1 l2 -6 l5 -1 l3 4 l-1 3 z" fill={P.stoneDark} {...fine} />
       <path d="M7 -1 l1 -4 l4 -1 l3 3 l-1 2 z" fill={P.stone} {...fine} />
-      <path d={k === 0 ? 'M-16 -2 q6 -20 14 -6 q4 -16 12 -2 q6 -14 8 2' : k === 1 ? 'M-14 -2 q4 -16 10 -4 q6 -18 14 -2' : 'M-18 -2 q8 -14 12 -2 q4 -20 10 -4 q6 -12 10 4'} fill="none" stroke={P.thorn} strokeWidth={STROKE.bold} strokeLinecap="round" />
+      <path d="M-16 -2 q6 -20 14 -6 q4 -16 12 -2 q6 -14 8 2" fill="none" stroke={P.thorn} strokeWidth={STROKE.bold} strokeLinecap="round" />
       <path d="M-6 -12 l-3 -2 M4 -14 l3 -2 M12 -8 l3 -1 M-11 -9 l-2 -3 M0 -9 l1 -4" stroke={P.thorn} strokeWidth={STROKE.fine} strokeLinecap="round" />
       <path d="M-20 0 q1 -5 3 0 M17 0 q2 -6 3 0" fill="none" stroke={P.grassDark} strokeWidth={STROKE.fine} strokeLinecap="round" />
-      <g className="lw-wildmist" fill={P.mist}>
-        <ellipse cx={-4} cy={-7} rx={17} ry={5} opacity={m.daypart === 'night' ? 0.22 : 0.4} />
-        <ellipse cx={7} cy={-11} rx={13} ry={4} opacity={m.daypart === 'night' ? 0.16 : 0.3} />
-      </g>
+      {mist}
     </g>
   )
 }

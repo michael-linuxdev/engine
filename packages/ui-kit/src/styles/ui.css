@@ -592,16 +592,119 @@ html:has(.ek-app) body {
   cursor: pointer;
 }
 .ek-wheel {
-  width: 120px;
-  height: 120px;
+  width: min(54vw, 220px);
   margin: 0 auto;
-  border-radius: 50%;
-  border: 3px solid var(--ink);
-  background: conic-gradient(var(--accent) 0 60deg, var(--surface-2) 60deg 120deg, var(--accent-2) 120deg 180deg, var(--surface-2) 180deg 240deg, var(--accent) 240deg 300deg, var(--surface-2) 300deg);
-  transition: transform 0.8s ease-out;
 }
-.ek-wheel.is-spun {
-  transform: rotate(540deg);
+.ek-wheel__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.22));
+}
+.ek-wheel__rim {
+  fill: var(--ink);
+  stroke: var(--accent);
+  stroke-width: 5;
+}
+.ek-wheel__disc {
+  transform-origin: 0 0;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.12, 0.72, 0.1, 1);
+}
+.ek-wheel.is-idle .ek-wheel__disc,
+.ek-reduced-motion .ek-wheel__disc {
+  transition-duration: 0s !important;
+}
+.ek-wheel__seg > path {
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.ek-wheel__seg--0 > path,
+.ek-wheel__dot--0 {
+  fill: var(--accent-2);
+  background: var(--accent-2);
+}
+.ek-wheel__seg--1 > path,
+.ek-wheel__dot--1 {
+  fill: var(--surface);
+  background: var(--surface);
+}
+.ek-wheel__seg--2 > path,
+.ek-wheel__dot--2 {
+  fill: var(--accent);
+  background: var(--accent);
+}
+.ek-wheel__seg--3 > path,
+.ek-wheel__dot--3 {
+  fill: var(--surface-2);
+  background: var(--surface-2);
+}
+.ek-wheel__mark path {
+  fill: var(--ink);
+  stroke: none;
+}
+.ek-wheel__seg--0 .ek-wheel__mark path,
+.ek-wheel__seg--2 .ek-wheel__mark path {
+  fill: var(--surface);
+}
+.ek-wheel__seg.is-won > path {
+  stroke: var(--focus);
+  stroke-width: 5;
+}
+.ek-wheel__stud,
+.ek-wheel__pin {
+  fill: var(--accent);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+.ek-wheel__hub {
+  fill: var(--ink);
+}
+.ek-wheel__pointer {
+  fill: var(--accent);
+  stroke: var(--ink);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+.ek-wheel__result {
+  display: grid;
+  gap: 2px;
+  min-height: 3.4em;
+  align-content: center;
+  text-align: center;
+  margin: 0;
+}
+.ek-wheel__result strong {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+}
+.ek-wheel__legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-1);
+  font-size: 0.9rem;
+}
+.ek-wheel__legend li {
+  display: flex;
+  gap: var(--space-2);
+  align-items: baseline;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-s);
+}
+.ek-wheel__legend li.is-won {
+  background: var(--surface-2);
+  outline: 2px solid var(--accent);
+}
+.ek-wheel__dot {
+  flex: none;
+  width: 0.8em;
+  height: 0.8em;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
 }
 .ek-card p,
 .ek-stack p,
@@ -1369,4 +1472,44 @@ html:has(.ek-app) body {
   user-select: text;
   -webkit-user-select: text;
   -webkit-touch-callout: default;
+}
+
+/* Second UI pass: what stays / goes below each other on phones; style rows; details show that they open */
+@media (max-width: 480px) {
+  .ek-keeps {
+    grid-template-columns: 1fr;
+  }
+}
+.ek-style-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.ek-style-actions {
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.ek-details > summary {
+  list-style: none;
+  position: relative;
+  padding-right: 1.6em;
+}
+.ek-details > summary::-webkit-details-marker {
+  display: none;
+}
+.ek-details > summary::after {
+  content: '';
+  position: absolute;
+  right: 0.4em;
+  top: 50%;
+  width: 0.5em;
+  height: 0.5em;
+  margin-top: -0.4em;
+  border-right: 2px solid currentcolor;
+  border-bottom: 2px solid currentcolor;
+  transform: rotate(45deg);
+}
+.ek-details[open] > summary::after {
+  transform: rotate(-135deg);
+  margin-top: -0.1em;
 }
