@@ -14,6 +14,7 @@ export interface MenuItem {
   label: string
   onSelect: () => void
   badge?: boolean
+  icon?: ReactNode
 }
 
 /** Bottom tab bar plus a menu button that opens a menu sheet. */
@@ -44,7 +45,7 @@ export function AppNav({ items, active, onChange, menu, menuIcon }: { items: Nav
         </button>
       </nav>
       <Sheet open={open} title={t.nav.menuTitle} onClose={() => setOpen(false)} testId="menu-sheet">
-        <ul className="ek-menu" role="menu">
+        <ul className={`ek-menu${menu.some((m) => m.icon) ? ' ek-menu--tiles' : ''}`} role="menu">
           {menu.map((m) => (
             <li key={m.id} role="none">
               <button
@@ -58,7 +59,8 @@ export function AppNav({ items, active, onChange, menu, menuIcon }: { items: Nav
                   setTimeout(m.onSelect, 0)
                 }}
               >
-                {m.label}
+                {m.icon ? <span className="ek-menu__icon" aria-hidden="true">{m.icon}</span> : null}
+                <span className="ek-menu__label">{m.label}</span>
                 {m.badge ? <span className="ek-badge ek-badge--inline">{t.common.new}</span> : null}
               </button>
             </li>

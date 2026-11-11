@@ -155,7 +155,7 @@ export const gameDe = {
     hints: {
       wilds: { name: 'Wildnis', blurb: 'Hinter Dornen und Nebel warten weitere Plätze. Tippe sie an: Dort steht, was zum Freilegen fehlt.' },
       milestone: { name: 'Meilensteine', blurb: 'Bei Stufe 25, 50, 100 … verdoppelt sich der Ertrag eines Bauwerks.' },
-      buyMode: { name: 'Mehrere Stufen', blurb: 'Mit ×10 oder Max baust du mehrere Stufen auf einmal aus.' },
+      buyMode: { name: 'Gedrückt halten', blurb: 'Halte „Ausbauen“ gedrückt, dann baut die Warte Stufe um Stufe weiter.' },
       branches: { name: 'Zweige', blurb: 'Im Ausbau-Fenster machen Effizienz und Fassung ein Bauwerk besser oder günstiger.' },
       bonuses: { name: 'Woher kommt das?', blurb: 'Tippe auf deinen Glimmer: Dort siehst du jeden Bonus einzeln.' },
       burstRecharge: { name: 'Funken laden nach', blurb: 'Gerufene Funken kommen mit der Zeit zurück.' },

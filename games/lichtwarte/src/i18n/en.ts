@@ -153,7 +153,7 @@ export const stringsEn: Strings = {
     hints: {
       wilds: { name: 'Wilds', blurb: 'Behind thorns and mist more places wait. Tap them to see what is still missing.' },
       milestone: { name: 'Milestones', blurb: 'At level 25, 50, 100 … a building doubles its yield.' },
-      buyMode: { name: 'Several levels', blurb: 'With ×10 or Max you upgrade several levels at once.' },
+      buyMode: { name: 'Press and hold', blurb: 'Hold “Upgrade” and the watch keeps building level after level.' },
       branches: { name: 'Branches', blurb: 'In the upgrade window, Efficiency and Capacity make a building better or cheaper.' },
       bonuses: { name: 'Where does it come from?', blurb: 'Tap your Glimmer to see every bonus on its own.' },
       burstRecharge: { name: 'Sparks recharge', blurb: 'Called sparks come back over time.' },

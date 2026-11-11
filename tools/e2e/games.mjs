@@ -11,6 +11,8 @@ export const GAMES = [
     skipIntro: { 'lichtwarte-chronicle-v1': '["welcome"]', 'lichtwarte-ftue-v1': '{"completed":[],"dismissed":true}' },
     screens: true,
     art: true,
+    /** Kein ×10/Max im Ausbau-Fenster: eine Stufe je Tippen, Halten baut weiter. */
+    holdToBuy: true,
     /** axe auch für die Spiel-Fenster. */
     axeExtra: async (p, check) => {
       await p.getByTestId('slot-kraeuterkate').click()

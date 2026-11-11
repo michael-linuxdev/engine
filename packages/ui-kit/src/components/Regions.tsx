@@ -25,7 +25,7 @@ export function Stars({ n, max, testId }: { n: number; max: number; testId?: str
   )
 }
 
-export function RegionsPanel({ cfg, lockedText, art }: { cfg: RegionConfig; lockedText: (id: string, i: number) => string; art?: (id: string) => ReactNode }) {
+export function RegionsPanel({ cfg, lockedText, art, max = true }: { cfg: RegionConfig; lockedText: (id: string, i: number) => string; art?: (id: string) => ReactNode; /** Show the "max" button per area (default) or one level per tap with press-and-hold. */ max?: boolean }) {
   const ui = useUi()
   const { world } = useEngine(ui.rt)
   const s = world.get<RegionsState>(REGIONS_ID)
@@ -64,12 +64,12 @@ export function RegionsPanel({ cfg, lockedText, art }: { cfg: RegionConfig; lock
           )
         })}
       </ul>
-      <RegionSheet cfg={cfg} id={open} onClose={() => setOpen(null)} art={art} />
+      <RegionSheet cfg={cfg} id={open} onClose={() => setOpen(null)} art={art} max={max} />
     </section>
   )
 }
 
-export function RegionSheet({ cfg, id, onClose, art }: { cfg: RegionConfig; id: string | null; onClose: () => void; art?: (id: string) => ReactNode }) {
+export function RegionSheet({ cfg, id, onClose, art, max = true }: { cfg: RegionConfig; id: string | null; onClose: () => void; art?: (id: string) => ReactNode; max?: boolean }) {
   const ui = useUi()
   const { world, dispatch } = useEngine(ui.rt)
   const def = cfg.regions.find((r) => r.id === id)
@@ -97,6 +97,7 @@ export function RegionSheet({ cfg, id, onClose, art }: { cfg: RegionConfig; id: 
           <span className="ek-muted">{ui.t.live.starBonus(String(Math.round(cfg.mastery.yieldPerStar * 100)))}</span>
         </div>
       ) : null}
+      {max ? null : <p className="ek-muted ek-hold-hint">{ui.t.upgrade.holdHint}</p>}
       <ul className="ek-list">
         {def.areas.map((a, i) => {
           const n = r.owned[a.id] ?? 0
@@ -110,12 +111,14 @@ export function RegionSheet({ cfg, id, onClose, art }: { cfg: RegionConfig; id: 
               </div>
               {ok ? (
                 <>
-                  <Button size="small" data-testid={`area-buy-${a.id}`} disabled={r.balance < cost} onClick={() => dispatch(REGIONS_ID, 'buy', { region: def.id, area: a.id, count: 1 })}>
+                  <Button size="small" repeat data-testid={`area-buy-${a.id}`} disabled={r.balance < cost} onClick={() => dispatch(REGIONS_ID, 'buy', { region: def.id, area: a.id, count: 1 })}>
                     {ui.fmt(cost)}
                   </Button>
-                  <Button size="small" variant="secondary" disabled={r.balance < cost} onClick={() => dispatch(REGIONS_ID, 'buy', { region: def.id, area: a.id, count: 'max' })}>
-                    {ui.t.common.max}
-                  </Button>
+                  {max ? (
+                    <Button size="small" variant="secondary" disabled={r.balance < cost} onClick={() => dispatch(REGIONS_ID, 'buy', { region: def.id, area: a.id, count: 'max' })}>
+                      {ui.t.common.max}
+                    </Button>
+                  ) : null}
                 </>
               ) : (
                 <span className="ek-muted">{ui.t.common.locked}</span>

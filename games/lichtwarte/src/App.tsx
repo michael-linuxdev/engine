@@ -4,7 +4,7 @@ import { connectSfx, currentStep, useEngine, useStore, useSteps } from '@engine/
 import { CardPicker, FtueCoach, GameShell, Hud, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
 import { BuildingArt } from './art/Building'
-import { IconArchive, IconBook, IconLantern, IconLeaf, IconMap, IconMenu, IconMoon, IconPouch, IconTower } from './art/icons'
+import { IconArchive, IconBook, IconGear, IconLantern, IconLeaf, IconMap, IconMenu, IconMoon, IconPouch, IconSave, IconScroll, IconTower } from './art/icons'
 import { SparkDock } from './scene/SparkDock'
 import { TIER_LEVELS } from './art/registry'
 import { DISTRIBUTION, TEST_PHASE } from './distribution'
@@ -112,7 +112,7 @@ function GameOverlays({ selected, onClose, chronicleOpen, setChronicle, ceremony
   const ldef = ceremony ? game.prestigeLayers.find((l) => l.id === ceremony.layer) : null
   return (
     <>
-      <UpgradeSheet p={p} open={!!p} onClose={onClose} art={p ? <ProducerArt p={p} /> : null} note={p ? (t.producers as Record<string, { note: string }>)[p.id]?.note : undefined} />
+      <UpgradeSheet p={p} open={!!p} onClose={onClose} buyModes={false} art={p ? <ProducerArt p={p} /> : null} note={p ? (t.producers as Record<string, { note: string }>)[p.id]?.note : undefined} />
       <ChronicleSheet open={chronicleOpen} onClose={() => setChronicle(false)} />
       {intro ? <Intro onDone={() => chronicleRead.add(PROLOGUE)} /> : null}
       {ceremony && ldef ? (
@@ -184,7 +184,8 @@ export function App() {
       }
       play={<Play onOpen={setSelected} />}
       navIcons={{ play: <IconTower />, prestige: <IconMoon />, shop: <IconArchive />, menu: <IconMenu /> }}
-      menu={[{ id: 'chronicle', label: t.chronicle.menu, onSelect: () => setChronicle(true), badge: unread }]}
+      menu={[{ id: 'chronicle', label: t.chronicle.menu, icon: <IconBook />, onSelect: () => setChronicle(true), badge: unread }]}
+      menuIcons={{ save: <IconSave />, settings: <IconGear />, legal: <IconScroll /> }}
       tabs={[
         ...(isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, icon: <IconLantern />, badge: watchBadge(world) }, view: <WatchView /> }] : []),
         ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab, icon: <IconLeaf /> }, view: <WorldTab /> }] : []),

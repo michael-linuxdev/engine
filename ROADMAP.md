@@ -112,6 +112,8 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 - [x] Der Balance-Simulator spielt die Lande. Er hat einen Fehler gefunden: Die Öffnungsbedingung fragte die falsche Bereichs-ID ab.
 - [x] Taktung bei regular: Land 2 an Tag 8, danach etwa jeden ein bis zwei Tage, später alle zwei bis drei Tage. Stellschrauben in `REALM_TUNING`, Test in `games/lichtwarte/test/realms.test.ts`.
 - [x] Späte Taktung bei regular (Tag 35–90): gemessen und nachgestellt. Ab Land 14 steigt der Ertrag der Lande mit (`lateYield`, `lateYieldGrowth`), die Zeitalter-Schwelle wächst mit 3 statt 10. Vorher lagen ab Land 15 sieben bis elf Tage zwischen zwei Landen, und das zweite Zeitalter kam an Tag 71. Jetzt: alle zwei bis drei Tage ein Land, Land 34 an Tag 90, Zeitalter an Tag 28/47/80, kein Loch über 3,5 Tage. Test: `tools/balance/late.test.ts`, Werte: `docs/spiele/lichtwarte/balance.md`.
+- [x] **Ausbauen ohne ×10/Max:** eine Stufe je Tippen, gedrückt Halten baut Stufe um Stufe weiter (Ausbau-Fenster und Lande). Engine: `repeat` am Knopf, `buyModes`/`max` abschaltbar.
+- [x] **Menüs spieliger:** Fenster mit Banner-Kopf, dicke goldene Knöpfe mit Druckpunkt, Pergament-Tafeln, Stufen-Plakette, Wert-Tafeln, Rang-Rauten, Menü als Kacheln mit Zeichen.
 - [ ] Lande 35–50 (Plan: `docs/spiele/lichtwarte/regionen.md`). Bei regular ist Land 34 an Tag 90 offen; danach fehlen neue Lande.
 
 ## P10 — Lange Nacht und Zeitalter

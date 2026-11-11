@@ -8,6 +8,7 @@ import { currentMood } from '../scene/mood'
 export function RealmsTab() {
   return (
     <RegionsPanel
+      max={false}
       cfg={REALMS}
       art={(id) => <RealmArt id={id} m={currentMood()} />}
       lockedText={(_id, i) => (i === 0 ? t.realms.opensFirst : t.realms.opensAfter(t.realms.lands[REALM_IDS[i - 1]].name))}

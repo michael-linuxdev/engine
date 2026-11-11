@@ -723,3 +723,100 @@ body {
   flex-direction: column;
   gap: var(--space-1);
 }
+
+/* Upgrade sheet: picture with level badge, stat tiles, rank pips */
+.ek-upgrade__hero {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.ek-upgrade__badge {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 56px;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-m);
+  background: var(--accent);
+  color: var(--on-accent);
+  line-height: 1.1;
+}
+.ek-upgrade__badge-label {
+  font-size: 0.72rem;
+}
+.ek-upgrade__badge strong {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+}
+.ek-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+.ek-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  overflow-wrap: anywhere;
+}
+.ek-stat__label {
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+}
+.ek-buy {
+  width: 100%;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.ek-hold-hint {
+  margin: 0;
+  text-align: center;
+  font-size: 0.82rem;
+}
+.ek-pips {
+  display: inline-flex;
+}
+.ek-pips i {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-2);
+  background: transparent;
+}
+.ek-pips i.is-on {
+  background: var(--accent-2);
+}
+
+/* Menu as tiles (when entries carry icons) */
+.ek-menu--tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+.ek-menu--tiles .ek-menu__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 92px;
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  font-weight: 700;
+}
+.ek-menu__icon {
+  display: inline-flex;
+}

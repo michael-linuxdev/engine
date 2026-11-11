@@ -90,10 +90,28 @@ try {
     await p.goto(URL + '?installGate=0')
     await p.getByTestId('hud-amount').waitFor()
     await openBuy(p, first)
-    await p.getByTestId('buymode-10').click()
-    await p.getByTestId(`buy-${first}`).click()
-    const n = await p.evaluate((id) => window.__engine.get().modules.producers.owned[id], first)
-    assert(n === 10, `Mengenkauf ×10 (${n})`)
+    if (G.holdToBuy) {
+      // Kein ×10/Max: ein Tippen baut eine Stufe, gedrückt Halten baut Stufe um Stufe weiter
+      assert((await p.getByTestId('buymode-10').count()) === 0, 'kein Kaufmengen-Schalter')
+      await p.getByTestId(`buy-${first}`).click()
+      const one = await p.evaluate((id) => window.__engine.get().modules.producers.owned[id], first)
+      assert(one === 1, `ein Tippen baut eine Stufe (${one})`)
+      const box = await p.getByTestId(`buy-${first}`).boundingBox()
+      await p.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
+      await p.mouse.down()
+      await p.waitForTimeout(1400)
+      await p.mouse.up()
+      const held = await p.evaluate((id) => window.__engine.get().modules.producers.owned[id], first)
+      assert(held >= 5, `gedrückt Halten baut weiter (${held})`)
+      // Das Loslassen löst keinen weiteren Kauf aus, und danach ruht der Knopf
+      await p.waitForTimeout(400)
+      assert((await p.evaluate((id) => window.__engine.get().modules.producers.owned[id], first)) === held, 'nach dem Loslassen wird nicht weitergebaut')
+    } else {
+      await p.getByTestId('buymode-10').click()
+      await p.getByTestId(`buy-${first}`).click()
+      const n = await p.evaluate((id) => window.__engine.get().modules.producers.owned[id], first)
+      assert(n === 10, `Mengenkauf ×10 (${n})`)
+    }
     await ctx.close()
   }
 

@@ -6,6 +6,7 @@ import { useUi } from '../useUi'
 import { gateLines } from '../gates'
 import { Button } from './Button'
 import { BuyModeToggle } from './BuyModeToggle'
+import { ProgressBar } from './ProgressBar'
 import { Sheet } from './Sheet'
 
 function useProducer(p: ProducerDef) {
@@ -26,7 +27,7 @@ function useProducer(p: ProducerDef) {
 export function BuyButton({ p, label }: { p: ProducerDef; label?: string }) {
   const { ui, quote: q, affordable, buy, unlocked } = useProducer(p)
   return (
-    <Button data-testid={`buy-${p.id}`} disabled={!unlocked || !affordable} onClick={buy}>
+    <Button data-testid={`buy-${p.id}`} className="ek-buy" repeat disabled={!unlocked || !affordable} onClick={buy}>
       <span>{ui.t.upgrade.buy(`×${q.levels || 1}`)}</span>
       <span className="ek-visually-hidden">{label ?? ui.labels.producer(p.id).name}</span>
       <span className="ek-btn__cost">{ui.fmt(q.cost)}</span>
@@ -63,18 +64,36 @@ export function ProducerList() {
   )
 }
 
-/** Detail sheet of one producer: level, yield, next milestone, buy, branches; `art` is the game's picture. */
-export function UpgradeSheet({ p, open, onClose, art, note }: { p: ProducerDef | null; open: boolean; onClose: () => void; art?: ReactNode; note?: string }) {
+/** Rank as filled and empty pips, with the numbers as accessible text. */
+export function Pips({ n, max }: { n: number; max: number }) {
+  const ui = useUi()
+  return (
+    <span className="ek-pips">
+      <span aria-hidden="true">
+        {Array.from({ length: max }, (_, i) => (
+          <i key={i} className={i < n ? 'is-on' : ''} />
+        ))}
+      </span>
+      <span className="ek-visually-hidden">{ui.t.common.rank(String(n), String(max))}</span>
+    </span>
+  )
+}
+
+/**
+ * Detail sheet of one producer: level, yield, next milestone, buy, branches; `art` is the game's picture.
+ * `buyModes: false` hides the ×1/×10/max toggle: one level per tap, press and hold to keep building.
+ */
+export function UpgradeSheet({ p, open, onClose, art, note, buyModes = true }: { p: ProducerDef | null; open: boolean; onClose: () => void; art?: ReactNode; note?: string; buyModes?: boolean }) {
   const ui = useUi()
   if (!p) return null
   return (
     <Sheet open={open} title={ui.labels.producer(p.id).name} onClose={onClose} testId="upgrade-sheet" className="ek-upgrade">
-      <UpgradeBody p={p} art={art} note={note} />
+      <UpgradeBody p={p} art={art} note={note} buyModes={buyModes} />
     </Sheet>
   )
 }
 
-function UpgradeBody({ p, art, note }: { p: ProducerDef; art?: ReactNode; note?: string }) {
+function UpgradeBody({ p, art, note, buyModes }: { p: ProducerDef; art?: ReactNode; note?: string; buyModes: boolean }) {
   const { ui, world, level, unlocked, dispatch } = useProducer(p)
   const l = ui.labels.producer(p.id)
   const m = nextMilestone(level, world.def.balance)
@@ -94,18 +113,28 @@ function UpgradeBody({ p, art, note }: { p: ProducerDef; art?: ReactNode; note?:
   const max = world.def.balance.branches.maxRank
   return (
     <div className="ek-stack">
-      {art}
+      <div className="ek-upgrade__hero">
+        {art}
+        <span className="ek-upgrade__badge">
+          <span className="ek-upgrade__badge-label">{ui.t.common.level('').trim()}</span>
+          <strong data-testid="upgrade-level">{level}</strong>
+        </span>
+      </div>
       <p>{l.blurb}</p>
       {note ? <blockquote className="ek-quote">{note}</blockquote> : null}
-      <dl className="ek-facts">
-        <dt>{ui.t.common.level('')}</dt>
-        <dd data-testid="upgrade-level">{level}</dd>
-        <dt>{ui.t.upgrade.rate}</dt>
-        <dd>{ui.t.common.perSecond(ui.fmt(world.producerRate(p.id)))}</dd>
-      </dl>
-      <p className="ek-muted">{m ? ui.t.upgrade.nextMilestone(String(m.at)) : ui.t.upgrade.allMilestones}</p>
-      <BuyModeToggle />
+      <div className="ek-stats">
+        <div className="ek-stat">
+          <span className="ek-stat__label">{ui.t.upgrade.rate}</span>
+          <strong>{ui.t.common.perSecond(ui.fmt(world.producerRate(p.id)))}</strong>
+        </div>
+        <div className="ek-stat">
+          <span className="ek-stat__label">{m ? ui.t.upgrade.nextMilestone(String(m.at)) : ui.t.upgrade.allMilestones}</span>
+          <ProgressBar ratio={m ? Math.max(0, Math.min(1, (level - m.from) / Math.max(1, m.at - m.from))) : 1} label={m ? ui.t.upgrade.nextMilestone(String(m.at)) : ui.t.upgrade.allMilestones} />
+        </div>
+      </div>
+      {buyModes ? <BuyModeToggle /> : null}
       <BuyButton p={p} />
+      {buyModes ? null : <p className="ek-muted ek-hold-hint">{ui.t.upgrade.holdHint}</p>}
       {level >= 1 ? (
         <>
           <h3 className="ek-h3">{ui.t.upgrade.branches}</h3>
@@ -118,7 +147,7 @@ function UpgradeBody({ p, art, note }: { p: ProducerDef; art?: ReactNode; note?:
                 <div key={kind} className="ek-card">
                   <strong>{ui.t.upgrade[kind]}</strong>
                   <span className="ek-muted">{kind === 'efficiency' ? ui.t.upgrade.efficiencyBlurb : ui.t.upgrade.capacityBlurb}</span>
-                  <span>{ui.t.common.rank(String(rank), String(max))}</span>
+                  <Pips n={rank} max={max} />
                   <Button size="small" variant="secondary" data-testid={`branch-${kind}`} disabled={full || world.balance(primaryCurrency(world.def)) < cost} onClick={() => dispatch(MODULE.branches, 'buy', { id: p.id, kind })}>
                     {full ? ui.t.meta.maxed : ui.fmt(cost)}
                   </Button>
