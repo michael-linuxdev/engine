@@ -5,11 +5,11 @@
  * Inhalts-IDs sind stabil und stehen in ids.lock.json — nie ändern, nur anhängen.
  */
 import {
-  achievementsModule, calendarFestsModule, challengesModule, choiceEventsModule, collectionsModule, combineModule, dailyModule, regionsModule, marketModule, decorModule, layerCardsModule, projectsModule, seasonAlbumModule, visitorsModule, defaultBalance, featureUnlocksModule, flashModule, questsModule, standardModules,
+  achievementsModule, calendarFestsModule, challengesModule, choiceEventsModule, collectionsModule, combineModule, dailyModule, regionsModule, marketModule, decorModule, layerCardsModule, projectsModule, seasonAlbumModule, visitorsModule, defaultBalance, featureUnlocksModule, flashModule, questsModule, standardModules, weeklyPlanModule,
   weekendModule, wheelModule, type GameDefinition, type GateAtom, type MetaItemDef, type ProducerDef,
 } from '@engine/core'
 import { BRAND } from './brand'
-import { DAILY, DEEDS, FEATURES, FESTIVALS, MARKET_NIGHT, QUESTS, STAR_WHEEL, STAR_WINDOW, TRIALS } from './content/live'
+import { DAILY, DEEDS, FEATURES, FESTIVALS, MARKET_NIGHT, QUESTS, STAR_WHEEL, STAR_WINDOW, TRIALS, WEEKLY } from './content/live'
 import { MARKET } from './content/market'
 import { REALMS } from './content/realms'
 
@@ -209,6 +209,7 @@ function liveModules() {
     flashModule(STAR_WINDOW),
     calendarFestsModule(FESTIVALS),
     wheelModule(STAR_WHEEL),
+    weeklyPlanModule(WEEKLY),
     featureUnlocksModule([...FEATURES, ...WORLD_FEATURES]),
     // P8 Sammeln und Welt
     collectionsModule(COLLECTION),

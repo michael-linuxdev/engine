@@ -226,8 +226,15 @@ export const GAMES = [
       await r.getByTestId('brew').click()
       assert((await r.evaluate(() => window.__engine.get().modules.combine.recipe)) === 'glowTea', 'Alchemie: Rezept braut')
       await r.getByTestId('decor-blueBanner').getByRole('button').click()
-      await r.getByTestId('decor-slot-0').selectOption('blueBanner')
+      // Schmuck wird auf der Karte selbst aufgestellt: Platz antippen, Stück wählen, „Fertig“ führt zurück
+      await r.getByTestId('decor-edit').click()
+      await r.getByTestId('decor-bar').waitFor()
+      await r.getByTestId('decor-spot-0').click()
+      await r.getByTestId('decor-put-blueBanner').click()
       assert((await r.evaluate(() => window.__engine.get().modules.decor.placed[0])) === 'blueBanner', 'Banner aufgestellt')
+      assert((await r.locator('[data-decor="blueBanner"]').count()) === 1, 'Banner steht sofort auf der Karte')
+      await r.getByTestId('decor-done').click()
+      await r.getByTestId('world-view').waitFor()
       // Der Talgast hat keine Meldung mehr: Er wird auf der Karte selbst angetippt (weiter unten)
       assert((await r.getByTestId('visitor-greet').count()) === 0 && (await r.getByTestId('chip-visitor').count()) === 0, 'keine Meldung zum Talgast')
       // Omen und Randnotizen gehören zur Karte: Außerhalb bleibt die Kopfzeile schlank

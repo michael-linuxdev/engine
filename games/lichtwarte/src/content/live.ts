@@ -5,7 +5,7 @@
  */
 import {
   burstMax, isFeatureOpen, layerStatus, levelOf, MODULE, ownedOf, prestigeState, producerLevelsTotal, producersOnline, REGIONS_ID, totalRegionStars,
-  type AchievementDef, type BurstState, type ChallengeConfig, type DailyConfig, type FeatureDef, type FestConfig, type FestItem, type FlashConfig, type ProgressionState,
+  type AchievementDef, type WeeklyPlanConfig, type BurstState, type ChallengeConfig, type DailyConfig, type FeatureDef, type FestConfig, type FestItem, type FlashConfig, type ProgressionState,
   type QuestConfig, type RegionsState, type WeekendConfig, type WheelConfig, type WorldView,
 } from '@engine/core'
 import type { HintDef } from '@engine/react'
@@ -77,6 +77,16 @@ export const TRIALS: ChallengeConfig = {
     { id: 'fiveOnly', restriction: { kind: 'maxProducers', n: 5 }, fromRuns: 6, bonus: 0.03 },
     { id: 'silentSparks', restriction: { kind: 'noBurst' }, fromRuns: 7, bonus: 0.03 },
   ],
+}
+
+/** Wochenplan: drei Ziele je Kalenderwoche, ein Bonus für alle zusammen (Lückenliste 8.4). */
+export const WEEKLY: WeeklyPlanConfig = {
+  goals: [
+    { id: 'rounds', event: 'daily.claimed', target: 5 },
+    { id: 'errands', event: 'quest.claimed', target: 9 },
+    { id: 'turns', event: 'prestige.performed', target: 2 },
+  ],
+  reward: [pebbles(40)],
 }
 
 export const MARKET_NIGHT: WeekendConfig = { from: { weekday: 5, hour: 18 }, to: { weekday: 1, hour: 0 }, mult: 1.25, goalSeconds: 1800, reward: [pebbles(15)] }

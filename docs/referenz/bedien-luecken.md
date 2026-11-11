@@ -87,7 +87,7 @@ Ausbau-Karte (klein, hell, Ladebalken am Knopf, „Noch … fehlt“, Ertragsvor
 | 8.1 | Aufgaben sortiert: Abholbares zuerst, Erledigtes unten. | Feste Reihenfolge. | erledigt |
 | 8.2 | Offene Aufgaben zeigen einen Prozent-Ring statt eines toten Knopfs. | Grauer Knopf „Einsammeln“. | erledigt |
 | 8.3 | Jede Aufgabe nennt ihre Belohnung. | Aufträge und Taten nennen keine Belohnung. | erledigt |
-| 8.4 | Wochenplan mit Bonus für alle erledigten Aufgaben. | Fehlt (die Festwoche im Markt ist etwas anderes). | C |
+| 8.4 | Wochenplan mit Bonus für alle erledigten Aufgaben. | Fehlt (die Festwoche im Markt ist etwas anderes). | erledigt |
 
 ## 9. Feste
 
@@ -106,7 +106,7 @@ Ausbau-Karte (klein, hell, Ladebalken am Knopf, „Noch … fehlt“, Ertragsvor
 | 10.2 | Unbekannte Bewohner nennen, was sie anlockt (Deko, Bereich ab Stufe, Jahreszeit). | „?“ und „Noch nicht gefunden“. | erledigt |
 | 10.3 | Notizbuch als Liste aller Seiten: gesperrte mit Hinweis, wie sie aufgehen; Knopf „Weiterlesen: …“. | Buch zum Blättern ohne Inhaltsverzeichnis; künftige Seiten sind unsichtbar. | erledigt |
 | 10.4 | Kreuzen: Balken mit Restzeit, Ergebnis als Meldung, Raster aller Kreuzungen mit Hinweis, aus welchen Bereichen sie entstehen. | Alchemie: zwei Auswahllisten und eine Restzeit. Keine Rezeptliste, kein Hinweis, keine Ergebnis-Meldung. | erledigt |
-| 10.5 | Deko wird auf der Karte platziert (Bearbeiten-Modus). | Auswahlliste je Platz im Tal-Tab. | B |
+| 10.5 | Deko wird auf der Karte platziert (Bearbeiten-Modus). | Auswahlliste je Platz im Tal-Tab. | erledigt |
 
 ## 11. Einstieg und Hinweise
 

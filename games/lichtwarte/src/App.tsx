@@ -54,9 +54,9 @@ const PROLOGUE = 'prologue'
 
 const steps = ftueSteps((id) => chronicleRead.has(id), (id) => tabsSeen.has(id))
 
-function Play({ onOpen, today, letter, preview }: { onOpen: (id: string) => void } & MapExtras) {
+function Play({ onOpen, today, letter, preview, decorEdit }: { onOpen: (id: string) => void } & MapExtras) {
   return (
-    <ValleyMap onOpen={onOpen} today={today} letter={letter} preview={preview}>
+    <ValleyMap onOpen={onOpen} today={today} letter={letter} preview={preview} decorEdit={decorEdit}>
       <SparkDock />
     </ValleyMap>
   )
@@ -187,6 +187,7 @@ export function App() {
   const unreadLetter = CHRONICLE.some((e) => e.voice === 'letter' && e.open(world) && !read.includes(e.id))
   const [rankOpen, setRankOpen] = useState(false)
   const [previewStyle, setPreviewStyle] = useState<string | null>(null)
+  const [decorEdit, setDecorEdit] = useState(false)
   const basket = world.get<OfflineState>(MODULE.offline)?.pending ?? null
   const openTab = (id: string) => {
     setTab(id)
@@ -267,6 +268,7 @@ export function App() {
                 : undefined
           }
           letter={unreadLetter ? { onOpen: () => setChronicle(true) } : undefined}
+          decorEdit={decorEdit ? { onEnd: () => { setDecorEdit(false); openTab('world') } } : undefined}
           preview={previewStyle ? { style: previewStyle, onEnd: () => { setPreviewStyle(null); openTab('market') } } : undefined}
         />
       }
@@ -279,7 +281,7 @@ export function App() {
       tabs={[{ item: { id: 'market', label: t.trade.tab, icon: <IconPouch />, badge: marketReady(world.get<MarketState>(MARKET_ID), MARKET, rt.clock) }, view: <MarketTab onPreviewStyle={(id) => { setPreviewStyle(id); setTab('play') }} /> }]}
       menuViews={[
         ...(isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, icon: <IconLantern />, badge: !seen.includes('watch'), dot: watchBadge(world) }, view: <WatchView /> }] : []),
-        ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab, icon: <IconLeaf />, badge: !seen.includes('world') }, view: <WorldTab /> }] : []),
+        ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab, icon: <IconLeaf />, badge: !seen.includes('world') }, view: <WorldTab onDecorEdit={() => { setDecorEdit(true); setTab('play') }} /> }] : []),
         ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab, icon: <IconMap />, badge: !seen.includes('realms') }, view: <RealmsTab /> }] : []),
       ]}
       menu={[{ id: 'chronicle', label: t.chronicle.menu, icon: <IconBook />, onSelect: () => setChronicle(true), badge: unread }]}

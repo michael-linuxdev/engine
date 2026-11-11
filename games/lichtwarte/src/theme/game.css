@@ -1388,3 +1388,80 @@ body {
   font-size: 0.8rem;
   bottom: 1%;
 }
+
+/* Schmuck aufstellen: antippbare Plätze am Weg und eine Leiste mit den eigenen Stücken */
+.lw-decor-slot {
+  position: absolute;
+  z-index: 4;
+  width: var(--tap);
+  height: var(--tap);
+  transform: translate(-50%, -70%);
+  padding: 0;
+  border: 2px dashed var(--gold);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--night) 35%, transparent);
+  cursor: pointer;
+}
+.lw-decor-slot.is-set {
+  border-style: solid;
+  background: transparent;
+}
+.lw-decor-slot.is-picked {
+  border-color: var(--ember);
+  box-shadow: 0 0 10px var(--ember);
+}
+.lw-decor-bar {
+  position: absolute;
+  z-index: 7;
+  left: 2%;
+  right: 2%;
+  /* über den Plätzen (sie liegen in der unteren Hälfte der Karte), damit die Leiste keinen verdeckt */
+  top: 33%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 2px solid var(--gold-deep);
+  border-radius: 16px;
+  background: var(--night);
+  color: var(--on-night);
+}
+.lw-decor-bar > span {
+  flex: 1;
+}
+.lw-decor-bar__items {
+  flex: 1;
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+}
+.lw-decor-bar button {
+  flex: none;
+  min-height: var(--tap);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--gold-deep);
+  border-radius: 999px;
+  background: var(--night-2);
+  color: var(--on-night);
+  font: inherit;
+  cursor: pointer;
+}
+.lw-decor-bar button.is-active,
+.lw-decor-bar__done {
+  background: var(--gold) !important;
+  color: var(--night) !important;
+  font-weight: 700;
+}
+/* Beim Aufstellen treten Bauwerk-Schilder, Funkenruf und Heute-Knopf zurück */
+.lw-map[data-edit] .lw-slot,
+.lw-map[data-edit] .lw-dock,
+.lw-map[data-edit] .lw-today,
+.lw-map[data-edit] .lw-guest-btn,
+.lw-map[data-edit] .lw-letter {
+  pointer-events: none;
+  opacity: 0.25;
+}
+/* Beim Aufstellen gehört die Karte dem Schmuck: Marken und Pillen pausieren */
+.lw-app:has(.lw-map[data-edit]) .lw-notices {
+  display: none;
+}

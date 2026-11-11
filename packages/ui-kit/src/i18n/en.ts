@@ -234,6 +234,7 @@ export const engineEn: EngineStrings = {
     privacyPage: 'Privacy policy as a page',
   },
   live: {
+    decorEdit: 'Place on the map',
     cardNow: (per: string) => `For your valley now: ${per}`,
     cardSkip: 'Go on without a card',
     percent: (n: string) => `${n} %`,

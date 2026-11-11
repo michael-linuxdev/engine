@@ -46,9 +46,11 @@ export interface MapExtras {
   letter?: { onOpen: () => void }
   /** Talstil nur zur Ansicht (aus dem Markt): Die Karte zeigt ihn, bis die Vorschau endet. */
   preview?: { style: string; onEnd: () => void }
+  /** Schmuck aufstellen: Die Plätze am Weg werden antippbar, bis „Fertig“. */
+  decorEdit?: { onEnd: () => void }
 }
 
-export function ValleyMap({ onOpen, children, today, letter, preview }: { onOpen: (id: string) => void; children?: ReactNode } & MapExtras) {
+export function ValleyMap({ onOpen, children, today, letter, preview, decorEdit }: { onOpen: (id: string) => void; children?: ReactNode } & MapExtras) {
   const ui = useUi()
   const { world, state } = useEngine(ui.rt)
   const [mood, setMood] = useState(currentMood)
@@ -111,7 +113,7 @@ export function ValleyMap({ onOpen, children, today, letter, preview }: { onOpen
     if (ui.rt.dispatch(VISITORS_ID, 'greet')) setThanks({ key: Date.now(), y: at, text: t.world.guestThanks(ui.labels.content(`guest.${id}`).name, gift) })
   }
   return (
-    <section className="lw-map" data-fx="map" style={{ background: SKY3[mood.daypart][0] }} aria-label={t.play.map} data-mood={`${mood.daypart}-${mood.season}`} data-weather={weather} data-style={preview?.style ?? world.get<MarketState>(MARKET_ID)?.equipped ?? 'duskBlue'}>
+    <section className="lw-map" data-fx="map" data-edit={decorEdit ? 'decor' : undefined} style={{ background: SKY3[mood.daypart][0] }} aria-label={t.play.map} data-mood={`${mood.daypart}-${mood.season}`} data-weather={weather} data-style={preview?.style ?? world.get<MarketState>(MARKET_ID)?.equipped ?? 'duskBlue'}>
       <div className="lw-stage" style={{ aspectRatio: `${MAP_W} / ${MAP_H}` }}>
         <svg className="lw-map__svg" viewBox={`0 0 ${MAP_W} ${MAP_H}`} preserveAspectRatio="xMidYMax meet" role="img" aria-label={t.play.map} data-testid="valley-svg">
           <Backdrop m={mood} lit={lit} beacon={beacon} />
@@ -251,6 +253,7 @@ export function ValleyMap({ onOpen, children, today, letter, preview }: { onOpen
             <span className="ek-visually-hidden">{t.play.letter}</span>
           </button>
         ) : null}
+        {decorEdit ? <DecorEdit onEnd={decorEdit.onEnd} /> : null}
         {preview ? (
           <button type="button" className="lw-preview" data-testid="style-preview" onClick={preview.onEnd}>
             {t.trade.previewing(ui.labels.content(`cosmetic.${preview.style}`).name)}
@@ -266,5 +269,67 @@ export function ValleyMap({ onOpen, children, today, letter, preview }: { onOpen
         {children}
       </div>
     </section>
+  )
+}
+
+/** Schmuck auf der Karte aufstellen: Platz antippen, Stück wählen (oder abräumen), „Fertig“. */
+function DecorEdit({ onEnd }: { onEnd: () => void }) {
+  const ui = useUi()
+  const { world, dispatch } = useEngine(ui.rt)
+  const s = world.get<DecorState>(DECOR_ID)
+  const [slot, setSlot] = useState<number | null>(null)
+  if (!s) return null
+  return (
+    <>
+      {DECOR_SLOTS.slice(0, s.placed.length).map((d, i) => (
+        <button
+          key={i}
+          type="button"
+          className={`lw-decor-slot${s.placed[i] ? ' is-set' : ''}${slot === i ? ' is-picked' : ''}`}
+          style={{ left: `${d.x}%`, top: `${d.y}%` }}
+          data-testid={`decor-spot-${i}`}
+          onClick={() => setSlot(i)}
+        >
+          <span className="ek-visually-hidden">
+            {ui.t.live.slot(String(i + 1))}: {s.placed[i] ? ui.labels.content(`decor.${s.placed[i]}`).name : ui.t.live.emptySlot}
+          </span>
+        </button>
+      ))}
+      <div className="lw-decor-bar" data-testid="decor-bar">
+        {slot === null ? (
+          <span>{t.world.decorPick}</span>
+        ) : (
+          <div className="lw-decor-bar__items">
+            {s.owned.map((id) => (
+              <button
+                key={id}
+                type="button"
+                className={s.placed[slot] === id ? 'is-active' : ''}
+                data-testid={`decor-put-${id}`}
+                onClick={() => {
+                  dispatch(DECOR_ID, 'place', { slot, id })
+                  setSlot(null)
+                }}
+              >
+                {ui.labels.content(`decor.${id}`).name}
+              </button>
+            ))}
+            <button
+              type="button"
+              data-testid="decor-clear"
+              onClick={() => {
+                dispatch(DECOR_ID, 'place', { slot, id: '' })
+                setSlot(null)
+              }}
+            >
+              {ui.t.live.emptySlot}
+            </button>
+          </div>
+        )}
+        <button type="button" className="lw-decor-bar__done" data-testid="decor-done" onClick={onEnd}>
+          {t.world.decorDone}
+        </button>
+      </div>
+    </>
   )
 }

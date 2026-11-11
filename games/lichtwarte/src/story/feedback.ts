@@ -77,6 +77,8 @@ export const feedback: FeedbackMap = (e: EngineEvent, ui) => {
     case 'weekend.claimed':
     case 'flash.claimed':
       return toast(t.fx.window)
+    case 'weekly.claimed':
+      return toast(t.fx.weekly)
     case 'wheel.spun':
       return toast(t.fx.wheel(name(`wheel.${str(e.segment)}`)))
     default:

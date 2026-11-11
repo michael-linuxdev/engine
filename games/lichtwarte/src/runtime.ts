@@ -75,6 +75,7 @@ const NAMESPACES: Record<string, () => Keyed<{ name: string; blurb: string }>> =
   trial: () => t.watch.trials,
   fest: () => t.watch.fests,
   festItem: () => t.watch.festItems,
+  weekly: () => t.watch.weekly,
   wheel: () => t.watch.wheel,
   hint: () => t.watch.hints,
   category: () => t.world.categories,
