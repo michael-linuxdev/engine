@@ -30,7 +30,15 @@ jobs:
       - run: npm test
       - run: npm run build
       - name: Install Chromium for E2E
-        run: npx playwright install --with-deps chromium
+        # Die Paketquellen des Runners sind zeitweise nicht erreichbar (apt: "Temporary failure resolving").
+        # Dreimal versuchen; danach nur den Browser laden, die Systempakete bringt das Runner-Image schon mit.
+        run: |
+          for i in 1 2 3; do
+            npx playwright install --with-deps chromium && exit 0
+            echo "Versuch $i fehlgeschlagen, neuer Versuch in 20 s"
+            sleep 20
+          done
+          npx playwright install chromium
       - name: E2E
         run: npm run e2e
       - name: Verify Pages artifact
