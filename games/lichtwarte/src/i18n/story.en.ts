@@ -538,7 +538,7 @@ export const storyEn: StoryStrings = {
       },
       trainedFirst: {
         title: 'The first',
-        body: 'Today someone came up the mountain with a letter from Fenno in his hand. All it said was: “He can polish lanterns and does not ask stupid questions. Teach him the rest.”\n\nIt took me two days. By the end he knew all the signs, and I had explained for the first time what until then I had only done. It is astonishing how little you know about your own work until someone asks.',
+        body: 'Today someone came up the mountain with a letter from Fenno in his hand. All it said was: “He can polish lanterns and does not ask stupid questions. Teach him the rest.”\n\nIt took me four days. By the end he knew all the signs, and I had explained for the first time what until then I had only done. It is astonishing how little you know about your own work until someone asks.',
       },
       isleSister: {
         title: 'Ten minutes',

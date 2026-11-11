@@ -540,7 +540,7 @@ export const storyDe = {
       },
       trainedFirst: {
         title: 'Der erste',
-        body: 'Heute ist jemand den Berg heraufgekommen, mit einem Brief von Fenno in der Hand. Darin stand nur: „Der kann Laternen putzen und stellt keine dummen Fragen. Bring ihm den Rest bei.“\n\nIch habe zwei Tage gebraucht. Am Ende konnte er alle Zeichen, und ich hatte zum ersten Mal erklärt, was ich bisher nur getan habe. Es ist erstaunlich, wie wenig man von seiner eigenen Arbeit weiß, bis jemand danach fragt.',
+        body: 'Heute ist jemand den Berg heraufgekommen, mit einem Brief von Fenno in der Hand. Darin stand nur: „Der kann Laternen putzen und stellt keine dummen Fragen. Bring ihm den Rest bei.“\n\nIch habe vier Tage gebraucht. Am Ende konnte er alle Zeichen, und ich hatte zum ersten Mal erklärt, was ich bisher nur getan habe. Es ist erstaunlich, wie wenig man von seiner eigenen Arbeit weiß, bis jemand danach fragt.',
       },
       isleSister: {
         title: 'Zehn Minuten',

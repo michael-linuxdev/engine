@@ -122,7 +122,7 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 - [x] **Jahr 5:** 25 Lande am Rand der Karte, Großes Leuchtfeuer (Engine-Modul `monument`), Buch 5 „Das große Licht“ (40 Seiten), Fest-Jahrgang 5.
 - [x] Festmarken knapper: Mondwende 1, Wachrunde 5, Auftrag 2, Funken zählen nicht mehr (rund 850 statt über 4.000 je Fest).
 - [x] Jahr 3 gemessen (Küstenlande alle 14 bis 17 Tage, ein Stern alle drei Tage).
-- [x] Zeitalter etwa alle fünf Wochen (späte Schwelle 1,3 statt 1,35).
+- [x] Zeitalter etwa alle fünf Wochen (späte Schwelle 1,25 statt 1,35).
 - [ ] Jahre 4 und 5 nachmessen (Inseln, Rand der Karte, Lehrlinge, Stufen des Leuchtfeuers) und nachstellen.
 
 ---

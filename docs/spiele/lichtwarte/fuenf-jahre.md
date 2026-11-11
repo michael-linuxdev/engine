@@ -150,21 +150,21 @@ Dazu: **Festmarken knapper.** Eine Mondwende gibt 1 statt 15 Marken. Erwartet si
 
 Gebaut in zwei Paketen (PR #41 und der folgende):
 
-- **Jahr 4 · Die Lehrlinge:** 25 Inseln, **Wächterschule** (Engine-Modul `stewards`): bis zu 20 Lehrlinge, einer nach dem anderen ausgebildet (200 Lichtkiesel und zwei Tage, jeder weitere 15 % teurer und 12 % länger), dann einem Land zugeteilt, das sie von selbst weiterbauen (ein Schritt alle zehn Minuten, bis zu zwölf Stunden nachgeholt). Ein neu entsandter Lehrling baut sofort einen Schritt. Buch 4 (40 Seiten), Fest-Jahrgang 4 (130 und 200 Festmarken).
+- **Jahr 4 · Die Lehrlinge:** 25 Inseln, **Wächterschule** (Engine-Modul `stewards`): bis zu 20 Lehrlinge, einer nach dem anderen ausgebildet (200 Lichtkiesel und vier Tage, jeder weitere 15 % teurer und 12,5 % länger; zusammen rund 305 Tage), dann einem Land zugeteilt, das sie von selbst weiterbauen (ein Schritt alle zehn Minuten, bis zu zwölf Stunden nachgeholt). Ein neu entsandter Lehrling baut sofort einen Schritt. Buch 4 (40 Seiten), Fest-Jahrgang 4 (130 und 200 Festmarken).
 - **Jahr 5 · Das große Licht:** 25 Lande am Rand der Karte, **Großes Leuchtfeuer** (Engine-Modul `monument`): 30 Stufen, für jede gibt jedes Land einmal sechs Stunden seines Ertrags; Stufe n braucht 8 + 3·n Lande, danach ruht der Bau acht Tage. Buch 5 (40 Seiten), Fest-Jahrgang 5 (150 und 230 Festmarken).
 - **Sperre in der Engine:** Schule und Leuchtfeuer prüfen ihre Freischaltung jetzt selbst (`open`). Vorher sperrte nur die Oberfläche; der Simulator bildete an Tag 7 den ersten Lehrling aus.
 
 ### Zeitalter: etwa alle fünf Wochen
 
-Entscheidung: Die späte Schwelle wächst mit 1,3 statt 1,35; die ersten vier Zeitalter bleiben, wo sie waren. Gemessen mit `PLAY=1`, Profil „regular“:
+Entscheidung: Die späte Schwelle wächst mit 1,25 statt 1,35; die ersten vier Zeitalter bleiben, wo sie waren. Gemessen mit `PLAY=1`, Profil „regular“ (Abstand zwischen zwei Zeitaltern in Tagen):
 
-| Faktor | Jahr 2 (Abstand in Tagen) | Jahr 3 |
-|---|---|---|
-| 1,35 (vorher) | 31 bis 38 | 36 bis 46 |
-| **1,30 (jetzt)** | 26 bis 32, im Mittel 31 | bis Tag 675: 32, 32, 32, 38 (Lauf noch nicht zu Ende) |
-| 1,25 (Vergleich) | 23 bis 28, im Mittel 25 | bis Tag 620: 25 bis 27 (Lauf noch nicht zu Ende) |
+| Faktor | Jahr 2 | Jahr 3 | Jahr 4 | Jahr 5 |
+|---|---|---|---|---|
+| 1,35 (vorher) | 31 bis 38 | 36 bis 46 | nicht gemessen | nicht gemessen |
+| 1,30 | 26 bis 40, im Mittel 32 | 40 bis 50, im Mittel 44 | läuft noch | läuft noch |
+| **1,25 (jetzt)** | 23 bis 33, im Mittel 27 | 34 bis 40, im Mittel 35 | läuft noch | läuft noch |
 
-Die Lande fallen bei allen drei Faktoren am selben Tag (Hochlande Tag 140 bis 466, Küsten ab Tag 481): Die Zeitalter verschieben die Lande nicht.
+Der Abstand wächst mit den Jahren; mit 1,25 beginnt er bei knapp vier Wochen und liegt in Jahr 3 bei fünf. Die Lande fallen bei allen Faktoren am selben Tag (Hochlande Tag 140 bis 466, Küsten Tag 481 bis 859, Inseln ab Tag 876): Die Zeitalter verschieben die Lande nicht.
 
 ### Festmarken
 
@@ -172,7 +172,18 @@ Entscheidung: knapper. Eine Marke je Mondwende allein reichte nicht: gemessen fi
 
 ### Jahre 4 und 5: Messung
 
-Noch nicht gemessen. Zwei Läufe über 1.825 Tage (Faktor 1,30 und 1,25) sind gestartet; der Simulator spielt jetzt auch Schule und Leuchtfeuer mit und gibt Ereignisse laufend aus (`STREAM=1`). Nachzutragen sind: Taktung der Inseln und der Lande am Rand, wann die Lehrlinge ausgebildet sind (rund 20.500 Lichtkiesel und 144 Tage Ausbildung; an Tag 570 liegen schon rund 40.000 Kiesel ungenutzt, die Zeit ist also die Bremse, nicht der Preis), wie schnell die Stufen des Leuchtfeuers fallen, und wie die Seiten der Bücher 4 und 5 verteilt sind.
+Zwei Läufe über 1.825 Tage (Faktor 1,30 und 1,25); der Simulator spielt Schule und Leuchtfeuer mit und gibt Ereignisse laufend aus (`STREAM=1`). Stand bei Tag 1.076:
+
+| Was | Gemessen |
+|---|---|
+| Inseln | ab Tag 876, alle 16 bis 18 Tage; die letzte fällt damit um Tag 1.290 |
+| Lehrlinge (zwei Tage, +12 %) | **alle zwanzig nach 128 Tagen ausgebildet** (Tag 876 bis 1.004), der letzte an Tag 1.022 entsandt. Danach hätte Jahr 4 neun Monate lang nur noch die Inseln gehabt. |
+| Lichtkiesel | bremsen nicht: an Tag 1.050 liegen rund 55.000 ungenutzt (der Simulator kauft nichts im Markt), alle zwanzig Lehrlinge kosten zusammen rund 20.500. |
+| Seiten von Buch 4 | 27 Seiten bis Tag 1.062, größter Abstand 18 Tage, zweimal zwei am selben Tag |
+
+**Nachgestellt:** Die Ausbildung dauert jetzt vier Tage und wächst je Lehrling um 12,5 % (der zwanzigste 37 Tage, zusammen rund 305 Tage). Damit reicht die Schule über das ganze Jahr der Inseln. Nicht nachgemessen.
+
+Noch offen (die Läufe sind nicht zu Ende): Taktung der Lande am Rand der Karte, die Stufen des Großen Leuchtfeuers, die Seiten von Buch 5, Zeitalter in Jahr 4 und 5.
 
 ## Was „fünf Jahre“ hier heißt
 
