@@ -155,6 +155,8 @@ export const game: GameDefinition = {
       probe: { gate: 1_000_000, payout: 70 },
       payout: { base: 100, growth: 1.12 },
       minimum: { producersOnline: 3, producersFromCount: 1 },
+      // Meilensteine erst weit nach Tag 90 (regular: rund 730 Mondwenden an Tag 90): Die gemessene Taktung bleibt unberührt.
+      milestones: [1000, 2500, 5000, 10_000, 25_000].map((at, i) => ({ at, reward: [{ currency: CURRENCY.glowPebbles, amount: 30 + i * 15 }], bonus: 0.01 })),
     },
     {
       id: LAYER.longNight,
@@ -163,6 +165,8 @@ export const game: GameDefinition = {
       payout: { base: 5, growth: 1.08 },
       // Nach jeder Langen Nacht drei Tage Ruhe (wie die Referenz)
       minimum: { lowerRuns: 12, restMs: 3 * 86_400_000 },
+      // Ab der 15. Langen Nacht (regular: 13 an Tag 90)
+      milestones: [15, 20, 30, 40, 50, 75, 100, 150].map((at, i) => ({ at, reward: [{ currency: CURRENCY.glowPebbles, amount: 30 + i * 10 }], bonus: 0.01 })),
     },
     {
       id: LAYER.ages,
@@ -171,6 +175,8 @@ export const game: GameDefinition = {
       gate: { base: 5e16, growth: 3, knee: 6, lateGrowth: 2 },
       payout: { base: 3, growth: 1.1 },
       minimum: { lowerRuns: 3 },
+      // Jedes Zeitalter bis zum zwölften ist ein Meilenstein, danach in größeren Schritten: ein Ziel ohne nahes Ende.
+      milestones: [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20, 25, 30, 40, 50].map((at, i) => ({ at, reward: [{ currency: CURRENCY.glowPebbles, amount: 25 + i * 5 }], bonus: 0.02 })),
     },
   ],
   metaShop: archive,

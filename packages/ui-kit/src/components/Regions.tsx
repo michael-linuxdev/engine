@@ -4,11 +4,26 @@
  * `realm.<id>` (blurb = intro), `realmCurrency.<id>`, `realmFigure.<id>`, `realmArea.<areaId>`.
  */
 import { useState, type ReactNode } from 'react'
-import { areaOpen, bulkCost, careCost, regionCostMult, regionRate, REGIONS_ID, type RegionConfig, type RegionsState } from '@engine/core'
+import { areaOpen, bulkCost, careCost, regionCostMult, regionRate, regionStarProgress, REGIONS_ID, totalRegionStars, type RegionConfig, type RegionsState } from '@engine/core'
 import { useEngine } from '@engine/react'
 import { useUi } from '../useUi'
 import { Button } from './Button'
 import { Sheet } from './Sheet'
+
+/** Mastery stars as filled and empty marks, with the count as accessible text. */
+export function Stars({ n, max, testId }: { n: number; max: number; testId?: string }) {
+  const ui = useUi()
+  if (max <= 0) return null
+  return (
+    <span className="ek-stars" data-testid={testId} data-stars={n}>
+      <span aria-hidden="true">
+        <span className="ek-stars__on">{'★'.repeat(n)}</span>
+        <span className="ek-stars__off">{'★'.repeat(max - n)}</span>
+      </span>
+      <span className="ek-visually-hidden">{ui.t.live.stars(String(n), String(max))}</span>
+    </span>
+  )
+}
 
 export function RegionsPanel({ cfg, lockedText, art }: { cfg: RegionConfig; lockedText: (id: string, i: number) => string; art?: (id: string) => ReactNode }) {
   const ui = useUi()
@@ -18,8 +33,14 @@ export function RegionsPanel({ cfg, lockedText, art }: { cfg: RegionConfig; lock
   if (!s) return null
   const firstLocked = cfg.regions.findIndex((r) => !s.regions[r.id]?.open)
   const visible = cfg.regions.filter((r, i) => s.regions[r.id]?.open || i === firstLocked)
+  const all = totalRegionStars(cfg, s)
   return (
     <section className="ek-panel" aria-label={ui.labels.content('title.realms').name} data-testid="realms">
+      {all.total > 0 ? (
+        <p className="ek-strong" data-testid="stars-total">
+          {ui.t.live.starsAll(String(all.have), String(all.total))}
+        </p>
+      ) : null}
       <ul className="ek-list">
         {visible.map((r) => {
           const i = cfg.regions.indexOf(r)
@@ -29,7 +50,9 @@ export function RegionsPanel({ cfg, lockedText, art }: { cfg: RegionConfig; lock
             <li key={r.id} className={`ek-row${st?.open ? '' : ' is-locked'}`} data-testid={`realm-${r.id}`}>
               {art ? <div className="ek-row__art">{art(r.id)}</div> : null}
               <div className="ek-row__main">
-                <strong>{l.name}</strong>
+                <strong>
+                  {l.name} {st?.open ? <Stars n={regionStarProgress(cfg, r, st).stars} max={regionStarProgress(cfg, r, st).max} testId={`stars-${r.id}`} /> : null}
+                </strong>
                 <span className="ek-muted">{st?.open ? ui.t.live.regionRate(ui.fmt(regionRate(cfg, r, st, world)), ui.labels.content(`realmCurrency.${r.id}`).name) : lockedText(r.id, i)}</span>
               </div>
               {st?.open ? (
@@ -55,6 +78,7 @@ export function RegionSheet({ cfg, id, onClose, art }: { cfg: RegionConfig; id: 
   const l = ui.labels.content(`realm.${def.id}`)
   const cur = ui.labels.content(`realmCurrency.${def.id}`).name
   const m = regionCostMult(cfg, r)
+  const sp = regionStarProgress(cfg, def, r)
   return (
     <Sheet open title={l.name} onClose={onClose} testId="realm-sheet">
       {art?.(def.id)}
@@ -64,6 +88,15 @@ export function RegionSheet({ cfg, id, onClose, art }: { cfg: RegionConfig; id: 
       <p className="ek-strong" data-testid="realm-balance">
         {ui.fmt(r.balance)} {cur} · {ui.t.live.regionRate(ui.fmt(regionRate(cfg, def, r, world)), cur)}
       </p>
+      {sp.max > 0 && cfg.mastery ? (
+        <div className="ek-card" data-testid="mastery">
+          <strong>
+            {ui.t.live.mastery} <Stars n={sp.stars} max={sp.max} />
+          </strong>
+          <span>{sp.nextLevel === null ? ui.t.live.starsDone : ui.t.live.starNext(String(sp.nextLevel), String(sp.have), String(sp.total))}</span>
+          <span className="ek-muted">{ui.t.live.starBonus(String(Math.round(cfg.mastery.yieldPerStar * 100)))}</span>
+        </div>
+      ) : null}
       <ul className="ek-list">
         {def.areas.map((a, i) => {
           const n = r.owned[a.id] ?? 0

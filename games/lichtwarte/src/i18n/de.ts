@@ -120,6 +120,10 @@ export const gameDe = {
       rankTen: { name: 'Wächterin von Rang', blurb: 'Wächterrang 10 erreicht.' },
       rankTwentyFive: { name: 'Alte Hand', blurb: 'Wächterrang 25 erreicht.' },
       wholeValley: { name: 'Das ganze Tal', blurb: 'Alle zehn Bauwerke stehen.' },
+      firstStar: { name: 'Ein Land leuchtet', blurb: 'Der erste Stern der Meisterschaft.' },
+      tenStars: { name: 'Zehnfach gemeistert', blurb: 'Zehn Sterne in den Landen.' },
+      starPerRealm: { name: 'Jedem Land sein Stern', blurb: 'So viele Sterne, wie es Lande gibt.' },
+      allStars: { name: 'Alle Lande gemeistert', blurb: 'Drei Sterne in jedem Land.' },
     },
     trials: {
       withoutWoodshed: { name: 'Ohne Holzlager', blurb: 'Eine Mondzeit ganz ohne Holzlager.' },

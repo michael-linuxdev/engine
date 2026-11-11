@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  createManualClock, createState, dispatch, gateAt, tick, layerStatus, payoutAtGate, payoutCurve, prestige, rawPayout, view,
+  createManualClock, createState, dispatch, gateAt, tick, layerMilestones, layerStatus, payoutAtGate, payoutCurve, prestige, rawPayout, view,
   type EngineState, type LayerState,
 } from '../src'
 import { T0, testGame } from './fixture'
@@ -118,5 +118,38 @@ describe('three layers in a row', () => {
     let s = createState(d, clock)
     s = { ...s, modules: { ...s.modules, prestige: { layers: [{ count: 1, runEarned: 1e9, sinceReset: 1 }, { count: 0, runEarned: 0, sinceReset: 0 }, { count: 0, runEarned: 0, sinceReset: 0 }] }, producers: { owned: { a: 3 } } } }
     expect(layerStatus(view(d, s), 'l1').block).toBe('producers')
+  })
+})
+
+describe('layer milestones', () => {
+  const M = testGame({ prestigeLayers: [{ ...L[0], milestones: [{ at: 2, reward: [{ currency: 'm3', amount: 9 }], bonus: 0.5 }, { at: 4, bonus: 0.25 }] }, L[1], L[2]] })
+  // m3 is paid by nothing else here (gem also comes from a level reward)
+  const gems = (s: EngineState) => wallet(s).m3 ?? 0
+  const withCount = (s: EngineState, count: number): EngineState => ({ ...s, modules: { ...s.modules, prestige: { layers: [{ count, runEarned: 1e12, sinceReset: count, lastAt: 0 }, ...layers(s).slice(1)] } } })
+  it('reaching the count grants the reward once, emits an event and adds a permanent bonus', () => {
+    const c = createManualClock(T0)
+    let s = withCount(createState(M, c), 1)
+    expect(layerMilestones(view(M, s), 'l1')).toMatchObject({ reached: 0, total: 2, bonus: 0 })
+    expect(view(M, s).value('rate:a', 1)).toBe(1)
+    const r = dispatch(M, s, { module: 'prestige', type: 'perform', payload: { layer: 'l1' } }, c)
+    s = r.state
+    expect(layers(s)[0].count).toBe(2)
+    expect(r.events.some((e) => e.type === 'prestige.milestone' && e.layer === 'l1' && e.at === 2)).toBe(true)
+    expect(gems(s)).toBe(9)
+    // Against the same state without milestones (the run also raised the level bonus)
+    expect(view(M, s).value('rate:a', 1) / view(def, { ...s, modules: { ...s.modules } }).value('rate:a', 1)).toBeCloseTo(1.5, 9)
+    expect(layerMilestones(view(M, s), 'l1')).toMatchObject({ reached: 1, total: 2, bonus: 0.5, next: { at: 4 } })
+    // The next run (count 3) is no milestone: no second reward
+    const again = dispatch(M, withCount(s, 2), { module: 'prestige', type: 'perform', payload: { layer: 'l1' } }, c)
+    expect(layers(again.state)[0].count).toBe(3)
+    expect(again.events.some((e) => e.type === 'prestige.milestone')).toBe(false)
+    expect(gems(again.state)).toBe(9)
+  })
+  it('derived from the count: an old save past a milestone gets the bonus at once, all reached → next is null', () => {
+    const c = createManualClock(T0)
+    const s = withCount(createState(M, c), 7)
+    expect(layerMilestones(view(M, s), 'l1')).toEqual({ reached: 2, total: 2, next: null, bonus: 0.75 })
+    expect(view(M, s).value('rate:a', 1)).toBe(1.75)
+    expect(layerMilestones(view(def, s), 'l1')).toEqual({ reached: 0, total: 0, next: null, bonus: 0 })
   })
 })

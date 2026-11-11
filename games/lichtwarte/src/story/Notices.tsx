@@ -30,7 +30,9 @@ export function Notices({ coach, onEvents, compact = false }: { coach: ReactNode
   else {
     const hint = pickHint(HINTS, (id) => hintsSeen.has(id), world)
     const text = hint ? ui.labels.content(`hint.${hint.id}`) : null
-    notice = <HintBubble hint={text ? { title: text.name, body: text.blurb } : null} onClose={() => hint && hintsSeen.add(hint.id)} />
+    // Auf der Karte verdeckt eine offene Blase die oberen Bauwerke: erst als Marke zeigen
+    if (text && compact && expanded !== `hint:${hint?.id}`) notice = <Chip id={`hint:${hint?.id}`} text={text.name} onOpen={setExpanded} testId="chip-hint" />
+    else notice = <HintBubble hint={text ? { title: text.name, body: text.blurb } : null} onClose={() => hint && hintsSeen.add(hint.id)} />
   }
   return (
     <>
@@ -40,9 +42,9 @@ export function Notices({ coach, onEvents, compact = false }: { coach: ReactNode
   )
 }
 
-function Chip({ id, text, onOpen }: { id: string; text: string; onOpen: (id: string) => void }) {
+function Chip({ id, text, onOpen, testId }: { id: string; text: string; onOpen: (id: string) => void; testId?: string }) {
   return (
-    <button type="button" className="lw-chip" data-testid={`chip-${id}`} onClick={() => onOpen(id)}>
+    <button type="button" className="lw-chip" data-testid={testId ?? `chip-${id}`} onClick={() => onOpen(id)}>
       {text}
     </button>
   )

@@ -3,6 +3,7 @@
  * der Parser füllt neue Lande automatisch. Texte: i18n/realms.*.ts.
  * Welle 1 = Lande 2–12, Welle 2 = 13–23, Welle 3 = 24–34 (Land 1 ist die Talkarte selbst).
  */
+import { CURRENCY } from '../ids'
 import { prestigeState, REGIONS_ID, type ProducerDef, type RegionConfig, type RegionDef, type RegionsState, type WorldView } from '@engine/core'
 
 export const REALM_IDS = ['moorgrund', 'kieselbach', 'birkenhang', 'felsenkamm', 'heidegrund', 'schilfufer', 'apfelhain', 'eulenwald', 'salzquelle', 'windmark', 'sternweiher',
@@ -86,4 +87,7 @@ export const REALMS: RegionConfig = {
   ),
   care: { maxRank: 10, growPerRank: 0.1, thriftPerRank: 0.03, costBase: 200, costGrowth: 2.2 },
   bonus: { cap: 1.5, l0: 600 },
+  // Meisterschaft: drei Sterne je Land, es zählt der schwächste der zehn Bereiche (Messung in balance.md).
+  // Die Pflege taugt nicht als Maß: Sie ist nach wenigen Tagen voll.
+  mastery: { levels: [25, 50, 100], yieldPerStar: 0.05, reward: [{ currency: CURRENCY.glowPebbles, amount: 5 }] },
 }

@@ -163,6 +163,13 @@ body {
   box-shadow: 0 0 10px var(--ember);
 }
 
+/* Auf den übrigen Tabs klebt die Kopfzeile oben: deckend, damit kein Text durchscheint */
+.lw-app:not([data-tab='play']) .ek-hud {
+  background: var(--bg);
+  padding-bottom: var(--space-2);
+  max-width: none;
+}
+
 /* Hinweise unter der Kopfzeile */
 .lw-notices {
   position: relative;

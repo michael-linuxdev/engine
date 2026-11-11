@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { useOverlay } from '@engine/react'
+import { layerIndex, prestigeState } from '@engine/core'
+import { useEngine, useOverlay } from '@engine/react'
 import { Button, useUi } from '@engine/ui'
 import { t } from '../runtime'
 import { StoryScene, type SceneKind } from './Scene'
@@ -12,6 +13,11 @@ export function Ceremony({ layer, payout, currency, onDone }: { layer: string; p
   useEffect(() => {
     ref.current?.querySelector<HTMLElement>('button')?.focus()
   }, [])
+  const { world } = useEngine(ui.rt)
+  // Meilenstein der Schicht: genau jetzt erreicht, wenn die neue Zahl der Läufe einer ist
+  const k = layerIndex(world.def, layer)
+  const count = prestigeState(world).layers[k]?.count ?? 0
+  const milestone = (world.def.prestigeLayers[k]?.milestones ?? []).some((m) => m.at === count)
   const name = ui.labels.layer(layer).name
   const kind: SceneKind = layer in t.ceremony.layers ? (layer as SceneKind) : 'moonturn'
   const l = t.ceremony.layers[kind as keyof typeof t.ceremony.layers]
@@ -31,6 +37,11 @@ export function Ceremony({ layer, payout, currency, onDone }: { layer: string; p
         <p className="lw-story__line lw-story__gain" style={{ animationDelay: `${0.5 + 3 * 1.3}s` }}>
           {t.ceremony.body(ui.fmt(payout), ui.labels.currency(currency))}
         </p>
+        {milestone ? (
+          <p className="lw-story__line lw-story__gain" data-testid="ceremony-milestone" style={{ animationDelay: `${0.5 + 5 * 1.3}s` }}>
+            {t.ceremony.milestone(String(count))}
+          </p>
+        ) : null}
         <Button data-testid="ceremony-ok" className="lw-story__cta" style={{ animationDelay: `${0.5 + 4 * 1.3}s` }} onClick={onDone}>
           {t.ceremony.cta}
         </Button>

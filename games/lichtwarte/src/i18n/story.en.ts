@@ -145,6 +145,7 @@ export const storyEn: StoryStrings = {
     title: (layer) => `${layer}`,
     body: (amount, currency) => `The valley rests. The archive now holds ${amount} more ${currency}.`,
     cta: 'A new morning',
+    milestone: (n) => `Milestone: run ${n}. The valley will not forget.`,
     layers: {
       moonturn: { l1: 'The moon turns above Duskvale.', l2: 'The Glimmer drifts away, the houses sink into sleep.', l3: 'What you have learned stays.' },
       longNight: { l1: 'The sun stays away.', l2: 'For days only one fire burns: yours.', l3: 'Then, at last, the rim of the sky grows bright.' },

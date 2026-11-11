@@ -83,7 +83,7 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 ## P7 — Bindung
 
 - [x] Engine-Module mit Tests: `daily`, `quests`, `achievements`, `challenges` (mit `guard`-Hook für Einschränkungen), `weekendEvent`, `flash`, `calendarFests`, `wheel`, `featureUnlocks`. Dazu `pickHint` (engine-react), lokale Kalenderzeit über `Clock.offsetMin`.
-- [x] Inhalte: Wachrunde (7 Tage, Einfrieren statt Verfall, 3 Rückkehr-Stufen), 6 Auftrags-Vorlagen (3 je Tag), 12 Taten, 3 Prüfungen, Marktnacht, Sternfenster, 9 Lichterfeste mit Laden, Sternenrad (4 Arten), 5 Freischaltungen, 16 Hinweise
+- [x] Inhalte: Wachrunde (7 Tage, Einfrieren statt Verfall, 3 Rückkehr-Stufen), 6 Auftrags-Vorlagen (3 je Tag), 16 Taten, 3 Prüfungen, Marktnacht, Sternfenster, 9 Lichterfeste mit Laden, Sternenrad (4 Arten), 5 Freischaltungen, 16 Hinweise
 - [x] UI: Wacht-Tab (öffnet sich nach Kräuterkate Stufe 10), Ereignis-Pillen, Hinweisblase, Sternenrad nach der Zeremonie. Neue Eigennamen sind geprüft und eingetragen.
 - [x] Overlay-Stapel: genau ein History-Eintrag, Änderungen gebündelt. Vorher konnte Escape nach „Fenster zu, neues Fenster auf“ die Seite verlassen.
 - [ ] Rückkehr-Brief (≥ 48 h) und Benachrichtigungen: folgen mit P10 bzw. P12
@@ -148,6 +148,16 @@ Ziel: Das Spiel soll der Referenz in Erzählung, Grafik und Stimmung überlegen 
 - [x] **Alwine auf der Bank** vor der Kräuterkate, sobald das erste Zeitalter begonnen hat.
 - [x] **Installationsanleitung je Browser** beim Start im Browser (Handy/Tablet), „Im Browser weiter“ gilt 6 Stunden. **Playtest-Log** in der Testphase standardmäßig an.
 - [ ] Bewusst zurückgestellt (Entscheidung Michael, 2026-11-10): echte Werbung und Käufe (brauchen Store-Hülle und Konten), Benachrichtigungen, Impressum und Markenprüfung.
+
+## P14 — Langzeit (Ziel: Jahre statt Monate)
+
+Fester Inhalt trägt etwa 90 Tage. Für mehr braucht es Ziele ohne nahes Ende und regelmäßigen Nachschub.
+
+- [x] **Meisterschaft der Lande:** drei Sterne je Land nach dem schwächsten Bereich (Stufe 25 / 50 / 100), je Stern +5 % Ertrag im Land und 5 Lichtkiesel, vier Taten. Engine: `mastery` im Regionen-Modul, berechnet statt gespeichert.
+- [x] **Meilensteine der Schichten:** Mondwende (ab 1.000), Lange Nacht (ab 15), Zeitalter (ab dem 2.) mit Belohnung und dauerhaftem Bonus, sichtbar im Neubeginn-Tab und in der Zeremonie. Engine: `milestones` je Schicht, berechnet statt gespeichert.
+- [ ] Lande 35–50 (Plan: `docs/spiele/lichtwarte/regionen.md`).
+- [ ] Jahrgänge für die Lichterfeste, Sammlungen erweitern, ein neues Chronik-Kapitel je Quartal.
+- [ ] Messung nach Tag 90 (wann fallen dritte Sterne und spätere Meilensteine wirklich?).
 
 ---
 

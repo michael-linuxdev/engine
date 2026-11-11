@@ -168,7 +168,25 @@ export const GAMES = [
       await r.getByTestId('realm-sheet').getByText(T.realms.lands.moorgrund.areas.boardwalk, { exact: true }).waitFor()
       await r.getByTestId('area-buy-moorgrund_boardwalk').click()
       assert((await r.evaluate(() => window.__engine.get().modules.regions.regions.moorgrund.owned.moorgrund_boardwalk)) === 1, 'Land: erster Bereich gebaut')
+      // Meisterschaft: Der Kauf, der den schwächsten Bereich auf Stufe 25 bringt, gibt den ersten Stern und 5 Lichtkiesel
+      const pebblesBeforeStar = await r.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        const areas = ['boardwalk', 'peatCut', 'reedHut', 'wispBridge', 'bogBirches', 'cottonMeadow', 'mistTower', 'bogSpring', 'dragonflyPond', 'peatBeacon']
+        const owned = Object.fromEntries(areas.map((a) => [`moorgrund_${a}`, a === 'boardwalk' ? 24 : 25]))
+        const moor = { ...s.modules.regions.regions.moorgrund, owned, balance: 1e15 }
+        rt.replace({ ...s, modules: { ...s.modules, regions: { regions: { ...s.modules.regions.regions, moorgrund: moor } } } })
+        return s.modules.wallet.balances.glowPebbles
+      })
+      await r.getByTestId('mastery').getByText(T.live.starNext('25', '9', '10')).waitFor()
+      await r.getByTestId('area-buy-moorgrund_boardwalk').click()
+      await r.getByTestId('mastery').getByText(T.live.starNext('50', '0', '10')).waitFor()
+      assert((await r.evaluate(() => window.__engine.get().modules.wallet.balances.glowPebbles)) - pebblesBeforeStar >= 5, 'Meisterschaft: Stern belohnt')
       await r.keyboard.press('Escape')
+      assert((await r.getByTestId('stars-moorgrund').getAttribute('data-stars')) === '1', 'Meisterschaft: Stern in der Lande-Liste')
+      // Meilensteine der Schichten stehen im Neubeginn-Tab
+      await r.getByTestId('tab-prestige').click()
+      assert((await r.getByTestId('milestones-ages').getAttribute('data-reached')) === '0', 'Meilensteine des Zeitalters sichtbar')
 
       // Markt: Tagesgeschenk, Talstil kaufen und anlegen, Testkauf mit Testgeld
       await r.getByTestId('tab-market').click()

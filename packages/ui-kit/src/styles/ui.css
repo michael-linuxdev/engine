@@ -706,3 +706,20 @@ body {
   max-width: 32rem;
   overflow-wrap: anywhere;
 }
+
+/* Mastery stars and layer milestones */
+.ek-stars {
+  white-space: nowrap;
+  letter-spacing: 1px;
+}
+.ek-stars__on {
+  color: var(--accent-2);
+}
+.ek-stars__off {
+  color: var(--line);
+}
+.ek-milestones {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
