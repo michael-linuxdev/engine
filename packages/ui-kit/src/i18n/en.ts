@@ -368,6 +368,7 @@ export const engineEn: EngineStrings = {
     passBlurb: 'New every week. Points come from the daily round and bonus videos.',
     passXp: (a: string, b: string) => `${a} / ${b} points`,
     passTier: (n: string) => `Tier ${n}`,
+    rewardTime: (time) => `${time} of income`,
     passFrom: (xp) => `from ${xp} points`,
     passFree: 'Free',
     passPremium: 'Festival Week Plus',

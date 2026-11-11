@@ -79,7 +79,8 @@ function useRewardText() {
   const { world } = useEngine(ui.rt)
   return (r: MarketReward) => {
     const parts: string[] = []
-    if (r.seconds) parts.push(`${ui.fmt(world.rate() * r.seconds)} ${ui.labels.currency(primaryCurrency(world.def))}`)
+    // Without income yet the amount would read "0": say how much time of income it is instead
+    if (r.seconds) parts.push(world.rate() > 0 ? `${ui.fmt(world.rate() * r.seconds)} ${ui.labels.currency(primaryCurrency(world.def))}` : ui.t.market.rewardTime(ui.duration(r.seconds * 1000)))
     for (const g of r.grant ?? []) parts.push(amountText(ui, g))
     return parts.join(' + ')
   }

@@ -371,6 +371,7 @@ export const engineDe = {
     passBlurb: 'Jede Woche neu. Punkte gibt es für die Tagesrunde und Bonus-Videos.',
     passXp: (a: string, b: string) => `${a} / ${b} Punkte`,
     passTier: (n: string) => `Stufe ${n}`,
+    rewardTime: (time: string) => `${time} Ertrag`,
     passFrom: (xp: string) => `ab ${xp} Punkten`,
     passFree: 'Frei',
     passPremium: 'Festwoche Plus',
