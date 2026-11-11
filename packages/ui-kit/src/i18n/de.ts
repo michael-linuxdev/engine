@@ -218,6 +218,7 @@ export const engineDe = {
     privacyPage: 'Datenschutzerklärung als Seite',
   },
   live: {
+    morePills: (n: string) => `${n} weitere`,
     claim: 'Einsammeln',
     claimed: 'Eingesammelt',
     progress: (a: string, b: string) => `${a} / ${b}`,

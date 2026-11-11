@@ -23,24 +23,24 @@ Ausbau-Karte (klein, hell, Ladebalken am Knopf, „Noch … fehlt“, Ertragsvor
 
 | # | Referenz | Lichtwarte | Wirkung |
 |---|---|---|---|
-| 2.1 | Nur der **nächste** gesperrte Platz zeigt, was fehlt, mit Fortschrittsbalken. | Jeder gesperrte Platz zeigt nur ein Schloss. | A |
-| 2.2 | Eine Marke am besten Kauf; ein Pfeil nur dort. | Pfeil an jedem bezahlbaren Platz, keine Empfehlung. | B |
-| 2.3 | „Noch 3 bis ★“ am Platz kurz vor einem Meilenstein. | Fehlt. | B |
-| 2.4 | Partikel beim Freilegen, beim ersten Bau und bei jeder Wachstumsstufe; große Feier bei der höchsten. | Nur ein kurzes Aufwachsen. | B |
-| 2.5 | Ein Knopf „Heute“ unten links bündelt alles Tägliche und wird zum Einsammeln-Knopf, wenn Ertrag wartet. | Dafür gibt es nur den Wacht-Tab. | B |
-| 2.6 | Der Helfer geht mit Laufbildern den Weg ab und bleibt an den Bereichen stehen. | Der Lehrling steht und wippt; sein Platz wechselt je Minute. | C |
-| 2.7 | Ein Umschlag am Haus, wenn ein Brief wartet. | Nur ein Punkt am Chronik-Knopf. | C |
-| 2.8 | Besucher an einer von sechs zufälligen Stellen, mit Funkeln. | Immer derselbe Platz, kein Funkeln. | C |
+| 2.1 | Nur der **nächste** gesperrte Platz zeigt, was fehlt, mit Fortschrittsbalken. | Jeder gesperrte Platz zeigt nur ein Schloss. | erledigt |
+| 2.2 | Eine Marke am besten Kauf; ein Pfeil nur dort. | Pfeil an jedem bezahlbaren Platz, keine Empfehlung. | erledigt |
+| 2.3 | „Noch 3 bis ★“ am Platz kurz vor einem Meilenstein. | Fehlt. | erledigt |
+| 2.4 | Partikel beim Freilegen, beim ersten Bau und bei jeder Wachstumsstufe; große Feier bei der höchsten. | Nur ein kurzes Aufwachsen. | erledigt |
+| 2.5 | Ein Knopf „Heute“ unten links bündelt alles Tägliche und wird zum Einsammeln-Knopf, wenn Ertrag wartet. | Dafür gibt es nur den Wacht-Tab. | erledigt |
+| 2.6 | Der Helfer geht mit Laufbildern den Weg ab und bleibt an den Bereichen stehen. | Der Lehrling steht und wippt; sein Platz wechselt je Minute. | erledigt |
+| 2.7 | Ein Umschlag am Haus, wenn ein Brief wartet. | Nur ein Punkt am Chronik-Knopf. | erledigt |
+| 2.8 | Besucher an einer von sechs zufälligen Stellen, mit Funkeln. | Immer derselbe Platz, kein Funkeln. | erledigt |
 
 ## 3. Kopfzeile
 
 | # | Referenz | Lichtwarte | Wirkung |
 |---|---|---|---|
-| 3.1 | Die Ziel-Zeile ist ein Knopf: Sie öffnet das empfohlene Bauwerk oder den Neubeginn-Tab. | Nicht antippbar. | A |
-| 3.2 | Kachel mit Stufe und Erfahrungsbalken; Antippen öffnet die Fortschritts-Seite. Puls beim Aufstieg. | Der Wächterrang ist nirgends zu sehen. | B |
-| 3.3 | Nebenwährungen stehen klein in der Kopfzeile. | Nur Glimmer. | B |
-| 3.4 | Ereignis-Pillen mit Symbol und Restzeit, höchstens drei, Rest hinter „+N“; Antippen zeigt Details oder holt ab. | Pillen nur mit Namen, ohne Restzeit, ohne Obergrenze; jede springt in die Wacht. | B |
-| 3.5 | Eine Pille „Neubeginn: +X in 12 min“. | Fehlt. | B |
+| 3.1 | Die Ziel-Zeile ist ein Knopf: Sie öffnet das empfohlene Bauwerk oder den Neubeginn-Tab. | Nicht antippbar. | erledigt |
+| 3.2 | Kachel mit Stufe und Erfahrungsbalken; Antippen öffnet die Fortschritts-Seite. Puls beim Aufstieg. | Der Wächterrang ist nirgends zu sehen. | erledigt |
+| 3.3 | Nebenwährungen stehen klein in der Kopfzeile. | Nur Glimmer. | erledigt |
+| 3.4 | Ereignis-Pillen mit Symbol und Restzeit, höchstens drei, Rest hinter „+N“; Antippen zeigt Details oder holt ab. | Pillen nur mit Namen, ohne Restzeit, ohne Obergrenze; jede springt in die Wacht. | erledigt |
+| 3.5 | Eine Pille „Neubeginn: +X in 12 min“. | Fehlt. | erledigt |
 
 ## 4. Rückmeldung (das eigentliche Spielgefühl)
 

@@ -3,9 +3,10 @@
  * Reihenfolge: Einstieg → Omen → Randnotiz der Chronik. Der Talgast hat keine Meldung: Er steht auf der Karte und wird dort angetippt. Ereignis-Pillen sind klein und immer da.
  */
 import { useState, type ReactNode } from 'react'
-import { CHOICES_ID, isFeatureOpen, type ChoiceState } from '@engine/core'
+import { CHOICES_ID, isFeatureOpen, layerForecast, layerStatus, type ChoiceState } from '@engine/core'
 import { pickHint, useEngine, useStore } from '@engine/react'
-import { ChoiceNotice, EventPills, HintBubble, useUi } from '@engine/ui'
+import { ChoiceNotice, EventPills, HintBubble, useUi, type Pill } from '@engine/ui'
+import { game } from '../game'
 import { HINTS } from '../content/live'
 import { hintsSeen, t } from '../runtime'
 
@@ -13,7 +14,10 @@ import { hintsSeen, t } from '../runtime'
  * `compact`: Omen und Randnotizen erscheinen als kleine Marke und klappen erst beim Antippen auf.
  * So bleibt die Karte frei, und auf den anderen Tabs schiebt kein Hinweis den Inhalt nach unten.
  */
-export function Notices({ coach, onEvents, compact = false }: { coach: ReactNode; onEvents: () => void; compact?: boolean }) {
+/** Ab so vielen Sekunden bis zur Schwelle kündigt eine Pille die Mondwende an. */
+const TURN_SOON_S = 30 * 60
+
+export function Notices({ coach, onEvents, onPrestige, compact = false }: { coach: ReactNode; onEvents: () => void; onPrestige: () => void; compact?: boolean }) {
   const [expanded, setExpanded] = useState<string | null>(null)
   const ui = useUi()
   const { world } = useEngine(ui.rt)
@@ -30,9 +34,20 @@ export function Notices({ coach, onEvents, compact = false }: { coach: ReactNode
     if (text && compact && expanded !== `hint:${hint?.id}`) notice = <Chip id={`hint:${hint?.id}`} text={text.name} onOpen={setExpanded} testId="chip-hint" />
     else notice = <HintBubble hint={text ? { title: text.name, body: text.blurb } : null} onClose={() => hint && hintsSeen.add(hint.id)} />
   }
+  // Pille zur Mondwende: bereit (mit Lohn) oder bald (mit Restzeit); Antippen führt in den Tab
+  const first = game.prestigeLayers[0]
+  const st = layerStatus(world, first.id)
+  const fc = layerForecast(world, first.id, 0)
+  const layer = ui.labels.layer(first.id).name
+  const turn: Pill[] =
+    st.block === null
+      ? [{ id: 'turn', text: t.hud.turnReady(layer, ui.fmt(st.payout), ui.labels.currency(first.currency)), onOpen: onPrestige }]
+      : st.block === 'earned' && fc && fc.secondsToGate > 0 && fc.secondsToGate <= TURN_SOON_S
+        ? [{ id: 'turn', text: t.hud.turnSoon(layer, ui.duration(fc.secondsToGate * 1000)), onOpen: onPrestige }]
+        : []
   return (
     <>
-      <EventPills onOpen={onEvents} />
+      <EventPills onOpen={onEvents} extra={turn} />
       {notice}
     </>
   )

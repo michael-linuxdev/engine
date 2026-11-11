@@ -5,7 +5,7 @@ import { useUi } from '../useUi'
 import { ProgressBar } from './ProgressBar'
 
 /** Top HUD: primary amount + rate (tap opens the bonus breakdown), goal strip, slots for game extras. */
-export function Hud({ primaryId, icon, extra, goalText }: { primaryId: string; icon?: ReactNode; extra?: ReactNode; goalText?: (g: ReturnType<typeof nextGoal>) => string | null }) {
+export function Hud({ primaryId, icon, extra, sub, goalText, onGoal }: { primaryId: string; icon?: ReactNode; extra?: ReactNode; /** Slim row below the amount (side currencies …). */ sub?: ReactNode; goalText?: (g: ReturnType<typeof nextGoal>) => string | null; /** Makes the goal strip a button: it leads to what the goal names. */ onGoal?: (g: ReturnType<typeof nextGoal>) => void }) {
   const ui = useUi()
   const { state, world } = useEngine(ui.rt)
   const goal = nextGoal(world)
@@ -23,7 +23,13 @@ export function Hud({ primaryId, icon, extra, goalText }: { primaryId: string; i
         <span className="ek-visually-hidden">{ui.t.mult.title}</span>
       </button>
       {extra ? <div className="ek-hud__extra">{extra}</div> : null}
-      {text ? (
+      {sub ? <div className="ek-hud__sub">{sub}</div> : null}
+      {text && onGoal ? (
+        <button type="button" className="ek-goal ek-goal--btn" data-testid="goal" onClick={() => onGoal(goal)}>
+          <span className="ek-goal__text">{text}</span>
+          <ProgressBar ratio={ratio} label={text} />
+        </button>
+      ) : text ? (
         <div className="ek-goal" data-testid="goal">
           <span className="ek-goal__text">{text}</span>
           <ProgressBar ratio={ratio} label={text} />

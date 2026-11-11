@@ -59,6 +59,11 @@ export const stringsEn: Strings = {
   },
   branches: { glow: 'Glow', watch: 'Watch', setout: 'Setting out', night: 'Long Night', ages: 'Ages' },
   play: {
+    best: 'Best buy',
+    toStar: (n: string) => `${n} to ★`,
+    nextUp: (pct: string) => `Up next, ${pct} % reached`,
+    today: 'Today',
+    letter: 'A letter is waiting. Open the chronicle.',
     burst: 'Spark Call',
     map: 'Valley map',
     wild: 'Wilds',
@@ -354,6 +359,18 @@ export const stringsEn: Strings = {
     circle: (time: string) => `Warden circle: ${time} left`,
     omen: (time: string) => `Omen in effect: ${time} left`,
     flash: (time: string) => `Star window: ${time} left`,
+  },
+  rank: {
+    short: 'Rank',
+    title: (n: string) => `Warden Rank ${n}`,
+    blurb: 'Everything you do in the valley raises your rank. Every rank strengthens the yield a little, for good.',
+    progress: (a: string, b: string) => `${a} of ${b} to the next rank`,
+    bonus: (mult: string) => `Yield from your rank: ×${mult}`,
+    next: (level: string, reward: string) => `At rank ${level}: ${reward}`,
+  },
+  hud: {
+    turnReady: (layer: string, amount: string, cur: string) => `${layer}: +${amount} ${cur}`,
+    turnSoon: (layer: string, time: string) => `${layer} in ${time}`,
   },
   trade: {
     tab: 'Market',

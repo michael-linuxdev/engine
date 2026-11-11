@@ -100,11 +100,12 @@ export function Apprentice({ m }: { m: Mood }) {
 }
 
 /** Der Lehrling geht den Weg ab: Seine Stelle wechselt mit der Minute. */
-export function ApprenticeOnTrail({ m, minute }: { m: Mood; minute: number }) {
-  const { x, y, scale } = apprenticeSpot(minute)
+export function ApprenticeOnTrail({ m, step }: { m: Mood; step: number }) {
+  const { x, y, scale } = apprenticeSpot(step)
+  // Die Stelle ändert sich als CSS-Transform: So geht er sichtbar von Halt zu Halt (bei ruhiger Bewegung springt er)
   return (
-    <g className="lw-walker" transform={`translate(${x} ${y}) scale(${scale})`}>
-      <g className="lw-bob">
+    <g className="lw-walker" style={{ transform: `translate(${x}px, ${y}px) scale(${scale})` }}>
+      <g key={step} className="lw-bob lw-bob--walk">
         <Apprentice m={m} />
       </g>
     </g>

@@ -23,7 +23,8 @@ import { CURRENCY, game } from './game'
 import { ambience, chronicleRead, ftue, i18n, labels, playtest, prefs, rt, sfx, t, tabsSeen } from './runtime'
 import { SFX_EVENTS } from './audio/sfx'
 import { IMPRINT, PRIVACY_PAGE } from './legal'
-import { ValleyMap } from './scene/ValleyMap'
+import { ValleyMap, type MapExtras } from './scene/ValleyMap'
+import { RankSheet, RankTile } from './story/Rank'
 import { currentMood } from './scene/mood'
 import { Ceremony } from './story/Ceremony'
 import { Intro } from './story/Intro'
@@ -49,11 +50,28 @@ const PROLOGUE = 'prologue'
 
 const steps = ftueSteps((id) => chronicleRead.has(id), (id) => tabsSeen.has(id))
 
-function Play({ onOpen }: { onOpen: (id: string) => void }) {
+function Play({ onOpen, today, letter }: { onOpen: (id: string) => void } & MapExtras) {
   return (
-    <ValleyMap onOpen={onOpen}>
+    <ValleyMap onOpen={onOpen} today={today} letter={letter}>
       <SparkDock />
     </ValleyMap>
+  )
+}
+
+/** Nebenwährungen klein unter dem Glimmer, sobald es sie einmal gab. */
+function SideCurrencies() {
+  const ui = useUi()
+  const { world } = useEngine(ui.rt)
+  const earned = world.get<{ earned: Record<string, number> }>(MODULE.wallet)?.earned ?? {}
+  const list = [CURRENCY.glowPebbles, CURRENCY.runeShards, CURRENCY.nightDew, CURRENCY.forebearLight].filter((c) => (earned[c] ?? 0) > 0)
+  return (
+    <>
+      {list.map((c) => (
+        <span key={c} data-testid={`hud-${c}`}>
+          <strong>{ui.fmt(world.balance(c))}</strong> {ui.labels.currency(c)}
+        </span>
+      ))}
+    </>
   )
 }
 
@@ -75,11 +93,11 @@ function useCoachActive(): boolean {
   return currentStep(steps, ftue, world) !== null
 }
 
-function NoticeArea({ onEvents, compact }: { onEvents: () => void; compact: boolean }) {
+function NoticeArea({ onEvents, onPrestige, compact }: { onEvents: () => void; onPrestige: () => void; compact: boolean }) {
   const active = useCoachActive()
   return (
     <div className="lw-notices">
-      <Notices coach={active ? <Coach /> : null} onEvents={onEvents} compact={compact} />
+      <Notices coach={active ? <Coach /> : null} onEvents={onEvents} onPrestige={onPrestige} compact={compact} />
     </div>
   )
 }
@@ -142,6 +160,12 @@ export function App() {
   const read = useStore(chronicleRead)
   const { world } = useEngine(rt)
   const unread = CHRONICLE.some((e) => e.open(world) && !read.includes(e.id))
+  const unreadLetter = CHRONICLE.some((e) => e.voice === 'letter' && e.open(world) && !read.includes(e.id))
+  const [rankOpen, setRankOpen] = useState(false)
+  const openTab = (id: string) => {
+    setTab(id)
+    tabsSeen.add(id)
+  }
   const seen = useStore(tabsSeen)
   // Das Archiv erscheint erst, wenn es dort etwas zu holen gibt: nach der ersten Mondwende
   const archiveOpen = (prestigeState(world).layers[0]?.count ?? 0) >= 1 || (world.get<{ earned: Record<string, number> }>(MODULE.wallet)?.earned[CURRENCY.runeShards] ?? 0) > 0
@@ -176,12 +200,22 @@ export function App() {
           primaryId={CURRENCY.glimmer}
           icon={<span className="lw-glimmer-icon" />}
           extra={
-            <button type="button" className="lw-hud-btn" data-testid="hud-chronicle" onClick={() => setChronicle(true)}>
-              <IconBook />
-              <span>{t.chronicle.menu}</span>
-              {unread ? <span className="ek-badge" aria-label={t.chronicle.unread} /> : null}
-            </button>
+            <>
+              <RankTile onOpen={() => setRankOpen(true)} />
+              <button type="button" className="lw-hud-btn" data-testid="hud-chronicle" onClick={() => setChronicle(true)}>
+                <IconBook />
+                <span>{t.chronicle.menu}</span>
+                {unread ? <span className="ek-badge" aria-label={t.chronicle.unread} /> : null}
+              </button>
+            </>
           }
+          // Nebenwährungen klein unter dem Glimmer, sobald es sie einmal gab
+          sub={<SideCurrencies />}
+          // Die Ziel-Zeile führt dorthin, wovon sie spricht: zum Bauwerk oder zum Mondwende-Tab
+          onGoal={(g) => {
+            if (g.kind === 'unlock' || g.kind === 'milestone') setSelected(g.id)
+            else if (g.kind === 'prestige' || g.kind === 'prestigeProgress') openTab('prestige')
+          }}
           goalText={(g) =>
             g.kind === 'unlock'
               ? t.play.goalUnlock(labels.producer(g.id).name)
@@ -195,7 +229,13 @@ export function App() {
           }
         />
       }
-      play={<Play onOpen={setSelected} />}
+      play={
+        <Play
+          onOpen={setSelected}
+          today={isFeatureOpen(world, 'watch') ? { dot: watchBadge(world), onOpen: () => openTab('watch') } : undefined}
+          letter={unreadLetter ? { onOpen: () => setChronicle(true) } : undefined}
+        />
+      }
       feedback={feedback}
       navIcons={{ play: <IconTower />, prestige: <IconMoon />, menu: <IconMenu /> }}
       // Die Leiste bleibt bei vier Knöpfen: Tal, Mondwende, Markt, Menü. Weitere Systeme sind Kacheln im Menü.
@@ -216,7 +256,7 @@ export function App() {
         ...(archiveOpen ? [{ id: 'archive', label: t.effectLabels.archive, view: <MetaShopPanel title={t.effectLabels.archive} branchVisible={branchVisible} /> }] : []),
         ...(isFeatureOpen(world, 'trials') ? [{ id: 'trials', label: labels.content('title.trials').name, view: <ChallengesCard cfg={TRIALS} /> }] : []),
       ]}
-      notice={<NoticeArea onEvents={() => setTab('watch')} compact />}
+      notice={<NoticeArea onEvents={() => openTab('watch')} onPrestige={() => openTab('prestige')} compact />}
       welcomeArt={<ComebackLetter />}
       installArt={<img src="./icons/icon-192.png" alt="" width={72} height={72} className="lw-install-icon" />}
       tab={tab}
@@ -240,6 +280,7 @@ export function App() {
             }}
           />
           <WheelSheet open={wheelOpen && !ceremony && !chronicleOpen} onClose={() => setWheelOpen(false)} />
+          <RankSheet open={rankOpen} onClose={() => setRankOpen(false)} />
           <CardPicker open={!wheelOpen && !ceremony && !chronicleOpen && cardsWaiting(world)} onClose={() => rt.dispatch('layerCards', 'pick', { id: (rt.get().modules.layerCards as { offer: string[] }).offer[0] })} />
         </>
       }
