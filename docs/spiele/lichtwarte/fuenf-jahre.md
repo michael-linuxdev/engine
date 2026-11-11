@@ -66,6 +66,22 @@ Entscheidung Michael: Jahr 2 wird gebaut, in derselben Qualität wie Jahr 1. Es 
 - Engine: Waren im Fest-Laden können eine Bedingung tragen (`when`).
 - **Nicht gemessen:** ob die Festmarken eines Festes für Sorte und Schmuckstück im selben Jahr reichen. Die Preise sind an Jahrgang 1 angelehnt (60 und 160).
 
+## Jahr 2, Messung über das ganze Jahr (2026-11-11)
+
+`SUMMARY=1 npm run balance -- lichtwarte regular 11400` (475 Tage, Profil „regular“).
+
+| | Ergebnis |
+|---|---|
+| Hochlande | Tag 141, 152, 165, 179, 192, 206, 220, 233, 247, 259, 274, 289, 302, 314, 328, 340, 352, 367, 382, 398, 410, 424, 438, 452, 467. Abstand 11 bis 15 Tage, im Schnitt 13,6. |
+| Ende der Welle | „Die Erste Warte“ öffnet sich an Tag 467. Jahr 2 dauert damit 326 Tage. |
+| Zeitalter | 12 bis Tag 475: Tag 27, 46, 77, 117, 158, 197, 232, 266, 308, 357, 400, 446. In Jahr 2 liegen 34 bis 49 Tage dazwischen, also fünf bis sieben Wochen. |
+| Lange Nächte | 65 |
+
+**Folgen:**
+- Die Hochrechnung aus dem ersten Paket (bis etwa Tag 466) stimmt.
+- Das Ziel „kein Loch über 7 Tage“ halten die Lande allein nicht (11 bis 15 Tage). Dazwischen liegen die Seiten von Buch 2, die Stufen der Feuerstraße, die Sterne, die Feste und die Fernfahrten. Wie dicht diese fallen, ist nicht gemessen, weil der Simulator sie nicht spielt.
+- Die Zeitalter liegen in Jahr 2 bei fünf bis sieben Wochen, über dem Ziel von vier bis fünf. Für die Jahre 3 bis 5 muss der späte Faktor (heute 1,35) kleiner werden; das gehört zum Paket für Jahr 3.
+
 ## Was „fünf Jahre“ hier heißt
 
 Maßstab ist eine Spielerin, die täglich kurz spielt (Profil „regular“). Über 1.825 Tage soll gelten:
