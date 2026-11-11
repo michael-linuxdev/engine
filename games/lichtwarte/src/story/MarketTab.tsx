@@ -26,8 +26,9 @@ export function MarketTab() {
       prices={OFFER_PRICES}
       adSeconds={() => adSeconds()}
       styleArt={(id) => <StyleSwatch id={id} />}
-      onTestPurchase={(id, cents, ok) => playtest?.record('app.testPurchase', { id, cents, ok })}
-      onAd={(choice, seconds) => playtest?.record('app.ad', { choice, seconds })}
+      rememberKey="lichtwarte.marketTab"
+      onTestPurchase={(id, cents, answer, leftCents) => playtest?.record('app.testPurchase', { id, cents, answer, leftCents, ok: answer === 'yes' && cents <= leftCents })}
+      onAd={(choice, seconds, phase) => playtest?.record('app.ad', { choice, seconds, phase })}
     />
   )
 }

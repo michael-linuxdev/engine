@@ -75,8 +75,10 @@ describe('market (mocks)', () => {
     expect(gems(s)).toBe(50)
     s = act(def, s, clock, 'buyOffer', { id: 'noAds' }).state
     expect(m(s).adsRemoved).toBe(true)
+    // Without ads the bonus stays (the UI hands it out without a video), the cooldown still holds
     const r = act(def, s, clock, 'watchAd', { choice: 'gems' })
-    expect(gems(r.state)).toBe(50)
+    expect(gems(r.state)).toBe(56)
+    expect(gems(act(def, r.state, clock, 'watchAd', { choice: 'gems' }).state)).toBe(56)
   })
 
   it('the bonus video pays the chosen reward and then waits for its cooldown', () => {

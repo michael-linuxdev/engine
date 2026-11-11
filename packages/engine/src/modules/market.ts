@@ -107,6 +107,12 @@ export function passTierClaimable(s: MarketState, cfg: MarketConfig, tier: numbe
   return ((premium ? s.passPaid : s.passFree) & (1 << tier)) === 0
 }
 
+/** The daily gift or a pass tier waits to be picked up. The bonus video does not count: it is ready every few minutes. */
+export function marketReady(s: MarketState | undefined, cfg: MarketConfig, clock: Clock): boolean {
+  if (!s) return false
+  return giftReady(s, clock) || cfg.pass.tiers.some((_, i) => passTierClaimable(s, cfg, i, false) || passTierClaimable(s, cfg, i, true))
+}
+
 function rewardGrant(r: MarketReward, world: WorldView, source: string): (Amount & { source: string })[] {
   const out: (Amount & { source: string })[] = (r.grant ?? []).map((g) => ({ ...g, source }))
   if (r.seconds) out.push({ currency: primaryCurrency(world.def), amount: world.rate() * r.seconds, source })
@@ -190,7 +196,8 @@ export function marketModule(cfg: MarketConfig): EngineModule<MarketState> {
       watchAd: (s, p, ctx, world) => {
         const choice = cfg.ad.choices.find((c) => c.id === pl(p).choice) ?? cfg.ad.choices[0]
         const now = ctx.clock.now()
-        if (!choice || s.adsRemoved || adCooldownLeft(s, cfg, now) > 0) return s
+        // With ads removed the bonus stays: the UI hands it out without a video
+        if (!choice || adCooldownLeft(s, cfg, now) > 0) return s
         const cur = sync(s, ctx.clock)
         return act(
           { ...cur, adAt: now, ads: cur.ads + 1, passXp: Math.min(cfg.pass.maxXp, cur.passXp + cfg.pass.adXp) },

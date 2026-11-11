@@ -54,13 +54,13 @@ Ausbau-Karte (klein, hell, Ladebalken am Knopf, „Noch … fehlt“, Ertragsvor
 
 | # | Referenz | Lichtwarte | Wirkung |
 |---|---|---|---|
-| 5.1 | Jeder Testkauf fragt nach: „Würdest du X für Y € kaufen?“ mit Testgeld-Stand. Vier Antworten gehen samt Spielstand ins Log. | Der erste Tipp bucht ab. Ins Log geht nur „gekauft“. Bei der Referenz hatte ein Tester ohne Rückfrage 20 € in zwei Minuten ausgegeben. | A |
-| 5.2 | Wer „Ohne Werbung“ hat, bekommt den Bonus sofort ohne Video. | Der Bonus verschwindet ganz: nur noch „Werbung ist abgeschaltet“. **Fehler.** | A |
-| 5.3 | Guthaben als feste Plakette oben; „Noch X“ unter jedem gesperrten Knopf. | Der Lichtkiesel-Stand steht nirgends; gesperrte Knöpfe sind ohne Grund grau. | A |
-| 5.4 | Vier Unterreiter (Gratis · Schübe · Stile · Echtgeld), der letzte bleibt gemerkt. | Eine lange Liste mit sieben Karten. | B |
-| 5.5 | Punkt am Markt-Tab, wenn Geschenk oder Bonus bereit ist. | Fehlt. | B |
+| 5.1 | Jeder Testkauf fragt nach: „Würdest du X für Y € kaufen?“ mit Testgeld-Stand. Vier Antworten gehen samt Spielstand ins Log. | Der erste Tipp bucht ab. Ins Log geht nur „gekauft“. Bei der Referenz hatte ein Tester ohne Rückfrage 20 € in zwei Minuten ausgegeben. | erledigt |
+| 5.2 | Wer „Ohne Werbung“ hat, bekommt den Bonus sofort ohne Video. | Der Bonus verschwindet ganz: nur noch „Werbung ist abgeschaltet“. **Fehler.** | erledigt |
+| 5.3 | Guthaben als feste Plakette oben; „Noch X“ unter jedem gesperrten Knopf. | Der Lichtkiesel-Stand steht nirgends; gesperrte Knöpfe sind ohne Grund grau. | erledigt |
+| 5.4 | Vier Unterreiter (Gratis · Schübe · Stile · Echtgeld), der letzte bleibt gemerkt. | Eine lange Liste mit sieben Karten. | erledigt |
+| 5.5 | Punkt am Markt-Tab, wenn Geschenk oder Bonus bereit ist. | Fehlt. | erledigt |
 | 5.6 | Stil antippen zeigt ihn als Vorschau auf der Karte. | Nur ein kleines Farbfeld. | C |
-| 5.7 | Bonus-Video lässt sich abbrechen (ohne Belohnung); das Log hält fest, ob durchgehalten wurde. | Kein Abbrechen. | C |
+| 5.7 | Bonus-Video lässt sich abbrechen (ohne Belohnung); das Log hält fest, ob durchgehalten wurde. | Kein Abbrechen. | erledigt |
 
 ## 6. Neubeginn und Zeremonie
 

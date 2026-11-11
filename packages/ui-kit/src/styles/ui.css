@@ -982,3 +982,39 @@ html:has(.ek-app) body {
 .ek-update-note--offline {
   border-left-color: var(--danger);
 }
+
+/* Market: balance and shelves stay in view; missing amount below a pay button */
+.ek-market-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  background: var(--bg);
+}
+.ek-market-balance {
+  margin: 0;
+  font-weight: 700;
+}
+.ek-market-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.ek-market-tabs button {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0 var(--space-1);
+}
+.ek-pay {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex: none;
+}
+.ek-pay__need {
+  font-size: 0.8em;
+  color: var(--ink-muted);
+}
