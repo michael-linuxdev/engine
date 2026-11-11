@@ -59,7 +59,7 @@ Ausbau-Karte (klein, hell, Ladebalken am Knopf, „Noch … fehlt“, Ertragsvor
 | 5.3 | Guthaben als feste Plakette oben; „Noch X“ unter jedem gesperrten Knopf. | Der Lichtkiesel-Stand steht nirgends; gesperrte Knöpfe sind ohne Grund grau. | erledigt |
 | 5.4 | Vier Unterreiter (Gratis · Schübe · Stile · Echtgeld), der letzte bleibt gemerkt. | Eine lange Liste mit sieben Karten. | erledigt |
 | 5.5 | Punkt am Markt-Tab, wenn Geschenk oder Bonus bereit ist. | Fehlt. | erledigt |
-| 5.6 | Stil antippen zeigt ihn als Vorschau auf der Karte. | Nur ein kleines Farbfeld. | C |
+| 5.6 | Stil antippen zeigt ihn als Vorschau auf der Karte. | Nur ein kleines Farbfeld. | erledigt |
 | 5.7 | Bonus-Video lässt sich abbrechen (ohne Belohnung); das Log hält fest, ob durchgehalten wurde. | Kein Abbrechen. | erledigt |
 
 ## 6. Neubeginn und Zeremonie
@@ -69,8 +69,8 @@ Ausbau-Karte (klein, hell, Ladebalken am Knopf, „Noch … fehlt“, Ertragsvor
 | 6.1 | Vor dem Knopf: Zeit bis zur Schwelle, „in 10 Minuten wären es Y“, Kästen „Bleibt“ und „Geht“. Der Knopf nennt den Lohn. | Balken, Lohn, ein allgemeiner Satz. Tester der Referenz öffneten den Tab 15-mal ohne Abschluss, bevor es die Vorschau gab. | erledigt |
 | 6.2 | Punkt am Tab, wenn bereit oder im Meta-Laden etwas kaufbar ist. | Fehlt. | erledigt |
 | 6.3 | Höhere Schichten erst nach zweitem Tippen. | Lange Nacht und Zeitalter starten beim ersten Tipp. | erledigt |
-| 6.4 | Zeremonie in drei Phasen; die letzte nennt Lohn und „neu frei“, das Glücksrad läuft darin mit. Danach öffnet sich das empfohlene erste Bauwerk. | Szene, danach nacheinander drei Fenster (Chronik, Sternenrad, Sternbild). Kein „neu frei“, kein Einstieg danach. | B |
-| 6.5 | Jahreskarten zeigen je Karte, was sie für **diesen** Garten bringt, und es gibt „ohne Karte weiter“. | Sternbilder ohne Vorschau. Wer das Fenster schließt, bekommt ungefragt das erste. | B |
+| 6.4 | Zeremonie in drei Phasen; die letzte nennt Lohn und „neu frei“, das Glücksrad läuft darin mit. Danach öffnet sich das empfohlene erste Bauwerk. | Szene, danach nacheinander drei Fenster (Chronik, Sternenrad, Sternbild). Kein „neu frei“, kein Einstieg danach. | erledigt |
+| 6.5 | Jahreskarten zeigen je Karte, was sie für **diesen** Garten bringt, und es gibt „ohne Karte weiter“. | Sternbilder ohne Vorschau. Wer das Fenster schließt, bekommt ungefragt das erste. | erledigt |
 | 6.6 | Meta-Laden: Text über die ganze Breite, Knopf darunter rechts; bei Rang 0 „Noch nicht gekauft“; das nächste freischaltbare Teil oben mit Balken. | Text und Knopf nebeneinander; bei Rang 0 steht „+0 % Glimmer“. | erledigt |
 
 ## 7. Rückkehr
@@ -120,10 +120,10 @@ Ausbau-Karte (klein, hell, Ladebalken am Knopf, „Noch … fehlt“, Ertragsvor
 
 | # | Referenz | Lichtwarte | Wirkung |
 |---|---|---|---|
-| 12.1 | Wiederherstellen mit Vorschau (Datum, Stand), zweitem Tippen und vorheriger automatischer Sicherung; Datei-Auswahl. | Ein Tipp auf „Wiederherstellen“ überschreibt sofort. | B |
-| 12.2 | Automatische Sicherungen und beim Start mit leerem Stand das Angebot, eine davon zurückzuholen. | Fehlt. | B |
-| 12.3 | Erinnerung an die Sicherung: höchstens alle 7 Tage, nur nach großem Fortschritt, nie in der ersten Sitzung. | Fehlt. | C |
-| 12.4 | Einstellungen: eigener Schalter für Vibration, Erinnerungen, „Schilder immer zeigen“. | Vibration hängt an „Ruhige Bewegung“; die anderen fehlen. | C |
+| 12.1 | Wiederherstellen mit Vorschau (Datum, Stand), zweitem Tippen und vorheriger automatischer Sicherung; Datei-Auswahl. | Ein Tipp auf „Wiederherstellen“ überschreibt sofort. | erledigt |
+| 12.2 | Automatische Sicherungen und beim Start mit leerem Stand das Angebot, eine davon zurückzuholen. | Fehlt. | erledigt |
+| 12.3 | Erinnerung an die Sicherung: höchstens alle 7 Tage, nur nach großem Fortschritt, nie in der ersten Sitzung. | Fehlt. | erledigt |
+| 12.4 | Einstellungen: eigener Schalter für Vibration, Erinnerungen, „Schilder immer zeigen“. | Vibration hängt an „Ruhige Bewegung“; die anderen fehlen. | teils: eigener Schalter für Vibration und für die Erinnerung; „Schilder immer zeigen“ entfällt, die Schilder stehen hier immer |
 | 12.5 | Benachrichtigungen mit Regeln (höchstens zwei am Tag, nie nachts). | Zurückgestellt (Entscheidung 2026-11-10). | — |
 
 ## 13. Was die Referenz hat und Lichtwarte gar nicht

@@ -1311,3 +1311,21 @@ body {
   text-decoration: underline;
   cursor: pointer;
 }
+
+/* Stil-Vorschau auf der Karte: Schild oben, Antippen führt zurück zum Markt */
+.lw-preview {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  min-height: var(--tap);
+  padding: var(--space-2) var(--space-4);
+  border: 2px solid var(--gold);
+  border-radius: 999px;
+  background: var(--night);
+  color: var(--parchment);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  cursor: pointer;
+}

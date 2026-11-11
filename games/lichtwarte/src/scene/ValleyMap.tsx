@@ -44,9 +44,11 @@ export interface MapExtras {
   today?: { dot: boolean; onOpen: () => void; /** Wartender Ertrag: Der Knopf sammelt ihn ein. */ collect?: number }
   /** Ein Brief wartet: Umschlag am Fuß der Warte. */
   letter?: { onOpen: () => void }
+  /** Talstil nur zur Ansicht (aus dem Markt): Die Karte zeigt ihn, bis die Vorschau endet. */
+  preview?: { style: string; onEnd: () => void }
 }
 
-export function ValleyMap({ onOpen, children, today, letter }: { onOpen: (id: string) => void; children?: ReactNode } & MapExtras) {
+export function ValleyMap({ onOpen, children, today, letter, preview }: { onOpen: (id: string) => void; children?: ReactNode } & MapExtras) {
   const ui = useUi()
   const { world, state } = useEngine(ui.rt)
   const [mood, setMood] = useState(currentMood)
@@ -109,7 +111,7 @@ export function ValleyMap({ onOpen, children, today, letter }: { onOpen: (id: st
     if (ui.rt.dispatch(VISITORS_ID, 'greet')) setThanks({ key: Date.now(), y: at, text: t.world.guestThanks(ui.labels.content(`guest.${id}`).name, gift) })
   }
   return (
-    <section className="lw-map" data-fx="map" style={{ background: SKY3[mood.daypart][0] }} aria-label={t.play.map} data-mood={`${mood.daypart}-${mood.season}`} data-weather={weather} data-style={world.get<MarketState>(MARKET_ID)?.equipped ?? 'duskBlue'}>
+    <section className="lw-map" data-fx="map" style={{ background: SKY3[mood.daypart][0] }} aria-label={t.play.map} data-mood={`${mood.daypart}-${mood.season}`} data-weather={weather} data-style={preview?.style ?? world.get<MarketState>(MARKET_ID)?.equipped ?? 'duskBlue'}>
       <div className="lw-stage" style={{ aspectRatio: `${MAP_W} / ${MAP_H}` }}>
         <svg className="lw-map__svg" viewBox={`0 0 ${MAP_W} ${MAP_H}`} preserveAspectRatio="xMidYMax meet" role="img" aria-label={t.play.map} data-testid="valley-svg">
           <Backdrop m={mood} lit={lit} beacon={beacon} />
@@ -247,6 +249,11 @@ export function ValleyMap({ onOpen, children, today, letter }: { onOpen: (id: st
               <path d="M2 3 l10 7 l10 -7" fill="none" stroke="var(--night)" strokeWidth="1.5" strokeLinejoin="round" />
             </svg>
             <span className="ek-visually-hidden">{t.play.letter}</span>
+          </button>
+        ) : null}
+        {preview ? (
+          <button type="button" className="lw-preview" data-testid="style-preview" onClick={preview.onEnd}>
+            {t.trade.previewing(ui.labels.content(`cosmetic.${preview.style}`).name)}
           </button>
         ) : null}
         {today ? (

@@ -7,7 +7,7 @@
 import { useState, type ReactNode } from 'react'
 import {
   ALBUM_ID, CARDS_ID, CHOICES_ID, collectionProgress, COLLECTIONS_ID, COMBINE_ID, DECOR_ID, PROJECTS_ID, VISITORS_ID,
-  type AlbumConfig, type AlbumState, type CardsState, type ChoiceState, type CollectionConfig, type CollectionsState, type CombineConfig, type CombineState,
+  type AlbumConfig, type AlbumState, type CardConfig, type CardsState, type ChoiceState, type CollectionConfig, type CollectionsState, type CombineConfig, type CombineState,
   type DecorConfig, type DecorState, type ProjectDef, type ProjectsState, type VisitorConfig, type VisitorsState,
 } from '@engine/core'
 import { useEngine } from '@engine/react'
@@ -302,31 +302,63 @@ export function WorksCard({ list }: { list: readonly ProjectDef[] }) {
 }
 
 /** Picker for the layer cards offered after a prestige. */
-export function CardPicker({ open, onClose }: { open: boolean; onClose: () => void }) {
+/**
+ * Pick one card for the run. Each card says what it would change for this very state
+ * (income per second); closing the sheet or "go on without" picks none.
+ */
+export function CardPicker({ open, cfg }: { open: boolean; /** With the config each card shows its effect on the current income. */ cfg?: CardConfig }) {
   const ui = useUi()
   const { world, dispatch } = useEngine(ui.rt)
   const s = world.get<CardsState>(CARDS_ID)
   if (!s?.offer.length) return null
   const t = ui.labels.content('title.constellations')
+  const skip = () => dispatch(CARDS_ID, 'skip')
+  // Change of the total income if this card were active now (rate and income multipliers only)
+  const delta = (id: string): number | null => {
+    const card = cfg?.cards.find((c) => c.id === id)
+    if (!card) return null
+    let d = 0
+    let known = false
+    for (const e of card.effects) {
+      if (e.op !== 'mul') continue
+      if (e.target === 'income' || e.target === 'rate:*') {
+        d += world.rate() * (e.value - 1)
+        known = true
+      } else if (e.target.startsWith('rate:')) {
+        d += world.producerRate(e.target.slice(5)) * (e.value - 1)
+        known = true
+      }
+    }
+    return known ? d : null
+  }
   return (
-    <Sheet open={open} title={t.name} onClose={onClose} testId="card-picker">
+    <Sheet open={open} title={t.name} onClose={skip} testId="card-picker">
       <p>{t.blurb}</p>
       <ul className="ek-list">
         {s.offer.map((id) => {
           const l = ui.labels.content(`card.${id}`)
+          const d = delta(id)
           return (
-            <li key={id} className="ek-row" data-testid={`pick-${id}`}>
+            <li key={id} className="ek-row ek-row--stack" data-testid={`pick-${id}`}>
               <div className="ek-row__main">
                 <strong>{l.name}</strong>
                 <span className="ek-muted">{l.blurb}</span>
+                {d !== null ? (
+                  <span className="ek-strong" data-testid={`pick-delta-${id}`}>
+                    {ui.t.live.cardNow(ui.t.common.perSecond(`${d >= 0 ? '+' : '−'}${ui.fmt(Math.abs(d))}`))}
+                  </span>
+                ) : null}
               </div>
-              <Button size="small" onClick={() => dispatch(CARDS_ID, 'pick', { id })}>
+              <Button size="small" data-testid={`pick-btn-${id}`} onClick={() => dispatch(CARDS_ID, 'pick', { id })}>
                 {ui.t.live.choose}
               </Button>
             </li>
           )
         })}
       </ul>
+      <Button variant="ghost" data-testid="pick-skip" onClick={skip}>
+        {ui.t.live.cardSkip}
+      </Button>
     </Sheet>
   )
 }

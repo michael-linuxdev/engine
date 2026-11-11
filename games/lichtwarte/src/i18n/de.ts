@@ -391,6 +391,7 @@ export const gameDe = {
     turnSoon: (layer: string, time: string) => `${layer} in ${time}`,
   },
   trade: {
+    previewing: (name: string) => `Vorschau: ${name}. Zurück zum Markt`,
     tab: 'Markt',
     title: { name: 'Markt', blurb: 'Händler aus den Nachbartälern. Alles hier ist freiwillig.' },
     cosmetics: {

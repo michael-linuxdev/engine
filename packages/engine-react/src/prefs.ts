@@ -12,9 +12,13 @@ export interface Prefs {
   reducedMotion: boolean
   fontScale: 1 | 1.15 | 1.3
   numberStyle: 'compact' | 'scientific'
+  /** Short vibration with some sounds (phones). */
+  vibration: boolean
+  /** Remind to back up the save from time to time. */
+  backupReminder: boolean
 }
 
-export const DEFAULT_PREFS: Prefs = { lang: null, sound: true, ambient: false, reducedMotion: false, fontScale: 1, numberStyle: 'compact' }
+export const DEFAULT_PREFS: Prefs = { lang: null, sound: true, ambient: false, reducedMotion: false, fontScale: 1, numberStyle: 'compact', vibration: true, backupReminder: true }
 
 export function parsePrefs(raw: unknown): Prefs {
   const r = (typeof raw === 'object' && raw !== null ? raw : {}) as Record<string, unknown>
@@ -25,6 +29,8 @@ export function parsePrefs(raw: unknown): Prefs {
     reducedMotion: typeof r.reducedMotion === 'boolean' ? r.reducedMotion : DEFAULT_PREFS.reducedMotion,
     fontScale: r.fontScale === 1.15 || r.fontScale === 1.3 ? r.fontScale : 1,
     numberStyle: r.numberStyle === 'scientific' ? 'scientific' : 'compact',
+    vibration: typeof r.vibration === 'boolean' ? r.vibration : DEFAULT_PREFS.vibration,
+    backupReminder: typeof r.backupReminder === 'boolean' ? r.backupReminder : DEFAULT_PREFS.backupReminder,
   }
 }
 

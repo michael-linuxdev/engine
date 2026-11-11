@@ -41,6 +41,8 @@ export interface MarketProps {
   onTestPurchase?: (offer: string, cents: number, answer: TestBuyAnswer, leftCents: number) => void
   /** Called when a bonus video starts and when it ends or is cancelled (playtest log). */
   onAd?: (choice: string, seconds: number, phase: 'start' | 'done' | 'cancelled') => void
+  /** Show a style on the game's own scene before buying (optional): adds a "look" button to each style. */
+  onPreviewStyle?: (id: string) => void
   /** Storage key that remembers the last sub tab (optional). */
   rememberKey?: string
 }
@@ -166,7 +168,7 @@ export function MarketPanel(props: MarketProps) {
           <SkipCard cfg={cfg} s={s} />
         </>
       ) : null}
-      {tab === 'styles' ? <StylesCard cfg={cfg} s={s} styleArt={props.styleArt} /> : null}
+      {tab === 'styles' ? <StylesCard cfg={cfg} s={s} styleArt={props.styleArt} onPreview={props.onPreviewStyle} /> : null}
       {tab === 'offers' ? <OffersCard {...props} s={s} /> : null}
     </section>
   )
@@ -325,7 +327,7 @@ function BoostCard({ cfg, s }: { cfg: MarketConfig; s: MarketState }) {
   )
 }
 
-function StylesCard({ cfg, s, styleArt }: { cfg: MarketConfig; s: MarketState; styleArt?: (id: string) => ReactNode }) {
+function StylesCard({ cfg, s, styleArt, onPreview }: { cfg: MarketConfig; s: MarketState; styleArt?: (id: string) => ReactNode; onPreview?: (id: string) => void }) {
   const ui = useUi()
   const { world, dispatch } = useEngine(ui.rt)
   return (
@@ -343,6 +345,11 @@ function StylesCard({ cfg, s, styleArt }: { cfg: MarketConfig; s: MarketState; s
                 <strong>{l.name}</strong>
                 <span className="ek-muted">{l.blurb}</span>
                 {!owned && !open ? <span className="ek-muted">{ui.t.market.festOnly}</span> : null}
+                {onPreview && s.equipped !== c.id ? (
+                  <button type="button" className="ek-link" data-testid={`style-look-${c.id}`} onClick={() => onPreview(c.id)}>
+                    {ui.t.market.look}
+                  </button>
+                ) : null}
               </div>
               {owned ? (
                 <Button size="small" variant="secondary" data-testid={`style-equip-${c.id}`} disabled={s.equipped === c.id} onClick={() => dispatch(MARKET_ID, 'equip', { id: c.id })}>

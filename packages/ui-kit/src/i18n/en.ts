@@ -2,6 +2,7 @@ import type { EngineStrings } from './de'
 
 export const engineEn: EngineStrings = {
   common: {
+    date: (day: string, month: string, year: string) => `${year}-${month}-${day}`,
     close: 'Close',
     cancel: 'Cancel',
     ok: 'OK',
@@ -105,6 +106,20 @@ export const engineEn: EngineStrings = {
     none: 'No bonuses yet',
   },
   save: {
+    check: 'Check code',
+    file2: 'Choose file',
+    preview: (date: string, amount: string) => `Backup from ${date}. Progress: ${amount} in total.`,
+    previewWarn: 'Your current progress will be replaced. It is backed up automatically first.',
+    confirm: 'Replace now',
+    cancel: 'Cancel',
+    autoTitle: 'Automatic backups',
+    autoRow: (date: string, amount: string) => `${date} · ${amount} in total`,
+    autoUse: 'Check',
+    offerTitle: 'Backup found',
+    offerBody: (date: string, amount: string) => `This device holds an automatic backup from ${date} (progress: ${amount} in total). Bring it back?`,
+    offerYes: 'Bring it back',
+    offerNo: 'Start anew',
+    remind: 'Your progress has grown. A good moment for a backup.',
     menu: 'Back up progress',
     title: 'Back up progress',
     intro: 'Use this code to move your progress to another device or restore it. It stays with you.',
@@ -130,6 +145,8 @@ export const engineEn: EngineStrings = {
     reload: 'Reload',
   },
   settings: {
+    vibration: 'Vibration',
+    backupReminder: 'Remind me to back up',
     menu: 'Settings',
     title: 'Settings',
     display: 'Display',
@@ -217,6 +234,8 @@ export const engineEn: EngineStrings = {
     privacyPage: 'Privacy policy as a page',
   },
   live: {
+    cardNow: (per: string) => `For your valley now: ${per}`,
+    cardSkip: 'Go on without a card',
     percent: (n: string) => `${n} %`,
     setLeft: (n: string) => `${n} more for the set`,
     setDone: 'Set complete',
@@ -296,6 +315,7 @@ export const engineEn: EngineStrings = {
     days: (n) => (n === '1' ? '1 day' : `${n} days`),
   },
   market: {
+    look: 'See it on the map',
     gift: 'Daily gift',
     giftBlurb: 'Once a day, free.',
     ad: 'Bonus video',

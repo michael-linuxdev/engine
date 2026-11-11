@@ -56,6 +56,8 @@ export function layerCardsModule(cfg: CardConfig): EngineModule<CardsState> {
         const id = (p as { id?: string } | undefined)?.id ?? ''
         return s.offer.includes(id) ? { offer: [], active: id, last: s.last } : s
       },
+      // Go on without a card: the offer ends, nothing is active this run
+      skip: (s) => (s.offer.length ? { offer: [], active: '', last: s.last } : s),
     },
     playtestEvents: [],
     sample: () => ({ offer: cfg.cards.slice(1, 1 + cfg.offer).map((c) => c.id), active: cfg.cards[0]?.id ?? '', last: '' }),

@@ -17,7 +17,7 @@ export function StyleSwatch({ id }: { id: string }) {
   )
 }
 
-export function MarketTab() {
+export function MarketTab({ onPreviewStyle }: { onPreviewStyle?: (id: string) => void }) {
   return (
     <MarketPanel
       cfg={MARKET}
@@ -27,6 +27,7 @@ export function MarketTab() {
       adSeconds={() => adSeconds()}
       styleArt={(id) => <StyleSwatch id={id} />}
       rememberKey="lichtwarte.marketTab"
+      onPreviewStyle={onPreviewStyle}
       onTestPurchase={(id, cents, answer, leftCents) => playtest?.record('app.testPurchase', { id, cents, answer, leftCents, ok: answer === 'yes' && cents <= leftCents })}
       onAd={(choice, seconds, phase) => playtest?.record('app.ad', { choice, seconds, phase })}
     />
