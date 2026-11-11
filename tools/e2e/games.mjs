@@ -69,6 +69,10 @@ export const GAMES = [
       await q.getByTestId('slot-kraeuterkate').click()
       await q.getByTestId('upgrade-sheet').waitFor()
       await q.getByTestId('buy-kraeuterkate').click()
+      // Nach dem Kauf reicht das Geld nicht: Der Knopf zeigt als Ladebalken, wie weit es noch ist, darunter steht der fehlende Betrag
+      const fill = Number(await q.getByTestId('buy-fill').getAttribute('data-ratio'))
+      assert((await q.getByTestId('buy-kraeuterkate').isDisabled()) && fill >= 0 && fill < 100, `Ausbau-Knopf füllt sich als Ladebalken (${fill} %)`)
+      assert((await q.getByTestId('buy-hint').innerText()).includes(T.currencies.glimmer), 'unter dem Knopf steht, wie viel noch fehlt')
       await q.keyboard.press('Escape')
       await q.getByTestId('ftue').getByText(T.ftue.steps.burst.title).waitFor()
       await q.getByTestId('burst').click()

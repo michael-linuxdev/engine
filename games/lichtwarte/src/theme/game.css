@@ -226,6 +226,27 @@ body {
   font-size: 0.98rem;
   line-height: 1.25;
 }
+/* Ausbau-Knopf als Ladebalken: füllt sich golden, bis der Preis reicht; ein Kauf blitzt kurz auf */
+.lw-app .ek-buy__fill {
+  background: linear-gradient(var(--gold), var(--gold-deep));
+  opacity: 0.75;
+  border-right: 2px solid var(--gold-deep);
+}
+.lw-app .ek-buy:disabled {
+  color: var(--ink);
+}
+.lw-app .ek-buy.is-bought {
+  filter: brightness(1.25);
+  transform: scale(0.985);
+}
+.lw-app .ek-upgrade__gain {
+  color: var(--gold-deep);
+}
+.lw-app .ek-upgrade__info .ek-stars {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
 /* Zweige: flache Kacheln — Name und Rang in einer Zeile, Wirkung klein, niedriger Knopf */
 .lw-app .ek-branch {
   gap: 2px;

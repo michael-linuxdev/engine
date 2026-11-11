@@ -41,6 +41,8 @@ export const engineEn: EngineStrings = {
     capacityBlurb: '−3% cost per rank',
     tooExpensive: 'Not yet affordable',
     holdHint: 'Press and hold to keep building level after level.',
+    needMore: (amount, currency) => `${amount} ${currency} to go`,
+    milestonesReached: (n) => `${n} milestones reached`,
     unlockTitle: 'Not cleared yet',
     gatePrestige: (layer, n) => `after ${n}× ${layer}`,
     gatePrimary: (amount) => `${amount} earned this run`,

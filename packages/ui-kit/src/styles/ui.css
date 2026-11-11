@@ -827,6 +827,8 @@ html:has(.ek-app) body {
   font-size: 0.8rem;
 }
 .ek-buy {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   touch-action: manipulation;
   user-select: none;
@@ -927,4 +929,26 @@ html:has(.ek-app) body {
 }
 .ek-gate__list li.is-moot {
   color: var(--ink-muted);
+}
+
+/* Buy button as a loading bar: fills up while the price is not yet affordable */
+.ek-buy__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--accent);
+  opacity: 0.22;
+  transition: width 0.3s linear;
+  pointer-events: none;
+}
+.ek-buy.is-ready .ek-buy__fill {
+  opacity: 0;
+}
+.ek-buy > span:not(.ek-buy__fill) {
+  position: relative;
+}
+.ek-upgrade__gain {
+  color: var(--accent);
+  font-size: 0.9em;
 }

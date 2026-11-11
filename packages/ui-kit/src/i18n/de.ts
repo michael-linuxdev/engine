@@ -43,6 +43,8 @@ export const engineDe = {
     capacityBlurb: '−3 % Kosten je Rang',
     tooExpensive: 'Noch zu teuer',
     holdHint: 'Gedrückt halten baut Stufe um Stufe weiter.',
+    needMore: (amount: string, currency: string) => `Noch ${amount} ${currency}`,
+    milestonesReached: (n: string) => `${n} Meilensteine erreicht`,
     unlockTitle: 'Noch nicht freigelegt',
     gatePrestige: (layer: string, n: string) => `nach ${n}× ${layer}`,
     gatePrimary: (amount: string) => `${amount} in diesem Lauf verdient`,
