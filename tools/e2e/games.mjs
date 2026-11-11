@@ -230,10 +230,12 @@ export const GAMES = [
       assert((await r.evaluate(() => window.__engine.get().modules.decor.placed[0])) === 'blueBanner', 'Banner aufgestellt')
       // Der Talgast hat keine Meldung mehr: Er wird auf der Karte selbst angetippt (weiter unten)
       assert((await r.getByTestId('visitor-greet').count()) === 0 && (await r.getByTestId('chip-visitor').count()) === 0, 'keine Meldung zum Talgast')
+      // Omen und Randnotizen gehören zur Karte: Außerhalb bleibt die Kopfzeile schlank
+      assert(!(await r.getByTestId('chip-omen').isVisible().catch(() => false)), 'Omen-Marke nur auf der Karte')
+      await r.getByTestId('tab-play').click()
       await r.getByTestId('chip-omen').click()
       await r.getByTestId('omen-safe').click()
       assert((await r.evaluate(() => window.__engine.get().modules.choiceEvents.active)) === true, 'Omen gewählt')
-      await r.getByTestId('tab-play').click()
       assert((await r.locator('[data-decor="blueBanner"]').count()) === 1, 'Banner auf der Talkarte')
       // Talgast auf der Karte: sichtbar neben dem Funkenruf, Antippen begrüßt, danach ist er fort (und kommt nicht sofort wieder)
       await r.evaluate(() => {

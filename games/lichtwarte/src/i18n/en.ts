@@ -71,7 +71,7 @@ export const stringsEn: Strings = {
     clear: 'Clear',
     goalUnlock: (name) => `Next: clear the ${name}`,
     goalMilestone: (name, at) => `Bring the ${name} to level ${at}`,
-    goalPrestige: (layer) => `${layer} is ready!`,
+    goalPrestige: (layer, amount, cur) => `${layer} is ready: +${amount} ${cur}`,
     goalProgress: (layer) => `On the way to the ${layer}`,
     slotLevel: (n) => `Level ${n}`,
     open: (name) => `Open ${name}`,
@@ -385,7 +385,6 @@ export const stringsEn: Strings = {
     next: (level: string, reward: string) => `At rank ${level}: ${reward}`,
   },
   hud: {
-    turnReady: (layer: string, amount: string, cur: string) => `${layer}: +${amount} ${cur}`,
     turnSoon: (layer: string, time: string) => `${layer} in ${time}`,
   },
   trade: {

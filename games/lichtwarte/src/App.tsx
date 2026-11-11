@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { bestBuy, countAffordableMeta, DAILY_ID, dailyStatus, isFeatureOpen, prestigeReady, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type OfflineState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
+import { bestBuy, countAffordableMeta, formatNumber, NUMBER_LOCALES, DAILY_ID, dailyStatus, isFeatureOpen, prestigeReady, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type OfflineState, type ProducerDef, type QuestsState, type WorldView } from '@engine/core'
 import { connectSfx, currentStep, useEngine, useStore, useSteps } from '@engine/react'
 import { CardPicker, ChallengesCard, FtueCoach, GameShell, Hud, MetaShopPanel, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
@@ -46,6 +46,9 @@ function watchBadge(w: WorldView): boolean {
   return (!!d && dailyStatus(d, localDayKey(rt.clock), DAILY).canClaim) || (q?.active.some((x) => !x.claimed && x.progress >= x.goal) ?? false)
 }
 
+/** Kurze Zahl in der aktiven Sprache, für Texte außerhalb der UI-Hülle (Ziel-Zeile). */
+const fmtShort = (n: number) => formatNumber(n, NUMBER_LOCALES[i18n.getLocale() === 'en' ? 'en' : 'de'])
+
 /** Gerätemerker „Prolog gesehen“ (steht neben den gelesenen Chronik-Seiten). */
 const PROLOGUE = 'prologue'
 
@@ -65,11 +68,14 @@ function SideCurrencies() {
   const { world } = useEngine(ui.rt)
   const earned = world.get<{ earned: Record<string, number> }>(MODULE.wallet)?.earned ?? {}
   const list = [CURRENCY.glowPebbles, CURRENCY.runeShards, CURRENCY.nightDew, CURRENCY.forebearLight].filter((c) => (earned[c] ?? 0) > 0)
+  // Eine Zeile: farbiger Punkt und Zahl; der Name steht für Screenreader und als Tooltip dabei
   return (
     <>
       {list.map((c) => (
-        <span key={c} data-testid={`hud-${c}`}>
-          <strong>{ui.fmt(world.balance(c))}</strong> {ui.labels.currency(c)}
+        <span key={c} className={`lw-cur lw-cur--${c}`} data-testid={`hud-${c}`} title={ui.labels.currency(c)}>
+          <i aria-hidden="true" />
+          <strong>{ui.fmt(world.balance(c))}</strong>
+          <span className="ek-visually-hidden">{ui.labels.currency(c)}</span>
         </span>
       ))}
     </>
@@ -242,7 +248,7 @@ export function App() {
               : g.kind === 'milestone'
                 ? t.play.goalMilestone(labels.producer(g.id).name, String(g.at))
                 : g.kind === 'prestige'
-                  ? t.play.goalPrestige(labels.layer(g.layer).name)
+                  ? t.play.goalPrestige(labels.layer(g.layer).name, fmtShort(g.payout), labels.currency(game.prestigeLayers.find((l) => l.id === g.layer)?.currency ?? ''))
                   : g.kind === 'prestigeProgress'
                     ? t.play.goalProgress(labels.layer(g.layer).name)
                     : null

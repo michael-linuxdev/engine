@@ -53,12 +53,11 @@ export function Notices({ coach, onEvents, onPrestige, compact = false }: { coac
   const st = layerStatus(world, first.id)
   const fc = layerForecast(world, first.id, 0)
   const layer = ui.labels.layer(first.id).name
+  // Ist sie bereit, sagt das schon die Ziel-Zeile der Kopfzeile (mit Lohn): Die Pille kündigt nur an
   const turn: Pill[] =
-    st.block === null
-      ? [{ id: 'turn', text: t.hud.turnReady(layer, ui.fmt(st.payout), ui.labels.currency(first.currency)), onOpen: onPrestige }]
-      : st.block === 'earned' && fc && fc.secondsToGate > 0 && fc.secondsToGate <= TURN_SOON_S
-        ? [{ id: 'turn', text: t.hud.turnSoon(layer, ui.duration(fc.secondsToGate * 1000)), onOpen: onPrestige }]
-        : []
+    st.block === 'earned' && fc && fc.secondsToGate > 0 && fc.secondsToGate <= TURN_SOON_S
+      ? [{ id: 'turn', text: t.hud.turnSoon(layer, ui.duration(fc.secondsToGate * 1000)), onOpen: onPrestige }]
+      : []
   return (
     <>
       <EventPills onOpen={onEvents} extra={turn} />

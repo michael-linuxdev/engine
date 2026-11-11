@@ -73,7 +73,7 @@ export const gameDe = {
     clear: 'Freilegen',
     goalUnlock: (name: string) => `Als Nächstes: ${name} freilegen`,
     goalMilestone: (name: string, at: string) => `${name} auf Stufe ${at} bringen`,
-    goalPrestige: (layer: string) => `${layer} ist bereit!`,
+    goalPrestige: (layer: string, amount: string, cur: string) => `${layer} ist bereit: +${amount} ${cur}`,
     goalProgress: (layer: string) => `Auf dem Weg zur ${layer}`,
     slotLevel: (n: string) => `Stufe ${n}`,
     open: (name: string) => `${name} öffnen`,
@@ -387,7 +387,6 @@ export const gameDe = {
     next: (level: string, reward: string) => `Bei Rang ${level}: ${reward}`,
   },
   hud: {
-    turnReady: (layer: string, amount: string, cur: string) => `${layer}: +${amount} ${cur}`,
     turnSoon: (layer: string, time: string) => `${layer} in ${time}`,
   },
   trade: {
