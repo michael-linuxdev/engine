@@ -58,6 +58,14 @@ Entscheidung Michael: Jahr 2 wird gebaut, in derselben Qualität wie Jahr 1. Es 
 - Seiten aus den Hochlanden zeigen das Bild ihres Landes.
 - **Noch offen in Jahr 2:** Fest-Jahrgang 2, Taktung der Zeitalter für die Jahre 3 bis 5.
 
+## Jahr 2, drittes Paket (2026-11-11)
+
+- **Fest-Jahrgang 2:** Jedes der neun Lichterfeste hat eine neue Sorte (90 Festmarken) und ein neues Schmuckstück (140 Festmarken). Beides steht erst im Fest-Laden, wenn das erste Hochland offen ist.
+- Die neuen Sorten bilden eine eigene Sammlung („Festschätze · Jahrgang 2“). Die erste Fest-Sammlung bleibt für sich vollständig; wer sie schon voll hat, verliert den Satz-Bonus nicht.
+- Ein Schmuckstück verschwindet aus dem Laden, sobald man es hat.
+- Engine: Waren im Fest-Laden können eine Bedingung tragen (`when`).
+- **Nicht gemessen:** ob die Festmarken eines Festes für Sorte und Schmuckstück im selben Jahr reichen. Die Preise sind an Jahrgang 1 angelehnt (60 und 160).
+
 ## Was „fünf Jahre“ hier heißt
 
 Maßstab ist eine Spielerin, die täglich kurz spielt (Profil „regular“). Über 1.825 Tage soll gelten:

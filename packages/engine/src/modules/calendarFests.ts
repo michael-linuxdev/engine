@@ -8,7 +8,7 @@ import { localParts } from '../clock'
 import type { Clock } from '../clock'
 import { act } from '../result'
 import { isRecord, parseNum, parseNumRecord, parseTime } from '../state'
-import type { Amount, EffectSource, EngineEvent, EngineModule } from '../types'
+import type { Amount, EffectSource, EngineEvent, EngineModule, WorldView } from '../types'
 
 export interface FestDef {
   id: string
@@ -18,10 +18,17 @@ export interface FestDef {
   major: boolean
 }
 
+/** `when`: the item only exists in the shop while this holds (e.g. goods of a later year). */
+interface FestItemBase {
+  id: string
+  cost: number
+  max: number
+  when?: (w: WorldView) => boolean
+}
 export type FestItem =
-  | { id: string; cost: number; max: number; kind: 'boost'; mult: number; durationMs: number }
-  | { id: string; cost: number; max: number; kind: 'grant'; grant: readonly Amount[] }
-  | { id: string; cost: number; max: number; kind: 'item'; event: EngineEvent }
+  | (FestItemBase & { kind: 'boost'; mult: number; durationMs: number })
+  | (FestItemBase & { kind: 'grant'; grant: readonly Amount[] })
+  | (FestItemBase & { kind: 'item'; event: EngineEvent })
 
 export interface FestConfig {
   fests: readonly FestDef[]
@@ -81,8 +88,10 @@ export function festKey(f: FestDef | null, clock: Clock): string {
   return `${f.id}:${year}`
 }
 
-export function festShop(cfg: FestConfig, festId: string): readonly FestItem[] {
-  return cfg.shop[festId] ?? cfg.shop.default ?? []
+/** Shop of a fest; with a world, items whose `when` does not hold are left out. */
+export function festShop(cfg: FestConfig, festId: string, w?: WorldView): readonly FestItem[] {
+  const all = cfg.shop[festId] ?? cfg.shop.default ?? []
+  return w ? all.filter((i) => !i.when || i.when(w)) : all
 }
 
 export function calendarFestsModule(cfg: FestConfig): EngineModule<FestsState> {
@@ -117,11 +126,11 @@ export function calendarFestsModule(cfg: FestConfig): EngineModule<FestsState> {
     },
     effects: (s): EffectSource[] => (s.boostActive ? [{ id: 'fest.boost', target: 'income', op: 'mul', value: s.boostMult, labelKey: 'effect.fest' }] : []),
     actions: {
-      buy: (s, p, ctx) => {
+      buy: (s, p, ctx, world) => {
         const fest = festAt(cfg, ctx.clock)
         const cur = update(s, ctx.clock)
         if (!fest || !cur.key) return s
-        const item = festShop(cfg, fest.id).find((i) => i.id === (p as { id?: string } | undefined)?.id)
+        const item = festShop(cfg, fest.id, world).find((i) => i.id === (p as { id?: string } | undefined)?.id)
         if (!item || cur.tokens < item.cost || (cur.bought[item.id] ?? 0) >= item.max) return s
         const next: FestsState = { ...cur, tokens: cur.tokens - item.cost, bought: { ...cur.bought, [item.id]: (cur.bought[item.id] ?? 0) + 1 } }
         const ev: EngineEvent = { type: 'fest.bought', fest: fest.id, item: item.id }

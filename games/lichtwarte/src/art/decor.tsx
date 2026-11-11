@@ -93,6 +93,98 @@ export function DecorArt({ id, m }: { id: string; m: Mood }) {
           <Glow x={0} y={-8} r={8} m={m} />
         </g>
       )
+    // ── Fest-Jahrgang 2 ──
+    case 'frostPillar':
+      return (
+        <g>
+          <path d="M-4 0 l1 -22 l3 -4 l3 4 l1 22 z" fill={P.snow} {...line} />
+          <path d="M-2 -6 l4 -3 M-2 -13 l4 -3" stroke={P.snowShade} strokeWidth={STROKE.fine} />
+        </g>
+      )
+    case 'snowdropBed':
+      return (
+        <g>
+          <ellipse cx={0} cy={-1} rx={9} ry={3} fill={P.snow} {...line} />
+          {[-5, 0, 5].map((x) => (
+            <g key={x}>
+              <path d={`M${x} -2 q0 -8 2 -10`} fill="none" stroke={P.grassDark} strokeWidth={STROKE.fine} />
+              <path d={`M${x + 2} -12 q3 2 1 5 q-3 -1 -1 -5 z`} fill={P.white} stroke={P.outline} strokeWidth={0.6} />
+            </g>
+          ))}
+        </g>
+      )
+    case 'budPole':
+      return (
+        <g>
+          <line x1={0} y1={0} x2={0} y2={-24} {...line} />
+          {[-7, -13, -19].map((y, i) => (
+            <path key={y} d={`M0 ${y} q${i % 2 ? -6 : 6} -1 ${i % 2 ? -7 : 7} -6 q${i % 2 ? 5 : -5} 0 ${i % 2 ? 7 : -7} 6 z`} fill={P.grassLight} stroke={P.outline} strokeWidth={0.6} />
+          ))}
+          <circle cx={0} cy={-26} r={2.5} fill={P.blossom} stroke={P.outline} strokeWidth={0.6} />
+        </g>
+      )
+    case 'ribbonTree':
+      return (
+        <g>
+          <line x1={0} y1={0} x2={0} y2={-14} {...line} />
+          <circle cx={0} cy={-19} r={8} fill={P.grass} {...line} />
+          <path d="M-5 -16 q-2 6 -4 10" fill="none" stroke={P.ember} strokeWidth={STROKE.fine * 1.5} strokeLinecap="round" />
+          <path d="M1 -13 q1 6 -1 10" fill="none" stroke={P.clothBlue} strokeWidth={STROKE.fine * 1.5} strokeLinecap="round" />
+          <path d="M6 -17 q3 5 3 10" fill="none" stroke={P.glow} strokeWidth={STROKE.fine * 1.5} strokeLinecap="round" />
+        </g>
+      )
+    case 'sunWheel':
+      return (
+        <g>
+          <line x1={0} y1={0} x2={0} y2={-6} {...line} />
+          <circle cx={0} cy={-15} r={9} fill={P.glow} {...line} />
+          <path d="M0 -24 v18 M-9 -15 h18 M-6.4 -21.4 l12.8 12.8 M6.4 -21.4 l-12.8 12.8" stroke={P.outline} strokeWidth={STROKE.fine} />
+          <circle cx={0} cy={-15} r={2.5} fill={P.glowHot} stroke={P.outline} strokeWidth={0.6} />
+          <Glow x={0} y={-15} r={10} m={m} />
+        </g>
+      )
+    case 'fireflyLamp':
+      return (
+        <g>
+          <line x1={0} y1={0} x2={0} y2={-12} {...line} />
+          <path d="M-5 -12 h10 v-10 q-5 -5 -10 0 z" fill={P.waterLight} opacity={0.75} {...line} />
+          <circle cx={-2} cy={-17} r={1} fill={P.glowHot} />
+          <circle cx={2} cy={-20} r={1} fill={P.glowHot} />
+          <circle cx={1} cy={-15} r={0.8} fill={P.glowSoft} />
+          <Glow x={0} y={-18} r={8} m={m} />
+        </g>
+      )
+    case 'kiteMast':
+      return (
+        <g>
+          <line x1={-5} y1={0} x2={-5} y2={-22} {...line} />
+          <path d="M-5 -22 q6 -2 9 -4" fill="none" stroke={P.woodDark} strokeWidth={STROKE.fine} />
+          <path d="M4 -32 l5 6 l-5 8 l-5 -8 z" fill={P.ember} {...line} />
+          <circle cx={4} cy={-25} r={1.6} fill={P.glowHot} />
+          <path d="M4 -18 q2 3 0 6" fill="none" stroke={P.clothBlue} strokeWidth={STROKE.fine} />
+        </g>
+      )
+    case 'mistHorn':
+      return (
+        <g>
+          <path d="M-6 0 v-8 M4 0 v-8" {...line} />
+          <path d="M-9 -8 q2 -8 12 -9 l6 -4 v14 l-6 -3 q-6 0 -8 4 z" fill={P.metalLight} {...line} />
+          <ellipse cx={11} cy={-14} rx={6} ry={2.5} fill={P.mist} opacity={0.7} />
+        </g>
+      )
+    case 'candleRing':
+      return (
+        <g>
+          <ellipse cx={0} cy={-2} rx={10} ry={3.5} fill={P.stoneLight} {...line} />
+          {[-7, -3.5, 0, 3.5, 7].map((x, i) => (
+            <g key={x}>
+              <rect x={x - 0.9} y={-9 - (i % 2)} width={1.8} height={6 + (i % 2)} fill={P.paper} stroke={P.outline} strokeWidth={0.5} />
+              <path d={`M${x - 0.9} ${-9 - (i % 2)} q0.9 -3.4 1.8 0 z`} fill={P.glowHot} />
+            </g>
+          ))}
+          <Glow x={0} y={-10} r={10} m={m} />
+        </g>
+      )
     default:
       return null
   }

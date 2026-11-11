@@ -191,6 +191,8 @@ export const GAMES = [
       await r.getByTestId('card-fest').getByRole('heading', { name: T.watch.fests.budding.name }).waitFor()
       // Fest: wie lange es läuft, wie man Marken verdient, welches Fest folgt; offene Aufträge zeigen einen Prozent-Ring und ihre Belohnung
       assert((await r.getByTestId('fest-ends').count()) === 1 && (await r.getByTestId('fest-earn').count()) === 1 && (await r.getByTestId('fest-next').count()) === 1, 'Fest: Ende, Marken-Liste, nächstes Fest')
+      // Jahrgang 2 (neue Sorte, neues Schmuckstück) steht erst im Laden, wenn die Hochlande offen sind
+      assert((await r.getByTestId('fest-item-variety_buddingSeed').count()) === 1 && (await r.getByTestId('fest-item-variety_buddingWhistle').count()) === 0 && (await r.getByTestId('fest-item-decor_budPole').count()) === 0, 'Fest-Laden: Jahrgang 2 bleibt im ersten Jahr verborgen')
       assert((await r.getByTestId('card-quests').getByTestId('ring').count()) >= 1, 'Aufträge: Prozent-Ring statt totem Knopf')
       assert((await r.getByTestId('card-quests').locator('[data-testid^="quest-reward-"]').count()) >= 1, 'Aufträge nennen ihre Belohnung')
       await r.getByTestId('deed-firstLight').waitFor()

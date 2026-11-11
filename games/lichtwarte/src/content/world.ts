@@ -20,6 +20,8 @@ const HERBS = ['moonsage', 'lanternMoss', 'dewcup', 'starAnise', 'ashFern', 'bri
 const STONES = ['dawnQuartz', 'riverAmber', 'cloudSlate', 'glowGarnet', 'frostOpal', 'mossAgate', 'runeFlint', 'duskJet'] as const
 const CREATURES = ['tinyWyrm', 'lampMoth', 'pebbleToad', 'mistHeron', 'stoneBeetle', 'sparkFinch', 'nightSnail', 'thistleMouse'] as const
 const FEST = ['hoarfrostBloom', 'snowdropBell', 'buddingRibbon', 'buddingSeed', 'blossomCrown', 'midsummerFlame', 'midsummerHoney', 'fireflyJar', 'lanternGourd', 'lanternApple', 'mistLantern', 'longLightCandle', 'longLightStar'] as const
+/** Fest-Jahrgang 2: je Lichterfest eine neue Sorte, eigene Sammlung (die erste bleibt für sich vollständig). Nur anhängen. */
+const FEST2 = ['hoarfrostFern', 'snowdropLantern', 'buddingWhistle', 'blossomRibbon', 'midsummerWheel', 'fireflyNet', 'lanternKite', 'mistBell', 'longLightWreath'] as const
 const BREWS = ['glowTea', 'quietTonic', 'brightInk', 'warmSalve', 'starSyrup', 'dewElixir', 'stoneBalm', 'emberDrops', 'mossLamp', 'dawnPowder', 'frostCordial', 'runeDust'] as const
 
 const rarity = (i: number): 0 | 1 | 2 => (i < 5 ? 0 : i < 7 ? 1 : 2)
@@ -31,6 +33,7 @@ export const COLLECTION: CollectionConfig = {
     ...CREATURES.map((id, i): CollectionEntry => ({ id, category: 'bestiary', rarity: rarity(i), source: 'buy' })),
     ...FEST.map((id): CollectionEntry => ({ id, category: 'festival', rarity: 1, source: 'event' })),
     ...BREWS.map((id): CollectionEntry => ({ id, category: 'brews', rarity: 1, source: 'event' })),
+    ...FEST2.map((id): CollectionEntry => ({ id, category: 'festival2', rarity: 1, source: 'event' })),
   ],
   chance: [1 / 400, 1 / 2000, 1 / 8000],
   bonus: [0.005, 0.015, 0.03],
@@ -49,6 +52,30 @@ export const FEST_VARIETIES: Record<string, readonly string[]> = {
   lanternMoon: ['lanternGourd', 'lanternApple'],
   mistMoon: ['mistLantern'],
   longLight: ['longLightCandle', 'longLightStar'],
+}
+
+/** Jahrgang 2 (ab dem ersten Hochland): je Fest eine Sorte und ein Schmuckstück, beides nur im Fest-Laden. */
+export const FEST_VARIETIES_2: Record<string, string> = {
+  hoarfrost: 'hoarfrostFern',
+  snowdrop: 'snowdropLantern',
+  budding: 'buddingWhistle',
+  blossomRound: 'blossomRibbon',
+  midsummerGlow: 'midsummerWheel',
+  fireflyNights: 'fireflyNet',
+  lanternMoon: 'lanternKite',
+  mistMoon: 'mistBell',
+  longLight: 'longLightWreath',
+}
+export const FEST_DECOR_2: Record<string, string> = {
+  hoarfrost: 'frostPillar',
+  snowdrop: 'snowdropBed',
+  budding: 'budPole',
+  blossomRound: 'ribbonTree',
+  midsummerGlow: 'sunWheel',
+  fireflyNights: 'fireflyLamp',
+  lanternMoon: 'kiteMast',
+  mistMoon: 'mistHorn',
+  longLight: 'candleRing',
 }
 
 const PAIRS: [string, string][] = [
@@ -155,6 +182,16 @@ export const DECOR: DecorConfig = {
     { id: 'winterStar', cost: null, bonus: 0.02 },
     { id: 'bridgeBanner', cost: null, bonus: 0.03 },
     { id: 'beaconBrazier', cost: null, bonus: 0.03 },
+    // exklusiv: Fest-Jahrgang 2 (je Lichterfest eines, im Fest-Laden ab Jahr 2)
+    { id: 'frostPillar', cost: null, bonus: 0.02 },
+    { id: 'snowdropBed', cost: null, bonus: 0.02 },
+    { id: 'budPole', cost: null, bonus: 0.02 },
+    { id: 'ribbonTree', cost: null, bonus: 0.02 },
+    { id: 'sunWheel', cost: null, bonus: 0.02 },
+    { id: 'fireflyLamp', cost: null, bonus: 0.02 },
+    { id: 'kiteMast', cost: null, bonus: 0.02 },
+    { id: 'mistHorn', cost: null, bonus: 0.02 },
+    { id: 'candleRing', cost: null, bonus: 0.02 },
   ],
 }
 
