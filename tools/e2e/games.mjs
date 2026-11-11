@@ -375,6 +375,14 @@ export const GAMES = [
       await r.getByTestId('market-tab-offers').click()
       await r.getByTestId('offer-buy-pebbles50').click()
       await r.getByTestId('testbuy-sheet').waitFor()
+      // Das Fenster liegt über der Leiste unten: Seine Knöpfe sind sichtbar und treffbar (auf dem Handy lagen sie dahinter)
+      const ask = await r.evaluate(() => {
+        const b = document.querySelector('[data-testid="testbuy-yes"]').getBoundingClientRect()
+        const hit = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2)
+        return { inApp: !!document.querySelector('.ek-app > .ek-sheet-backdrop [data-testid="testbuy-sheet"]'), hit: hit?.closest('[data-testid]')?.getAttribute('data-testid'), bottom: b.bottom, vh: innerHeight }
+      })
+      assert(ask.inApp && ask.hit === 'testbuy-yes' && ask.bottom <= ask.vh, `Testkauf-Knopf ist frei sichtbar (${JSON.stringify(ask)})`)
+      assert((await r.evaluate(() => getComputedStyle(document.querySelector('.ek-app')).userSelect)) === 'none', 'Text lässt sich nicht markieren')
       assert((await pebbles()) === p1 && (await r.getByTestId('wallet').getAttribute('data-spent')) === '0', 'Testkauf fragt erst nach')
       await r.getByTestId('testbuy-no').click()
       await r.getByTestId('testbuy-sheet').waitFor({ state: 'detached' })
