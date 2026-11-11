@@ -186,7 +186,20 @@ export const game: GameDefinition = {
       // erst Monate, dann über ein Jahr zwischen zwei Zeitaltern (fuenf-jahre.md). Die ersten vier bleiben, wo sie waren.
       // 1,25 statt 1,35 (Entscheidung 2026-11-11, etwa alle fünf Wochen): gemessen in Jahr 2 im Mittel 27 Tage statt 34,
       // in Jahr 3 im Mittel 35 statt 41. Mit 1,3 waren es in Jahr 3 schon 40 bis 50 Tage.
-      gate: { base: 5e16, growth: 3, knee: 3, lateGrowth: 1.25 },
+      // Weitere Knicke (Messung über fünf Jahre, 2026-11-11): Der Ertrag wächst mit den Jahren langsamer, mit 1,25 allein
+      // lagen in Jahr 4 im Mittel 64 und in Jahr 5 im Mittel 73 Tage zwischen zwei Zeitaltern. Bis zum 32. bleibt alles gleich.
+      gate: {
+        base: 5e16,
+        growth: 3,
+        knee: 3,
+        lateGrowth: 1.25,
+        bends: [
+          { from: 32, growth: 1.2 },
+          { from: 36, growth: 1.15 },
+          { from: 42, growth: 1.12 },
+          { from: 52, growth: 1.1 },
+        ],
+      },
       payout: { base: 3, growth: 1.1 },
       minimum: { lowerRuns: 3 },
       // Jedes Zeitalter bis zum zwölften ist ein Meilenstein, danach in größeren Schritten: ein Ziel ohne nahes Ende.

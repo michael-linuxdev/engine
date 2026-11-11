@@ -3,6 +3,7 @@
  * earned since the last reset of any layer ≥ k (`runEarned`).
  *
  *  gate(p)   = base · growth^min(p, knee) · lateGrowth^max(0, p − knee)
+ *              (with `bends`, each run from a bend's `from` on multiplies by that bend's growth instead of lateGrowth)
  *  payout    = payoutBase · payoutGrowth^p · f(earned / gate)
  *  f(r)      = √r for r ≤ cap (default 4), then √cap + 0.5 · log2(r / cap)
  *
@@ -15,7 +16,20 @@ export function gateAt(l: PrestigeLayerDef, p: number, probe = false): number {
   if (probe && l.probe) return l.probe.gate
   const q = Math.max(0, p)
   const g = l.gate
-  return Math.floor(g.base * Math.pow(g.growth, Math.min(q, g.knee)) * Math.pow(g.lateGrowth, Math.max(0, q - g.knee)))
+  let gate = g.base * Math.pow(g.growth, Math.min(q, g.knee))
+  // Walk the flat part segment by segment: lateGrowth first, then each bend from its start on
+  let from = g.knee
+  let growth = g.lateGrowth
+  for (const b of g.bends ?? []) {
+    if (b.from <= from) {
+      growth = b.growth
+      continue
+    }
+    gate *= Math.pow(growth, Math.max(0, Math.min(q, b.from) - from))
+    from = b.from
+    growth = b.growth
+  }
+  return Math.floor(gate * Math.pow(growth, Math.max(0, q - from)))
 }
 
 export function payoutAtGate(l: PrestigeLayerDef, p: number, probe = false): number {
