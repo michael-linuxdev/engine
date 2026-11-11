@@ -1329,3 +1329,62 @@ body {
   font-size: 1rem;
   cursor: pointer;
 }
+
+/* ── Feinschliff (Durchgang 2026-11-11) ─────────────────────────────────── */
+/* Nebenwährungen: eine Zeile, farbiger Punkt und Zahl */
+.lw-app .ek-hud__sub {
+  flex-wrap: nowrap;
+  gap: var(--space-3);
+  overflow: hidden;
+  white-space: nowrap;
+}
+.lw-cur {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.lw-cur i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 1px var(--night);
+}
+.lw-cur--runeShards i { background: var(--accent); border-radius: 2px; transform: rotate(45deg); }
+.lw-cur--nightDew i { background: var(--night-2); }
+.lw-cur--forebearLight i { background: var(--ember); }
+/* Außerhalb der Karte bleibt nur die Glimmer-Zeile stehen: Ziel-Zeile, Pillen und Marken gehören zur Karte */
+.lw-app:not([data-tab='play']) .ek-goal,
+.lw-app:not([data-tab='play']) .ek-pills,
+.lw-app:not([data-tab='play']) .lw-chip {
+  display: none;
+}
+/* Menü-Kachel: der Punkt „hier wartet etwas“ sitzt oben rechts */
+.lw-app .ek-menu--tiles .ek-menu__item {
+  position: relative;
+}
+.lw-app .ek-menu--tiles .ek-badge:not(.ek-badge--inline) {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border-radius: 50%;
+}
+/* Sprungknöpfe im Mondwende-Tab */
+.lw-app .ek-ptab__jump {
+  margin: 0 var(--space-2);
+  background: var(--parchment-edge);
+  border: 1px solid var(--gold-deep);
+}
+.lw-app .ek-ptab__jump button {
+  font-family: var(--font-display);
+}
+/* Heute-Knopf etwas kleiner, damit er kein Schild berührt */
+.lw-today {
+  min-width: 50px;
+  min-height: 50px;
+  font-size: 0.8rem;
+  bottom: 1%;
+}

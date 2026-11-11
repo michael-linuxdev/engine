@@ -1346,3 +1346,13 @@ html:has(.ek-app) body {
   text-decoration: underline;
   cursor: pointer;
 }
+
+/* Paragraphs inside sheets, cards and panels: the container's gap spaces them, not the browser's margins */
+.ek-sheet__body p,
+.ek-card p,
+.ek-panel p {
+  margin: 0;
+}
+.ek-card {
+  gap: var(--space-2);
+}
