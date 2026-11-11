@@ -125,7 +125,8 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
             <SaveGuardBanner />
             {p.hud}
             {p.notice}
-            <main className="ek-main" id="main" data-testid={`view-${tab}`}>
+            {/* The only scrolling area of the app; focusable so the keyboard can scroll it (axe) */}
+            <main className="ek-main" id="main" data-testid={`view-${tab}`} tabIndex={0}>
               {views[tab] ?? p.play}
             </main>
             <AppNav

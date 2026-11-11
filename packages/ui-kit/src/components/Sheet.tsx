@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, type KeyboardEvent, type ReactNode, type TouchEvent } from 'react'
+import { useEffect, useId, useRef, type KeyboardEvent, type ReactNode } from 'react'
 import { useOverlay } from '@engine/react'
 import { useUi } from '../useUi'
 
@@ -38,32 +38,52 @@ export function Sheet({ open, title, onClose, children, className, testId, foote
     ;(first ?? el)?.focus()
     return () => before?.focus?.()
   }, [open])
-  const drag = useRef<{ y: number; dy: number } | null>(null)
+  const close = useRef(onClose)
+  useEffect(() => {
+    close.current = onClose
+  })
+  // Swipe down to close. Native listeners, because the move must be cancellable:
+  // otherwise the browser scrolls (or rubber-bands) the page behind the sheet instead.
+  useEffect(() => {
+    const el = ref.current
+    if (!open || !el) return
+    let drag: { y: number; dy: number } | null = null
+    const start = (e: TouchEvent) => {
+      const body = el.querySelector<HTMLElement>('.ek-sheet__body')
+      const inBody = !!body && body.contains(e.target as Node)
+      // Inside scrolled content the gesture scrolls; only from the very top it drags the sheet
+      drag = e.touches.length === 1 && (!inBody || (body?.scrollTop ?? 0) <= 0) ? { y: e.touches[0].clientY, dy: 0 } : null
+    }
+    const move = (e: TouchEvent) => {
+      if (!drag) return
+      const dy = e.touches[0].clientY - drag.y
+      // Upwards from the top the content scrolls as usual
+      if (dy <= 0 && drag.dy <= 0) return
+      drag.dy = Math.max(0, dy)
+      if (e.cancelable) e.preventDefault()
+      el.style.transform = `translateY(${drag.dy}px)`
+      el.style.transition = 'none'
+    }
+    const end = () => {
+      const d = drag
+      drag = null
+      if (!d) return
+      el.style.transition = ''
+      el.style.transform = ''
+      if (d.dy >= SWIPE_CLOSE_PX) close.current()
+    }
+    el.addEventListener('touchstart', start, { passive: true })
+    el.addEventListener('touchmove', move, { passive: false })
+    el.addEventListener('touchend', end)
+    el.addEventListener('touchcancel', end)
+    return () => {
+      el.removeEventListener('touchstart', start)
+      el.removeEventListener('touchmove', move)
+      el.removeEventListener('touchend', end)
+      el.removeEventListener('touchcancel', end)
+    }
+  }, [open])
   if (!open) return null
-  const onTouchStart = (e: TouchEvent<HTMLDivElement>) => {
-    const el = ref.current
-    const body = el?.querySelector<HTMLElement>('.ek-sheet__body')
-    const inBody = !!body && body.contains(e.target as Node)
-    // Inside scrolled content the gesture scrolls; only from the very top it drags the sheet
-    drag.current = e.touches.length === 1 && (!inBody || (body?.scrollTop ?? 0) <= 0) ? { y: e.touches[0].clientY, dy: 0 } : null
-  }
-  const onTouchMove = (e: TouchEvent<HTMLDivElement>) => {
-    const d = drag.current
-    const el = ref.current
-    if (!d || !el) return
-    d.dy = Math.max(0, e.touches[0].clientY - d.y)
-    el.style.transform = d.dy > 0 ? `translateY(${d.dy}px)` : ''
-    el.style.transition = 'none'
-  }
-  const onTouchEnd = () => {
-    const d = drag.current
-    const el = ref.current
-    drag.current = null
-    if (!d || !el) return
-    el.style.transition = ''
-    el.style.transform = ''
-    if (d.dy >= SWIPE_CLOSE_PX) onClose()
-  }
   const onKey = (e: KeyboardEvent) => {
     if (e.key !== 'Tab' || !ref.current) return
     const items = [...ref.current.querySelectorAll<HTMLElement>(FOCUSABLE)]
@@ -90,10 +110,6 @@ export function Sheet({ open, title, onClose, children, className, testId, foote
         data-testid={testId}
         onClick={(e) => e.stopPropagation()}
         onKeyDown={onKey}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-        onTouchCancel={onTouchEnd}
       >
         <span className="ek-sheet__grip" aria-hidden="true" />
         <header className="ek-sheet__head">
