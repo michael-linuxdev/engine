@@ -7,6 +7,8 @@ import {
 import { UiProvider, type UiLabels } from '../context'
 import type { EngineStrings } from '../i18n/de'
 import { AppNav, type MenuItem, type NavItem } from './AppNav'
+import { FeedbackLayer } from './Feedback'
+import type { FeedbackMap } from '../feedback'
 import { MetaShopPanel } from './MetaShop'
 import { ErrorBoundary, InstallGate, MultSheet, SaveGuardBanner, TestPhaseNotice, WelcomeBack } from './Overlays'
 import { PrestigePanel } from './Prestige'
@@ -49,6 +51,8 @@ export interface GameShellProps<S extends EngineStrings> {
   prestigeArt?: (layer: string) => ReactNode
   /** Open a named overlay from outside (FTUE …). */
   openRef?: (open: (id: string) => void) => void
+  /** Visible feedback for engine events (toasts, rising numbers, flights to the HUD). */
+  feedback?: FeedbackMap
   /** Called when the player switches tabs. */
   onTab?: (id: string) => void
   /** Controlled active tab (optional; otherwise the shell keeps its own). */
@@ -157,6 +161,7 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
             <LegalSheet open={overlay === 'legal'} onClose={close} imprint={p.legal?.imprint?.()} privacyUrl={p.legal?.privacyUrl} />
             <MultSheet open={overlay === 'mult'} onClose={close} />
             {p.overlays}
+            {p.feedback ? <FeedbackLayer map={p.feedback} /> : null}
           </div>
         )}
       </UiProvider>

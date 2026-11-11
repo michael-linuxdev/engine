@@ -63,7 +63,7 @@ export function ValleyMap({ onOpen, children }: { onOpen: (id: string) => void; 
     if (ui.rt.dispatch(VISITORS_ID, 'greet')) setThanks({ key: Date.now(), text: t.world.guestThanks(ui.labels.content(`guest.${id}`).name, gift) })
   }
   return (
-    <section className="lw-map" style={{ background: SKY3[mood.daypart][0] }} aria-label={t.play.map} data-mood={`${mood.daypart}-${mood.season}`} data-weather={weather} data-style={world.get<MarketState>(MARKET_ID)?.equipped ?? 'duskBlue'}>
+    <section className="lw-map" data-fx="map" style={{ background: SKY3[mood.daypart][0] }} aria-label={t.play.map} data-mood={`${mood.daypart}-${mood.season}`} data-weather={weather} data-style={world.get<MarketState>(MARKET_ID)?.equipped ?? 'duskBlue'}>
       <div className="lw-stage" style={{ aspectRatio: `${MAP_W} / ${MAP_H}` }}>
         <svg className="lw-map__svg" viewBox={`0 0 ${MAP_W} ${MAP_H}`} preserveAspectRatio="xMidYMax meet" role="img" aria-label={t.play.map} data-testid="valley-svg">
           <Backdrop m={mood} lit={lit} beacon={beacon} />

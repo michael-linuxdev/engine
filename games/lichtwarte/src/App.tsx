@@ -16,6 +16,7 @@ import { WatchView } from './story/Watch'
 import { WorldTab } from './story/WorldTab'
 import { RealmsTab } from './story/RealmsTab'
 import { MarketTab } from './story/MarketTab'
+import { feedback } from './story/feedback'
 import { ftueSteps } from './content/ftue'
 import { CURRENCY, game } from './game'
 import { ambience, chronicleRead, ftue, i18n, labels, playtest, prefs, rt, sfx, t, tabsSeen } from './runtime'
@@ -184,6 +185,7 @@ export function App() {
         />
       }
       play={<Play onOpen={setSelected} />}
+      feedback={feedback}
       navIcons={{ play: <IconTower />, prestige: <IconMoon />, shop: <IconArchive />, menu: <IconMenu /> }}
       menu={[{ id: 'chronicle', label: t.chronicle.menu, icon: <IconBook />, onSelect: () => setChronicle(true), badge: unread }]}
       menuIcons={{ save: <IconSave />, settings: <IconGear />, legal: <IconScroll /> }}

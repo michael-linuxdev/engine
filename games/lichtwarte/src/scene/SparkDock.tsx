@@ -30,7 +30,7 @@ export function SparkDock() {
     return () => clearTimeout(id)
   }, [fx])
   return (
-    <div className="lw-dock">
+    <div className="lw-dock" data-fx="burst">
       <BurstButton label={t.play.burst} icon={<IconSpark />} />
       {fx ? (
         <span key={fx.key} aria-hidden="true">

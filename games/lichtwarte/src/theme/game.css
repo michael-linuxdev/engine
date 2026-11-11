@@ -1033,3 +1033,25 @@ body {
   padding-bottom: var(--space-1);
   border-bottom: 3px double var(--gold-deep);
 }
+
+/* Rückmeldungs-Ebene: Meldungen als Nachtblau-Schild mit Goldrand, Zahlen golden mit dunklem Saum */
+.lw-app .ek-toast {
+  background: var(--night);
+  color: var(--parchment);
+  border: 2px solid var(--gold);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+.lw-app .ek-fx__float {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--gold-deep);
+  text-shadow: 0 0 6px var(--parchment), 0 0 3px var(--parchment), 0 0 2px var(--parchment);
+}
+.lw-app .ek-fx__float.ek-fx--spend {
+  color: var(--ink);
+}
+.lw-app .ek-fx__fly {
+  background: var(--gold);
+  box-shadow: 0 0 12px 4px var(--gold);
+}

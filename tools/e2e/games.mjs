@@ -290,6 +290,9 @@ export const GAMES = [
       const p0 = await pebbles()
       await r.getByTestId('gift-claim').click()
       assert((await pebbles()) === p0 + 3, 'Markt: Tagesgeschenk')
+      // Jede Belohnung meldet sich: eine Meldung und die Gutschrift als aufsteigende Zahl
+      await r.getByTestId('toast').filter({ hasText: T.fx.gift }).waitFor()
+      await r.getByTestId('fx-float').filter({ hasText: T.currencies.glowPebbles }).first().waitFor()
       // Der Kiesel-Stand steht oben, die vier Regale sind Unterreiter; der zuletzt offene bleibt gemerkt
       assert((await r.getByTestId('market-balance').innerText()).includes(T.currencies.glowPebbles), 'Markt: Lichtkiesel-Stand steht oben')
       await r.getByTestId('market-tab-styles').click()

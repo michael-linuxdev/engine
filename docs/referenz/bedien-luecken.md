@@ -46,9 +46,9 @@ Ausbau-Karte (klein, hell, Ladebalken am Knopf, „Noch … fehlt“, Ertragsvor
 
 | # | Referenz | Lichtwarte | Wirkung |
 |---|---|---|---|
-| 4.1 | Eine gemeinsame Meldungs-Ebene und aufsteigende Zahlen für jede Belohnung: Kauf (−Kosten), Meilenstein „×2 erreicht“, Stufenaufstieg, Tagesrunde, Auftrag, Überraschung, Wetter-Ergebnis. | Eine aufsteigende Zahl gibt es nur beim Funkenruf, sonst nur Ton. | A |
-| 4.2 | Der Ertrag fliegt sichtbar zum Korb in der Kopfzeile (Tippen, Einsammeln). Der Korb blitzt bei großen Sprüngen. | Kein Flug, kein Blitzen. | A |
-| 4.3 | Überraschungen sind sichtbar und hörbar. | Überraschungen laufen, sind aber völlig stumm und unsichtbar. | B |
+| 4.1 | Eine gemeinsame Meldungs-Ebene und aufsteigende Zahlen für jede Belohnung: Kauf (−Kosten), Meilenstein „×2 erreicht“, Stufenaufstieg, Tagesrunde, Auftrag, Überraschung, Wetter-Ergebnis. | Eine aufsteigende Zahl gibt es nur beim Funkenruf, sonst nur Ton. | erledigt |
+| 4.2 | Der Ertrag fliegt sichtbar zum Korb in der Kopfzeile (Tippen, Einsammeln). Der Korb blitzt bei großen Sprüngen. | Kein Flug, kein Blitzen. | erledigt |
+| 4.3 | Überraschungen sind sichtbar und hörbar. | Überraschungen laufen, sind aber völlig stumm und unsichtbar. | erledigt |
 
 ## 5. Markt
 
@@ -96,7 +96,7 @@ Ausbau-Karte (klein, hell, Ladebalken am Knopf, „Noch … fehlt“, Ertragsvor
 | 9.1 | Kopf mit „endet in N Tagen“ und dem Hinweis, dass Marken verfallen. | Nur Name, Text, Markenstand. | B |
 | 9.2 | Waren sortiert: Verfügbares oben, Ausverkauftes unten, je Ware „noch N“ bzw. „hast du schon“. | Feste Reihenfolge, „2/3 gekauft“. | C |
 | 9.3 | Liste „So verdienst du Marken“ und das nächste Fest mit Namen. | Steht nur im Fließtext der Wacht. | C |
-| 9.4 | Kauf wird kurz bestätigt („… gekauft“). | Keine Bestätigung. | C |
+| 9.4 | Kauf wird kurz bestätigt („… gekauft“). | Keine Bestätigung. | erledigt |
 
 ## 10. Sammlung, Chronik, Gäste
 
