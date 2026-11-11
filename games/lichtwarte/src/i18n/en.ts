@@ -393,7 +393,6 @@ export const stringsEn: Strings = {
     style: (name: string) => `New valley style: ${name}`,
     pass: 'Festival week tier collected',
     window: 'Reward collected',
-    wheel: (name: string) => `Star wheel: ${name}`,
   },
   soon: {
     voyage: (time: string) => `Griffin away: ${time} left`,

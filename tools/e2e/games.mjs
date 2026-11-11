@@ -59,7 +59,9 @@ export const GAMES = [
       await p.getByTestId('wheel-spin').click()
       const spun = await p.evaluate(() => window.__engine.get().modules.wheel.total)
       if (spun !== 1) throw new Error('E2E: Sternenrad gedreht')
-      await p.keyboard.press('Escape')
+      // Das Rad nennt den Gewinn mit Namen und Wirkung und bietet dann „Weiter“ an
+      if ((await p.getByTestId('wheel-result').locator('strong').innerText()).trim() === '') throw new Error('E2E: Sternenrad nennt den Gewinn')
+      await p.getByTestId('wheel-done').click()
       await p.getByTestId('wheel-sheet').waitFor({ state: 'detached' })
     },
     /** Spielspezifisch: Chronik beim ersten Start, geführter Einstieg, Talkarte. */

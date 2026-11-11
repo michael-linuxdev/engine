@@ -36,6 +36,8 @@ export const feedback: FeedbackMap = (e: EngineEvent, ui) => {
     case 'offline.claimed':
       return [toast(t.fx.offline(ui.fmt(num(e.amount)), glimmer)), { kind: 'fly' }]
     case 'currency.gained':
+      // Das Sternenrad zeigt seinen Gewinn selbst, sobald es steht; die Zahl würde ihn vorher verraten
+      if (e.source === 'wheel') return null
       // Nebenwährungen: Jede Gutschrift steigt als Zahl an der Kopfzeile auf
       return { kind: 'float', text: t.fx.gained(ui.fmt(num(e.amount)), ui.labels.currency(str(e.currency))), anchor: 'hud' }
     case 'level.up':
@@ -84,8 +86,6 @@ export const feedback: FeedbackMap = (e: EngineEvent, ui) => {
       return toast(t.fx.voyageBack(name(`voyage.${str(e.id)}`)))
     case 'weekly.claimed':
       return toast(t.fx.weekly)
-    case 'wheel.spun':
-      return toast(t.fx.wheel(name(`wheel.${str(e.segment)}`)))
     default:
       return null
   }

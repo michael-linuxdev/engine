@@ -395,7 +395,6 @@ export const gameDe = {
     style: (name: string) => `Neuer Talstil: ${name}`,
     pass: 'Festwochen-Stufe eingesammelt',
     window: 'Belohnung eingesammelt',
-    wheel: (name: string) => `Sternenrad: ${name}`,
   },
   soon: {
     voyage: (time: string) => `Greif unterwegs: noch ${time}`,

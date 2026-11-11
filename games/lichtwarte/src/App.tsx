@@ -9,7 +9,7 @@ import { SparkDock } from './scene/SparkDock'
 import { TIER_LEVELS } from './art/registry'
 import { DISTRIBUTION, TEST_PHASE } from './distribution'
 import { CHRONICLE } from './content/chronicle'
-import { DAILY, TRIALS } from './content/live'
+import { DAILY, STAR_WHEEL, TRIALS } from './content/live'
 import { CONSTELLATIONS } from './content/world'
 import { MARKET } from './content/market'
 import { Notices } from './story/Notices'
@@ -347,7 +347,7 @@ export function App() {
               else if (!CHRONICLE.some((e) => e.open(rt.world()) && !chronicleRead.has(e.id))) setSelected(bestBuy(rt.world())?.id ?? game.producers[0].id)
             }}
           />
-          <WheelSheet open={wheelOpen && !ceremony && !chronicleOpen} onClose={() => setWheelOpen(false)} />
+          <WheelSheet open={wheelOpen && !ceremony && !chronicleOpen} onClose={() => setWheelOpen(false)} cfg={STAR_WHEEL} />
           <RankSheet open={rankOpen} onClose={() => setRankOpen(false)} />
           <CardPicker open={!wheelOpen && !ceremony && !chronicleOpen && cardsWaiting(world)} cfg={CONSTELLATIONS} />
         </>

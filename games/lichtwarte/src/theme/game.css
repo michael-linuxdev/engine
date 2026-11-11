@@ -1506,3 +1506,16 @@ body {
   border-radius: 4px 4px 0 0;
   box-sizing: border-box;
 }
+
+/* Sternenrad: Messing statt Blau an Rand, Zeiger und Nieten */
+.ek-wheel__rim {
+  stroke: var(--gold-deep);
+}
+.ek-wheel__pointer,
+.ek-wheel__stud,
+.ek-wheel__pin {
+  fill: var(--gold);
+}
+.ek-wheel__seg.is-won > path {
+  stroke: var(--gold);
+}
