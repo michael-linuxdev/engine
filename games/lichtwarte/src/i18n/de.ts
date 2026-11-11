@@ -149,6 +149,12 @@ export const gameDe = {
       mistMoon: { name: 'Nebelmond', blurb: 'Nebel im Tal und Geschichten am Feuer.' },
       longLight: { name: 'Fest des langen Lichts', blurb: 'In der dunkelsten Zeit brennt die Warte für alle.' },
     },
+    festEarn: {
+      'daily.claimed': 'Wachrunde',
+      'burst.used': 'Funkenruf',
+      'prestige.performed': 'Mondwende',
+      'quest.claimed': 'Auftrag',
+    },
     festItems: {
       festBoost: { name: 'Festlaterne', blurb: '30 Minuten doppelter Ertrag.' },
       festPebbles: { name: 'Kieselbeutel', blurb: '10 Lichtkiesel.' },
@@ -180,6 +186,12 @@ export const gameDe = {
     },
   },
   world: {
+    entryHints: {
+      buy: (category: string) => `Zeigt sich beim Ausbauen (${category}).`,
+      rare: (category: string) => `Selten. Zeigt sich beim Ausbauen (${category}).`,
+      fest: (fest: string) => `Nur im Fest-Laden: ${fest}.`,
+      brew: 'Entsteht im Kessel aus zwei Funden.',
+    },
     omenNow: (per: string) => `Für dich jetzt: ${per}.`,
     omenNowRisk: (win: string, lose: string) => `Für dich jetzt: ${win} oder ${lose}.`,
     tab: 'Sammlung',

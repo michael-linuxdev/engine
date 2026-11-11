@@ -10,6 +10,17 @@ export const storyEn: StoryStrings = {
     cta: 'Unlock the tower',
   },
   chronicle: {
+    contents: 'Contents',
+    resume: (title: string) => `Read on: ${title}`,
+    lockedPage: 'Not written yet.',
+    clue: {
+      build: (name: string) => `Opens with: ${name}.`,
+      buildLevel: (name: string, level: string) => `Opens with: ${name} at level ${level}.`,
+      turns: (n: string, layer: string) => `Opens after ${n}× ${layer}.`,
+      near: (layer: string) => `Opens when it draws near: ${layer}.`,
+      realms: (n: string) => `Opens with ${n} realms.`,
+      helper: 'Opens when someone helps with the work.',
+    },
     menu: 'Chronicle',
     title: "The Warden's Chronicle",
     unread: 'New page',

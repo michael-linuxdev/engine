@@ -3,11 +3,11 @@
  * flash windows, calendar fest shop, wheel, event pills, hint bubble.
  * Engine-neutral: titles and names come from `labels.content(key)`.
  */
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import {
-  ACHIEVEMENTS_ID, CHALLENGES_ID, challengeAvailable, DAILY_ID, dailyStatus, FESTS_ID, festAt, festShop, FLASH_ID, localDayKey, QUESTS_ID, WEEKEND_ID, WHEEL_ID,
+  ACHIEVEMENTS_ID, CHALLENGES_ID, challengeAvailable, DAILY_ID, dailyStatus, FESTS_ID, festAt, festDaysLeft, festShop, FLASH_ID, nextFest, primaryCurrency, localDayKey, QUESTS_ID, WEEKEND_ID, WHEEL_ID,
   type AchievementDef, type AchievementsState, type ChallengeConfig, type ChallengesState, type DailyConfig, type DailyState, type FestConfig, type FestsState,
-  type FlashState, type QuestsState, type WeekendState, type WheelState,
+  type Amount, type FlashState, type QuestConfig, type QuestsState, type WeekendState, type WheelState,
 } from '@engine/core'
 import { useEngine } from '@engine/react'
 import { useUi } from '../useUi'
@@ -22,6 +22,21 @@ function Card({ title, children, testId }: { title: string; children: ReactNode;
       {children}
     </section>
   )
+}
+
+/** Percent ring for a task that is still open (instead of a dead button). */
+function Ring({ ratio }: { ratio: number }) {
+  const pct = Math.max(0, Math.min(100, Math.floor(ratio * 100)))
+  return (
+    <span className="ek-ring" style={{ '--p': pct } as CSSProperties} data-testid="ring" aria-hidden="true">
+      {pct}%
+    </span>
+  )
+}
+
+function useAmounts() {
+  const ui = useUi()
+  return (list: readonly Amount[]) => list.map((g) => `${ui.fmt(g.amount)} ${ui.labels.currency(g.currency)}`)
 }
 
 export function DailyCard({ cfg }: { cfg: DailyConfig }) {
@@ -45,29 +60,41 @@ export function DailyCard({ cfg }: { cfg: DailyConfig }) {
   )
 }
 
-export function QuestsCard() {
+/** `cfg` lets each errand name its reward. Claimable errands come first, collected ones last. */
+export function QuestsCard({ cfg }: { cfg?: QuestConfig }) {
   const ui = useUi()
   const { world, dispatch } = useEngine(ui.rt)
+  const amounts = useAmounts()
   const s = world.get<QuestsState>(QUESTS_ID)
   if (!s) return null
   const t = ui.labels.content('title.quests')
+  const rank = (q: QuestsState['active'][number]) => (q.claimed ? 2 : q.progress >= q.goal ? 0 : 1)
+  const list = [...s.active].sort((a, b) => rank(a) - rank(b))
   return (
     <Card title={t.name} testId="card-quests">
       <p className="ek-muted">{t.blurb}</p>
       <ul className="ek-list">
-        {s.active.map((q) => {
+        {list.map((q) => {
           const l = ui.labels.content(`quest.${q.id}`)
+          const tpl = cfg?.templates.find((x) => x.id === q.id)
+          const reward = tpl ? [...amounts(tpl.reward), ...(tpl.rewardSeconds ? [`${ui.fmt(world.rate() * tpl.rewardSeconds)} ${ui.labels.currency(primaryCurrency(world.def))}`] : [])] : []
+          const ready = !q.claimed && q.progress >= q.goal
           return (
-            <li key={q.id} className="ek-row" data-testid={`quest-${q.id}`}>
+            <li key={q.id} className={`ek-row${q.claimed ? ' is-done' : ''}`} data-testid={`quest-${q.id}`} data-state={q.claimed ? 'claimed' : ready ? 'ready' : 'open'}>
               <div className="ek-row__main">
                 <strong>{l.name}</strong>
                 <span className="ek-muted">{l.blurb}</span>
                 <ProgressBar ratio={q.progress / q.goal} label={l.name} />
                 <span className="ek-muted">{ui.t.live.progress(ui.fmt(q.progress), ui.fmt(q.goal))}</span>
+                {reward.length ? <span data-testid={`quest-reward-${q.id}`}>{ui.t.live.rewardLine(reward.join(' + '))}</span> : null}
               </div>
-              <Button size="small" data-testid={`quest-claim-${q.id}`} disabled={q.claimed || q.progress < q.goal} onClick={() => dispatch(QUESTS_ID, 'claim', { id: q.id })}>
-                {q.claimed ? ui.t.live.claimed : ui.t.live.claim}
-              </Button>
+              {ready || q.claimed ? (
+                <Button size="small" data-testid={`quest-claim-${q.id}`} disabled={q.claimed} onClick={() => dispatch(QUESTS_ID, 'claim', { id: q.id })}>
+                  {q.claimed ? ui.t.live.claimed : ui.t.live.claim}
+                </Button>
+              ) : (
+                <Ring ratio={q.progress / q.goal} />
+              )}
             </li>
           )
         })}
@@ -76,25 +103,30 @@ export function QuestsCard() {
   )
 }
 
+/** Deeds: open ones first (closest to done on top), finished ones below; each names its reward. */
 export function AchievementsCard({ list }: { list: readonly AchievementDef[] }) {
   const ui = useUi()
   const { world } = useEngine(ui.rt)
+  const amounts = useAmounts()
   const done = world.get<AchievementsState>(ACHIEVEMENTS_ID)?.done ?? []
   const t = ui.labels.content('title.deeds')
+  const rows = list.map((a) => ({ a, ok: done.includes(a.id), ratio: Math.min(1, a.metric(world) / a.at) }))
+  rows.sort((x, y) => Number(x.ok) - Number(y.ok) || y.ratio - x.ratio)
   return (
     <Card title={`${t.name} (${done.length}/${list.length})`} testId="card-deeds">
       <ul className="ek-list">
-        {list.map((a) => {
+        {rows.map(({ a, ok, ratio }) => {
           const l = ui.labels.content(`deed.${a.id}`)
-          const ok = done.includes(a.id)
-          const v = Math.min(a.at, a.metric(world))
+          const reward = [...amounts(a.reward), ...(a.bonus ? [ui.t.live.bonusLine(String(Math.round(a.bonus * 1000) / 10))] : [])]
           return (
-            <li key={a.id} className={`ek-row${ok ? '' : ' is-locked'}`} data-testid={`deed-${a.id}`}>
+            <li key={a.id} className={`ek-row${ok ? ' is-done' : ''}`} data-testid={`deed-${a.id}`}>
               <div className="ek-row__main">
                 <strong>{l.name}</strong>
                 <span className="ek-muted">{l.blurb}</span>
-                {ok ? <span>{ui.t.live.done}</span> : <ProgressBar ratio={v / a.at} label={l.name} />}
+                {ok ? <span>{ui.t.live.done}</span> : <ProgressBar ratio={ratio} label={l.name} />}
+                {reward.length ? <span className="ek-muted">{ui.t.live.rewardLine(reward.join(' + '))}</span> : null}
               </div>
+              {ok ? null : <Ring ratio={ratio} />}
             </li>
           )
         })}
@@ -179,6 +211,7 @@ export function FlashCard() {
   )
 }
 
+/** Calendar fest: how long it runs, the shop (what is left on top), how tokens are earned, which fest comes next. */
 export function FestCard({ cfg }: { cfg: FestConfig }) {
   const ui = useUi()
   const { world, dispatch } = useEngine(ui.rt)
@@ -186,28 +219,47 @@ export function FestCard({ cfg }: { cfg: FestConfig }) {
   const fest = festAt(cfg, ui.rt.clock)
   if (!s || !fest) return null
   const l = ui.labels.content(`fest.${fest.id}`)
+  const items = festShop(cfg, fest.id).map((item) => ({ item, n: s.bought[item.id] ?? 0 }))
+  // What can still be bought stands on top, sold-out goods at the bottom
+  items.sort((a, b) => Number(a.n >= a.item.max) - Number(b.n >= b.item.max))
+  const next = nextFest(cfg, ui.rt.clock)
   return (
     <Card title={l.name} testId="card-fest">
       <p className="ek-muted">{l.blurb}</p>
+      <p data-testid="fest-ends">
+        {ui.t.live.festEnds(String(festDaysLeft(cfg, ui.rt.clock)))} {ui.t.live.festExpire}
+      </p>
       <p className="ek-strong">{ui.t.live.tokens(ui.fmt(s.tokens))}</p>
       <ul className="ek-list">
-        {festShop(cfg, fest.id).map((item) => {
+        {items.map(({ item, n }) => {
           const il = ui.labels.content(`festItem.${item.id}`)
-          const n = s.bought[item.id] ?? 0
+          const out = n >= item.max
           return (
-            <li key={item.id} className="ek-row" data-testid={`fest-item-${item.id}`}>
+            <li key={item.id} className={`ek-row${out ? ' is-done' : ''}`} data-testid={`fest-item-${item.id}`}>
               <div className="ek-row__main">
                 <strong>{il.name}</strong>
                 <span className="ek-muted">{il.blurb}</span>
-                <span className="ek-muted">{ui.t.live.bought(String(n), String(item.max))}</span>
+                <span className="ek-muted">{out ? (item.max === 1 ? ui.t.live.haveIt : ui.t.live.soldOut) : ui.t.live.left(String(item.max - n))}</span>
               </div>
-              <Button size="small" disabled={n >= item.max || s.tokens < item.cost} onClick={() => dispatch(FESTS_ID, 'buy', { id: item.id })}>
-                {ui.t.live.cost(String(item.cost))}
-              </Button>
+              <div className="ek-pay">
+                <Button size="small" disabled={out || s.tokens < item.cost} onClick={() => dispatch(FESTS_ID, 'buy', { id: item.id })}>
+                  {ui.t.live.cost(String(item.cost))}
+                </Button>
+                {!out && s.tokens < item.cost ? <span className="ek-pay__need">{ui.t.market.need(ui.fmt(item.cost - s.tokens))}</span> : null}
+              </div>
             </li>
           )
         })}
       </ul>
+      <div className="ek-note" data-testid="fest-earn">
+        <strong>{ui.t.live.earnTitle}</strong>
+        <ul className="ek-plain-list">
+          {Object.entries(cfg.earn).map(([event, n]) => (
+            <li key={event}>{ui.t.live.earnRow(ui.labels.content(`festEarn.${event}`).name, String(n))}</li>
+          ))}
+        </ul>
+      </div>
+      {next ? <p className="ek-muted" data-testid="fest-next">{ui.t.live.nextFest(ui.labels.content(`fest.${next.id}`).name)}</p> : null}
     </Card>
   )
 }

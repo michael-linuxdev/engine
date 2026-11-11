@@ -7,6 +7,7 @@ import { currentMood } from './scene/mood'
 import { currentWeather } from './scene/weather'
 import type { UiLabels } from '@engine/ui'
 import { TEST_BUDGET_CENTS, TEST_WALLET_ENABLED } from './content/market'
+import { ALCHEMY, COLLECTION, FEST_VARIETIES } from './content/world'
 import { game } from './game'
 import { stringsDe, type Strings } from './i18n/de'
 
@@ -104,6 +105,17 @@ function realmContent(ns: string, rest: string): { name: string; blurb: string }
   return null
 }
 
+/** Was einen noch unbekannten Sammlungs-Eintrag bringt (ohne seinen Namen zu verraten). */
+function entryHint(id: string): { name: string; blurb: string } {
+  const e = COLLECTION.entries.find((x) => x.id === id)
+  if (!e) return { name: `entryHint.${id}`, blurb: '' }
+  const fest = Object.entries(FEST_VARIETIES).find(([, ids]) => ids.includes(id))?.[0]
+  const category = (t.world.categories as Keyed<{ name: string }>)[e.category]?.name ?? ''
+  const h = t.world.entryHints
+  const name = fest ? h.fest((t.watch.fests as Keyed<{ name: string }>)[fest]?.name ?? '') : ALCHEMY.recipes.some((r) => r.result === id) ? h.brew : e.rarity > 0 ? h.rare(category) : h.buy(category)
+  return { name, blurb: '' }
+}
+
 export const labels: UiLabels = {
   content: (key) => {
     const i = key.indexOf('.')
@@ -112,6 +124,8 @@ export const labels: UiLabels = {
     const ns = key.slice(0, i)
     const id = key.slice(i + 1)
     // Fest-Sorten im Fest-Laden tragen den Namen ihres Sammlungs-Eintrags.
+    if (ns === 'entryHint') return entryHint(id)
+    if (ns === 'festEarn') return { name: (t.watch.festEarn as Keyed<string>)[id] ?? key, blurb: '' }
     if (ns === 'festItem' && id.startsWith('variety_')) return labels.content(`entry.${id.slice(8)}`)
     const table = NAMESPACES[ns]?.()
     return table?.[id] ?? { name: key, blurb: '' }

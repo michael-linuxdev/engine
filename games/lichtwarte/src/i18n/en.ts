@@ -147,6 +147,12 @@ export const stringsEn: Strings = {
       mistMoon: { name: 'Mist Moon', blurb: 'Mist in the valley and stories by the fire.' },
       longLight: { name: 'Feast of the Long Light', blurb: 'In the darkest time the watch burns for everyone.' },
     },
+    festEarn: {
+      'daily.claimed': 'Watch Round',
+      'burst.used': 'Spark Call',
+      'prestige.performed': 'Moonturn',
+      'quest.claimed': 'Errand',
+    },
     festItems: {
       festBoost: { name: 'Festival lantern', blurb: '30 minutes of double yield.' },
       festPebbles: { name: 'Pebble pouch', blurb: '10 Glowpebbles.' },
@@ -178,6 +184,12 @@ export const stringsEn: Strings = {
     },
   },
   world: {
+    entryHints: {
+      buy: (category: string) => `Turns up while upgrading (${category}).`,
+      rare: (category: string) => `Rare. Turns up while upgrading (${category}).`,
+      fest: (fest: string) => `Only in the festival shop: ${fest}.`,
+      brew: 'Made in the cauldron from two finds.',
+    },
     omenNow: (per: string) => `For you right now: ${per}.`,
     omenNowRisk: (win: string, lose: string) => `For you right now: ${win} or ${lose}.`,
     tab: 'Collection',

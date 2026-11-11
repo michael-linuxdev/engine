@@ -62,6 +62,17 @@ export function festAt(cfg: FestConfig, clock: Clock): FestDef | null {
   )
 }
 
+/** The fest that starts next after today (by its start date, wrapping the year). */
+export function nextFest(cfg: FestConfig, clock: Clock): FestDef | null {
+  const p = localParts(clock)
+  const x = md(p.month, p.day)
+  const current = festAt(cfg, clock)
+  const later = cfg.fests.filter((f) => f !== current).map((f) => ({ f, start: md(...f.from) }))
+  if (!later.length) return null
+  const ahead = later.filter((e) => e.start > x).sort((a, b) => a.start - b.start)
+  return (ahead[0] ?? later.sort((a, b) => a.start - b.start)[0]).f
+}
+
 export function festKey(f: FestDef | null, clock: Clock): string {
   if (!f) return ''
   const p = localParts(clock)

@@ -80,6 +80,12 @@ export const GAMES = [
       await q.getByTestId('intro').waitFor({ state: 'detached' })
       await q.getByTestId('chronicle').waitFor({ timeout: 10_000 })
       assert(await q.getByText(T.chronicle.entries.welcome.title).isVisible(), 'erste Chronik-Seite öffnet sich')
+      // Inhaltsverzeichnis: verschlossene Seiten nennen nur, wie sie sich öffnen; „Weiterlesen“ führt zurück
+      await q.getByTestId('chronicle-contents').click()
+      await q.getByTestId('chronicle-index').waitFor()
+      assert((await q.getByTestId('toc-locked-holzlager').innerText()).includes(T.producers.holzlager.name), 'Chronik-Inhalt: Hinweis, wie die Seite aufgeht')
+      await q.getByTestId('chronicle-resume').click()
+      await q.getByTestId('chronicle-welcome').waitFor()
       await q.keyboard.press('Escape')
       await q.getByTestId('chronicle').waitFor({ state: 'detached' })
       await q.getByTestId('ftue').waitFor()
@@ -178,6 +184,10 @@ export const GAMES = [
       await r.getByTestId('daily-claim').click()
       assert(await r.getByTestId('daily-claim').isDisabled(), 'Wachrunde nur einmal am Tag')
       await r.getByTestId('card-fest').getByRole('heading', { name: T.watch.fests.budding.name }).waitFor()
+      // Fest: wie lange es läuft, wie man Marken verdient, welches Fest folgt; offene Aufträge zeigen einen Prozent-Ring und ihre Belohnung
+      assert((await r.getByTestId('fest-ends').count()) === 1 && (await r.getByTestId('fest-earn').count()) === 1 && (await r.getByTestId('fest-next').count()) === 1, 'Fest: Ende, Marken-Liste, nächstes Fest')
+      assert((await r.getByTestId('card-quests').getByTestId('ring').count()) >= 1, 'Aufträge: Prozent-Ring statt totem Knopf')
+      assert((await r.getByTestId('card-quests').locator('[data-testid^="quest-reward-"]').count()) >= 1, 'Aufträge nennen ihre Belohnung')
       await r.getByTestId('deed-firstLight').waitFor()
       // Die Prüfungen und das Archiv stehen im Mondwende-Tab, erreichbar über Sprungknöpfe
       await r.getByTestId('tab-prestige').click()
@@ -208,6 +218,9 @@ export const GAMES = [
       })
       await viaMenu(r, 'world')
       await r.getByTestId('card-collection').waitFor()
+      // Sammlung: Gesamtstand in Prozent; Unbekanntes nennt, was es bringt; der Kessel zeigt alle Rezepte
+      assert((await r.getByTestId('collection-total').innerText()).includes('%'), 'Sammlung: Gesamtstand in Prozent')
+      assert((await r.getByTestId('recipes').count()) === 1, 'Kessel: Rezeptliste')
       await r.getByTestId('brew-a').selectOption('moonsage')
       await r.getByTestId('brew-b').selectOption('dewcup')
       await r.getByTestId('brew').click()
