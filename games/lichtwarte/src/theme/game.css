@@ -621,6 +621,38 @@ body {
   opacity: 0;
 }
 
+/* Talgast auf der Karte: antippen heißt begrüßen */
+.lw-guest-btn {
+  position: absolute;
+  z-index: 3;
+  width: 56px;
+  height: 56px;
+  transform: translate(-50%, -78%);
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.lw-guest-btn__mark {
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, var(--gold), var(--gold-deep));
+  border: 2px solid var(--night);
+  color: var(--night);
+  font-weight: 800;
+  font-size: 0.9rem;
+  line-height: 18px;
+  text-align: center;
+  box-shadow: 0 0 10px var(--ember);
+}
+
 /* Sprechblase des Lehrlings */
 .lw-bubble {
   position: absolute;
@@ -843,6 +875,7 @@ body {
   :root:not(.ek-reduced-motion) .lw-story { animation: lw-fade 0.5s ease-out both; }
   :root:not(.ek-reduced-motion) .lw-turn { animation: lw-turn 5s ease-in-out 0.4s both; }
   :root:not(.ek-reduced-motion) .lw-page { animation: lw-leaf 0.3s ease-out both; }
+  :root:not(.ek-reduced-motion) .lw-guest-btn__mark { animation: lw-hop 1.6s ease-in-out infinite; }
   :root:not(.ek-reduced-motion) .lw-bubble { animation: lw-bubble 0.35s ease-out both; }
   :root:not(.ek-reduced-motion) .lw-slot.can-buy .lw-slot__up { animation: lw-pulse 1.8s ease-in-out infinite; }
   :root:not(.ek-reduced-motion) .lw-app .ek-sheet { animation: lw-sheet 0.28s cubic-bezier(0.2, 0.9, 0.3, 1) both; }

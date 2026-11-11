@@ -75,6 +75,28 @@ describe('visitors', () => {
     expect((r.state.modules.wallet as { balances: Record<string, number> }).balances.gem).toBe(10)
     expect(view(def, r.state).value('rate:a', 1)).toBeCloseTo(1.01, 9)
   })
+  it('after the greeting the guest is gone and stays away for the usual gap (no instant return, no second gift)', () => {
+    const def = game()
+    let { s, clock } = start(def)
+    clock.advance(200_000)
+    s = tick(def, s, 250, clock).state
+    s = dispatch(def, s, { module: 'visitors', type: 'greet' }, clock).state
+    const v = () => s.modules.visitors as { current: string; nextAt: number; seen: Record<string, number> }
+    expect(v().current).toBe('')
+    expect(v().nextAt).toBeGreaterThanOrEqual(clock.now() + 180_000)
+    // The very next ticks bring nobody back
+    for (let i = 0; i < 20; i++) {
+      clock.advance(1000)
+      s = tick(def, s, 1000, clock).state
+    }
+    expect(v().current).toBe('')
+    expect(dispatch(def, s, { module: 'visitors', type: 'greet' }, clock).ok).toBe(false)
+    expect(v().seen.fox).toBe(1)
+    // After the gap a guest may come again
+    clock.advance(420_000)
+    s = tick(def, s, 250, clock).state
+    expect(v().current).toBe('fox')
+  })
 })
 
 describe('decor', () => {

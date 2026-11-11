@@ -58,3 +58,6 @@ export function beaconLevel(built: number, turns: number): number {
   if (turns > 0) return 3
   return built >= 5 ? 2 : built >= 1 ? 1 : 0
 }
+
+/** Wo der Talgast steht: rechts neben dem Funkenruf-Knopf, frei sichtbar und antippbar. */
+export const GUEST_SPOT = { x: 252, y: 614 } as const

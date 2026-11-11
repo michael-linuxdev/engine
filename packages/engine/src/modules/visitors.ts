@@ -71,7 +71,9 @@ export function visitorsModule(cfg: VisitorConfig): EngineModule<VisitorsState> 
         if (!s.current || ctx.clock.now() >= s.until) return s
         const first = !s.seen[s.current]
         const grant = first ? cfg.firstGift.map((g) => ({ ...g, source: 'visitor' })) : [{ currency: primaryCurrency(w.def), amount: w.rate() * cfg.againSeconds, source: 'visitor' }]
-        return act({ ...s, seen: { ...s.seen, [s.current]: (s.seen[s.current] ?? 0) + 1 }, current: '', until: 0 }, { grant, events: [{ type: 'visitor.greeted', id: s.current, first }] })
+        // The guest leaves; the next one comes after the usual gap (otherwise the next tick would bring one right back)
+        const nextAt = ctx.clock.now() + cfg.gapMs[0] + ctx.rng.next() * (cfg.gapMs[1] - cfg.gapMs[0])
+        return act({ ...s, seen: { ...s.seen, [s.current]: (s.seen[s.current] ?? 0) + 1 }, current: '', until: 0, nextAt }, { grant, events: [{ type: 'visitor.greeted', id: s.current, first }] })
       },
     },
     playtestEvents: ['visitor.arrived', 'visitor.greeted'],

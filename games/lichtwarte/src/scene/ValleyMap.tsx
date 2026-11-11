@@ -21,7 +21,7 @@ import { t } from '../runtime'
 import { currentMood } from './mood'
 import { currentWeather } from './weather'
 import { FennoBubble } from './FennoBubble'
-import { beaconLevel, BUILD_SCALE, DECOR_SLOTS, MAP_H, MAP_W, SLOTS, slotView, trailX } from './slots'
+import { beaconLevel, BUILD_SCALE, DECOR_SLOTS, GUEST_SPOT, MAP_H, MAP_W, SLOTS, slotView } from './slots'
 
 export function ValleyMap({ onOpen, children }: { onOpen: (id: string) => void; children?: ReactNode }) {
   const ui = useUi()
@@ -78,7 +78,7 @@ export function ValleyMap({ onOpen, children }: { onOpen: (id: string) => void; 
           ) : null}
           {helper ? <ApprenticeOnTrail m={mood} minute={minute} /> : null}
           {guest ? (
-            <g transform={`translate(${trailX(596) + 22} 598) scale(1.25)`}>
+            <g transform={`translate(${GUEST_SPOT.x} ${GUEST_SPOT.y}) scale(1.5)`}>
               <GuestArt id={guest} />
             </g>
           ) : null}
@@ -132,6 +132,22 @@ export function ValleyMap({ onOpen, children }: { onOpen: (id: string) => void; 
             </button>
           )
         })}
+        {guest ? (
+          <button
+            type="button"
+            className="lw-guest-btn"
+            style={{ left: `${(GUEST_SPOT.x / MAP_W) * 100}%`, top: `${(GUEST_SPOT.y / MAP_H) * 100}%` }}
+            data-testid="guest-greet"
+            onClick={() => ui.rt.dispatch(VISITORS_ID, 'greet')}
+          >
+            <span className="lw-guest-btn__mark" aria-hidden="true">
+              !
+            </span>
+            <span className="ek-visually-hidden">
+              {t.world.visitorHere(ui.labels.content(`guest.${guest}`).name)} {t.world.greet}
+            </span>
+          </button>
+        ) : null}
         {helper ? <FennoBubble m={mood} w={weather} minute={minute} /> : null}
         {children}
       </div>

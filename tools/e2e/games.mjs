@@ -144,6 +144,16 @@ export const GAMES = [
       assert((await r.evaluate(() => window.__engine.get().modules.choiceEvents.active)) === true, 'Omen gewählt')
       await r.getByTestId('tab-play').click()
       assert((await r.locator('[data-decor="blueBanner"]').count()) === 1, 'Banner auf der Talkarte')
+      // Talgast auf der Karte: sichtbar neben dem Funkenruf, Antippen begrüßt, danach ist er fort (und kommt nicht sofort wieder)
+      await r.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        rt.replace({ ...s, modules: { ...s.modules, visitors: { ...s.modules.visitors, current: 'fox', until: Date.now() + 60_000, nextAt: 0 } } })
+      })
+      await r.getByTestId('guest-greet').click()
+      assert((await r.evaluate(() => window.__engine.get().modules.visitors.seen.fox)) === 2, 'Talgast auf der Karte begrüßt')
+      await r.waitForTimeout(600)
+      assert((await r.getByTestId('guest-greet').count()) === 0 && (await r.evaluate(() => window.__engine.get().modules.visitors.current)) === '', 'Talgast bleibt nach dem Begrüßen fort')
 
       // Rückkehr-Brief nach 50 Stunden: Brief + Geschenk (20 Lichtkiesel)
       const pebblesBefore = await r.evaluate(() => window.__engine.get().modules.wallet.balances.glowPebbles)
