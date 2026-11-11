@@ -215,6 +215,7 @@ export const engineEn: EngineStrings = {
     privacyPage: 'Privacy policy as a page',
   },
   live: {
+    morePills: (n: string) => `${n} more`,
     claim: 'Collect',
     claimed: 'Collected',
     progress: (a, b) => `${a} / ${b}`,

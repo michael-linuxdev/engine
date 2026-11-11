@@ -9,7 +9,7 @@ const FIRST_MS = 5_000
 const SHOW_MS = 7_000
 const PAUSE_MS = 38_000
 
-export function FennoBubble({ m, w, minute }: { m: Mood; w: Weather; minute: number }) {
+export function FennoBubble({ m, w, minute, step }: { m: Mood; w: Weather; minute: number; /** Halt des Lehrlings auf dem Weg (die Blase steht bei ihm). */ step: number }) {
   const [n, setN] = useState(-1)
   const [shown, setShown] = useState(false)
   useEffect(() => {
@@ -24,7 +24,7 @@ export function FennoBubble({ m, w, minute }: { m: Mood; w: Weather; minute: num
   }, [shown, n])
   if (!shown || n < 0) return null
   const lines = fennoLines(m, w)
-  const spot = apprenticeSpot(minute)
+  const spot = apprenticeSpot(step)
   const left = Math.min(34, Math.max(4, (spot.x / MAP_W) * 100 - 6))
   return (
     <p className="lw-bubble" aria-hidden="true" style={{ left: `${left}%`, bottom: `${100 - ((spot.y - 30 * spot.scale) / MAP_H) * 100}%` }}>

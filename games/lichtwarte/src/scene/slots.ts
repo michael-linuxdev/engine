@@ -52,9 +52,15 @@ export const DECOR_SLOTS: { x: number; y: number }[] = [94.5, 83, 72.5, 67.5, 62
   return { x: Math.round(((trailX(py) + (i % 2 ? 15 : -15)) / MAP_W) * 1000) / 10, y }
 })
 
-/** Wo der Lehrling auf dem Weg steht: Seine Stelle wechselt mit der Minute. */
-export function apprenticeSpot(minute: number): { x: number; y: number; scale: number } {
-  const y = HORIZON + 80 + ((minute * 67) % 280)
+/**
+ * Wo der Lehrling auf dem Weg steht: Er geht den Weg ab und hält auf Höhe der Bauwerke an.
+ * `step` zählt seine Halte; nach dem obersten kehrt er um.
+ */
+export function apprenticeSpot(step: number): { x: number; y: number; scale: number } {
+  const stops = SLOTS.map((s) => (s.y / 100) * MAP_H - 6)
+  const n = stops.length
+  const k = ((step % (2 * n - 2)) + (2 * n - 2)) % (2 * n - 2)
+  const y = stops[k < n ? k : 2 * n - 2 - k]
   return { x: trailX(y), y, scale: 0.62 + ((y - HORIZON) / (MAP_H - HORIZON)) * 0.5 }
 }
 
@@ -64,5 +70,23 @@ export function beaconLevel(built: number, turns: number): number {
   return built >= 5 ? 2 : built >= 1 ? 1 : 0
 }
 
-/** Wo der Talgast steht: rechts neben dem Funkenruf-Knopf, frei sichtbar und antippbar. */
-export const GUEST_SPOT = { x: 242, y: 626 } as const
+/** Wo ein Talgast stehen kann: sechs freie Stellen am Weg und am unteren Rand, alle gut antippbar. */
+export const GUEST_SPOTS = [
+  { x: 242, y: 626 },
+  { x: 118, y: 626 },
+  { x: 180, y: 540 },
+  { x: 196, y: 452 },
+  { x: 168, y: 368 },
+  { x: 232, y: 566 },
+] as const
+
+/** Die Stelle dieses Besuchs: bleibt gleich, solange der Gast da ist (abgeleitet aus seinem Abschied). */
+export function guestSpot(until: number): { x: number; y: number } {
+  return GUEST_SPOTS[Math.abs(Math.floor(until / 1000)) % GUEST_SPOTS.length]
+}
+
+/** Erste Stelle (frühere feste Stelle des Talgasts). */
+export const GUEST_SPOT = GUEST_SPOTS[0]
+
+/** Wo der Umschlag liegt, wenn ein Brief wartet: am Fuß der Warte. */
+export const LETTER_SPOT = { x: 212, y: 286 } as const

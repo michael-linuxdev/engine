@@ -1075,3 +1075,182 @@ body {
   color: var(--gold-deep);
   filter: none;
 }
+
+/* ── Karte: Hinweise an den Plätzen (Lückenliste 2.1 bis 2.8) ─────────────── */
+/* Nur der beste Kauf trägt den Pfeil; andere bezahlbare Plätze nur den Goldrand */
+.lw-slot.can-buy:not(.is-best) .lw-slot__plaque {
+  padding-left: 8px;
+}
+.lw-slot__star {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, 1px);
+  white-space: nowrap;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--night);
+  color: var(--gold);
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+/* Der nächste gesperrte Platz: Name und Balken statt nur ein Schloss */
+.lw-slot__plaque--next {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  border-style: dashed;
+  border-color: var(--gold-deep);
+  background: color-mix(in srgb, var(--parchment) 88%, transparent);
+}
+.lw-slot__bar {
+  display: block;
+  height: 5px;
+  min-width: 56px;
+  border-radius: 999px;
+  background: var(--parchment-edge);
+  overflow: hidden;
+}
+.lw-slot__bar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--gold-deep), var(--gold));
+}
+/* Funkenkranz, wenn ein Bauwerk wächst */
+.lw-burst {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  pointer-events: none;
+}
+.lw-burst i {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  margin: -3px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px 2px var(--ember);
+  opacity: 0;
+}
+.lw-burst--big i {
+  width: 9px;
+  height: 9px;
+}
+/* Umschlag am Fuß der Warte, „Heute“ unten links */
+.lw-letter {
+  position: absolute;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  min-width: var(--tap);
+  min-height: var(--tap);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--parchment);
+  filter: drop-shadow(0 0 6px var(--ember));
+  cursor: pointer;
+}
+.lw-today {
+  position: absolute;
+  z-index: 3;
+  right: 3%;
+  bottom: 1.5%;
+  min-width: 58px;
+  min-height: 58px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 4px 8px;
+  border: 2px solid var(--gold-deep);
+  border-bottom-width: 4px;
+  border-radius: 16px;
+  background: linear-gradient(var(--night-2), var(--night));
+  color: var(--on-night);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.lw-today .lw-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--gold);
+}
+.lw-today .ek-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+}
+.lw-guest-sparkle {
+  position: absolute;
+  right: 4px;
+  top: 2px;
+  width: 10px;
+  height: 10px;
+  background: var(--gold);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  filter: drop-shadow(0 0 4px var(--ember));
+}
+.lw-walker {
+  transform-box: view-box;
+  transform-origin: 0 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.ek-reduced-motion) .lw-burst i { animation: lw-spark 0.9s ease-out both; }
+  :root:not(.ek-reduced-motion) .lw-burst--big i { animation-duration: 1.4s; }
+  :root:not(.ek-reduced-motion) .lw-letter { animation: lw-bob 1.2s ease-in-out infinite alternate; }
+  :root:not(.ek-reduced-motion) .lw-guest-sparkle { animation: lw-twinkle 1.4s ease-in-out infinite; }
+  :root:not(.ek-reduced-motion) .lw-walker { transition: transform 9s linear; }
+  :root:not(.ek-reduced-motion) .lw-bob--walk { animation: lw-step 0.45s ease-in-out 20 alternate, lw-bob 1.6s ease-in-out 9s infinite alternate; }
+}
+@keyframes lw-step { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-2.5px) rotate(3deg); } }
+
+/* Kopfzeile: Rang-Kachel und Nebenwährungen */
+.lw-rank strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--ink);
+}
+.lw-rank > span:not(.lw-rank__bar):not(.ek-visually-hidden) {
+  font-size: 0.72rem;
+}
+.lw-rank__bar {
+  display: block;
+  width: 34px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--parchment-edge);
+  overflow: hidden;
+}
+.lw-rank__bar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-deep), var(--gold));
+}
+.lw-app .ek-hud__sub {
+  padding: 0 var(--space-3);
+  color: var(--ink);
+  font-size: 0.8rem;
+  text-shadow: 0 0 6px var(--parchment), 0 0 3px var(--parchment);
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.ek-reduced-motion) .lw-rank.is-up { animation: lw-pulse 0.5s ease-in-out 3; }
+}
+
+/* Der Hinweisbereich liegt über der Karte: Nur seine Marken und Pillen fangen Tipps ab, die Lücken nicht */
+.lw-notices,
+.lw-notices .ek-pills {
+  pointer-events: none;
+}
+.lw-notices > *:not(.ek-pills),
+.lw-notices .ek-pill {
+  pointer-events: auto;
+}

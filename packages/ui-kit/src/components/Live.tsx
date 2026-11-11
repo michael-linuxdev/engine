@@ -232,22 +232,47 @@ export function WheelSheet({ open, onClose }: { open: boolean; onClose: () => vo
   )
 }
 
-/** Small status pills under the HUD (running events). */
-export function EventPills({ onOpen }: { onOpen: () => void }) {
+/** Pills shown at once; the rest hides behind "+N". */
+const PILLS_MAX = 3
+
+export interface Pill {
+  id: string
+  text: string
+  icon?: ReactNode
+  onOpen?: () => void
+}
+
+/**
+ * Small status pills under the HUD: running events with their time left, plus
+ * pills of the game (`extra`, shown first). At most three; the rest hides behind "+N".
+ */
+export function EventPills({ onOpen, extra = [], icons = {} }: { onOpen: () => void; extra?: readonly Pill[]; icons?: Readonly<Record<string, ReactNode>> }) {
   const ui = useUi()
   const { world } = useEngine(ui.rt)
-  const pills: { id: string; text: string }[] = []
+  const now = ui.rt.clock.now()
+  const left = (until: number) => (until > now ? ` · ${ui.duration(until - now)}` : '')
+  const pills: Pill[] = [...extra]
   if (world.get<WeekendState>(WEEKEND_ID)?.active) pills.push({ id: 'weekend', text: ui.labels.content('title.weekend').name })
-  if (world.get<FlashState>(FLASH_ID)?.active) pills.push({ id: 'flash', text: ui.labels.content('title.flash').name })
-  if (world.get<FestsState>(FESTS_ID)?.boostActive) pills.push({ id: 'fest', text: ui.t.effects.fest })
+  const flash = world.get<FlashState>(FLASH_ID)
+  if (flash?.active) pills.push({ id: 'flash', text: ui.labels.content('title.flash').name + left(flash.endsAt) })
+  const fest = world.get<FestsState>(FESTS_ID)
+  if (fest?.boostActive) pills.push({ id: 'fest', text: ui.t.effects.fest + left(fest.boostUntil) })
   if (!pills.length) return null
+  const shown = pills.slice(0, PILLS_MAX)
+  const more = pills.length - shown.length
   return (
     <div className="ek-pills">
-      {pills.map((p) => (
-        <button key={p.id} type="button" className="ek-pill" data-testid={`pill-${p.id}`} onClick={onOpen}>
+      {shown.map((p) => (
+        <button key={p.id} type="button" className="ek-pill" data-testid={`pill-${p.id}`} onClick={p.onOpen ?? onOpen}>
+          {p.icon ?? icons[p.id] ? <span className="ek-pill__icon" aria-hidden="true">{p.icon ?? icons[p.id]}</span> : null}
           {p.text}
         </button>
       ))}
+      {more > 0 ? (
+        <button type="button" className="ek-pill" data-testid="pill-more" aria-label={ui.t.live.morePills(String(more))} onClick={onOpen}>
+          +{more}
+        </button>
+      ) : null}
     </div>
   )
 }

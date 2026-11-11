@@ -61,6 +61,11 @@ export const gameDe = {
   },
   branches: { glow: 'Glanz', watch: 'Wacht', setout: 'Aufbruch', night: 'Lange Nacht', ages: 'Zeitalter' },
   play: {
+    best: 'Bester Kauf',
+    toStar: (n: string) => `Noch ${n} bis ★`,
+    nextUp: (pct: string) => `Als Nächstes, ${pct} % erreicht`,
+    today: 'Heute',
+    letter: 'Ein Brief wartet. Chronik öffnen.',
     burst: 'Funkenruf',
     map: 'Talkarte',
     wild: 'Wildnis',
@@ -356,6 +361,18 @@ export const gameDe = {
     circle: (time: string) => `Wächterzirkel: noch ${time}`,
     omen: (time: string) => `Omen wirkt: noch ${time}`,
     flash: (time: string) => `Sternenfenster: noch ${time}`,
+  },
+  rank: {
+    short: 'Rang',
+    title: (n: string) => `Wächterrang ${n}`,
+    blurb: 'Alles, was du im Tal tust, lässt deinen Rang wachsen. Jeder Rang stärkt den Ertrag ein wenig, für immer.',
+    progress: (a: string, b: string) => `${a} von ${b} bis zum nächsten Rang`,
+    bonus: (mult: string) => `Ertrag durch den Rang: ×${mult}`,
+    next: (level: string, reward: string) => `Bei Rang ${level}: ${reward}`,
+  },
+  hud: {
+    turnReady: (layer: string, amount: string, cur: string) => `${layer}: +${amount} ${cur}`,
+    turnSoon: (layer: string, time: string) => `${layer} in ${time}`,
   },
   trade: {
     tab: 'Markt',

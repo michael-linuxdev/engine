@@ -97,6 +97,18 @@ export const GAMES = [
       await q.getByTestId('ftue').getByText(T.ftue.steps.unlock.title).waitFor()
       await q.getByTestId('ftue-skip').click()
       assert(!(await q.getByTestId('ftue').isVisible().catch(() => false)), 'Einstieg lässt sich überspringen')
+      // Karte und Kopfzeile: höchstens ein Pfeil (bester Kauf), der nächste gesperrte Platz zeigt Namen und Balken,
+      // der Wächterrang ist sichtbar, und die Ziel-Zeile führt zum Bauwerk
+      assert((await q.locator('[data-best="true"]').count()) <= 1, 'Karte: höchstens ein „bester Kauf“')
+      assert((await q.getByTestId('slot-next').count()) === 1, 'Karte: genau der nächste gesperrte Platz zeigt den Balken')
+      await q.getByTestId('hud-rank').click()
+      await q.getByTestId('rank-sheet').waitFor()
+      await q.keyboard.press('Escape')
+      await q.getByTestId('rank-sheet').waitFor({ state: 'detached' })
+      await q.getByTestId('goal').click()
+      await q.getByTestId('upgrade-sheet').waitFor()
+      await q.keyboard.press('Escape')
+      await q.getByTestId('upgrade-sheet').waitFor({ state: 'detached' })
       // Gesperrtes Bauwerk: Die Bedingungen stehen als Checkliste da, das Fehlende ist erkennbar (hier: die Mondwende)
       await q.getByTestId('slot-schmiede').click()
       await q.getByTestId('gate-all').waitFor()
