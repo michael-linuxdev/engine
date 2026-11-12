@@ -41,11 +41,15 @@ import { CURRENCY, LAYER } from './ids'
 /** Leiter: [Kosten C0, Wachstum g, Ertrag r0, Laufertrag-Tor, Mondwenden-Tor, Wächterrang-Tor, Stufe des Vorgängers] */
 const LADDER: [number, number, number, number, number, number, number][] = [
   [20, 1.18, 1, 0, 0, 0, 0],
-  [150, 1.17, 4, 4000, 0, 0, 25],
-  [1_800, 1.16, 25, 90_000, 0, 0, 25],
+  // Wie die Vorlage (Abgleich 2026-11-12): Bauwerk 2 nach 600 Glimmer oder Stufe 10 des ersten (vorher 4.000 / Stufe 25),
+  // Bauwerk 3 nach 50.000 oder Stufe 10 (vorher 90.000 / Stufe 25). Das zweite Bauwerk kommt so in den ersten zwei Minuten.
+  [150, 1.17, 4, 600, 0, 0, 10],
+  [1_800, 1.16, 25, 50_000, 0, 0, 10],
   [25_000, 1.15, 150, 500_000, 0, 6, 10],
   [200_000, 1.14, 900, 4_000_000, 1, 9, 10],
   [1_500_000, 1.13, 5_000, 25_000_000, 2, 12, 10],
+  // Mondwenden-Tore bleiben bei 1 / 2 / 3 / 5 / 8 / 12. Die Vorlage hat 1 / 2 / 4 / 6 / 9 / 12; damit gemessen liegt nach der
+  // dritten Mondwende eine Lücke von 92 Minuten ohne neues Ziel (Mauer-Prüfung schlägt an). Hier ist das Spiel bewusst flotter.
   [12_000_000, 1.12, 30_000, 150_000_000, 3, 16, 10],
   [90_000_000, 1.115, 180_000, 1_000_000_000, 5, 20, 10],
   [700_000_000, 1.11, 1_100_000, 8_000_000_000, 8, 25, 10],
@@ -130,11 +134,23 @@ export const archive: MetaItemDef[] = [
 
 const balance = defaultBalance(LAYER.moonturn)
 // Rückkehr-Brief: nach mindestens 48 Stunden Abwesenheit ein Geschenk
-// Funde am Wegrand so OFT wie in der Referenz: jede fünfte Stufe ein sicherer Fund, dazu 7 % Glücksfund je Ausbau,
-// höchstens einer je 5 s. Die BETRÄGE sind kleiner als dort (8 s bzw. 20 bis 45 s Ertrag statt 45 s bzw. 90 bis 210 s):
-// Mit den Beträgen der Referenz lief das gemessene Tempo davon (alle Bauwerke an Tag 2,6 statt Tag 5, zweite Mondwende
-// nach 57 statt 81 Minuten). Deckel: 12 % des Ertrags dieses Laufs plus einer Minute.
-balance.surprises = { chance: 0.07, seconds: 20, secondsMax: 45, minIntervalMs: 5000, every: { count: 5, seconds: 8 }, floorSeconds: 3, capShare: 0.12 }
+// Funde am Wegrand wie in der Vorlage, auch in den BETRÄGEN (Abgleich 2026-11-12): jede fünfte Stufe ein sicherer Fund
+// von 45 s Ertrag, dazu 7 % Glücksfund je Ausbau von 90 bis 210 s, höchstens einer je 5 s. Deckel: 12 % des Ertrags
+// dieses Laufs plus einer Minute, mindestens 8 s. Bis dahin waren die Beträge ein Fünftel davon (8 s bzw. 20 bis 45 s),
+// um die Korridore „alle Bauwerke um Tag 5“ zu halten. Genau diese Funde tragen aber das Spielgefühl der Vorlage.
+// Dazu zwei Funde der Vorlage, die es hier noch nicht gab: „fast geschafft“ bei 72 / 88 / 97 % der Mondwende-Schwelle
+// (je 25 s Ertrag, einmal je Lauf) und der Glücksfund bei der Rückkehr (15 % Chance auf +35 % nach mindestens 30 min).
+balance.surprises = {
+  chance: 0.07,
+  seconds: 90,
+  secondsMax: 210,
+  minIntervalMs: 5000,
+  every: { count: 5, seconds: 45 },
+  floorSeconds: 8,
+  capShare: 0.12,
+  near: { ratios: [0.72, 0.88, 0.97], seconds: 25 },
+  offline: { chance: 0.15, minAwayMs: 30 * 60_000, bonus: 0.35 },
+}
 // Kurze Abwesenheit (unter fünf Minuten) wird sofort gutgeschrieben, ohne Korb: Im Testlog wurden 14 von 50 Körben
 // nach weniger als zwei Minuten eingesammelt (Entscheidung 2026-11-12). Ab fünf Minuten kommt das Willkommens-Fenster.
 balance.offline = { ...balance.offline, directBelowMs: 5 * 60_000, comebackMs: 48 * 3600_000, comebackGrant: [{ currency: CURRENCY.glowPebbles, amount: 20 }] }
@@ -163,8 +179,9 @@ export const game: GameDefinition = {
     {
       id: LAYER.moonturn,
       currency: CURRENCY.runeShards,
-      gate: { base: 10_000_000, growth: 3.2, knee: 13, lateGrowth: 1.12 },
-      probe: { gate: 1_000_000, payout: 70 },
+      // Schwellen wie die Vorlage (Abgleich 2026-11-12): Probe 5 Mio., danach 25 Mio. (vorher 1 Mio. / 10 Mio.)
+      gate: { base: 25_000_000, growth: 3.2, knee: 13, lateGrowth: 1.12 },
+      probe: { gate: 5_000_000, payout: 70 },
       payout: { base: 100, growth: 1.12 },
       minimum: { producersOnline: 3, producersFromCount: 1 },
       // Meilensteine erst weit nach Tag 90 (regular: rund 730 Mondwenden an Tag 90): Die gemessene Taktung bleibt unberührt.
@@ -288,8 +305,10 @@ export const extraIds = {
 /** Zielkorridore für den Simulator (CHECK=1), begründet in docs/spiele/lichtwarte/balance.md. */
 export const balanceTargets = {
   engaged: [
-    { label: 'Holzlager nach 3–5 min', kind: 'unlock', id: 'holzlager', clock: 'active', min: 3, max: 5 },
-    { label: 'Steinbruch nach 8–15 min', kind: 'unlock', id: 'steinbruch', clock: 'active', min: 8, max: 15 },
+    // Wie die Vorlage (Abgleich 2026-11-12): vier Bauwerke in den ersten Minuten, dann die erste Mondwende
+    { label: 'Holzlager in den ersten 2 min', kind: 'unlock', id: 'holzlager', clock: 'active', min: 0, max: 2 },
+    { label: 'Steinbruch nach 1–5 min', kind: 'unlock', id: 'steinbruch', clock: 'active', min: 1, max: 5 },
+    { label: 'Quellschrein nach 3–9 min', kind: 'unlock', id: 'quellschrein', clock: 'active', min: 3, max: 9 },
     { label: 'Erste Mondwende nach 15–20 min', kind: 'prestige', id: LAYER.moonturn, nth: 1, clock: 'active', min: 15, max: 20 },
     { label: 'Zweite Mondwende frühestens 20 min später', kind: 'prestige', id: LAYER.moonturn, nth: 2, clock: 'active', min: 40, max: 200 },
   ],

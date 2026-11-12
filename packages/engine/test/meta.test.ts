@@ -144,7 +144,7 @@ describe('surprises', () => {
   it('an old save without the buy counter loads with zero', () => {
     const d = testGame()
     const mod = d.modules.find((m) => m.id === 'surprises')!
-    expect(mod.parse({ found: 3, lastAt: 5 }, {} as never, d)).toEqual({ found: 3, lastAt: 5, buys: 0 })
+    expect(mod.parse({ found: 3, lastAt: 5 }, {} as never, d)).toEqual({ found: 3, lastAt: 5, buys: 0, near: 0 })
   })
 })
 
@@ -167,5 +167,43 @@ describe('best buy and next goal', () => {
     expect(nextGoal(view(def, s))).toMatchObject({ kind: 'milestone', id: 'a', at: 25 }) // a needs 20 more, b 22
     s = { ...s, modules: { ...s.modules, prestige: { layers: [{ count: 0, runEarned: 600, sinceReset: 0 }, { count: 0, runEarned: 0, sinceReset: 0 }, { count: 0, runEarned: 0, sinceReset: 0 }] } } }
     expect(nextGoal(view(def, s))).toMatchObject({ kind: 'prestige', layer: 'l1' })
+  })
+})
+
+describe('surprises: almost there and lucky return', () => {
+  const surprisesOf = (s: EngineState) => s.modules.surprises as { found: number; near: number }
+  it('gives one find per crossed share of the first gate, once per run, and starts over after the reset', () => {
+    const d = testGame()
+    d.balance.surprises = { chance: 0, seconds: 10, minIntervalMs: 0, near: { ratios: [0.5, 0.9], seconds: 20 } }
+    const c = createManualClock(T0)
+    let s = createState(d, c)
+    s = { ...s, modules: { ...s.modules, producers: { owned: { a: 1 } } } }
+    const found: unknown[] = []
+    const run = (ms: number) => {
+      const r = tick(d, s, ms, c)
+      s = r.state
+      found.push(...r.events.filter((e) => e.type === 'surprise.found'))
+    }
+    // probe gate of the fixture is 500 at a rate of 1/s
+    run(100_000)
+    expect(surprisesOf(s).near).toBe(0)
+    run(200_000)
+    run(1000)
+    expect(surprisesOf(s).near).toBe(1)
+    run(200_000)
+    run(1000)
+    run(1000)
+    expect(surprisesOf(s).near).toBe(3)
+    expect(found.map((e) => (e as { kind: string; tier: number }).tier)).toEqual([0, 1])
+    run(50_000)
+    expect(found).toHaveLength(2)
+    s = dispatch(d, s, { module: 'prestige', type: 'perform', payload: { layer: 'l1' } }, c).state
+    expect(surprisesOf(s).near).toBe(0)
+    expect(surprisesOf(s).found).toBe(2)
+  })
+  it('an old save without the field starts at 0', () => {
+    const d = testGame()
+    const m = d.modules.find((x) => x.id === 'surprises')
+    expect(m?.parse({ found: 3, lastAt: 5, buys: 9 }, { clock: createManualClock(T0), rng: { next: () => 0 } } as never, d)).toEqual({ found: 3, lastAt: 5, buys: 9, near: 0 })
   })
 })

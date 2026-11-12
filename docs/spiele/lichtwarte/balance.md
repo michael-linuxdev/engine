@@ -6,10 +6,11 @@ Werkzeug: `npm run balance -- lichtwarte <engaged|regular|casual> <stunden>` (Si
 
 | Ziel | Profil | Korridor | Begründung | Stand (P6) |
 |---|---|---|---|---|
-| Bauwerk 2 (Holzlager) | engaged | 3–5 min aktiv | erster „Aha“-Moment in der ersten Sitzung | 3,3 min ✓ |
-| Bauwerk 3 (Steinbruch) | engaged | 8–15 min aktiv | zweite Neuheit, bevor es eintönig wird | 10,0 min ✓ |
-| Erste Mondwende | engaged | 15–20 min aktiv | Probe-Schwelle: Prestige in der ersten Sitzung erleben | 20,0 min ✓ |
-| Zweite Mondwende | engaged | ≥ 20 min nach der ersten | kein Zwei-Minuten-Kreislauf | +58 min ✓ |
+| Bauwerk 2 (Holzlager) | engaged | in den ersten 2 min | erster „Aha“-Moment sofort (wie die Vorlage) | 0,5 min ✓ |
+| Bauwerk 3 (Steinbruch) | engaged | 1–5 min aktiv | zweite Neuheit | 2,3 min ✓ |
+| Bauwerk 4 (Quellschrein) | engaged | 3–9 min aktiv | dritte Neuheit vor der ersten Mondwende | 5,0 min ✓ |
+| Erste Mondwende | engaged | 15–20 min aktiv | Probe-Schwelle: Prestige in der ersten Sitzung erleben | 18,3 min ✓ |
+| Zweite Mondwende | engaged | ≥ 20 min nach der ersten | kein Zwei-Minuten-Kreislauf | +72 min ✓ |
 | Alle 10 Bauwerke | regular | Tag 5 ± 1 | Inhaltstempo | Tag 4,5 ✓ |
 | Lange Nacht | regular | Tag 9 ± 2 | lange Schleife | Tag 10,4 ✓ |
 | Keine Mauer | engaged 72 h, regular 12 Tage | Zeit bis zum nächsten **neuen** Ziel ≤ 3 × Tempo | Motivation | ✓ |
@@ -96,7 +97,48 @@ Die Schwellen von Mondwende und Langer Nacht liegen bewusst hinter dem gemessene
 
 ## Funde am Wegrand
 
-Häufigkeit wie in der Referenz (Rückmeldung 2026-11-11): jede fünfte von Hand gebaute Stufe ein sicherer Fund, dazu 7 % Glücksfund je Ausbau, höchstens ein Fund je 5 Sekunden. Vorher: 4 % je Ausbau, höchstens einer je 45 Sekunden.
+Seit dem **Abgleich mit der Vorlage (2026-11-12)** gelten Häufigkeit **und Beträge** der Vorlage:
 
-Die **Beträge** sind kleiner als in der Referenz: 8 s Ertrag (sicher) und 20 bis 45 s (Glück) statt 45 s und 90 bis 210 s. Mit den Beträgen der Referenz verfehlte der Simulator die Korridore deutlich (alle Bauwerke an Tag 2,6 statt Tag 5 ± 1; zweite Mondwende nach 57 statt 81 Minuten). Mit den kleineren Beträgen bleiben alle Korridore eingehalten (zweite Mondwende nach 78 Minuten, Sternwarte an Tag 4,1). Deckel: 12 % des Ertrags dieses Laufs plus einer Minute.
+| Fund | Wann | Betrag |
+|---|---|---|
+| Sicherer Fund | jede fünfte von Hand gebaute Stufe | 45 s Ertrag |
+| Glücksfund | 7 % je Ausbau | 90 bis 210 s Ertrag |
+| „Fast geschafft“ | bei 72 / 88 / 97 % der Mondwende-Schwelle, je einmal im Lauf | 25 s Ertrag |
+| Glück bei der Rückkehr | 15 % Chance nach mindestens 30 min Abwesenheit | +35 % auf den eingesammelten Ertrag |
 
+Höchstens ein Fund vom Ausbauen je 5 Sekunden. Deckel: 12 % des Ertrags dieses Laufs plus einer Minute; mindestens 8 s Ertrag.
+
+**Vorher** waren die Beträge ein Fünftel davon (8 s und 20 bis 45 s), und die beiden unteren Funde gab es nicht. Die kleinen Beträge sollten die Korridore „alle Bauwerke um Tag 5“ halten; gemessen bleiben die Korridore auch mit den Beträgen der Vorlage eingehalten (alle Bauwerke an Tag 4,1, Lange Nacht an Tag 7,0), weil zugleich die Schwellen der Vorlage gelten (siehe unten).
+
+
+## Abgleich mit der Vorlage (2026-11-12)
+
+**Anlass:** Michael nach zwei eigenen Tests: Lichtwarte fühlt sich zäh an, die Vorlage „macht süchtig“. Eine erste Runde am selben Tag („Tempo-Runde“, PR #47: halbe Stufen bleiben nach der Mondwende, Funkenruf alle 45 s, Funken auf der Karte) ging in die falsche Richtung und ist zurückgenommen: In der Vorlage setzt die Mondwende alles zurück, und so soll es hier auch sein.
+
+**Befund aus dem Code der Vorlage:** Die Schleifen (Schwellen, Leiter, Funkenruf) waren in Lichtwarte gleich oder sogar kürzer. Anders waren die Stellen, die eine Sitzung dicht und überraschend machen:
+
+| Was | Vorlage | Lichtwarte vorher | Jetzt |
+|---|---|---|---|
+| Bauwerk 2 öffnet sich nach | 600 Ertrag oder Stufe 10 | 4.000 oder Stufe 25 | wie Vorlage |
+| Bauwerk 3 öffnet sich nach | 50.000 oder Stufe 10 | 90.000 oder Stufe 25 | wie Vorlage |
+| Sicherer Fund (jede 5. Stufe) | 45 s Ertrag | 8 s | wie Vorlage |
+| Glücksfund (7 %) | 90 bis 210 s | 20 bis 45 s | wie Vorlage |
+| „Fast geschafft“ vor der Mondwende | 3 Funde je Lauf | fehlte | wie Vorlage |
+| Glück bei der Rückkehr | 15 % auf +35 % | fehlte | wie Vorlage |
+| Probe-Schwelle / zweite Schwelle | 5 Mio. / 25 Mio. | 1 Mio. / 10 Mio. | wie Vorlage |
+| Mondwenden-Tore der Bauwerke 7 bis 9 | 4 / 6 / 9 | 3 / 5 / 8 | bleibt 3 / 5 / 8 |
+
+Die letzte Zeile bleibt bewusst anders: Mit den Toren der Vorlage liegt nach der dritten Mondwende eine Lücke von 92 Minuten ohne neues Ziel, und die Mauer-Prüfung schlägt an.
+
+**Gemessen** (Simulator):
+
+| | Vorher | Jetzt |
+|---|---|---|
+| Bauwerk 2 / 3 / 4 (engaged) | 3,7 / 10,0 / 11,7 min | 0,5 / 2,3 / 5,0 min |
+| Käufe in den ersten 5 Minuten | 34 | 41 |
+| Erste Mondwende | 18,5 min | 18,3 min |
+| Zweite Mondwende | Minute 76 | Minute 90 |
+| Alle 10 Bauwerke (regular) | Tag 4,1 | Tag 4,1 |
+| Erste Lange Nacht (regular) | Tag 7,3 | Tag 7,0 |
+
+Die ersten fünf Minuten sind deutlich dichter, die Tage danach unverändert. **Nicht gemessen** ist, ob es sich damit wie die Vorlage anfühlt: Der Simulator zählt Ereignisse, und die Vorlage selbst ließ sich in dieser Umgebung nur lesen, nicht ausführen. Was sich außerhalb der Zahlen unterscheidet (Töne, Bewegung, Texte), ist nicht verglichen.

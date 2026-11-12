@@ -496,6 +496,12 @@ export const gameDe = {
     deed: (name: string) => `Tat vollbracht: ${name}`,
     trial: (name: string) => `Prüfung bestanden: ${name}`,
     surprise: (amount: string, cur: string) => `Fund am Wegrand: +${amount} ${cur}`,
+    near: [
+      (amount: string, cur: string) => `Der Mond steht schon hoch: +${amount} ${cur}`,
+      (amount: string, cur: string) => `Die Mondwende ist nah: +${amount} ${cur}`,
+      (amount: string, cur: string) => `Fast geschafft! +${amount} ${cur}`,
+    ],
+    offlineLuck: (amount: string, cur: string) => `Glück bei der Rückkehr: +${amount} ${cur} obendrauf`,
     offline: (amount: string, cur: string) => `+${amount} ${cur} eingesammelt`,
     bought: (name: string) => `Gekauft: ${name}`,
     star: (name: string, stars: string) => `${name}: Stern ${stars} erreicht`,

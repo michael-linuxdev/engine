@@ -494,6 +494,12 @@ export const stringsEn: Strings = {
     deed: (name: string) => `Deed done: ${name}`,
     trial: (name: string) => `Trial passed: ${name}`,
     surprise: (amount: string, cur: string) => `Found by the wayside: +${amount} ${cur}`,
+    near: [
+      (amount, cur) => `The moon is already high: +${amount} ${cur}`,
+      (amount, cur) => `The Moonturn is near: +${amount} ${cur}`,
+      (amount, cur) => `Almost there! +${amount} ${cur}`,
+    ],
+    offlineLuck: (amount, cur) => `Lucky return: +${amount} ${cur} on top`,
     offline: (amount: string, cur: string) => `+${amount} ${cur} collected`,
     bought: (name: string) => `Bought: ${name}`,
     star: (name: string, stars: string) => `${name}: star ${stars} reached`,
