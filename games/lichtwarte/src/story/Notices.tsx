@@ -37,15 +37,17 @@ export function Notices({ coach, onEvents, onPrestige, compact = false, waiting 
   }
   const omen = isFeatureOpen(world, 'omens') && !!world.get<ChoiceState>(CHOICES_ID)?.pending
   let notice: ReactNode = null
+  // Eine Marke steht im Streifen neben den Pillen, alles Größere darunter
+  let chip: ReactNode = null
   if (coach) notice = coach
   else if (busy) notice = null
-  else if (omen && compact && expanded !== 'omen') notice = <Chip id="omen" text={`${ui.labels.content('title.omens').name}: ${ui.labels.content(`omen.${world.get<ChoiceState>(CHOICES_ID)?.pending}`).name}`} onOpen={setExpanded} />
+  else if (omen && compact && expanded !== 'omen') chip = <Chip id="omen" text={`${ui.labels.content('title.omens').name}: ${ui.labels.content(`omen.${world.get<ChoiceState>(CHOICES_ID)?.pending}`).name}`} onOpen={setExpanded} />
   else if (omen) notice = <ChoiceNotice option={omenText} />
   else {
     const hint = pickHint(HINTS, (id) => hintsSeen.has(id), world)
     const text = hint ? ui.labels.content(`hint.${hint.id}`) : null
     // Auf der Karte verdeckt eine offene Blase die oberen Bauwerke: erst als Marke zeigen
-    if (text && compact && expanded !== `hint:${hint?.id}`) notice = <Chip id={`hint:${hint?.id}`} text={text.name} onOpen={setExpanded} testId="chip-hint" />
+    if (text && compact && expanded !== `hint:${hint?.id}`) chip = <Chip id={`hint:${hint?.id}`} text={text.name} onOpen={setExpanded} testId="chip-hint" />
     else notice = <HintBubble hint={text ? { title: text.name, body: text.blurb } : null} onClose={() => hint && hintsSeen.add(hint.id)} />
   }
   // Pille zur Mondwende: bereit (mit Lohn) oder bald (mit Restzeit); Antippen führt in den Tab
@@ -60,7 +62,10 @@ export function Notices({ coach, onEvents, onPrestige, compact = false, waiting 
       : []
   return (
     <>
-      <EventPills onOpen={onEvents} extra={[...waiting, ...turn]} />
+      <div className="lw-strip">
+        <EventPills onOpen={onEvents} extra={[...waiting, ...turn]} />
+        {chip}
+      </div>
       {notice}
     </>
   )

@@ -1718,3 +1718,47 @@ p.lw-toc__locked {
   font-family: var(--font-display);
   font-size: 1.1rem;
 }
+
+/* ── Hinweise über der Karte: Pillen und Marke teilen sich einen Streifen ──────────
+   Vorher stand die Marke in einer eigenen Zeile unter den Pillen und verdeckte dort ein Gebäudeschild.
+   Der Streifen bleibt links (rechts oben steht ein Bauwerk) und lässt sich seitlich schieben, wenn er voll ist. */
+.lw-notices > .lw-strip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 72%;
+  padding: var(--space-2) var(--space-2) 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  pointer-events: none;
+}
+.lw-strip::-webkit-scrollbar {
+  display: none;
+}
+.lw-strip:empty {
+  display: none;
+}
+.lw-strip .ek-pills {
+  display: contents;
+}
+.lw-strip .ek-pill,
+.lw-strip .lw-chip {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+.lw-strip .lw-chip {
+  min-height: 32px;
+  margin: 0;
+  font-size: 0.85rem;
+}
+.lw-app:not([data-tab='play']) .lw-strip {
+  display: none;
+}
+
+/* Markt-Kopf: kein eckiger Kasten mehr. Er klebt weiter oben, läuft aber bis an den Rand und nach unten weich aus. */
+.lw-app .ek-market-head {
+  margin: 0 calc(-1 * var(--space-3));
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  background: linear-gradient(to bottom, var(--night) 82%, transparent);
+}

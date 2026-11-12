@@ -187,7 +187,28 @@ Läufe über 1.825 Tage mit `PLAY=1`, Profil „regular“; der Simulator spielt
 | Seiten von Buch 4 | 40 Seiten von Tag 876 bis 1.295, größter Abstand 18 Tage, viermal zwei am selben Tag |
 | Seiten von Buch 5 | 40 Seiten von Tag 1.313 bis 1.797, größter Abstand 22 Tage, einmal zwei am selben Tag |
 
-**Bewusst nicht geändert:** Das Leuchtfeuer ist nach gut sieben Monaten fertig. Eine längere Ruhezeit würde es über das Jahr strecken, nähme aber Ertrag weg und schöbe die Lande am Rand über das Ende von Jahr 5 hinaus. Offen für den Testlauf: ob die letzten acht Monate von Jahr 5 mit einem Land alle drei Wochen genug tragen und ob die Lichtkiesel ein weiteres Ziel brauchen.
+**Bewusst nicht geändert:** Das Leuchtfeuer ist nach gut sieben Monaten fertig. Eine längere Ruhezeit würde es über das Jahr strecken, nähme aber Ertrag weg und schöbe die Lande am Rand über das Ende von Jahr 5 hinaus. Die Zeit danach füllt seit dem 12.11. das Nähren des Feuers (siehe unten).
+
+### Das Feuer nähren (2026-11-12)
+
+Steht die letzte Stufe des Leuchtfeuers, wird das Feuer genährt: 30-mal, alle acht Tage einmal, gegen Lichtkiesel (300 + 100 je Mal, zusammen 52.500), je +1 % Ertrag. In der Engine ist das die Pflege eines fertigen Werks (`MonumentConfig.tend`, neues gespeichertes Feld `tended` mit Startwert 0).
+
+- **Wozu:** Es füllt die 240 Tage zwischen der letzten Stufe (Tag 1.545) und dem letzten Land (Tag 1.797), und die Lichtkiesel bekommen ein spätes Ziel. Der Simulator hatte bis Tag 1.800 rund 107.000 Lichtkiesel ungenutzt; das ist eine Obergrenze, weil er nichts im Markt kauft.
+- **Nicht gemessen:** Der Lauf über fünf Jahre mit dem Nähren läuft noch. Zu prüfen ist, ob die bis zu +30 % Ertrag die letzten Lande am Rand spürbar vorziehen.
+
+### Testlog vom 11. und 12.11. (ein Tester, 26 Stunden)
+
+13 Sitzungen, 2 Stunden 3 Minuten Spielzeit am ersten Tag, knapp 4 Minuten am zweiten Morgen. Fünf Mondwenden am ersten Tag (die erste nach 2,5 Stunden), Rang 19, 10 Funde, noch keine Lange Nacht.
+
+| Beobachtung | Zahl | Folgerung |
+|---|---|---|
+| Besuchte Tabs | Tal 131, Markt 74, Mondwende 69, Wacht 11, Laden 7, Lande 2 | Der Markt wird fast so oft geöffnet wie die Mondwende. Wacht und Lande liegen im Menü und werden kaum gefunden. |
+| Bonus-Video | 19-mal Glimmer, nie Lichtkiesel | 6 Lichtkiesel sind gegen zehn Minuten Ertrag keine Wahl. Offen: Betrag anheben oder die Wahl streichen. |
+| Werbung | zweimal nach drei Sekunden abgebrochen, direkt danach „Werbung entfernen“ geöffnet; später gekauft | Der Wunsch, Werbung loszuwerden, ist echt. Ein 60-Sekunden-Video lief über fünf Minuten (App im Hintergrund, Uhr läuft nach Wanduhr; nur aus dem Code geschlossen). |
+| Testkäufe | 4 von 6 Angeboten, 8,96 € von 20 € Testgeld | Stilpaket, Werbefrei, Startpaket, Fest-Pass. Den Fest-Pass erst beim dritten Anlauf. |
+| Rad | 4 von 5 Drehungen dasselbe Feld | Zufall ist geprüft und in Ordnung; es wirkt trotzdem eintönig. |
+| Korb mit Ertrag | 50-mal eingesammelt, 14-mal davon nach weniger als zwei Minuten | Der Korb erscheint schon nach 15 Sekunden Abwesenheit. Offen: Schwelle anheben. |
+| Zweiter Tag | drei Sitzungen von zusammen knapp vier Minuten, keine Mondwende | Einsammeln und wieder gehen. Ein Vormittag ist zu wenig für ein Urteil. |
 
 ## Was „fünf Jahre“ hier heißt
 

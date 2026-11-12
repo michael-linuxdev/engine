@@ -98,6 +98,8 @@ export const feedback: FeedbackMap = (e: EngineEvent, ui) => {
       return toast(t.fx.stewardTrained(ui.fmt(num(e.n))))
     case 'monument.stage':
       return toast(e.done ? t.fx.beaconDone : t.fx.beaconStage(ui.fmt(num(e.stage))))
+    case 'monument.tended':
+      return toast(t.fx.beaconTended(ui.fmt(num(e.n))))
     case 'chart.completed':
       return toast(t.fx.chartDone(name(`chart.${str(e.group)}`)))
     case 'weekly.claimed':

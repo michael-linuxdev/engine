@@ -450,6 +450,17 @@ export const GAMES = [
       assert(await r.getByTestId('chronicle-rimOpenSea').getByText(T.chronicle.entries.rimOpenSea.title, { exact: true }).isVisible(), 'Chronik: erste Seite von Buch 5')
       await r.keyboard.press('Escape')
       await r.getByTestId('chronicle').waitFor({ state: 'detached' })
+      // Steht die letzte Stufe, wird das Feuer genährt: kostet Lichtkiesel, zählt hoch und ruht dann
+      await r.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        rt.replace({ ...s, modules: { ...s.modules, monument: { stage: 30, given: [], readyAt: 0, tended: 0 }, wallet: { ...s.modules.wallet, balances: { ...s.modules.wallet.balances, glowPebbles: 1000 } } } })
+        rt.dispatch('producers', 'buy', { id: 'kraeuterkate', count: 1 })
+      })
+      await r.getByTestId('monument-tend').click()
+      await r.getByTestId('monument-tend-wait').waitFor()
+      const fed = await r.evaluate(() => ({ n: window.__engine.get().modules.monument.tended, pebbles: window.__engine.get().modules.wallet.balances.glowPebbles }))
+      assert(fed.n === 1 && fed.pebbles === 700, `Großes Leuchtfeuer: Nähren kostet 300 Lichtkiesel und zählt (${JSON.stringify(fed)})`)
       // Meilensteine der Schichten stehen im Neubeginn-Tab
       await r.getByTestId('tab-prestige').click()
       assert((await r.getByTestId('milestones-ages').getAttribute('data-reached')) === '0', 'Meilensteine des Zeitalters sichtbar')
