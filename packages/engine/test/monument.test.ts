@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createManualClock, createState, dispatch, monumentGivers, monumentModule, monumentStatus, standardModules, view, type EngineModule, type EngineState, type MonumentConfig, type MonumentState } from '../src'
+import { createManualClock, createState, dispatch, monumentCanTend, monumentGivers, monumentModule, monumentStatus, standardModules, view, type EngineModule, type EngineState, type MonumentConfig, type MonumentState } from '../src'
 import { act } from '../src/result'
 import { T0, testGame } from './fixture'
 
@@ -68,8 +68,36 @@ describe('monument', () => {
 
   it('every finished stage adds income', () => {
     const m = monumentModule(cfg)
-    expect(m.effects?.({ stage: 0, given: [], readyAt: 0 }, {} as never)).toEqual([])
-    expect(m.effects?.({ stage: 2, given: [], readyAt: 0 }, {} as never)).toEqual([{ id: 'monument', target: 'income', op: 'mul', value: 1.1, labelKey: 'effect.monument' }])
+    expect(m.effects?.({ stage: 0, given: [], readyAt: 0, tended: 0 }, {} as never)).toEqual([])
+    expect(m.effects?.({ stage: 2, given: [], readyAt: 0, tended: 0 }, {} as never)).toEqual([{ id: 'monument', target: 'income', op: 'mul', value: 1.1, labelKey: 'effect.monument' }])
+  })
+
+  it('the finished work can be tended: it costs, adds income and needs its rest; an old save starts untended', () => {
+    poor = []
+    const tcfg: MonumentConfig = { ...cfg, tend: { max: 2, cost: (n) => ({ currency: 'gem', amount: 10 * (n + 1) }), perLevel: 0.01, setMs: DAY } }
+    const def = testGame({ modules: [...standardModules(), payer, monumentModule(tcfg)] })
+    const clock = createManualClock(T0)
+    let s = createState(def, clock)
+    const wallet = s.modules.wallet as { balances: Record<string, number> }
+    const gems = (x: EngineState) => (x.modules.wallet as { balances: Record<string, number> }).balances.gem ?? 0
+    const tend = (x: EngineState) => dispatch(def, x, { module: 'monument', type: 'tend' }, clock)
+    s = { ...s, modules: { ...s.modules, wallet: { ...wallet, balances: { ...wallet.balances, gem: 25 } } } }
+    // Not before the last stage stands
+    expect(mo(tend(s).state).tended).toBe(0)
+    s = { ...s, modules: { ...s.modules, monument: { stage: 2, given: [], readyAt: 0, tended: 0 } } }
+    const r = tend(s)
+    expect(mo(r.state)).toMatchObject({ tended: 1, readyAt: T0 + DAY })
+    expect(gems(r.state)).toBe(15)
+    expect(r.events.some((e) => e.type === 'monument.tended' && e.n === 1)).toBe(true)
+    // It rests, then the second one is too dear
+    expect(mo(tend(r.state).state).tended).toBe(1)
+    clock.advance(DAY)
+    expect(monumentCanTend(tcfg, mo(r.state), view(def, r.state), clock.now())).toBe(false)
+    expect(monumentStatus(tcfg, mo(r.state), clock.now())).toMatchObject({ done: true, tended: 1, tendMax: 2, waitMs: 0 })
+    const m = monumentModule(tcfg)
+    expect(m.effects?.({ stage: 2, given: [], readyAt: 0, tended: 1 }, {} as never)?.[0]?.value).toBeCloseTo(1.11, 9)
+    expect(m.parse({ stage: 2, given: [], readyAt: 0 }, {} as never, {} as never)).toEqual({ stage: 2, given: [], readyAt: 0, tended: 0 })
+    expect(m.parse({ stage: 2, given: [], readyAt: 0, tended: 9 }, {} as never, {} as never).tended).toBe(2)
   })
 
   it('a closed system asks nobody', () => {

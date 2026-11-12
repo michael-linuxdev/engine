@@ -124,7 +124,9 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 - [x] Jahr 3 gemessen (Küstenlande alle 14 bis 17 Tage, ein Stern alle drei Tage).
 - [x] Zeitalter etwa alle fünf Wochen (späte Schwelle 1,25 statt 1,35, ab dem 32. Zeitalter weitere Knicke; gemessen im Mittel 36 bis 40 Tage in Jahr 3 bis 5).
 - [x] Jahre 4 und 5 nachgemessen (Inseln, Rand der Karte, Lehrlinge, Stufen des Leuchtfeuers); Ausbildung und Zeitalter nachgestellt.
-- [ ] Offen für den Testlauf: letzte acht Monate von Jahr 5 (Leuchtfeuer fertig an Tag 1.545), ein Ziel für angesammelte Lichtkiesel.
+- [x] Das Feuer nähren: nach der letzten Stufe des Leuchtfeuers 30-mal gegen Lichtkiesel (füllt die letzten acht Monate von Jahr 5, spätes Ziel für Lichtkiesel).
+- [ ] Nähren über fünf Jahre nachmessen (Lauf gestartet am 12.11.).
+- [ ] Aus dem Testlog vom 12.11.: Bonus-Video „Lichtkiesel“ wird nie gewählt; Korb erscheint schon nach 15 Sekunden; Wacht und Lande werden im Menü kaum gefunden (fuenf-jahre.md).
 
 ---
 

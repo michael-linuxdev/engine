@@ -4,7 +4,7 @@
  * jede neue Chronik-Seite, jede Stufe der Feuerstraße, die Festmarken je Fest und den Stand der Lichtkiesel.
  * Nur zum Messen; ändert die Taktung (mehr Belohnungen), deshalb nicht für die Zielkorridore.
  */
-import { MONUMENT_ID, monumentGivers, monumentStatus, type MonumentState, REGIONS_ID, type RegionsState, stewardCanTrain, stewardCost, STEWARDS_ID, type StewardsState, CHART_ID, chartStatus, FESTS_ID, LINKS_ID, linkStatus, type ChartState, QUESTS_ID, voyageBack, voyageOpen, VOYAGES_ID, WALLET_ID, type EngineState, type FestsState, type LinksState, type QuestsState, type VoyagesState, type WalletState, type WorldView } from '@engine/core'
+import { MONUMENT_ID, monumentCanTend, monumentGivers, monumentStatus, type MonumentState, REGIONS_ID, type RegionsState, stewardCanTrain, stewardCost, STEWARDS_ID, type StewardsState, CHART_ID, chartStatus, FESTS_ID, LINKS_ID, linkStatus, type ChartState, QUESTS_ID, voyageBack, voyageOpen, VOYAGES_ID, WALLET_ID, type EngineState, type FestsState, type LinksState, type QuestsState, type VoyagesState, type WalletState, type WorldView } from '@engine/core'
 import { CHRONICLE } from './content/chronicle'
 import { FIRE_ROAD } from './content/fireRoad'
 import { SKY_CHART } from './content/skyChart'
@@ -83,6 +83,8 @@ export function simPlay(): (api: Api) => void {
         const after = monumentStatus(GREAT_BEACON, api.state().modules[MONUMENT_ID] as MonumentState, now)
         if (after.stage > mo.stage) api.record('beacon', `Stufe ${after.stage}`)
       }
+      // Steht der Turm: das Feuer nähren, sobald es geht
+      if (monumentCanTend(GREAT_BEACON, mo, api.world(), now) && api.act(MONUMENT_ID, 'tend')) api.record('tend', `#${mo.tended + 1}`)
     }
 
     // Chronik: neue Seiten

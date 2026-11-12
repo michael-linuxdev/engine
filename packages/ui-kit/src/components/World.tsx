@@ -11,7 +11,7 @@ import {
   type DecorConfig, type DecorState, type ProjectDef, type ProjectsState, type VisitorConfig, type VisitorsState,
   primaryCurrency, voyageBack, voyageOpen, VOYAGES_ID, type VoyagesConfig, type VoyagesState,
   CHART_ID, chartCells, chartCompleted, chartStatus, type ChartConfig, type ChartGroup, type ChartState,
-  MONUMENT_ID, monumentGivers, monumentStatus, type MonumentConfig, type MonumentState,
+  MONUMENT_ID, monumentCanTend, monumentGivers, monumentStatus, monumentTendCost, type MonumentConfig, type MonumentState,
   STEWARDS_ID, stewardCanTrain, stewardCost, stewardTrainMs, type StewardsConfig, type StewardsState,
   LINKS_ID, linksMult, linkStatus, longestChain, type LinkDef, type LinksConfig, type LinksState,
 } from '@engine/core'
@@ -425,14 +425,37 @@ export function MonumentCard({ cfg, places, art }: { cfg: MonumentConfig; places
   const now = state.core.lastSeen
   const st = monumentStatus(cfg, s, now)
   const givers = monumentGivers(cfg, s, world, places, now)
+  const tendCost = monumentTendCost(cfg, s)
+  const bonus = cfg.perStage * st.stage + (cfg.tend?.perLevel ?? 0) * st.tended
   return (
     <Card id="monument">
       {art?.(st.stage)}
       <p className="ek-strong" data-testid="monument-stage">
-        {ui.t.live.monumentStage(String(st.stage), String(st.stages))} · {ui.t.live.linksBonus(String(Math.round(cfg.perStage * st.stage * 100)))}
+        {ui.t.live.monumentStage(String(st.stage), String(st.stages))} · {ui.t.live.linksBonus(String(Math.round(bonus * 100)))}
       </p>
       {st.done ? (
-        <p data-testid="monument-done">{ui.t.live.monumentDone}</p>
+        <>
+          <p data-testid="monument-done">{ui.t.live.monumentDone}</p>
+          {cfg.tend && st.tendMax > 0 ? (
+            <>
+              <ProgressBar ratio={st.tended / st.tendMax} label={ui.t.live.monumentTended(String(st.tended), String(st.tendMax))} />
+              <div className="ek-pass__line">
+                <span data-testid="monument-tended">{ui.t.live.monumentTended(String(st.tended), String(st.tendMax))}</span>
+                {tendCost && st.waitMs === 0 ? (
+                  <Button size="small" data-testid="monument-tend" disabled={!monumentCanTend(cfg, s, world, now)} onClick={() => dispatch(MONUMENT_ID, 'tend')}>
+                    {ui.t.live.monumentTend(ui.fmt(tendCost.amount), ui.labels.currency(tendCost.currency))}
+                  </Button>
+                ) : null}
+              </div>
+              {tendCost && st.waitMs > 0 ? (
+                <p className="ek-note" data-testid="monument-tend-wait">
+                  {ui.t.live.monumentTendWait(ui.duration(st.waitMs))}
+                </p>
+              ) : null}
+              <p className="ek-muted">{ui.t.live.monumentTendRule(String(Math.round(cfg.tend.perLevel * 1000) / 10))}</p>
+            </>
+          ) : null}
+        </>
       ) : st.waitMs > 0 ? (
         <p className="ek-note" data-testid="monument-wait">
           {ui.t.live.monumentWait(ui.duration(st.waitMs))}
