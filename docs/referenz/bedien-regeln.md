@@ -33,6 +33,18 @@ Nie beides für dasselbe. Wenn alles ruft, ruft nichts.
 - Solange der Einstieg auf ein Bauwerk oder den Funkenruf zeigt, schweigt die Ziel-Zeile (eine Ansage, nicht zwei).
 - Die Zeile „Die nächste Mondwende öffnet …“ kommt erst, wenn die Mondwende bereit oder höchstens 30 Minuten entfernt ist, oder wenn schon eine gefeiert wurde.
 
+## Ziel-Zeile (Abgleich mit der Vorlage, 2026-11-12)
+
+Beide Spiele liefen dafür nebeneinander im Testbrowser. Die Zahlen der ersten Minuten waren danach gleich oder besser; der sichtbare Unterschied war die Ziel-Zeile. Die Vorlage zeigt immer das Ziel, das am weitesten ist, mit Zahl und „… % geschafft“. Hier stand ein festes Ziel ohne Zahl („Als Nächstes: Holzlager freilegen“), auch wenn noch gar nichts gebaut war.
+
+Jetzt wie die Vorlage (Engine: `pressingGoal`):
+
+- Zur Wahl stehen der nächste Ausbau, das nächste Bauwerk, der nächste Wächterrang und die Mondwende. Es gewinnt, was am nächsten dran ist. Ein bezahlbarer Ausbau schlägt alles außer einer bereiten Mondwende.
+- Rechts steht die Zahl dazu: der Preis, „Kräuterkate 8/10“, „63/122 Erfahrung“ oder „noch 1,2 Mio. Glimmer“.
+- Ab 78 % steht „… % geschafft“ dabei, und der Balken pulst.
+- Antippen führt dorthin: zum Bauwerk, zum Rang oder in den Mondwende-Tab.
+- Die Zeile darunter („Die nächste Mondwende öffnet …“) bleibt, wie sie war.
+
 ## Aufbau
 
 - **Kopf über der Karte:** Kontostand, Vorräte, eine schmale Ziel-Zeile mit dünnem Balken, eine Reihe Pillen. Die Reihe läuft rechts weich aus (scrollbar).

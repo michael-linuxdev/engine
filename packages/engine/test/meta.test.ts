@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  bestBuy, burstMax, createManualClock, createState, dispatch, isRankUnlocked, isTipRank, metaCost, metaEffects, nextGoal, nextLockedMeta, rankUnlockNeed,
+  bestBuy, burstMax, createManualClock, createState, dispatch, isRankUnlocked, isTipRank, metaCost, metaEffects, nextGoal, nextLockedMeta, pressingGoal, rankUnlockNeed,
   tick, unitCost, unlockProgress, view, type EngineState, type MetaItemDef,
 } from '../src'
 import { T0, testGame } from './fixture'
@@ -236,5 +236,36 @@ describe('surprises: almost there after a jump', () => {
     const x = tick(d, b.state, 1000, c)
     expect([...a.events, ...b.events, ...x.events].filter((e) => e.type === 'surprise.found')).toHaveLength(0)
     expect(near(x.state).near).toBe(7)
+  })
+})
+
+describe('pressing goal', () => {
+  const d = testGame()
+  const c = createManualClock(T0)
+  const base = () => createState(d, c)
+  const withOwned = (s: EngineState, owned: Record<string, number>, primary = 0): EngineState => ({ ...s, core: { ...s.core, primary }, modules: { ...s.modules, producers: { owned } } })
+  it('an affordable upgrade wins; its bar is full', () => {
+    const g = pressingGoal(view(d, withOwned(base(), { a: 1 }, 1000)))
+    expect(g).toMatchObject({ kind: 'upgrade', ratio: 1, near: false })
+  })
+  it('an unlock names the condition that is furthest along, with have/need', () => {
+    // b opens at level 5 of a; nothing affordable
+    const g = pressingGoal(view(d, withOwned(base(), { a: 4 }, 0)))
+    expect(g).toMatchObject({ kind: 'unlock', id: 'b', via: { kind: 'producer', id: 'a', have: 4, need: 5 }, near: true })
+    expect(g.ratio).toBeCloseTo(0.8)
+  })
+  it('almost affordable beats a far unlock and is marked as near', () => {
+    const s = withOwned(base(), { a: 1 }, 0)
+    const cost = pressingGoal(view(d, { ...s, core: { ...s.core, primary: 1e9 } }))
+    expect(cost.kind).toBe('upgrade')
+    const price = (cost as { cost: number }).cost
+    const g = pressingGoal(view(d, { ...s, core: { ...s.core, primary: price * 0.95 } }))
+    expect(g).toMatchObject({ kind: 'upgrade', id: 'a', near: true })
+  })
+  it('a ready prestige is shown as ready, not as almost', () => {
+    let s = withOwned(base(), { a: 1 }, 0)
+    s = tick(d, s, 600_000, c).state
+    s = { ...s, core: { ...s.core, primary: 0 } }
+    expect(pressingGoal(view(d, s))).toMatchObject({ kind: 'prestige', ready: true, ratio: 1, near: false })
   })
 })

@@ -1,12 +1,18 @@
 import type { ReactNode } from 'react'
-import { nextGoal } from '@engine/core'
+import { nextGoal, pressingGoal, type PressingGoal } from '@engine/core'
 import { useEngine } from '@engine/react'
 import type { UiValue } from '../uiContext'
 import { useUi } from '../useUi'
 import { ProgressBar } from './ProgressBar'
 
 /** Top HUD: primary amount + rate (tap opens the bonus breakdown), goal strip, slots for game extras. */
-export function Hud({ primaryId, icon, extra, sub, goalText, goalNote, onGoal }: { primaryId: string; icon?: ReactNode; extra?: ReactNode; /** Slim row below the amount (side currencies …). */ sub?: ReactNode; goalText?: (g: ReturnType<typeof nextGoal>) => string | null; /** Second, quieter line of the goal strip (what comes after, how long it takes). */ goalNote?: (g: ReturnType<typeof nextGoal>, ui: UiValue) => string | null; /** Makes the goal strip a button: it leads to what the goal names. */ onGoal?: (g: ReturnType<typeof nextGoal>) => void }) {
+export function Hud({ primaryId, icon, extra, sub, goalText, goalNote, onGoal, pressing }: { primaryId: string; icon?: ReactNode; extra?: ReactNode; /** Slim row below the amount (side currencies …). */ sub?: ReactNode; goalText?: (g: ReturnType<typeof nextGoal>) => string | null; /** Second, quieter line of the goal strip (what comes after, how long it takes). */ goalNote?: (g: ReturnType<typeof nextGoal>, ui: UiValue) => string | null; /** Makes the goal strip a button: it leads to what the goal names. */ onGoal?: (g: ReturnType<typeof nextGoal>) => void
+  /**
+   * The pressing goal instead of the fixed order above: of next upgrade, next unlock, next level and the first
+   * prestige layer, the strip shows whatever is closest to done, with its numbers on the right.
+   */
+  pressing?: { text: (g: PressingGoal, ui: UiValue) => { title: string; detail?: string } | null; note?: (g: PressingGoal, ui: UiValue) => string | null; onGoal?: (g: PressingGoal) => void }
+}) {
   const ui = useUi()
   const { state, world } = useEngine(ui.rt)
   const goal = nextGoal(world)
@@ -26,7 +32,8 @@ export function Hud({ primaryId, icon, extra, sub, goalText, goalNote, onGoal }:
       </button>
       {extra ? <div className="ek-hud__extra">{extra}</div> : null}
       {sub ? <div className="ek-hud__sub">{sub}</div> : null}
-      {text && onGoal ? (
+      {pressing ? <PressingStrip {...pressing} /> : null}
+      {pressing ? null : text && onGoal ? (
         <button type="button" className="ek-goal ek-goal--btn" data-testid="goal" onClick={() => onGoal(goal)}>
           <span className="ek-goal__text">{text}</span>
           <ProgressBar ratio={ratio} label={text} />
@@ -40,5 +47,35 @@ export function Hud({ primaryId, icon, extra, sub, goalText, goalNote, onGoal }:
         </div>
       ) : null}
     </header>
+  )
+}
+
+/** Goal strip for the pressing goal: title left, numbers right, bar below; pulses while the goal is almost there. */
+function PressingStrip({ text, note, onGoal }: NonNullable<Parameters<typeof Hud>[0]['pressing']>) {
+  const ui = useUi()
+  const { world } = useEngine(ui.rt)
+  const goal = pressingGoal(world)
+  const x = text(goal, ui)
+  if (!x) return null
+  const line = note?.(goal, ui) ?? null
+  const cls = `ek-goal ek-goal--split${goal.near ? ' is-near' : ''}${goal.ratio >= 1 ? ' is-ready' : ''}`
+  const body = (
+    <>
+      <span className="ek-goal__head">
+        <span className="ek-goal__text">{x.title}</span>
+        {x.detail ? <span className="ek-goal__detail" data-testid="goal-detail">{x.detail}</span> : null}
+      </span>
+      <ProgressBar ratio={goal.ratio} label={x.title} />
+      {line ? <span className="ek-goal__note" data-testid="goal-note">{line}</span> : null}
+    </>
+  )
+  return onGoal ? (
+    <button type="button" className={`${cls} ek-goal--btn`} data-testid="goal" data-kind={goal.kind} onClick={() => onGoal(goal)}>
+      {body}
+    </button>
+  ) : (
+    <div className={cls} data-testid="goal" data-kind={goal.kind}>
+      {body}
+    </div>
   )
 }

@@ -1961,3 +1961,13 @@ html:has(.lw-app) {
   color: var(--on-night);
   font-family: var(--font-display);
 }
+
+/* Ziel-Zeile mit Zahlen (wie die Vorlage): rechts steht, wie weit es ist; kurz vor dem Ziel pulst der Balken */
+.lw-app .ek-goal__detail {
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+.lw-app .ek-goal.is-near {
+  border-color: var(--gold-deep);
+  box-shadow: 0 1px 0 var(--surface) inset, 0 4px 14px rgb(23 32 64 / 0.28), 0 0 12px rgb(255 159 67 / 0.45);
+}

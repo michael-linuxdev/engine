@@ -331,27 +331,35 @@ export function App() {
           }
           // Nebenwährungen klein unter dem Glimmer, sobald es sie einmal gab
           sub={<SideCurrencies />}
-          // Die Ziel-Zeile führt dorthin, wovon sie spricht: zum Bauwerk oder zum Mondwende-Tab
-          onGoal={(g) => {
-            if (g.kind === 'unlock' || g.kind === 'milestone') setSelected(g.id)
-            else if (g.kind === 'prestige' || g.kind === 'prestigeProgress') openTab('prestige')
+          // Ziel-Zeile wie in der Vorlage: Sie zeigt immer das Ziel, das am weitesten ist (nächster Ausbau, nächstes
+          // Bauwerk, nächster Wächterrang oder die Mondwende), mit Zahl rechts. Kurz vor dem Ziel steht „… % geschafft“.
+          // Solange der Einstieg auf etwas zeigt, schweigt sie (eine Ansage, nicht zwei).
+          pressing={{
+            text: (g, ui) => {
+              if (coachLeads || g.kind === 'none') return null
+              const cur = labels.currency(CURRENCY.glimmer)
+              const near = g.near ? ` · ${t.play.goal.done(String(Math.min(99, Math.round(g.ratio * 100))))}` : ''
+              if (g.kind === 'upgrade') return { title: (g.first ? t.play.goal.first : t.play.goal.upgrade)(labels.producer(g.id).name), detail: t.play.goal.cost(ui.fmt(g.cost), cur) + near }
+              if (g.kind === 'unlock') {
+                const v = g.via
+                const detail = v.kind === 'primaryRun' ? t.play.goal.left(ui.fmt(v.left), cur) : v.kind === 'producer' ? t.play.goal.needLevel(labels.producer(v.id).name, ui.fmt(v.have), ui.fmt(v.need)) : t.play.goal.needRank(ui.fmt(v.have), ui.fmt(v.need))
+                return { title: t.play.goal.unlock(labels.producer(g.id).name), detail: detail + near }
+              }
+              if (g.kind === 'level') return { title: t.play.goal.rank(ui.fmt(g.next)), detail: t.play.goal.xp(ui.fmt(g.into), ui.fmt(g.need)) + near }
+              const layer = labels.layer(g.layer).name
+              if (g.ready) return { title: t.play.goalPrestige(layer, fmtShort(g.payout), labels.currency(game.prestigeLayers.find((l) => l.id === g.layer)?.currency ?? '')) }
+              return { title: t.play.goal.turn(layer), detail: t.play.goal.left(ui.fmt(g.left), cur) + near }
+            },
+            // Zweite Zeile: was die nächste Mondwende öffnet und wie weit sie noch weg ist (Befund aus dem ersten Testlauf:
+            // nach der dritten Mondwende vier Besuche ohne neues Ziel vor Augen). Vor der ersten bleibt sie weg (turnNote).
+            note: (g, ui) => turnNote(world, g.kind === 'prestige' && g.ready, ui.duration),
+            // Die Zeile führt dorthin, wovon sie spricht
+            onGoal: (g) => {
+              if (g.kind === 'upgrade' || g.kind === 'unlock') setSelected(g.id)
+              else if (g.kind === 'level') setRankOpen(true)
+              else if (g.kind === 'prestige') openTab('prestige')
+            },
           }}
-          // Zweite Zeile: was die nächste Mondwende öffnet und wie weit sie noch weg ist. Im ersten Testlauf
-          // folgten auf die dritte Mondwende vier Besuche ohne ein neues Ziel vor Augen.
-          goalNote={(g, ui) => turnNote(world, g.kind === 'prestige', ui.duration)}
-          goalText={(g) =>
-            coachLeads
-              ? null
-              : g.kind === 'unlock'
-              ? t.play.goalUnlock(labels.producer(g.id).name)
-              : g.kind === 'milestone'
-                ? t.play.goalMilestone(labels.producer(g.id).name, String(g.at))
-                : g.kind === 'prestige'
-                  ? t.play.goalPrestige(labels.layer(g.layer).name, fmtShort(g.payout), labels.currency(game.prestigeLayers.find((l) => l.id === g.layer)?.currency ?? ''))
-                  : g.kind === 'prestigeProgress'
-                    ? t.play.goalProgress(labels.layer(g.layer).name)
-                    : null
-          }
         />
       }
       play={
