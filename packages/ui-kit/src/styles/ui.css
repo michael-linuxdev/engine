@@ -1675,3 +1675,33 @@ html:has(.ek-app) body {
     border-radius: 8px;
   }
 }
+
+/* Goal strip with numbers: title left, detail right */
+.ek-goal__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  /* too long for one line: the numbers drop below the title instead of squeezing it */
+  gap: 0 var(--space-2);
+}
+.ek-goal__head .ek-goal__text {
+  min-width: 0;
+}
+.ek-goal__detail {
+  flex: none;
+  margin-left: auto;
+  color: var(--ink-muted);
+  font-size: var(--fs-s);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.ek-goal.is-near .ek-goal__detail,
+.ek-goal.is-ready .ek-goal__detail {
+  color: var(--accent-2);
+  font-weight: 700;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.ek-reduced-motion) .ek-goal.is-near .ek-progress__fill { animation: ek-near 1.4s ease-in-out infinite; }
+}
+@keyframes ek-near { 0%, 100% { filter: none; } 50% { filter: brightness(1.35); } }
