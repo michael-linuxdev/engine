@@ -88,11 +88,16 @@ export function producersModule(): EngineModule<ProducersState> {
     version: 1,
     init: () => ({ owned: {} }),
     parse: (raw, _ctx, def) => ({ owned: parseNumRecord(isRecord(raw) ? raw.owned : undefined, ids(def), true) }),
-    resetOn: (_s, _layer, _ctx, world) => {
-      // Start levels after a prestige come from effects (`start.producer:<id>`).
+    resetOn: (s, layer, _ctx, world) => {
+      // Start levels after a prestige come from effects (`start.producer:<id>`) and from what the
+      // layer leaves standing (`carry.producerShare`, raised by effects on `start.keep:<layer>`).
+      const base = world.def.prestigeLayers.find((l) => l.id === layer)?.carry?.producerShare ?? 0
+      const share = Math.min(1, Math.max(0, world.value(`start.keep:${layer}`, base)))
       const owned: Record<string, number> = {}
       for (const p of world.def.producers) {
-        const n = Math.floor(Math.max(0, world.value(`start.producer:${p.id}`, 0)))
+        const fixed = Math.floor(Math.max(0, world.value(`start.producer:${p.id}`, 0)))
+        const kept = Math.floor(Math.max(0, s.owned[p.id] ?? 0) * share)
+        const n = Math.max(fixed, kept)
         if (n > 0) owned[p.id] = n
       }
       return { owned }

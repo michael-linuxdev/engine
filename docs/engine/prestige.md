@@ -29,7 +29,7 @@ Die Schwelle wächst bis zum Knie (`knee`) mit `growth`, danach mit `lateGrowth`
 ## Ablauf eines Prestige
 
 1. Prüfung (`prestigePayout` > 0).
-2. Jedes Modul wendet seine Reset-Regel `resetOn[layer]` an. Die Welt-Sicht ist dabei die **vor** dem Reset, so wirken Startboni (`start.producer:<id>`, `start.primary`).
+2. Jedes Modul wendet seine Reset-Regel `resetOn[layer]` an. Die Welt-Sicht ist dabei die **vor** dem Reset, so wirken Startboni (`start.producer:<id>`, `start.primary`). Eine Schicht kann außerdem einen Anteil der Stufen stehen lassen: `carry: { producerShare: 0.5 }` in der Schicht-Definition (Effekte auf `start.keep:<layer>` kommen dazu). Jedes Bauwerk startet dann mit dem abgerundeten Anteil seiner Stufe; ohne `carry` bleibt nichts.
 3. Im Kern: `primary` wird `max(startPrimary, start.primary)`, `primaryRun` wird 0.
 4. Die Währungen mit `resetOn` enthalten die Schicht → 0.
 5. Auszahlung in die Schicht-Währung, Ereignis `prestige.performed`.

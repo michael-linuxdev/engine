@@ -1961,3 +1961,37 @@ html:has(.lw-app) {
   color: var(--on-night);
   font-family: var(--font-display);
 }
+
+/* ── Tempo-Runde: Funken im Tal ─ je geladenem Funkenruf schwebt einer auf der Karte; antippen ruft ihn */
+.lw-spark {
+  position: absolute;
+  z-index: 2;
+  width: var(--tap);
+  height: var(--tap);
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 159 67 / 0.55) 0 22%, rgb(255 159 67 / 0.18) 45%, transparent 68%);
+  color: var(--gold);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.lw-spark .lw-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  filter: drop-shadow(0 0 2px var(--night)) drop-shadow(0 0 6px var(--ember));
+}
+.lw-spark:active {
+  transform: translate(-50%, -50%) scale(0.85);
+}
+.lw-map[data-edit] .lw-spark {
+  display: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.ek-reduced-motion) .lw-spark { animation: lw-spark-float 2.8s ease-in-out infinite alternate; }
+  :root:not(.ek-reduced-motion) .lw-spark:nth-of-type(2n) { animation-delay: -1.3s; }
+}
+@keyframes lw-spark-float { from { margin-top: -3px; opacity: 0.85; } to { margin-top: 4px; opacity: 1; } }
