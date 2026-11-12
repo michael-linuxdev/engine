@@ -7,7 +7,7 @@
  */
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import {
-  adCooldownLeft, giftReady, MARKET_ID, passTierClaimable, primaryCurrency, skipHoursLeft,
+  adChoices, adCooldownLeft, giftReady, MARKET_ID, passTierClaimable, primaryCurrency, skipHoursLeft,
   type Amount, type MarketConfig, type MarketReward, type MarketState,
 } from '@engine/core'
 import { readKey, useEngine, useStore, writeKey, type TestWallet } from '@engine/react'
@@ -195,12 +195,15 @@ function AdCard({ cfg, s, adSeconds, wallet, onAd }: MarketProps & { s: MarketSt
   const reward = useRewardText()
   const [running, setRunning] = useState<{ choice: string; seconds: number } | null>(null)
   // A choice that only pays income time is worth nothing while there is no income: leave it out.
-  const choices = cfg.ad.choices.filter((c) => (c.grant?.length ?? 0) > 0 || world.rate() > 0)
+  const offered = adChoices(cfg)
+  const choices = offered.filter((c) => (c.grant?.length ?? 0) > 0 || world.rate() > 0)
   const wait = adCooldownLeft(s, cfg, ui.rt.clock.now())
   return (
     <Card title={ui.t.market.ad} testId="card-ad">
       {/* Without ads the bonus stays: it is handed out right away, no video */}
-      <p className="ek-muted">{s.adsRemoved ? ui.t.market.adRemoved : ui.t.market.adBlurb}</p>
+      <p className="ek-muted">{s.adsRemoved ? ui.t.market.adRemoved : offered.length > 1 ? ui.t.market.adBlurb : ui.t.market.adBlurbOne}</p>
+      {/* Nothing to hand out right now (the only reward is income time and there is no income yet) */}
+      {choices.length === 0 ? <p className="ek-note" data-testid="ad-none">{ui.t.market.adNone}</p> : null}
       <div className="ek-row-actions">
         {choices.map((c) => (
           <Button key={c.id} size="small" data-testid={`ad-${c.id}`} title={ui.labels.content(`adChoice.${c.id}`).blurb} disabled={wait > 0 || !!running} onClick={() => {

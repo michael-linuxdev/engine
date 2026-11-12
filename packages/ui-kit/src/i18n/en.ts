@@ -362,6 +362,8 @@ export const engineEn: EngineStrings = {
     giftBlurb: 'Once a day, free.',
     ad: 'Bonus video',
     adBlurb: 'Optional. You choose your reward first.',
+    adBlurbOne: 'Optional. You see your reward first.',
+    adNone: 'Nothing to collect here right now: the bonus depends on your income.',
     adWatch: (name: string) => `Watch: ${name}`,
     adCooldown: (time: string) => `Next video in ${time}`,
     adRemoved: 'No ads: you get the bonus right away, without a video.',

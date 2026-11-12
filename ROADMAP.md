@@ -126,7 +126,7 @@ Der Inhaltsumfang (Lande, Feste, Sammlungen …) liegt deutlich darunter: Lande 
 - [x] Jahre 4 und 5 nachgemessen (Inseln, Rand der Karte, Lehrlinge, Stufen des Leuchtfeuers); Ausbildung und Zeitalter nachgestellt.
 - [x] Das Feuer nähren: nach der letzten Stufe des Leuchtfeuers 30-mal gegen Lichtkiesel (füllt die letzten acht Monate von Jahr 5, spätes Ziel für Lichtkiesel).
 - [ ] Nähren über fünf Jahre nachmessen (Lauf gestartet am 12.11.).
-- [ ] Aus dem Testlog vom 12.11.: Bonus-Video „Lichtkiesel“ wird nie gewählt; Korb erscheint schon nach 15 Sekunden; Wacht und Lande werden im Menü kaum gefunden (fuenf-jahre.md).
+- [x] Aus dem Testlog vom 12.11.: Bonus-Video nur noch mit Glimmer, Korb erst ab fünf Minuten Abwesenheit, Lande in der Leiste, Karten-Knopf heißt „Wacht“ (fuenf-jahre.md).
 
 ---
 

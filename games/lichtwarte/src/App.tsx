@@ -345,15 +345,18 @@ export function App() {
       }
       feedback={feedback}
       navIcons={{ play: <IconTower />, prestige: <IconMoon />, menu: <IconMenu /> }}
-      // Die Leiste bleibt bei vier Knöpfen: Tal, Mondwende, Markt, Menü. Weitere Systeme sind Kacheln im Menü.
+      // Die Leiste hat vier Knöpfe (Tal, Mondwende, Markt, Menü), ab der ersten Langen Nacht fünf (dazu die Lande). Weitere Systeme sind Kacheln im Menü.
       navLabels={{ play: t.app.tabPlay, prestige: t.layers.moonturn.name }}
       navBadges={{ prestige: prestigeReady(world) || (archiveOpen && countAffordableMeta(world) > 0) }}
       shopVisible={false}
-      tabs={[{ item: { id: 'market', label: t.trade.tab, icon: <IconPouch />, badge: marketReady(world.get<MarketState>(MARKET_ID), MARKET, rt.clock) }, view: <MarketTab onPreviewStyle={(id) => { setPreviewStyle(id); setTab('play') }} /> }]}
+      tabs={[
+        // Die Lande sind ab der ersten Langen Nacht das größte System: Sie stehen in der Leiste, nicht im Menü (Entscheidung 2026-11-12)
+        ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab, icon: <IconMap />, badge: !seen.includes('realms'), hint: t.app.menuHint.realms(fmtShort(openRealmCount(world)), fmtShort(REALM_IDS.length)) }, view: <RealmsTab /> }] : []),
+        { item: { id: 'market', label: t.trade.tab, icon: <IconPouch />, badge: marketReady(world.get<MarketState>(MARKET_ID), MARKET, rt.clock) }, view: <MarketTab onPreviewStyle={(id) => { setPreviewStyle(id); setTab('play') }} /> },
+      ]}
       menuViews={[
         ...(isFeatureOpen(world, 'watch') ? [{ item: { id: 'watch', label: t.watch.tab, icon: <IconLantern />, badge: !seen.includes('watch'), dot: watchBadge(world), hint: watchBadge(world) ? t.app.menuHint.watchWaiting : t.app.menuHint.watchDone }, view: <WatchView /> }] : []),
         ...(isFeatureOpen(world, 'herbal') ? [{ item: { id: 'world', label: t.world.tab, icon: <IconLeaf />, badge: !seen.includes('world'), dot: voyageWaiting(world), hint: t.app.menuHint.world(fmtShort(foundCount(world)), fmtShort(COLLECTION.entries.length)) }, view: <WorldTab onDecorEdit={() => { setDecorEdit(true); setTab('play') }} /> }] : []),
-        ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab, icon: <IconMap />, badge: !seen.includes('realms'), hint: t.app.menuHint.realms(fmtShort(openRealmCount(world)), fmtShort(REALM_IDS.length)) }, view: <RealmsTab /> }] : []),
       ]}
       menu={[{ id: 'chronicle', label: t.chronicle.menu, icon: <IconBook />, onSelect: () => setChronicle(true), badge: unread, hint: t.app.menuHint.chronicle(fmtShort(CHRONICLE.filter((e) => e.open(world)).length)) }]}
       menuTop={<Soon />}

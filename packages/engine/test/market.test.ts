@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  createManualClock, createState, dailyModule, dispatch, MARKET_ID, marketModule, skipHoursLeft, standardModules, tick, view,
+  adChoices, createManualClock, createState, dailyModule, dispatch, MARKET_ID, marketModule, skipHoursLeft, standardModules, tick, view,
   type EngineState, type GameDefinition, type MarketConfig, type MarketState, type ManualClock,
 } from '../src'
 import { T0, testGame } from './fixture'
@@ -79,6 +79,16 @@ describe('market (mocks)', () => {
     const r = act(def, s, clock, 'watchAd', { choice: 'gems' })
     expect(gems(r.state)).toBe(56)
     expect(gems(act(def, r.state, clock, 'watchAd', { choice: 'gems' }).state)).toBe(56)
+  })
+
+  it('a retired ad reward keeps its id but is neither offered nor paid out', () => {
+    const retired: MarketConfig = { ...CFG, ad: { ...CFG.ad, choices: [{ id: 'yield', seconds: 600 }, { id: 'gems', grant: [gem(6)], retired: true }] } }
+    expect(adChoices(retired).map((c) => c.id)).toEqual(['yield'])
+    const def = testGame({ modules: [...standardModules(), marketModule(retired)] })
+    const clock = createManualClock(T0)
+    const s = createState(def, clock)
+    // Asking for the retired one falls back to the first that is offered
+    expect(gems(act(def, s, clock, 'watchAd', { choice: 'gems' }).state)).toBe(0)
   })
 
   it('the bonus video pays the chosen reward and then waits for its cooldown', () => {

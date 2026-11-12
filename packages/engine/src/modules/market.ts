@@ -50,7 +50,8 @@ export interface MarketConfig {
   currency: string
   cosmetics: readonly MarketCosmetic[]
   offers: readonly MarketOffer[]
-  ad: { cooldownMs: number; choices: readonly ({ id: string } & MarketReward)[] }
+  /** A `retired` choice keeps its id (ids are never removed) but is no longer offered or paid out. */
+  ad: { cooldownMs: number; choices: readonly ({ id: string; retired?: boolean } & MarketReward)[] }
   pass: { tiers: readonly MarketPassTier[]; dailyXp: number; adXp: number; maxXp: number }
   skips: readonly { id: string; hours: number; cost: number }[]
   skipCapHours: number
@@ -87,6 +88,11 @@ export interface MarketState {
 }
 
 export const MARKET_ID = 'market'
+
+/** The ad rewards that are still offered. */
+export function adChoices(cfg: MarketConfig): MarketConfig['ad']['choices'] {
+  return cfg.ad.choices.filter((c) => !c.retired)
+}
 
 export function adCooldownLeft(s: MarketState, cfg: MarketConfig, now: number): number {
   return s.adAt <= 0 ? 0 : Math.max(0, cfg.ad.cooldownMs - (now - s.adAt))
@@ -194,7 +200,8 @@ export function marketModule(cfg: MarketConfig): EngineModule<MarketState> {
         return act(next, { grant: (o.grant ?? []).map((g) => ({ ...g, source: 'market' })), events: [{ type: 'market.offer', id: o.id }] })
       },
       watchAd: (s, p, ctx, world) => {
-        const choice = cfg.ad.choices.find((c) => c.id === pl(p).choice) ?? cfg.ad.choices[0]
+        const offered = adChoices(cfg)
+        const choice = offered.find((c) => c.id === pl(p).choice) ?? offered[0]
         const now = ctx.clock.now()
         // With ads removed the bonus stays: the UI hands it out without a video
         if (!choice || adCooldownLeft(s, cfg, now) > 0) return s

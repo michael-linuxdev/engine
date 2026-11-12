@@ -232,6 +232,8 @@ export interface BalanceConfig {
     hardHours: number
     decay: number
     minClaimMs: number
+    /** Shorter absences than this are credited at once, without a basket to claim (default: every absence makes a basket). */
+    directBelowMs?: number
     /** Away at least this long → comeback gift on claim (optional). */
     comebackMs?: number
     comebackGrant?: readonly Amount[]

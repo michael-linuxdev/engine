@@ -365,6 +365,8 @@ export const engineDe = {
     giftBlurb: 'Einmal am Tag, kostenlos.',
     ad: 'Bonus-Video',
     adBlurb: 'Freiwillig. Du wählst vorher, was du bekommst.',
+    adBlurbOne: 'Freiwillig. Du siehst vorher, was du bekommst.',
+    adNone: 'Gerade gibt es hier nichts zu holen: Der Bonus richtet sich nach deinem Ertrag.',
     adWatch: (name: string) => `Ansehen: ${name}`,
     adCooldown: (time: string) => `Nächstes Video in ${time}`,
     adRemoved: 'Ohne Werbung: Den Bonus gibt es sofort, ganz ohne Video.',
