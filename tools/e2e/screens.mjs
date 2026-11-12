@@ -57,6 +57,11 @@ async function truncated(p) {
     const w = document.documentElement.clientWidth
     for (const el of document.querySelectorAll('button, h1, h2, h3, p, span, strong, li')) {
       const r = el.getBoundingClientRect()
+      // Eine Reihe, die sich seitlich schieben lässt (Pillen über der Karte), darf über den Rand reichen: Das ist ihr Zweck
+      let row = el.parentElement
+      while (row && !/auto|scroll/.test(getComputedStyle(row).overflowX)) row = row.parentElement
+      // (nur flache Reihen: Die Hauptfläche und Fenster scrollen senkrecht und bleiben geprüft)
+      if (row && row.clientHeight < 100 && row.scrollWidth > row.clientWidth) continue
       if (r.width && r.right > w + 1 && !el.closest('svg')) bad.push(`ragt rechts heraus: ${el.tagName.toLowerCase()} „${el.textContent.trim().slice(0, 30)}“`)
     }
     return [...new Set(bad)]
