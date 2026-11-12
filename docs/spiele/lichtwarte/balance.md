@@ -2,28 +2,36 @@
 
 Werkzeug: `npm run balance -- lichtwarte <engaged|regular|casual> <stunden>` (Simulator gegen die echte Engine). Mit `CHECK=1` prüft er die Korridore aus `balanceTargets` in `src/game.ts`. Stellschrauben lassen sich per `BAL_<pfad>` überschreiben.
 
-## Ziele (an der Referenz orientiert, alle in der CI: `tools/balance/tempo.test.ts`)
+## Ziele (alle in der CI: `tools/balance/tempo.test.ts`)
 
-| Ziel | Profil | Korridor | Begründung | Stand (P6) |
+Seit der **Tempo-Runde (2026-11-12)** gelten die Korridore unten. Die früheren Werte (an der Referenz orientiert) stehen im Abschnitt „Tempo-Runde“ am Ende dieser Datei.
+
+| Ziel | Profil | Korridor | Begründung | Stand |
 |---|---|---|---|---|
-| Bauwerk 2 (Holzlager) | engaged | 3–5 min aktiv | erster „Aha“-Moment in der ersten Sitzung | 3,3 min ✓ |
-| Bauwerk 3 (Steinbruch) | engaged | 8–15 min aktiv | zweite Neuheit, bevor es eintönig wird | 10,0 min ✓ |
-| Erste Mondwende | engaged | 15–20 min aktiv | Probe-Schwelle: Prestige in der ersten Sitzung erleben | 20,0 min ✓ |
-| Zweite Mondwende | engaged | ≥ 20 min nach der ersten | kein Zwei-Minuten-Kreislauf | +58 min ✓ |
-| Alle 10 Bauwerke | regular | Tag 5 ± 1 | Inhaltstempo | Tag 4,5 ✓ |
-| Lange Nacht | regular | Tag 9 ± 2 | lange Schleife | Tag 10,4 ✓ |
+| Bauwerk 2 (Holzlager) | engaged | 2–5 min aktiv | erster „Aha“-Moment | 3,0 min ✓ |
+| Bauwerk 3 (Steinbruch) | engaged | 6–12 min aktiv | zweite Neuheit, bevor es eintönig wird | 8,3 min ✓ |
+| Erste Mondwende | engaged | 12–18 min aktiv | Prestige in der ersten Sitzung erleben | 15,8 min ✓ |
+| Schmiede (Bauwerk 5) | engaged | bis Minute 22 | jede der ersten Mondwenden öffnet sofort etwas | 17,3 min ✓ |
+| Zweite Mondwende | engaged | 8–20 min nach der ersten | die Mondwende ist ein Sprung, keine Strafe | +13,5 min ✓ |
+| Dritte Mondwende | engaged | Minute 28–48 | dichter Kreislauf in der ersten Stunde | 36,8 min ✓ |
+| Greifenhorst (Bauwerk 8) | engaged | Minute 35–65 | acht Bauwerke in der ersten Stunde | 51,5 min ✓ |
+| Neun Bauwerke | regular | am ersten Tag | Inhaltstempo | Tag 1 ✓ |
+| Alle 10 Bauwerke | regular | Tag 2 bis 4 | das letzte Bauwerk ist ein Ziel für die Tage danach | Tag 3,3 ✓ |
+| Lange Nacht | regular | Tag 4 bis 7 | lange Schleife | Tag 5,0 ✓ |
 | Keine Mauer | engaged 72 h, regular 12 Tage | Zeit bis zum nächsten **neuen** Ziel ≤ 3 × Tempo | Motivation | ✓ |
-| Fortschritt bei kurzen Besuchen | casual 21 Tage | erste Mondwende am ersten Tag, alle Bauwerke | Gelegenheitsspieler | Tag 1 / Tag 9 ✓ |
+| Fortschritt bei kurzen Besuchen | casual 21 Tage | erste Mondwende am ersten Tag, alle Bauwerke | Gelegenheitsspieler | ✓ |
 
 **Neue Ziele:** Freischaltung eines Bauwerks, erster Lauf jeder Prestige-Schicht, jeder Wächterrang-Aufstieg (bringt Belohnungen, steht im HUD). Wiederholte Mondwenden sind der Kreislauf, kein neues Ziel.
 
 **Tempo:** die größte der letzten drei Lücken (mindestens 10 min). Ziele kommen in Schüben; ein Schub ist keine Mauer, eine Lücke über dem Dreifachen des Tempos schon.
 
-| Erstes Zeitalter | regular 35 Tage | Tag 28 ± 7 | lange Schleife | Tag 28,4 ✓ |
+| Erstes Zeitalter | regular 35 Tage | Tag 20 ± 5 | lange Schleife | Tag 20,3 ✓ |
 | Ruhezeit der Langen Nacht | regular 35 Tage | ≥ 3 Tage zwischen zwei Langen Nächten | Referenz | ✓ |
 | Lande öffnen sich nach und nach | regular | Land 3 mindestens 12 h nach Land 2, mindestens 3 Lande in 21 Tagen | Taktung der Lande | ✓ (`realms.test.ts`) |
 
 ## Späte Taktung (Tag 35 bis Tag 90, Profil regular)
+
+> **Seit der Tempo-Runde (2026-11-12)** liegen die Zeitalter früher: zweites um Tag 37 ± 7 (gemessen Tag 36), drittes um Tag 67 ± 10 (gemessen Tag 67). Die Lande-Korridore unten gelten unverändert und sind nachgemessen (25 offene Lande an Tag 60, 35 an Tag 90). Die Zahlen in der Tabelle sind der Stand davor. Die Messungen über Tag 90 hinaus (`fuenf-jahre.md`) sind **nicht** nachgemessen.
 
 Messung: `SUMMARY=1 npm run balance -- lichtwarte regular 2160` (90 Tage, etwa 50 s). In der CI: `tools/balance/late.test.ts`, Korridore in `balanceTargets.regularLate` und `lateTargets` (`src/game.ts`).
 
@@ -100,3 +108,47 @@ Häufigkeit wie in der Referenz (Rückmeldung 2026-11-11): jede fünfte von Hand
 
 Die **Beträge** sind kleiner als in der Referenz: 8 s Ertrag (sicher) und 20 bis 45 s (Glück) statt 45 s und 90 bis 210 s. Mit den Beträgen der Referenz verfehlte der Simulator die Korridore deutlich (alle Bauwerke an Tag 2,6 statt Tag 5 ± 1; zweite Mondwende nach 57 statt 81 Minuten). Mit den kleineren Beträgen bleiben alle Korridore eingehalten (zweite Mondwende nach 78 Minuten, Sternwarte an Tag 4,1). Deckel: 12 % des Ertrags dieses Laufs plus einer Minute.
 
+
+
+## Tempo-Runde (2026-11-12)
+
+**Anlass:** Michael nach dem eigenen Test: „zu langsam, ich kehre nicht zurück“, aufgehört nach der ersten Mondwende, und schon die ersten zehn Minuten „eher lahm“.
+
+**Gemessen vorher** (Simulator):
+
+- Erste zehn Minuten: nach der ersten Minute 4 bis 5 Käufe je Minute, dazwischen 40 bis 60 s Warten; sechs Funkenrufe in zwanzig Minuten.
+- Erste Mondwende nach 18,5 Minuten: 70 Runensplitter, das sind +10 % Ertrag. Zweite Mondwende 58 Minuten später, Schmiede erst bei Minute 35.
+- regular (15 Minuten alle zwei Stunden): 34 % der Besuche in der ersten Woche ohne jedes Ereignis (kein Bauwerk, keine Mondwende, kein Rang).
+
+**Geändert:**
+
+| Was | Vorher | Jetzt | Warum |
+|---|---|---|---|
+| Funkenruf | lädt in 5 min, 60 s Ertrag | lädt in 45 s, 20 s Ertrag | Es gibt in der aktiven Sitzung etwas zu tun |
+| Funken im Tal | — | je geladenem Ruf ein antippbarer Funke auf der Karte | dasselbe, auf der Karte statt nur am Knopf (reine Anzeige, kein Spielstand) |
+| Mondwende: Stufen | alle weg | die Hälfte jedes Bauwerks bleibt (`carry.producerShare`, neu in der Engine) | Sprung statt Strafe |
+| Erste Mondwende | +10 % Ertrag | Meilenstein: Ertrag ×2 für immer, 10 Lichtkiesel | die erste soll man spüren |
+| Zweite Schwelle | 10 Mio. | 6 Mio. | zweite Mondwende in derselben Sitzung |
+| Sternwarte | ab 12 Mondwenden | ab 16 | sonst fiele sie noch auf Tag 1 |
+| Lange Nacht, Schwelle | 6e14 | 2e15 | sonst käme sie an Tag 2 |
+| Zeitalter, Schwelle | 5e16 | 1,5e17 | sonst käme es nach einer Woche |
+| Wächterrang je Mondwende | 150 XP | 60 XP | doppelt so viele Mondwenden |
+| Funkenglocke / Herdrezept | +15 s / +10 % je Rang | +4 s / +3 % je Rang | an den kürzeren Ruf angepasst |
+
+**Gemessen nachher:**
+
+| | Vorher | Jetzt |
+|---|---|---|
+| Zweite Mondwende (engaged) | Minute 76 | Minute 29 |
+| Schmiede / Kartenstube / Alchemistenturm (engaged) | 35 / 98 / nach 3 h | 17 / 30 / 38 min |
+| Bauwerke Ende Tag 1 / 2 / 3 (regular) | 7 / 9 / 9 | 9 / 9 / 10 |
+| Erste Lange Nacht (regular) | Tag 7,3 | Tag 5,0 |
+| Zeitalter (regular, 90 Tage) | Tag 27, 45, 77 | Tag 20, 36, 67 |
+| Besuche ohne jedes Ereignis, Woche 1 | 34 % | 11 % |
+| Besuche ohne jedes Ereignis, Tag 8 bis 90 | 29 % | 33 % |
+| Mondwenden in 90 Tagen | 790 | 1.094 |
+| Offene Lande je 10 Tage | 3 / 9 / 12 / 16 / 19 / 23 / 26 / 30 / 33 | 6 / 10 / 13 / 17 / 21 / 24 / 28 / 31 / 34 |
+
+**Was das nicht löst:** Ab der zweiten Woche bringt weiter nur etwa jeder siebte Besuch etwas wirklich Neues (Land, Schicht, Rang). Das ist eine Frage des Inhalts je Besuch, nicht der Zahlen, und war nicht Teil dieser Runde. Ob es Spaß macht, misst der Simulator nicht: Das zeigt erst das Spielen.
+
+**Verworfen (gemessen):** Die späten Bauwerke hinter mehr Mondwenden sperren (20 / 40) hält den ganzen Kreislauf an, weil die Bauwerke die Mondwenden tragen und nicht umgekehrt (13 Mondwenden bis Tag 3, Lange Nacht an Tag 16). Eine steilere Schwelle ab der fünften Mondwende bringt dasselbe Loch (eine Mondwende am Tag). Ohne Gegensteuern bei Langer Nacht und Zeitalter wäre das erste Zeitalter nach acht Tagen erreicht.
