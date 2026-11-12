@@ -39,18 +39,25 @@ export function surprisesModule(): EngineModule<SurprisesState> {
       const layer = world.def.prestigeLayers[0]
       if (!c.near || !layer) return s
       const ratio = layerStatus(world, layer.id).ratio
+      // All shares crossed and not yet given
+      let mask = 0
+      let top = -1
       for (let i = 0; i < c.near.ratios.length; i++) {
-        const bit = 1 << i
-        if (s.near & bit || ratio < c.near.ratios[i]) continue
-        const rate = world.rate()
-        let amount = rate * c.near.seconds
-        if (c.capShare) amount = Math.min(amount, (world.core.primaryRun + rate * 60) * c.capShare)
-        if (c.floorSeconds) amount = Math.max(amount, rate * c.floorSeconds)
-        const next = { ...s, near: s.near | bit }
-        if (!(amount > 0)) return next
-        return act({ ...next, found: s.found + 1 }, { grant: [{ currency: primaryCurrency(world.def), amount, source: 'surprise' }], events: [{ type: 'surprise.found', amount, kind: 'near', tier: i }] })
+        if (s.near & (1 << i) || ratio < c.near.ratios[i]) continue
+        mask |= 1 << i
+        top = i
       }
-      return s
+      if (top < 0) return s
+      const next = { ...s, near: s.near | mask }
+      // Already at the gate (a big offline income jumped past everything): "almost there" has nothing left to say.
+      // Several shares crossed in one step give one find, for the highest of them.
+      if (ratio >= 1) return next
+      const rate = world.rate()
+      let amount = rate * c.near.seconds
+      if (c.capShare) amount = Math.min(amount, (world.core.primaryRun + rate * 60) * c.capShare)
+      if (c.floorSeconds) amount = Math.max(amount, rate * c.floorSeconds)
+      if (!(amount > 0)) return next
+      return act({ ...next, found: s.found + 1 }, { grant: [{ currency: primaryCurrency(world.def), amount, source: 'surprise' }], events: [{ type: 'surprise.found', amount, kind: 'near', tier: top }] })
     },
     on: (s, e, ctx, world) => {
       if (e.type === 'offline.claimed') {
