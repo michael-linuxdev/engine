@@ -188,6 +188,7 @@ export const game: GameDefinition = {
       // in Jahr 3 im Mittel 35 statt 41. Mit 1,3 waren es in Jahr 3 schon 40 bis 50 Tage.
       // Weitere Knicke (Messung über fünf Jahre, 2026-11-11): Der Ertrag wächst mit den Jahren langsamer, mit 1,25 allein
       // lagen in Jahr 4 im Mittel 64 und in Jahr 5 im Mittel 73 Tage zwischen zwei Zeitaltern. Bis zum 32. bleibt alles gleich.
+      // Mit den Knicken gemessen: Jahr 4 im Mittel 40, Jahr 5 im Mittel 37 Tage (fuenf-jahre.md).
       gate: {
         base: 5e16,
         growth: 3,
