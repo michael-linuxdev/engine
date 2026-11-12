@@ -1,5 +1,5 @@
 import { Component, useEffect, useRef, useState, type ErrorInfo, type ReactNode } from 'react'
-import { explain, isUnlocked, MODULE, primaryCurrency, quote, type OfflineState, type SaveBlock } from '@engine/core'
+import { explain, formatNumber, isUnlocked, MODULE, primaryCurrency, quote, type OfflineState, type SaveBlock } from '@engine/core'
 import { copyText, detectPlatform, installStepsKey, useEngine, useSaveBlock } from '@engine/react'
 import { useUi } from '../useUi'
 import type { EngineStrings } from '../i18n/de'
@@ -77,9 +77,18 @@ export function MultSheet({ open, onClose }: { open: boolean; onClose: () => voi
       const n = (state.modules.producers as { owned: Record<string, number> }).owned[p.id] ?? 0
       return { p, r: explain(world.def, state, `rate:${p.id}`, p.baseRate * n) }
     })
+  // A factor of ×1 or a bonus of +0 changes nothing: such rows are only noise
+  const matters = (x: { op: string; value: number }) => (x.op === 'add' ? x.value !== 0 : Math.abs(x.value - 1) > 1e-9)
+  // Small factors keep two digits: "×1.05" instead of a rounded "×1", so the rows multiply up to the total
+  const factor = (v: number) => (v < 10 && !Number.isInteger(v) ? formatNumber(v, ui.nl, { smallDigits: 2 }) : ui.fmt(v))
   return (
     <Sheet open={open} title={ui.t.mult.title} onClose={onClose} testId="mult-sheet">
-      {rows.length === 0 ? <p>{ui.t.mult.none}</p> : null}
+      {rows.length === 0 ? <p>{ui.t.mult.none}</p> : (
+        <p className="ek-mult-total" data-testid="mult-total">
+          <span>{ui.t.mult.total}</span>
+          <strong>{ui.t.common.perSecond(ui.fmt(world.rate()))}</strong>
+        </p>
+      )}
       {rows.map(({ p, r }) => (
         <div key={p.id} className="ek-card">
           <strong>{ui.labels.producer(p.id).name}</strong>
@@ -89,10 +98,10 @@ export function MultSheet({ open, onClose }: { open: boolean; onClose: () => voi
                 <th scope="row">{ui.t.mult.base}</th>
                 <td>{ui.t.common.perSecond(ui.fmt(r.base))}</td>
               </tr>
-              {r.parts.map((x) => (
+              {r.parts.filter(matters).map((x) => (
                 <tr key={x.id}>
                   <th scope="row">{ui.labels.effect(x.labelKey)}</th>
-                  <td>{x.op === 'add' ? `+${ui.fmt(x.value)}` : x.op === 'mul' ? `×${ui.fmt(x.value)}` : `^${x.value}`}</td>
+                  <td>{x.op === 'add' ? `+${ui.fmt(x.value)}` : x.op === 'mul' ? `×${factor(x.value)}` : `^${x.value}`}</td>
                 </tr>
               ))}
               <tr>
@@ -215,6 +224,11 @@ export function InstallGate({ title, onSkip, art, carryCode }: { title: string; 
           </Button>
         ) : null}
       </section>
+      {/* The way out stays near the steps: nobody should have to scroll to find it */}
+      <Button variant="ghost" data-testid="install-skip" onClick={onSkip}>
+        {g.skip}
+      </Button>
+      <p className="ek-muted">{g.skipNote}</p>
       <ul className="ek-steps ek-install__why">
         {g.why.map((w, i) => (
           <li key={i}>{w}</li>
@@ -235,10 +249,6 @@ export function InstallGate({ title, onSkip, art, carryCode }: { title: string; 
           {note}
         </p>
       ) : null}
-      <Button variant="ghost" data-testid="install-skip" onClick={onSkip}>
-        {g.skip}
-      </Button>
-      <p className="ek-muted">{g.skipNote}</p>
     </div>
   )
 }

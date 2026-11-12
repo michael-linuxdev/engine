@@ -39,7 +39,7 @@ body {
   box-shadow: 0 3px 10px rgb(23 32 64 / 0.35);
 }
 .lw-app .ek-sheet__title {
-  font-size: 1.5rem;
+  font-size: var(--fs-2xl);
   color: var(--gold);
   text-shadow: 0 2px 0 rgb(0 0 0 / 0.35);
 }
@@ -50,7 +50,7 @@ body {
   background: var(--night-2);
   border: 2px solid var(--gold-deep);
   color: var(--on-night);
-  font-size: 1.4rem;
+  font-size: var(--fs-2xl);
   line-height: 1;
 }
 .lw-app .ek-sheet__foot {
@@ -82,7 +82,7 @@ body {
 .lw-app .ek-row__main > strong:first-child,
 .lw-app .ek-card .ek-h3 {
   font-family: var(--font-display);
-  font-size: 1.12rem;
+  font-size: var(--fs-l);
   font-weight: 700;
 }
 .lw-app .ek-h3::before {
@@ -101,7 +101,7 @@ body {
 }
 .lw-app .ek-quote {
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: var(--fs-base);
   border-left-color: var(--gold-deep);
 }
 
@@ -109,12 +109,12 @@ body {
 .lw-app .ek-btn {
   border-radius: 14px;
   font-family: var(--font-display);
-  font-size: 1.08rem;
+  font-size: var(--fs-l);
   letter-spacing: 0.01em;
   transition: transform 0.06s;
 }
 .lw-app .ek-btn--small {
-  font-size: 1rem;
+  font-size: var(--fs-base);
 }
 .lw-app .ek-btn--primary {
   background: linear-gradient(var(--gold), var(--gold-deep));
@@ -146,7 +146,7 @@ body {
 }
 .lw-app .ek-buy {
   min-height: 58px;
-  font-size: 1.25rem;
+  font-size: var(--fs-xl);
 }
 .lw-app .ek-buy:not(:disabled) {
   box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.4), inset 0 -4px 0 rgb(0 0 0 / 0.18), 0 3px 0 var(--night), 0 0 18px rgb(255 159 67 / 0.45);
@@ -175,7 +175,7 @@ body {
 .lw-app .ek-upgrade .ek-sheet__title {
   color: var(--ink);
   text-shadow: none;
-  font-size: 1.45rem;
+  font-size: var(--fs-2xl);
 }
 .lw-app .ek-upgrade .ek-sheet__head .ek-icon-btn {
   background: var(--surface);
@@ -212,18 +212,18 @@ body {
 }
 .lw-app .ek-upgrade__badge strong {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: var(--fs-l);
   font-variant-numeric: lining-nums;
 }
 .lw-app .ek-upgrade__rate {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: var(--fs-xl);
   font-variant-numeric: lining-nums tabular-nums;
 }
 .lw-app .ek-upgrade__info .ek-muted {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 0.98rem;
+  font-size: var(--fs-base);
   line-height: 1.25;
 }
 /* Ausbau-Knopf als Ladebalken: füllt sich golden, bis der Preis reicht; ein Kauf blitzt kurz auf */
@@ -243,7 +243,7 @@ body {
   color: var(--gold-deep);
 }
 .lw-app .ek-upgrade__info .ek-stars {
-  font-size: 0.95rem;
+  font-size: var(--fs-base);
   line-height: 1;
 }
 
@@ -257,18 +257,18 @@ body {
   flex-wrap: nowrap;
 }
 .lw-app .ek-card.ek-branch > .ek-branch__head > strong {
-  font-size: 1rem;
+  font-size: var(--fs-base);
   line-height: 1.2;
 }
 .lw-app .ek-branch__blurb {
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
   line-height: 1.2;
 }
 .lw-app .ek-branch .ek-btn {
   min-height: 34px;
   margin-top: 3px;
   padding: 0 var(--space-2);
-  font-size: 0.95rem;
+  font-size: var(--fs-base);
   box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.1), 0 2px 0 var(--ink-muted);
   position: relative;
 }
@@ -276,7 +276,8 @@ body {
 .lw-app .ek-branch .ek-btn::after {
   content: '';
   position: absolute;
-  inset: -5px 0;
+  /* gemessen ab der Innenkante des Rahmens (2 px): 30 + 2 × 7 = 44 */
+  inset: -7px 0;
 }
 .lw-app .ek-branch .ek-pips i {
   width: 8px;
@@ -324,7 +325,7 @@ body {
   border-bottom-width: 5px;
   border-radius: 16px;
   font-family: var(--font-display);
-  font-size: 1.12rem;
+  font-size: var(--fs-l);
   min-height: 104px;
 }
 .lw-app .ek-menu--tiles .ek-menu__item:active {
@@ -359,7 +360,7 @@ body {
 }
 .lw-app .ek-tab {
   color: var(--on-night-muted);
-  font-size: 0.66rem;
+  font-size: var(--fs-xs);
   gap: 1px;
   padding: 4px 0 2px;
   min-width: 0;
@@ -409,12 +410,12 @@ body {
   align-items: center;
 }
 .lw-app .ek-hud__value {
-  font-size: 1.55rem;
+  font-size: var(--fs-2xl);
   line-height: 1.1;
   font-variant-numeric: lining-nums tabular-nums;
 }
 .lw-app .ek-hud__rate {
-  font-size: 0.85rem;
+  font-size: var(--fs-m);
   font-variant-numeric: tabular-nums;
 }
 .lw-app .ek-hud__extra {
@@ -432,7 +433,7 @@ body {
   padding: 2px var(--space-2);
   color: var(--accent);
   font: inherit;
-  font-size: 0.66rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
   cursor: pointer;
 }
@@ -445,7 +446,7 @@ body {
 .lw-app .ek-goal {
   padding: 5px var(--space-3) 7px;
   font-family: var(--font-display);
-  font-size: 0.98rem;
+  font-size: var(--fs-base);
   font-weight: 600;
 }
 .lw-glimmer-icon {
@@ -489,7 +490,7 @@ body {
   border: 1px solid var(--gold-deep);
   background: var(--night-2);
   color: var(--on-night);
-  font-size: 0.82rem;
+  font-size: var(--fs-s);
   box-shadow: 0 0 10px rgb(255 159 67 / 0.35);
 }
 .lw-chip {
@@ -505,7 +506,7 @@ body {
   color: var(--ink);
   font: inherit;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: var(--fs-m);
   box-shadow: 0 4px 14px rgb(23 32 64 / 0.28);
   cursor: pointer;
 }
@@ -645,13 +646,13 @@ body {
 }
 .lw-slot__name {
   font-family: var(--font-display);
-  font-size: 0.74rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
   white-space: nowrap;
 }
 .lw-slot__level {
   color: var(--accent-2);
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
@@ -677,7 +678,7 @@ body {
   gap: 0;
   padding: 4px;
   font-family: var(--font-display);
-  font-size: 0.86rem;
+  font-size: var(--fs-m);
   line-height: 1.05;
 }
 .lw-dock .ek-burst .lw-icon {
@@ -701,7 +702,7 @@ body {
 }
 .lw-dock .ek-burst__charges {
   font-family: var(--font-body);
-  font-size: 0.68rem;
+  font-size: var(--fs-xs);
   color: var(--on-night-muted);
 }
 .lw-sparks {
@@ -731,7 +732,7 @@ body {
   pointer-events: none;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.25rem;
+  font-size: var(--fs-xl);
   color: var(--gold);
   text-shadow: 0 1px 0 var(--night), 0 0 10px var(--night), 0 0 4px var(--night);
   opacity: 0;
@@ -763,7 +764,7 @@ body {
   color: var(--ink);
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 0.92rem;
+  font-size: var(--fs-m);
   line-height: 1.25;
   box-shadow: 0 4px 14px rgb(23 32 64 / 0.35);
   pointer-events: none;
@@ -790,7 +791,7 @@ body {
 }
 .lw-page__chapter {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: var(--fs-s);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -805,13 +806,13 @@ body {
 }
 .lw-page__title {
   margin: var(--space-2) 0 0;
-  font-size: 1.6rem;
+  font-size: var(--fs-2xl);
   line-height: 1.15;
   font-weight: 700;
 }
 .lw-page__text {
   margin: 0;
-  font-size: 1.14rem;
+  font-size: var(--fs-l);
   line-height: 1.5;
   font-style: italic;
 }
@@ -836,7 +837,7 @@ body {
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 600;
-  font-size: 1.15rem;
+  font-size: var(--fs-l);
   color: var(--ink-muted);
   text-align: right;
 }
@@ -879,7 +880,7 @@ body {
 .lw-story__title {
   margin: 0 0 var(--space-2);
   font-family: var(--font-display);
-  font-size: 2.3rem;
+  font-size: var(--fs-display);
   line-height: 1.1;
   font-weight: 800;
   color: var(--gold);
@@ -889,7 +890,7 @@ body {
   margin: 0;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 1.22rem;
+  font-size: var(--fs-xl);
   line-height: 1.35;
 }
 .lw-story__gain {
@@ -905,7 +906,7 @@ body {
   border-color: var(--gold);
   box-shadow: 0 0 22px rgb(255 159 67 / 0.45);
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: var(--fs-l);
   padding: var(--space-2) var(--space-5);
 }
 
@@ -1029,7 +1030,7 @@ body {
 
 /* Tab-Überschriften als Schriftzug mit Doppellinie */
 .lw-app .ek-h2 {
-  font-size: 1.55rem;
+  font-size: var(--fs-2xl);
   padding-bottom: var(--space-1);
   border-bottom: 3px double var(--gold-deep);
 }
@@ -1040,11 +1041,11 @@ body {
   color: var(--parchment);
   border: 2px solid var(--gold);
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: var(--fs-base);
 }
 .lw-app .ek-fx__float {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: var(--fs-xl);
   color: var(--gold-deep);
   text-shadow: 0 0 6px var(--parchment), 0 0 3px var(--parchment), 0 0 2px var(--parchment);
 }
@@ -1092,7 +1093,7 @@ body {
   background: var(--night);
   color: var(--gold);
   font-family: var(--font-body);
-  font-size: 0.68rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
   line-height: 1.5;
 }
@@ -1175,7 +1176,7 @@ body {
   background: linear-gradient(var(--night-2), var(--night));
   color: var(--on-night);
   font-family: var(--font-display);
-  font-size: 0.9rem;
+  font-size: var(--fs-m);
   cursor: pointer;
 }
 .lw-today .lw-icon {
@@ -1215,12 +1216,12 @@ body {
 /* Kopfzeile: Rang-Kachel und Nebenwährungen */
 .lw-rank strong {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: var(--fs-l);
   line-height: 1;
   color: var(--ink);
 }
 .lw-rank > span:not(.lw-rank__bar):not(.ek-visually-hidden) {
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
 }
 .lw-rank__bar {
   display: block;
@@ -1238,7 +1239,7 @@ body {
 .lw-app .ek-hud__sub {
   padding: 0 var(--space-3);
   color: var(--ink);
-  font-size: 0.8rem;
+  font-size: var(--fs-s);
   text-shadow: 0 0 6px var(--parchment), 0 0 3px var(--parchment);
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -1286,7 +1287,7 @@ body {
   background: transparent;
   color: var(--ink);
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: var(--fs-base);
   text-align: left;
   cursor: pointer;
 }
@@ -1307,7 +1308,7 @@ body {
   background: transparent;
   color: var(--ink-muted);
   font: inherit;
-  font-size: 0.85rem;
+  font-size: var(--fs-m);
   text-decoration: underline;
   cursor: pointer;
 }
@@ -1326,7 +1327,7 @@ body {
   background: var(--night);
   color: var(--parchment);
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: var(--fs-base);
   cursor: pointer;
 }
 
@@ -1385,7 +1386,7 @@ body {
 .lw-today {
   min-width: 50px;
   min-height: 50px;
-  font-size: 0.8rem;
+  font-size: var(--fs-s);
   bottom: 1%;
 }
 
@@ -1484,7 +1485,7 @@ body {
 /* Chronik-Inhalt: verschlossene Seiten knapp, mit Schloss */
 .lw-toc__locked {
   gap: var(--space-2);
-  font-size: 0.92rem;
+  font-size: var(--fs-m);
 }
 .lw-toc__lock {
   flex: none;
@@ -1537,7 +1538,7 @@ body {
 .lw-toc-book__title {
   margin: 0 0 var(--space-2);
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: var(--fs-xl);
   color: var(--accent);
 }
 p.lw-toc__locked {
@@ -1614,7 +1615,7 @@ p.lw-toc__locked {
   color: var(--gold);
   border-bottom: 2px solid var(--gold-deep);
   border-radius: calc(var(--radius-m) - 2px) calc(var(--radius-m) - 2px) 0 0;
-  font-size: 1.18rem;
+  font-size: var(--fs-l);
   text-shadow: 0 1px 0 rgb(0 0 0 / 0.4);
 }
 .lw-app .ek-card > .ek-h3:first-child::before {
@@ -1637,7 +1638,7 @@ p.lw-toc__locked {
 .lw-app .ek-segmented button {
   color: var(--on-night);
   font-family: var(--font-display);
-  font-size: 1.02rem;
+  font-size: var(--fs-base);
   border-radius: 10px;
 }
 .lw-app .ek-segmented button.is-active {
@@ -1658,7 +1659,7 @@ p.lw-toc__locked {
   min-height: 112px;
   gap: 4px;
   padding: 10px 4px 8px;
-  font-size: 1.02rem;
+  font-size: var(--fs-base);
   box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.12), 0 3px 8px rgb(23 32 64 / 0.3);
 }
 .lw-app .ek-menu--tiles .ek-menu__icon {
@@ -1677,7 +1678,7 @@ p.lw-toc__locked {
 }
 .lw-app .ek-menu__hint {
   font-family: var(--font-body);
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   color: var(--on-night-muted);
   line-height: 1.2;
 }
@@ -1702,7 +1703,7 @@ p.lw-toc__locked {
   min-height: 64px;
   padding: 8px 4px;
   text-align: center;
-  font-size: 0.78rem;
+  font-size: var(--fs-s);
   line-height: 1.15;
   background: linear-gradient(var(--surface), var(--surface-2));
   border: 2px solid var(--parchment-edge);
@@ -1716,7 +1717,7 @@ p.lw-toc__locked {
 .lw-app .ek-market-balance {
   color: var(--gold);
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: var(--fs-l);
 }
 
 /* ── Hinweise über der Karte: Pillen und Marke teilen sich einen Streifen ──────────
@@ -1750,7 +1751,7 @@ p.lw-toc__locked {
 .lw-strip .lw-chip {
   min-height: 32px;
   margin: 0;
-  font-size: 0.85rem;
+  font-size: var(--fs-m);
 }
 .lw-app:not([data-tab='play']) .lw-strip {
   display: none;
@@ -1761,4 +1762,202 @@ p.lw-toc__locked {
   margin: 0 calc(-1 * var(--space-3));
   padding: var(--space-2) var(--space-3) var(--space-3);
   background: linear-gradient(to bottom, var(--night) 82%, transparent);
+}
+
+/* ── UI-Runde 4: Kopf schlanker, Tippflächen, eine Schriftskala, breite Fenster ───────── */
+
+/*
+ * Die Bühne ist auf ein 390 px breites Handy gezeichnet. Ist sie breiter (großes Handy, Tablet,
+ * Desktop), wächst die Schrift mit, bis höchstens 24 px: Schilder und Leiste bleiben im Verhältnis.
+ * 62 px = Höhe der Leiste, 0,62 = Seitenverhältnis der Bühne (siehe .lw-stage).
+ */
+html:has(.lw-app) {
+  font-size: calc(clamp(16px, min(4.1vw, (100dvh - 62px) * 0.0254), 24px) * var(--font-scale));
+}
+.lw-app {
+  --col: min(100vw, calc((100dvh - var(--tabbar-h) - env(safe-area-inset-bottom)) * 0.62));
+}
+/* Die Leiste ist so breit wie die Bühne: Auf dem Desktop liegen die Knöpfe nicht mehr 360 px auseinander */
+.lw-app .ek-tabbar {
+  padding-left: max(0px, calc((100% - var(--col)) / 2));
+  padding-right: max(0px, calc((100% - var(--col)) / 2));
+}
+.lw-app .ek-tab .lw-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Kopf: Die Ziel-Karte ist eine schmale Zeile mit dünnem Balken, damit das Tal darunter zu sehen ist */
+.lw-app .ek-goal {
+  padding: 3px var(--space-3) 5px;
+  gap: 1px;
+  min-height: 0;
+  line-height: 1.25;
+}
+.lw-app .ek-goal .ek-progress {
+  height: 6px;
+}
+.lw-app .ek-goal__note {
+  margin-top: 1px;
+  font-size: var(--fs-s);
+  line-height: 1.2;
+}
+/* Die Tippfläche der Ziel-Zeile bleibt 44 px hoch, auch wenn sie schmaler aussieht */
+.lw-app .ek-goal--btn {
+  position: relative;
+}
+.lw-app .ek-goal--btn::after {
+  content: '';
+  position: absolute;
+  inset: min(0px, calc((100% - var(--tap)) / 2)) 0;
+}
+.lw-hud-btn .lw-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.lw-hud-btn,
+.lw-app .ek-tab {
+  font-size: var(--fs-xs);
+}
+
+/* Vorräte: jede Währung hat ihre eigene Form (nicht nur eine Farbe), die Zeile ist 44 px hoch antippbar */
+.lw-app .ek-hud__sub {
+  overflow: visible;
+  overflow-x: clip;
+}
+.lw-purse {
+  min-height: var(--tap);
+  min-width: var(--tap);
+  justify-content: center;
+  margin: -8px 0;
+  border: solid transparent;
+  border-width: 8px 0;
+  background-clip: padding-box;
+}
+.lw-cur i {
+  flex: none;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 0;
+  box-shadow: none;
+  transform: none;
+}
+/* Lichtkiesel: runder Kiesel */
+.lw-cur--glowPebbles i {
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, var(--surface) 0 16%, var(--gold) 50%, var(--gold-deep));
+  box-shadow: 0 0 0 1px var(--gold-deep);
+}
+/* Runensplitter: spitzer Splitter */
+.lw-cur--runeShards i {
+  background: var(--accent);
+  clip-path: polygon(50% 0, 100% 45%, 62% 100%, 22% 100%, 0 40%);
+}
+/* Nachttau: Tropfen */
+.lw-cur--nightDew i {
+  background: var(--night-2);
+  border-radius: 0 50% 50% 50%;
+  transform: rotate(45deg) scale(0.86);
+}
+/* Ahnenlicht: Stern */
+.lw-cur--forebearLight i {
+  background: var(--ember);
+  clip-path: polygon(50% 0, 63% 37%, 100% 50%, 63% 63%, 50% 100%, 37% 63%, 0 50%, 37% 37%);
+  box-shadow: none;
+}
+
+/* Pillen und Marken: 44 px Tippfläche (siehe .ek-pill::after), die Reihe läuft rechts weich aus statt hart abzuschneiden */
+.lw-notices > .lw-strip {
+  padding-bottom: 6px;
+  margin-bottom: -6px;
+  padding-right: var(--space-5);
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--space-5)), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - var(--space-5)), transparent);
+}
+.lw-strip .lw-chip {
+  position: relative;
+}
+.lw-strip .lw-chip::after {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
+  /* das ::before der Marke ist der Glutpunkt; die Tippfläche braucht keinen eigenen */
+  background: none;
+  box-shadow: none;
+}
+
+/* Funkenruf und Heute-Knopf wachsen mit der Schrift (vorher lief „Funkenruf“ bei großer Schrift aus dem Kreis) */
+.lw-dock .ek-burst {
+  width: 4.9rem;
+  height: 4.9rem;
+}
+.lw-dock .ek-burst .lw-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+.lw-dock .ek-burst__charges,
+.lw-slot__name,
+.lw-slot__level,
+.lw-slot__star {
+  font-size: var(--fs-xs);
+}
+
+/* Leiser Ring: „neu“ oder „etwas wäre kaufbar“. Der volle Glutpunkt heißt „jetzt abholbar“. */
+.lw-app .ek-badge--quiet {
+  border-color: var(--ember);
+}
+.lw-hud-btn .ek-badge--quiet {
+  border-color: var(--accent-2);
+}
+
+/* Seiten aus dem Menü (Wacht, Sammlung): Titel und Rückweg auf Nachtblau */
+.lw-app .ek-viewhead__title {
+  color: var(--gold);
+  font-size: var(--fs-2xl);
+  text-shadow: 0 2px 0 rgb(0 0 0 / 0.35);
+}
+.lw-app .ek-viewhead__back {
+  background: var(--night-2);
+  border-color: var(--gold-deep);
+  color: var(--on-night);
+  font-family: var(--font-display);
+}
+
+/* Mondwende: Reiter mit Marke; die feste Leiste geht weich in die Seite über */
+.lw-app .ek-ptab__jump .ek-badge--quiet {
+  border-color: var(--ember);
+}
+/* Die Hauptfläche hat hier keinen eigenen Rand (die Tafeln bringen ihn mit): Leiste und Seitentitel setzen ihn selbst */
+.lw-app .ek-ptab__bar {
+  margin: 0;
+  padding: var(--space-4) var(--space-3) var(--space-2);
+  background: linear-gradient(to bottom, transparent, var(--night) 35%);
+}
+.lw-app .ek-viewhead {
+  margin: 0;
+  padding: var(--space-3) var(--space-3) 0;
+}
+
+/* Preis am Zweig-Knopf: die Glimmer-Münze davor, damit „44“ als Preis lesbar ist */
+.lw-app .ek-btn--cost::before {
+  content: '';
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-right: 5px;
+  vertical-align: -1px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, var(--surface) 0 18%, var(--gold) 45%, var(--gold-deep) 100%);
+  box-shadow: 0 0 0 1px var(--gold-deep);
+}
+.lw-app .ek-mult-total {
+  padding: var(--space-2) var(--space-3);
+  border-left: 4px solid var(--gold);
+  background: var(--surface-2);
+  border-radius: var(--radius-s);
+}
+.lw-app .ek-rotate {
+  background: var(--night);
+  color: var(--on-night);
+  font-family: var(--font-display);
 }

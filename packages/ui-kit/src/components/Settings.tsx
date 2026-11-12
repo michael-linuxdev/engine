@@ -83,10 +83,6 @@ export function SaveSheet({ open, onClose, prefix, app, keys, fileName, auto, on
         </p>
       ) : null}
       <p>{ui.t.save.intro}</p>
-      <label className="ek-field">
-        <span>{ui.t.save.code}</span>
-        <textarea className="ek-code" readOnly value={code} rows={4} data-testid="save-code" onFocus={(e) => e.currentTarget.select()} />
-      </label>
       <div className="ek-row-actions">
         <Button
           variant="secondary"
@@ -113,6 +109,14 @@ export function SaveSheet({ open, onClose, prefix, app, keys, fileName, auto, on
           {ui.t.save.file}
         </Button>
       </div>
+      {/* The two buttons are the way; the raw code stays available but does not invite selecting it by hand */}
+      <details className="ek-details">
+        <summary data-testid="save-show">{ui.t.save.showCode}</summary>
+        <label className="ek-field">
+          <span>{ui.t.save.code}</span>
+          <textarea className="ek-code" readOnly value={code} rows={4} data-testid="save-code" onFocus={(e) => e.currentTarget.select()} />
+        </label>
+      </details>
       <h3 className="ek-h3">{ui.t.save.importTitle}</h3>
       <label className="ek-field">
         <span>{ui.t.save.importHint}</span>

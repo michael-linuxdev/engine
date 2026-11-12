@@ -5,6 +5,8 @@ Stand 2026-11-11. Grundlage: der Code des Referenz-Spiels (alle Fenster, Karte, 
 **Wirkung:** A = fällt jedem Spieler in der ersten Sitzung auf · B = fällt nach einigen Tagen auf · C = Feinschliff.
 **Nicht im Detail verglichen:** Großwerke und Folio (nur überflogen), Tastenkürzel und Breitbild.
 
+**Seit UI-Runde 4 (2026-11-12):** Was unabhängig von der Referenz immer gilt (Schriftgrößen, Tippflächen, Punkte, Einstieg), steht in `bedien-regeln.md`. Zwei Zeilen unten sind dadurch überholt: 1.3 (aus den Sprungknöpfen wurden Reiter) und 11.1 (der Bau der Kräuterkate ist jetzt Schritt 1, die Chronik folgt danach).
+
 ## Erledigt (PR #14 bis #21)
 
 Ausbau-Karte (klein, hell, Ladebalken am Knopf, „Noch … fehlt“, Ertragsvorschau, Sterne, Halten baut weiter, kein ×10/Max) · Wisch nach unten schließt Fenster · Seite scrollt nicht · Markt ab Start · Talgast antippen statt Meldung, eigenes Bild je Art · Einstellungen in drei Gruppen ohne Zahlenformat · „Jetzt aktualisieren“ · Installationsanleitung je Browser · Hinweise als kleine Marke.

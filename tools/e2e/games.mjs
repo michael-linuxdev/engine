@@ -30,6 +30,9 @@ export const GAMES = [
         rt.replace({ ...s, modules: { ...s.modules, prestige: { layers }, wallet: { ...s.modules.wallet, balances: { ...s.modules.wallet.balances, runeShards: 100 }, earned: { ...s.modules.wallet.earned, runeShards: 100 } } } })
       })
       await p.getByTestId('tab-prestige').click()
+      await p.getByTestId('ptab-layers').waitFor()
+      await check('Mondwende-Tab')
+      await p.getByTestId('ptab-jump-archive').click()
       await p.getByTestId('ptab-archive').waitFor()
       await check('Mondwende-Tab mit Archiv')
       await p.getByTestId('tab-play').click()
@@ -75,30 +78,21 @@ export const GAMES = [
       const errs = []
       q.on('pageerror', (e) => errs.push(e.message))
       await q.goto(URL + '?installGate=0')
-      // Prolog (nur beim allerersten Start), danach schlägt sich die Chronik von selbst auf
+      // Prolog (nur beim allerersten Start), danach kommt gleich die erste Handlung: Der Einstieg zeigt auf die Kräuterkate.
+      // Die Chronik schlägt sich erst auf, wenn die Kate steht (erst bauen, dann lesen).
       await q.getByTestId('intro').waitFor({ timeout: 10_000 })
       assert((await q.getByTestId('intro').innerText()).includes(T.intro.l1), 'Prolog beim ersten Start')
       await q.getByTestId('intro-start').click()
       await q.getByTestId('intro').waitFor({ state: 'detached' })
-      await q.getByTestId('chronicle').waitFor({ timeout: 10_000 })
-      assert(await q.getByText(T.chronicle.entries.welcome.title).isVisible(), 'erste Chronik-Seite öffnet sich')
-      // Inhaltsverzeichnis: verschlossene Seiten nennen nur, wie sie sich öffnen; „Weiterlesen“ führt zurück
-      await q.getByTestId('chronicle-contents').click()
-      await q.getByTestId('chronicle-index').waitFor()
-      assert((await q.getByTestId('toc-locked-holzlager').innerText()).includes(T.producers.holzlager.name), 'Chronik-Inhalt: Hinweis, wie die Seite aufgeht')
-      // Buch 2 zeigt vor Jahr 2 nur, womit es beginnt, nicht seine vierzig verschlossenen Seiten
-      assert((await q.getByTestId('toc-book-wayOfFires').innerText()).includes(T.chronicle.bookLocked.wayOfFires), 'Chronik-Inhalt: Buch 2 ist noch zu')
-      assert((await q.getByTestId('toc-locked-highFirst').count()) === 0, 'Chronik-Inhalt: Seiten von Buch 2 bleiben verborgen')
-      await q.getByTestId('chronicle-resume').click()
-      await q.getByTestId('chronicle-welcome').waitFor()
-      await q.keyboard.press('Escape')
-      await q.getByTestId('chronicle').waitFor({ state: 'detached' })
       await q.getByTestId('ftue').waitFor()
+      assert((await q.getByTestId('chronicle').count()) === 0, 'vor dem ersten Bau bleibt die Chronik zu')
       assert((await q.getByTestId('ftue').innerText()).includes(T.ftue.steps.build.title), 'Einstieg: Schritt Kräuterkate')
       // Der Einstieg nennt den Schritt, hebt sein Ziel hervor und bietet die Aktion als Knopf an
-      assert((await q.getByTestId('ftue-step').innerText()).includes('2'), 'Einstieg: „Schritt 2 von 6“')
+      assert((await q.getByTestId('ftue-step').innerText()).includes('1'), 'Einstieg: „Schritt 1 von 6“')
       assert(await q.getByTestId('slot-kraeuterkate').evaluate((el) => el.classList.contains('ek-coach-target')), 'Einstieg: Ziel ist hervorgehoben')
       assert((await q.getByTestId('ftue-act').innerText()) === T.ftue.act.build, 'Einstieg: Aktions-Knopf')
+      // Solange der Einstieg auf ein Bauwerk zeigt, schweigt die Ziel-Zeile: eine Ansage, nicht zwei
+      assert((await q.getByTestId('goal').count()) === 0, 'Einstieg: keine zweite Ansage in der Ziel-Zeile')
       await q.getByTestId('slot-kraeuterkate').click()
       await q.getByTestId('upgrade-sheet').waitFor()
       await q.getByTestId('buy-kraeuterkate').click()
@@ -107,6 +101,22 @@ export const GAMES = [
       assert((await q.getByTestId('buy-kraeuterkate').isDisabled()) && fill >= 0 && fill < 100, `Ausbau-Knopf füllt sich als Ladebalken (${fill} %)`)
       assert((await q.getByTestId('buy-hint').innerText()).includes(T.currencies.glimmer), 'unter dem Knopf steht, wie viel noch fehlt')
       await q.keyboard.press('Escape')
+      // Die Kate steht, ihr Fenster ist zu: Jetzt öffnet sich die erste Chronik-Seite als Lohn
+      await q.getByTestId('chronicle').waitFor({ timeout: 10_000 })
+      assert(await q.getByText(T.chronicle.entries.welcome.title).isVisible(), 'erste Chronik-Seite öffnet sich nach dem ersten Bau')
+      // Inhaltsverzeichnis: verschlossene Seiten nennen nur, wie sie sich öffnen; „Weiterlesen“ führt zurück
+      await q.getByTestId('chronicle-contents').click()
+      await q.getByTestId('chronicle-index').waitFor()
+      assert((await q.getByTestId('toc-locked-holzlager').innerText()).includes(T.producers.holzlager.name), 'Chronik-Inhalt: Hinweis, wie die Seite aufgeht')
+      // Buch 2 zeigt vor Jahr 2 nur, womit es beginnt, nicht seine vierzig verschlossenen Seiten
+      assert((await q.getByTestId('toc-book-wayOfFires').innerText()).includes(T.chronicle.bookLocked.wayOfFires), 'Chronik-Inhalt: Buch 2 ist noch zu')
+      assert((await q.getByTestId('toc-locked-highFirst').count()) === 0, 'Chronik-Inhalt: Seiten von Buch 2 bleiben verborgen')
+      await q.getByTestId('chronicle-resume').click()
+      // „Weiterlesen“ führt zur ersten ungelesenen Seite (die Kate steht schon: Ihre Seite ist inzwischen offen)
+      await q.locator('article.lw-page').waitFor()
+      assert((await q.getByTestId('chronicle-index').count()) === 0, 'Chronik: „Weiterlesen“ führt aus dem Inhalt zurück auf eine Seite')
+      await q.keyboard.press('Escape')
+      await q.getByTestId('chronicle').waitFor({ state: 'detached' })
       await q.getByTestId('ftue').getByText(T.ftue.steps.burst.title).waitFor()
       await q.getByTestId('burst').click()
       await q.getByTestId('ftue').getByText(T.ftue.steps.unlock.title).waitFor()
@@ -120,8 +130,19 @@ export const GAMES = [
       await q.getByTestId('rank-sheet').waitFor()
       await q.keyboard.press('Escape')
       await q.getByTestId('rank-sheet').waitFor({ state: 'detached' })
-      // Unter dem Ziel steht, was die nächste Mondwende öffnet
-      assert((await q.getByTestId('goal-note').innerText()).includes(T.producers.schmiede.name), 'Ziel-Zeile nennt, was die nächste Mondwende öffnet')
+      // Vor der ersten Mondwende nennt die Ziel-Zeile nur das Ziel: „Mondwende, Schmiede, Sternenrad“ wären hier lauter fremde Wörter.
+      // Wer schon eine Mondwende gefeiert hat, liest darunter, was die nächste öffnet.
+      assert((await q.getByTestId('goal-note').count()) === 0, 'Ziel-Zeile: vor der ersten Mondwende ohne Vorschau')
+      await q.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        window.__before = s
+        rt.replace({ ...s, modules: { ...s.modules, prestige: { layers: s.modules.prestige.layers.map((l, i) => (i === 0 ? { ...l, count: 1, sinceReset: 1 } : l)) } } })
+      })
+      await q.getByTestId('goal-note').waitFor()
+      assert((await q.getByTestId('goal-note').innerText()).trim().length > 0, 'Ziel-Zeile nennt nach der ersten Mondwende, was die nächste öffnet')
+      await q.evaluate(() => window.__engine.replace(window.__before))
+      await q.getByTestId('goal-note').waitFor({ state: 'detached' })
       await q.getByTestId('goal').click()
       await q.getByTestId('upgrade-sheet').waitFor()
       await q.keyboard.press('Escape')
@@ -137,7 +158,7 @@ export const GAMES = [
       // Die Leiste hat genau vier Knöpfe (Tal, Mondwende, Markt, Menü); das Archiv gibt es noch nicht
       assert((await q.locator('.ek-tabbar .ek-tab').count()) === 4 && (await q.getByTestId('tab-market').count()) === 1, 'Leiste: vier Knöpfe, Markt ab Start')
       await q.getByTestId('tab-prestige').click()
-      assert((await q.getByTestId('ptab-archive').count()) === 0 && (await q.getByTestId('keeps-moonturn').count()) === 1, 'Mondwende-Tab: „Bleibt/Geht“ da, Archiv noch nicht')
+      assert((await q.getByTestId('ptab-jump-archive').count()) === 0 && (await q.getByTestId('keeps-moonturn').count()) === 1, 'Mondwende-Tab: „Bleibt/Geht“ da, Archiv noch nicht')
       await q.getByTestId('tab-market').click()
       await q.getByTestId('card-gift').waitFor()
       assert((await q.getByTestId('ad-glimmer').count()) === 1, 'Bonus-Video: mit Ertrag gibt es die Glimmer-Wahl')
@@ -146,9 +167,7 @@ export const GAMES = [
       const z = await bare.newPage()
       await z.goto(URL + '?installGate=0')
       await z.getByTestId('intro-start').click()
-      await z.getByTestId('chronicle').waitFor({ timeout: 10_000 })
-      await z.keyboard.press('Escape')
-      await z.getByTestId('chronicle').waitFor({ state: 'detached' })
+      await z.getByTestId('intro').waitFor({ state: 'detached' })
       await z.getByTestId('tab-market').click()
       await z.getByTestId('ad-none').waitFor()
       assert((await z.getByTestId('ad-glimmer').count()) === 0 && (await z.getByTestId('ad-pebbles').count()) === 0, 'Bonus-Video: ohne Ertrag kein Knopf mit 0 Glimmer, und keine Kiesel-Wahl mehr')
@@ -203,11 +222,15 @@ export const GAMES = [
       assert((await quests.getByTestId('ring').count()) === openQuests && (await quests.locator('li[data-state="open"] button').count()) === 0, 'Aufträge: Prozent-Ring statt totem Knopf')
       assert((await r.getByTestId('card-quests').locator('[data-testid^="quest-reward-"]').count()) >= 1, 'Aufträge nennen ihre Belohnung')
       await r.getByTestId('deed-firstLight').waitFor()
-      // Die Prüfungen und das Archiv stehen im Mondwende-Tab, erreichbar über Sprungknöpfe
+      // Die Prüfungen und das Archiv stehen im Mondwende-Tab, jedes als eigener Reiter (eine kurze Seite statt elf Bildschirme)
       await r.getByTestId('tab-prestige').click()
+      assert((await r.getByTestId('ptab-jump-layers').getAttribute('aria-selected')) === 'true' && (await r.getByTestId('ptab-archive').count()) === 0, 'Mondwende-Tab öffnet auf der Mondwende selbst')
       await r.getByTestId('ptab-jump-trials').click()
       await r.getByTestId('card-trials').waitFor()
+      assert((await r.getByTestId('ptab-jump-trials').getAttribute('aria-selected')) === 'true', 'Reiter „Prüfungen“ ist als aktiv markiert')
+      await r.getByTestId('ptab-jump-archive').click()
       await r.getByTestId('ptab-archive').waitFor()
+      assert((await r.getByTestId('card-trials').count()) === 0, 'je Reiter eine Seite')
       await viaMenu(r, 'watch')
       const deeds = await r.evaluate(() => window.__engine.get().modules.achievements.done)
       assert(deeds.includes('firstLight'), 'Tat „Erstes Licht“ erreicht')

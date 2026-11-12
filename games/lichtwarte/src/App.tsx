@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { layerForecast, WHEEL_ID, type WheelState, voyageBack, VOYAGES_ID, bestBuy, countAffordableMeta, formatNumber, NUMBER_LOCALES, DAILY_ID, dailyStatus, isFeatureOpen, prestigeReady, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type OfflineState, type VoyagesState, type ProducerDef, type QuestsState, type WorldView, COLLECTIONS_ID, type CollectionsState, REGIONS_ID, type RegionsState } from '@engine/core'
+import { layerForecast, ownedOf, WHEEL_ID, type WheelState, voyageBack, VOYAGES_ID, bestBuy, countAffordableMeta, formatNumber, NUMBER_LOCALES, DAILY_ID, dailyStatus, isFeatureOpen, prestigeReady, MARKET_ID, marketReady, prestigeState, localDayKey, MODULE, QUESTS_ID, type DailyState, type MarketState, type OfflineState, type VoyagesState, type ProducerDef, type QuestsState, type WorldView, COLLECTIONS_ID, type CollectionsState, REGIONS_ID, type RegionsState } from '@engine/core'
 import { connectSfx, currentStep, useEngine, useStore, useSteps } from '@engine/react'
 import { CardPicker, ChallengesCard, FtueCoach, GameShell, Hud, MetaShopPanel, Sheet, UpgradeSheet, useUi, WheelSheet } from '@engine/ui'
 import { tierFor } from '@engine/art'
@@ -59,6 +59,11 @@ function watchBadge(w: WorldView): boolean {
   const d = w.get<DailyState>(DAILY_ID)
   const q = w.get<QuestsState>(QUESTS_ID)
   return (!!d && dailyStatus(d, localDayKey(rt.clock), DAILY).canClaim) || (q?.active.some((x) => !x.claimed && x.progress >= x.goal) ?? false)
+}
+
+/** Das Archiv erscheint erst, wenn es dort etwas zu holen gibt: nach der ersten Mondwende. */
+function archiveVisible(w: WorldView): boolean {
+  return (prestigeState(w).layers[0]?.count ?? 0) >= 1 || (w.get<{ earned: Record<string, number> }>(MODULE.wallet)?.earned[CURRENCY.runeShards] ?? 0) > 0
 }
 
 /** Kurze Zahl in der aktiven Sprache, für Texte außerhalb der UI-Hülle (Ziel-Zeile). */
@@ -190,11 +195,15 @@ function GameOverlays({ selected, onClose, chronicleOpen, setChronicle, ceremony
   const { unread } = useChronicle()
   const p = game.producers.find((x) => x.id === selected) ?? null
   const read = useStore(chronicleRead)
-  // Erster Start: erst der Prolog, dann öffnet sich die erste Chronik-Seite von selbst.
+  const { world } = useEngine(rt)
+  // Erster Start: erst der Prolog, dann gleich die erste Handlung. Die erste Chronik-Seite öffnet sich
+  // als Lohn, sobald die Kräuterkate steht und ihr Fenster wieder zu ist (vorher lagen drei Tipps und
+  // eine Buchseite vor dem ersten Bau).
   const intro = !read.includes('welcome') && !read.includes(PROLOGUE)
+  const built = ownedOf(world, game.producers[0].id) >= 1
   useEffect(() => {
-    if (!intro && unread.some((e) => e.id === 'welcome')) setChronicle(true)
-  }, [intro, unread, setChronicle])
+    if (!intro && built && !selected && unread.some((e) => e.id === 'welcome')) setChronicle(true)
+  }, [intro, built, selected, unread, setChronicle])
   const ldef = ceremony ? game.prestigeLayers.find((l) => l.id === ceremony.layer) : null
   return (
     <>
@@ -220,12 +229,23 @@ function GameOverlays({ selected, onClose, chronicleOpen, setChronicle, ceremony
 function turnNote(w: WorldView, ready: boolean, duration: (ms: number) => string): string | null {
   const o = nextTurnOpens(w)
   if (!o) return null
+  // Vor der ersten Mondwende sind das lauter unbekannte Wörter: Die Zeile kommt erst, wenn die Mondwende
+  // bereit oder in Reichweite ist. Wer schon eine gefeiert hat, sieht sie immer (Befund aus dem ersten Testlauf).
+  const known = (prestigeState(w).layers[0]?.count ?? 0) >= 1
+  const near = layerForecast(w, LAYER.moonturn, 0)
+  if (!known && !ready && !(near && near.secondsToGate > 0 && near.secondsToGate <= TURN_NEAR_S)) return null
   const names = [...o.producers.map((id) => labels.producer(id).name), ...o.systems.map((id) => labels.content(`title.${id}`).name)].join(', ')
   if (ready) return t.play.turnOpensNow(names)
   const fc = layerForecast(w, LAYER.moonturn, 0)
   const eta = fc && fc.secondsToGate > 0 && Number.isFinite(fc.secondsToGate) ? duration(fc.secondsToGate * 1000) : null
   return eta ? t.play.turnOpensIn(eta, names) : t.play.turnOpens(names)
 }
+
+/** Ab so vielen Sekunden bis zur Schwelle gilt die erste Mondwende als „in Reichweite“ (wie die Pille in Notices). */
+const TURN_NEAR_S = 30 * 60
+
+/** Solange der Einstieg auf ein bestimmtes Bauwerk oder den Funkenruf zeigt, schweigt die Ziel-Zeile: eine Ansage, nicht zwei. */
+const COACH_LEADS: readonly string[] = ['build', 'welcome', 'burst']
 
 /** Was das Sternenrad gerade bewirkt (aus der Marke im Tal). */
 function WheelBuffSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -262,8 +282,12 @@ export function App() {
     tabsSeen.add(id)
   }
   const seen = useStore(tabsSeen)
-  // Das Archiv erscheint erst, wenn es dort etwas zu holen gibt: nach der ersten Mondwende
-  const archiveOpen = (prestigeState(world).layers[0]?.count ?? 0) >= 1 || (world.get<{ earned: Record<string, number> }>(MODULE.wallet)?.earned[CURRENCY.runeShards] ?? 0) > 0
+  useSteps(ftue)
+  const coachStep = currentStep(steps, ftue, world)?.id
+  const coachLeads = !!coachStep && COACH_LEADS.includes(coachStep)
+  const turnReady = prestigeReady(world)
+  const metaWaiting = archiveVisible(world) && countAffordableMeta(world) > 0
+  const archiveOpen = archiveVisible(world)
   const branchVisible = (b: string) => {
         // Läden der Langen Nacht und des Zeitalters erst zeigen, wenn es ihre Währung schon gab
         const earned = (rt.get().modules.wallet as { earned: Record<string, number> }).earned
@@ -300,7 +324,8 @@ export function App() {
               <button type="button" className="lw-hud-btn" data-testid="hud-chronicle" onClick={() => setChronicle(true)}>
                 <IconBook />
                 <span>{t.chronicle.menu}</span>
-                {unread ? <span className="ek-badge" aria-label={t.chronicle.unread} /> : null}
+                {/* Laut nur, wenn ein Brief wartet; eine neue Seite ist ein leiser Ring */}
+                {unread ? <span className={`ek-badge${unreadLetter ? '' : ' ek-badge--quiet'}`} aria-label={t.chronicle.unread} /> : null}
               </button>
             </>
           }
@@ -315,7 +340,9 @@ export function App() {
           // folgten auf die dritte Mondwende vier Besuche ohne ein neues Ziel vor Augen.
           goalNote={(g, ui) => turnNote(world, g.kind === 'prestige', ui.duration)}
           goalText={(g) =>
-            g.kind === 'unlock'
+            coachLeads
+              ? null
+              : g.kind === 'unlock'
               ? t.play.goalUnlock(labels.producer(g.id).name)
               : g.kind === 'milestone'
                 ? t.play.goalMilestone(labels.producer(g.id).name, String(g.at))
@@ -347,11 +374,13 @@ export function App() {
       navIcons={{ play: <IconTower />, prestige: <IconMoon />, menu: <IconMenu /> }}
       // Die Leiste hat vier Knöpfe (Tal, Mondwende, Markt, Menü), ab der ersten Langen Nacht fünf (dazu die Lande). Weitere Systeme sind Kacheln im Menü.
       navLabels={{ play: t.app.tabPlay, prestige: t.layers.moonturn.name }}
-      navBadges={{ prestige: prestigeReady(world) || (archiveOpen && countAffordableMeta(world) > 0) }}
+      // Der laute Punkt heißt „jetzt abholbar“ (Mondwende bereit, Geschenk da). „Etwas wäre kaufbar“ und „neu“ sind ein leiser Ring.
+      navBadges={{ prestige: turnReady || metaWaiting }}
+      navQuiet={{ prestige: !turnReady }}
       shopVisible={false}
       tabs={[
         // Die Lande sind ab der ersten Langen Nacht das größte System: Sie stehen in der Leiste, nicht im Menü (Entscheidung 2026-11-12)
-        ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab, icon: <IconMap />, badge: !seen.includes('realms'), hint: t.app.menuHint.realms(fmtShort(openRealmCount(world)), fmtShort(REALM_IDS.length)) }, view: <RealmsTab /> }] : []),
+        ...(isFeatureOpen(world, 'realms') ? [{ item: { id: 'realms', label: t.realms.tab, icon: <IconMap />, badge: !seen.includes('realms'), quiet: true, hint: t.app.menuHint.realms(fmtShort(openRealmCount(world)), fmtShort(REALM_IDS.length)) }, view: <RealmsTab /> }] : []),
         { item: { id: 'market', label: t.trade.tab, icon: <IconPouch />, badge: marketReady(world.get<MarketState>(MARKET_ID), MARKET, rt.clock) }, view: <MarketTab onPreviewStyle={(id) => { setPreviewStyle(id); setTab('play') }} /> },
       ]}
       menuViews={[
@@ -363,7 +392,7 @@ export function App() {
       menuIcons={{ save: <IconSave />, settings: <IconGear />, legal: <IconScroll /> }}
       // Alles zum Neubeginn steht im Mondwende-Tab: das Archiv (sobald es dort etwas gibt) und die Prüfungen
       prestigeSections={[
-        ...(archiveOpen ? [{ id: 'archive', label: t.effectLabels.archive, view: <MetaShopPanel title={t.effectLabels.archive} branchVisible={branchVisible} /> }] : []),
+        ...(archiveOpen ? [{ id: 'archive', label: t.effectLabels.archive, dot: metaWaiting, view: <MetaShopPanel title={t.effectLabels.archive} branchVisible={branchVisible} /> }] : []),
         ...(isFeatureOpen(world, 'trials') ? [{ id: 'trials', label: labels.content('title.trials').name, view: <ChallengesCard cfg={TRIALS} /> }] : []),
       ]}
       notice={<NoticeArea onEvents={() => openTab('watch')} onPrestige={() => openTab('prestige')} compact waiting={{ openWorld: () => openTab('world'), openWheel: () => setWheelInfo(true) }} acts={{ welcome: () => setChronicle(true), build: () => setSelected('kraeuterkate'), unlock: () => setSelected('holzlager'), prestige: () => openTab('prestige') }} />}

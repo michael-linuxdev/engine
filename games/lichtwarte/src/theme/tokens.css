@@ -30,5 +30,7 @@
   --parchment: #fbf1da;
   --parchment-edge: #e6d3ab;
   --ember: #ff9f43;
-  --tabbar-h: 62px;
+  /* in rem: wächst mit der Schrift (große Schrift, breite Fenster) */
+  --tabbar-h: 3.875rem;
+  --sheet-max: 35rem;
 }
