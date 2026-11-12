@@ -241,7 +241,10 @@ export const game: GameDefinition = {
     ...liveModules(),
   ],
   balance,
-  startPrimary: 25,
+  // Wie die Vorlage (Abgleich 2026-11-12): Das erste Bauwerk steht von der ersten Sekunde an auf Stufe 1 und bringt Ertrag,
+  // auch nach jeder Mondwende; der erste Ausbau (24 Glimmer) ist sofort bezahlbar. Vorher begann man bei 0/s.
+  startPrimary: 28,
+  startProducers: { kraeuterkate: 1 },
   seed: 0x1c47a2e1,
 }
 

@@ -85,7 +85,8 @@ const ages = (w: WorldView) => prestigeState(w).layers[2]?.count ?? 0
 
 export const CHRONICLE: readonly ChronicleEntry[] = [
   { id: 'welcome', chapter: 'key', art: 'key', open: () => true },
-  { id: 'firstBuild', chapter: 'key', art: 'kraeuterkate', open: (w) => ownedOf(w, 'kraeuterkate') >= 1, clue: { kind: 'build', id: 'kraeuterkate' } },
+  // Stufe 2: Die Kate steht von Anfang an auf Stufe 1, die Seite gehört zum ersten eigenen Ausbau
+  { id: 'firstBuild', chapter: 'key', art: 'kraeuterkate', open: (w) => ownedOf(w, 'kraeuterkate') >= 2, clue: { kind: 'build', id: 'kraeuterkate', level: 2 } },
   { id: 'holzlager', chapter: 'key', art: 'holzlager', open: (w) => ownedOf(w, 'holzlager') >= 1, clue: { kind: 'build', id: 'holzlager' } },
   { id: 'steinbruch', chapter: 'key', art: 'steinbruch', open: (w) => ownedOf(w, 'steinbruch') >= 1, clue: { kind: 'build', id: 'steinbruch' } },
   { id: 'spring', chapter: 'key', art: 'quellschrein', open: (w) => ownedOf(w, 'quellschrein') >= 1, clue: { kind: 'build', id: 'quellschrein' } },

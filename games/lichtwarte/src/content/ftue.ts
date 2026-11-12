@@ -8,7 +8,8 @@ export type FtueId = 'welcome' | 'build' | 'burst' | 'unlock' | 'offline' | 'pre
 
 export function ftueSteps(chronicleRead: (id: string) => boolean, tabSeen: (id: string) => boolean): { id: FtueId; done: (w: WorldView) => boolean }[] {
   return [
-    { id: 'build', done: (w) => ownedOf(w, 'kraeuterkate') >= 1 },
+    // Die Kräuterkate steht von Anfang an auf Stufe 1: Der erste Schritt ist ihr erster Ausbau
+    { id: 'build', done: (w) => ownedOf(w, 'kraeuterkate') >= 2 },
     { id: 'welcome', done: () => chronicleRead('welcome') },
     { id: 'burst', done: (w) => (w.get<BurstState>(MODULE.burst)?.uses ?? 0) >= 1 },
     { id: 'unlock', done: (w) => ownedOf(w, 'holzlager') >= 1 },

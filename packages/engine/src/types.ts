@@ -337,6 +337,12 @@ export interface GameDefinition {
   balance: BalanceConfig
   /** Primary currency at the very start and minimum after every prestige (so the first buy is always possible). */
   startPrimary: number
+  /**
+   * Producers that stand from the very first second and after every reset (id → level), so there is
+   * income right away. After a reset the balance is at least the price of the next level of the first
+   * of them plus a little: the first upgrade is never out of reach.
+   */
+  startProducers?: Readonly<Record<string, number>>
   /** Seed for a brand-new save (the UI may mix in the clock). */
   seed?: number
 }

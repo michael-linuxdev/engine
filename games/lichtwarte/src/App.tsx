@@ -200,7 +200,8 @@ function GameOverlays({ selected, onClose, chronicleOpen, setChronicle, ceremony
   // als Lohn, sobald die Kräuterkate steht und ihr Fenster wieder zu ist (vorher lagen drei Tipps und
   // eine Buchseite vor dem ersten Bau).
   const intro = !read.includes('welcome') && !read.includes(PROLOGUE)
-  const built = ownedOf(world, game.producers[0].id) >= 1
+  // (die Kate steht von Anfang an auf Stufe 1: „gebaut“ heißt hier, einmal ausgebaut)
+  const built = ownedOf(world, game.producers[0].id) >= 2
   useEffect(() => {
     if (!intro && built && !selected && unread.some((e) => e.id === 'welcome')) setChronicle(true)
   }, [intro, built, selected, unread, setChronicle])

@@ -168,6 +168,12 @@ export const GAMES = [
       await z.goto(URL + '?installGate=0')
       await z.getByTestId('intro-start').click()
       await z.getByTestId('intro').waitFor({ state: 'detached' })
+      // Ein frischer Stand hat seit dem Abgleich schon Ertrag (die erste Kate steht): für diese Regel einen Stand ohne Bauwerk setzen
+      await z.evaluate(() => {
+        const rt = window.__engine
+        const s = rt.get()
+        rt.replace({ ...s, modules: { ...s.modules, producers: { owned: {} } } })
+      })
       await z.getByTestId('tab-market').click()
       await z.getByTestId('ad-none').waitFor()
       assert((await z.getByTestId('ad-glimmer').count()) === 0 && (await z.getByTestId('ad-pebbles').count()) === 0, 'Bonus-Video: ohne Ertrag kein Knopf mit 0 Glimmer, und keine Kiesel-Wahl mehr')

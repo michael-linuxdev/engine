@@ -108,7 +108,7 @@ export const stringsEn: Strings = {
     next: 'Next',
     steps: {
       welcome: { title: `Welcome to ${BRAND.en}`, body: 'A page from the chronicle is waiting for you.' },
-      build: { title: 'The herb cottage', body: 'Tap the herb cottage and raise it.' },
+      build: { title: 'The herb cottage', body: 'The herb cottage is already glowing. Tap it and upgrade it.' },
       burst: { title: 'Spark Call', body: 'Call the sparks: they bring Glimmer right away.' },
       unlock: { title: 'Clear the wilds', body: 'With enough Glimmer you clear the woodshed.' },
       offline: { title: 'Even while you are away', body: 'The watch keeps glowing. Come back later and collect.' },

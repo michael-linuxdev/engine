@@ -88,3 +88,28 @@ describe('producers module', () => {
     expect(quote(view(def, s), 'b', 1).levels).toBe(1)
   })
 })
+
+describe('startProducers: producers that stand from the first second', () => {
+  it('a new game starts with them, and a reset brings them back with the next level affordable', async () => {
+    const { createManualClock, createState, dispatch, tick, unitCost } = await import('../src')
+    const { T0, testGame } = await import('./fixture')
+    const d = testGame({ startProducers: { a: 1 } })
+    const c = createManualClock(T0)
+    let s = createState(d, c)
+    const owned = () => (s.modules.producers as { owned: Record<string, number> }).owned
+    expect(owned()).toEqual({ a: 1 })
+    s = { ...s, modules: { ...s.modules, producers: { owned: { a: 30, b: 12 } } } }
+    s = tick(d, s, 1e9, c).state
+    const r = dispatch(d, s, { module: 'prestige', type: 'perform', payload: { layer: 'l1' } }, c)
+    expect(r.ok).toBe(true)
+    s = r.state
+    expect(owned()).toEqual({ a: 1 })
+    expect(s.core.primary).toBeGreaterThanOrEqual(unitCost(d.producers[0], 1))
+  })
+  it('without the option a new game starts empty (unchanged default)', async () => {
+    const { createManualClock, createState } = await import('../src')
+    const { T0, testGame } = await import('./fixture')
+    const s = createState(testGame(), createManualClock(T0))
+    expect((s.modules.producers as { owned: Record<string, number> }).owned).toEqual({})
+  })
+})

@@ -51,7 +51,7 @@ export const QUESTS: QuestConfig = {
 }
 
 export const DEEDS: AchievementDef[] = [
-  { id: 'firstLight', metric: (w) => ownedOf(w, 'kraeuterkate'), at: 1, reward: [pebbles(5)], bonus: 0.01 },
+  { id: 'firstLight', metric: (w) => ownedOf(w, 'kraeuterkate'), at: 2, reward: [pebbles(5)], bonus: 0.01 },
   { id: 'hundredLevels', metric: producerLevelsTotal, at: 100, reward: [pebbles(10)], bonus: 0.01 },
   { id: 'fiveHundredLevels', metric: producerLevelsTotal, at: 500, reward: [pebbles(20)], bonus: 0.01 },
   { id: 'thousandLevels', metric: producerLevelsTotal, at: 1500, reward: [shards(10)], bonus: 0.01 },

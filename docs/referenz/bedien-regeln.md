@@ -45,6 +45,12 @@ Jetzt wie die Vorlage (Engine: `pressingGoal`):
 - Antippen führt dorthin: zum Bauwerk, zum Rang oder in den Mondwende-Tab.
 - Die Zeile darunter („Die nächste Mondwende öffnet …“) bleibt, wie sie war.
 
+## Start und Rang (Abgleich mit der Vorlage, 2026-11-12)
+
+- **Das erste Bauwerk steht von der ersten Sekunde an** auf Stufe 1 und bringt Ertrag, auch nach jeder Mondwende; der erste Ausbau ist sofort bezahlbar (Engine: `startProducers`). Vorher begann man bei 0/s und legte die Kräuterkate erst frei.
+- Der erste Schritt des Einstiegs ist deshalb der erste **Ausbau**; die erste Chronik-Seite, die Seite zur Kate und die Tat „Erstes Licht“ gehören zu Stufe 2.
+- **Der Wächterrang** steht mit Namen und breitem Balken in der Kopfzeile („Wächterrang 2“), nicht mehr als kleine Zahl.
+
 ## Aufbau
 
 - **Kopf über der Karte:** Kontostand, Vorräte, eine schmale Ziel-Zeile mit dünnem Balken, eine Reihe Pillen. Die Reihe läuft rechts weich aus (scrollbar).

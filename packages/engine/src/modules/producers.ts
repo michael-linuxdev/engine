@@ -86,13 +86,13 @@ export function producersModule(): EngineModule<ProducersState> {
   return {
     id: MODULE.producers,
     version: 1,
-    init: () => ({ owned: {} }),
+    init: (_ctx, def) => ({ owned: { ...def.startProducers } }),
     parse: (raw, _ctx, def) => ({ owned: parseNumRecord(isRecord(raw) ? raw.owned : undefined, ids(def), true) }),
     resetOn: (_s, _layer, _ctx, world) => {
       // Start levels after a prestige come from effects (`start.producer:<id>`).
       const owned: Record<string, number> = {}
       for (const p of world.def.producers) {
-        const n = Math.floor(Math.max(0, world.value(`start.producer:${p.id}`, 0)))
+        const n = Math.floor(Math.max(world.def.startProducers?.[p.id] ?? 0, world.value(`start.producer:${p.id}`, 0)))
         if (n > 0) owned[p.id] = n
       }
       return { owned }
