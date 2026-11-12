@@ -194,10 +194,9 @@ export const game: GameDefinition = {
         knee: 3,
         lateGrowth: 1.25,
         bends: [
-          { from: 32, growth: 1.2 },
-          { from: 36, growth: 1.15 },
-          { from: 42, growth: 1.12 },
-          { from: 52, growth: 1.1 },
+          { from: 32, growth: 1.1 },
+          { from: 43, growth: 1.12 },
+          { from: 50, growth: 1.08 },
         ],
       },
       payout: { base: 3, growth: 1.1 },
