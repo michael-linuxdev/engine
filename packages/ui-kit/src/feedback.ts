@@ -12,7 +12,8 @@ export interface FeedbackItem {
   kind: 'toast' | 'float' | 'fly'
   text?: string
   anchor?: string
-  tone?: 'gain' | 'spend' | 'info'
+  /** `big` is for the rare moments worth celebrating (a new level, a milestone): a larger toast with a shine. */
+  tone?: 'gain' | 'spend' | 'info' | 'big'
 }
 
 /** The game's mapping; `ui` brings number formatting and content names in the active language. */

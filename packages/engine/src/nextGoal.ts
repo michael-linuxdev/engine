@@ -147,7 +147,8 @@ export function pressingGoal(world: WorldView): PressingGoal {
     const st = layerStatus(world, layer.id)
     const ready = st.block === null
     const ratio = Math.max(0, Math.min(1, st.ratio))
-    const urgency = ready ? 0.9 : 0.28 + ratio * 0.55 + (ratio >= NEAR_RATIO ? 0.14 : 0) + (ratio >= NEAR_HOT_RATIO ? 0.1 : 0)
+    // A ready prestige outranks even an affordable upgrade (0.95): it is the decision of the run
+    const urgency = ready ? 0.99 : 0.28 + ratio * 0.55 + (ratio >= NEAR_RATIO ? 0.14 : 0) + (ratio >= NEAR_HOT_RATIO ? 0.1 : 0)
     // Ready counts as done, not as "almost": no extra pull on top
     const g = { kind: 'prestige' as const, layer: layer.id, ready, left: Math.max(0, st.gate - st.earned), payout: st.payout, ratio: ready ? 1 : ratio, urgency }
     out.push(ready ? { ...g, near: false } : scored(g))

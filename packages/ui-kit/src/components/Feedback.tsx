@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import { useUi } from '../useUi'
 import { collectFeedback, FLOAT_MAX, FLOAT_MS, TOAST_MAX, TOAST_MS, type FeedbackItem, type FeedbackMap } from '../feedback'
 
@@ -18,13 +18,25 @@ interface Float {
 /** Delay (ms) between numbers that start in the same batch. */
 const FLOAT_GAP_MS = 280
 
-/** Middle of the anchor; `data-fx-x` (0–1) moves the point along its width, e.g. into the free part of the HUD. */
+/**
+ * Middle of the anchor. `anchor` may list alternatives ("buy,hud"): the first one on screen wins, so a number
+ * can rise where the action happened and fall back to the HUD. `data-fx-x` / `data-fx-y` (0–1, may exceed 1)
+ * move the point along the element, e.g. below the HUD amount instead of across its digits.
+ */
 function centre(anchor: string | undefined): { x: number; y: number } {
-  const el = anchor ? document.querySelector(`[data-fx="${anchor}"]`) : null
+  let el: Element | null = null
+  for (const name of (anchor ?? '').split(',')) {
+    const found = name ? document.querySelector(`[data-fx="${name.trim()}"]`) : null
+    if (found && (found as HTMLElement).offsetParent !== null) {
+      el = found
+      break
+    }
+  }
   if (!el) return { x: window.innerWidth / 2, y: window.innerHeight / 2 }
   const r = el.getBoundingClientRect()
   const fx = Number(el.getAttribute('data-fx-x') ?? 0.5)
-  return { x: r.left + r.width * fx, y: r.top + r.height / 2 }
+  const fy = Number(el.getAttribute('data-fx-y') ?? 0.5)
+  return { x: r.left + r.width * fx, y: r.top + r.height * fy }
 }
 
 /**
@@ -36,12 +48,20 @@ export function FeedbackLayer({ map }: { map: FeedbackMap }) {
   const ui = useUi()
   const [toasts, setToasts] = useState<Toast[]>([])
   const [floats, setFloats] = useState<Float[]>([])
+  // Toasts sit right below the HUD, wherever it ends in this game and on this screen: never across its numbers or the goal
+  const laneRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef(map)
   const uiRef = useRef(ui)
   useEffect(() => {
     mapRef.current = map
     uiRef.current = ui
   })
+  // Measured after the render: the event that brings a toast may also make the HUD taller (a new currency row)
+  useLayoutEffect(() => {
+    if (!toasts.length || !laneRef.current) return
+    const hud = document.querySelector('.ek-hud')?.getBoundingClientRect()
+    if (hud && hud.bottom > 0) laneRef.current.style.top = `${Math.round(hud.bottom + 6)}px`
+  }, [toasts])
   useEffect(() => {
     let n = 0
     // Time from which the next number may start (numbers take turns, also across event batches)
@@ -105,7 +125,7 @@ export function FeedbackLayer({ map }: { map: FeedbackMap }) {
   }, [ui.rt])
   return (
     <div className="ek-fx" data-testid="fx">
-      <div className="ek-fx__toasts" role="status" aria-live="polite">
+      <div ref={laneRef} className="ek-fx__toasts" role="status" aria-live="polite">
         {toasts.map((x) => (
           <p key={x.key} className={`ek-toast ek-toast--${x.tone}`} data-testid="toast">
             {x.text}

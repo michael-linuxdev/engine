@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { nextGoal, pressingGoal, type PressingGoal } from '@engine/core'
 import { useEngine } from '@engine/react'
 import type { UiValue } from '../uiContext'
@@ -21,11 +21,9 @@ export function Hud({ primaryId, icon, extra, sub, goalText, goalNote, onGoal, p
   const ratio = goal.kind === 'unlock' || goal.kind === 'milestone' || goal.kind === 'prestigeProgress' ? goal.ratio : 1
   return (
     <header className="ek-hud">
-      <button type="button" className="ek-hud__amount" data-fx="hud" data-fx-x="0.72" data-testid="hud-amount-btn" onClick={() => ui.open('mult')}>
+      <button type="button" className="ek-hud__amount" data-fx="hud" data-fx-x="0.5" data-fx-y="1.7" data-testid="hud-amount-btn" onClick={() => ui.open('mult')}>
         {icon ? <span className="ek-hud__icon" data-fx="hud-icon" aria-hidden="true">{icon}</span> : null}
-        <span className="ek-hud__value" data-testid="hud-amount">
-          {ui.fmt(state.core.primary)}
-        </span>
+        <Amount value={state.core.primary} />
         <span className="ek-visually-hidden">{ui.labels.currency(primaryId)}</span>
         <span className="ek-hud__rate">{ui.t.common.perSecond(ui.fmt(world.rate()))}</span>
         <span className="ek-visually-hidden">{ui.t.mult.title}</span>
@@ -77,5 +75,45 @@ function PressingStrip({ text, note, onGoal }: NonNullable<Parameters<typeof Hud
     <div className={cls} data-testid="goal" data-kind={goal.kind}>
       {body}
     </div>
+  )
+}
+
+/** Time (ms) the amount takes to count to a new value. */
+const COUNT_MS = 260
+/** A jump by more than this share makes the amount bump. */
+const BUMP_SHARE = 0.25
+
+/**
+ * The amount counts toward its value instead of jumping, and bumps when it leaps (a find, a claim).
+ * With reduced motion it shows the value at once.
+ */
+function Amount({ value }: { value: number }) {
+  const ui = useUi()
+  const [shown, setShown] = useState(value)
+  const [bump, setBump] = useState(0)
+  const from = useRef(value)
+  const still = typeof document !== 'undefined' && (document.documentElement.classList.contains('ek-reduced-motion') || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
+  useEffect(() => {
+    const start = from.current
+    from.current = value
+    if (still || !Number.isFinite(value) || start === value) {
+      setShown(value)
+      return
+    }
+    if (value > start && value - start > Math.max(1, Math.abs(start)) * BUMP_SHARE) setBump((n) => n + 1)
+    const t0 = performance.now()
+    let raf = 0
+    const step = (now: number) => {
+      const k = Math.min(1, (now - t0) / COUNT_MS)
+      setShown(start + (value - start) * k)
+      if (k < 1) raf = requestAnimationFrame(step)
+    }
+    raf = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(raf)
+  }, [value, still])
+  return (
+    <span key={bump} className={`ek-hud__value${bump ? ' is-bump' : ''}`} data-testid="hud-amount" data-value={value}>
+      {ui.fmt(shown)}
+    </span>
   )
 }

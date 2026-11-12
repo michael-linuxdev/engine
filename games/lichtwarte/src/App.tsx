@@ -93,7 +93,7 @@ function SideCurrencies() {
   // Eine Zeile: farbiger Punkt und Zahl; die Namen stehen im Fenster dahinter
   return (
     <>
-      <button type="button" className="lw-purse" data-testid="hud-purse" onClick={() => setOpen(true)}>
+      <button type="button" className="lw-purse" data-fx="purse" data-fx-x="0.5" data-fx-y="1.6" data-testid="hud-purse" onClick={() => setOpen(true)}>
         <span className="ek-visually-hidden">{t.purse.title}:</span>
         {list.map((c) => (
           <span key={c} className={`lw-cur lw-cur--${c}`} data-testid={`hud-${c}`}>
@@ -124,13 +124,19 @@ function SideCurrencies() {
   )
 }
 
+/** Vergrößerung des Bauwerks im Ausbau-Fenster je Wachstumsstufe (Fußpunkt bleibt unten in der Mitte). */
+const HERO_ZOOM: Readonly<Record<number, number>> = { 1: 1.7, 2: 1.4, 3: 1.2 }
+
 function ProducerArt({ p }: { p: ProducerDef }) {
   const ui = useUi()
   const { world } = useEngine(ui.rt)
   const level = (world.get<{ owned: Record<string, number> }>(MODULE.producers)?.owned[p.id] ?? 0)
   return (
     <svg className="lw-upgrade-art" viewBox="-42 -84 84 92" role="img" aria-label={ui.labels.producer(p.id).name}>
-      <BuildingArt id={p.id} tier={Math.max(1, tierFor(level, TIER_LEVELS))} m={currentMood()} />
+      {/* Kleine Stufen größer zeigen: Das Bauwerk füllt sein Bild, statt in der Ecke zu stehen */}
+      <g transform={`scale(${HERO_ZOOM[Math.max(1, tierFor(level, TIER_LEVELS))] ?? 1})`}>
+        <BuildingArt id={p.id} tier={Math.max(1, tierFor(level, TIER_LEVELS))} m={currentMood()} />
+      </g>
     </svg>
   )
 }

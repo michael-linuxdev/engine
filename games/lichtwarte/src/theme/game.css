@@ -1992,3 +1992,199 @@ html:has(.lw-app) {
   width: 100%;
   height: 6px;
 }
+
+/* ── UI-Runde 5: Spielgefühl ─────────────────────────────────────────────── */
+
+/* Ausbau-Knopf: immer derselbe dicke goldene Knopf. Reicht das Geld nicht, bleibt er golden, nur matter,
+   und unten läuft ein Balken voll. Vorher wechselte er zwischen zwei Gestalten und blitzte beim Kauf weiß. */
+.lw-app .ek-buy,
+.lw-app .ek-buy:disabled {
+  min-height: 62px;
+  padding: 0 var(--space-3) 0 var(--space-4);
+  background: linear-gradient(var(--gold), var(--gold-deep));
+  color: var(--night);
+  border: 2px solid var(--night);
+  border-radius: 18px;
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.45), inset 0 -5px 0 rgb(0 0 0 / 0.2), 0 4px 0 var(--night);
+  font-size: var(--fs-xl);
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.35);
+}
+.lw-app .ek-buy:disabled {
+  background: linear-gradient(#e6d2a2, #b99a5e);
+  color: color-mix(in srgb, var(--night) 82%, transparent);
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.35), inset 0 -5px 0 rgb(0 0 0 / 0.12), 0 4px 0 var(--ink-muted);
+  border-color: var(--ink-muted);
+}
+.lw-app .ek-buy:not(:disabled) {
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.45), inset 0 -5px 0 rgb(0 0 0 / 0.2), 0 4px 0 var(--night), 0 0 20px rgb(255 159 67 / 0.5);
+}
+.lw-app .ek-buy:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: inset 0 2px 0 rgb(0 0 0 / 0.15), 0 0 0 var(--night);
+}
+.lw-app .ek-buy.is-bought {
+  filter: none;
+  transform: none;
+}
+.lw-app .ek-buy__price {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px 4px 8px;
+  background: rgb(23 32 64 / 0.16);
+  font-family: var(--font-body);
+  font-size: var(--fs-l);
+  font-weight: 800;
+  text-shadow: none;
+}
+.lw-app .ek-buy__price::before {
+  content: '';
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, var(--surface) 0 18%, var(--gold) 45%, var(--gold-deep) 100%);
+  box-shadow: 0 0 0 1.5px var(--night);
+}
+.lw-app .ek-buy__fill {
+  left: 0;
+  bottom: 0;
+  height: 6px;
+  opacity: 1;
+  background: var(--night);
+  border-right: none;
+  border-radius: 0 3px 3px 0;
+}
+.lw-app .ek-buy.is-ready .ek-buy__fill {
+  opacity: 0;
+}
+
+/* Bild des Bauwerks im Ausbau-Fenster: größer, mit Boden und Schein */
+.lw-app .ek-upgrade__hero {
+  background: radial-gradient(ellipse at 50% 96%, rgb(120 150 90 / 0.55) 0 34%, transparent 36%), radial-gradient(circle at 50% 45%, rgb(255 200 110 / 0.35), transparent 62%), linear-gradient(#f6ead0, #ecdcb8);
+  overflow: hidden;
+}
+.lw-upgrade-art {
+  width: 6rem;
+  height: 6.4rem;
+  overflow: visible;
+}
+.lw-app .ek-upgrade__badge {
+  right: 4px;
+  bottom: 4px;
+}
+
+/* Meilenstein-Balken: hoch, mit Schrift darin und einem Stern am Ziel */
+.lw-app .ek-upgrade__milestone {
+  display: grid;
+  align-items: center;
+}
+.lw-app .ek-upgrade__milestone > * {
+  grid-area: 1 / 1;
+}
+.lw-app .ek-upgrade__milestone .ek-progress {
+  height: 1.5rem;
+  border: 2px solid var(--gold-deep);
+  background: #f3e6c8;
+}
+.lw-app .ek-upgrade__milestone .ek-muted {
+  position: relative;
+  z-index: 1;
+  padding: 0 1.9rem 0 var(--space-3);
+  color: var(--ink);
+  font-size: var(--fs-s);
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+.lw-app .ek-upgrade__milestone::after {
+  content: '★';
+  grid-area: 1 / 1;
+  justify-self: end;
+  z-index: 1;
+  margin-right: 8px;
+  color: var(--gold-deep);
+  font-size: var(--fs-base);
+  line-height: 1;
+}
+
+/* Kontostand: größer, hüpft bei Sprüngen */
+.lw-app .ek-hud__value.is-bump {
+  color: var(--accent-2);
+}
+
+/* Meldungen: eine klare Marke unter der Kopfzeile, mit Glut-Rand */
+.lw-app .ek-toast {
+  background: linear-gradient(var(--night-2), var(--night));
+  color: var(--on-night);
+  border: 2px solid var(--gold);
+  font-family: var(--font-display);
+  font-size: var(--fs-base);
+  box-shadow: 0 6px 18px rgb(23 32 64 / 0.45), 0 0 14px rgb(255 159 67 / 0.35);
+}
+.lw-app .ek-fx__float {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  color: var(--gold-deep);
+  text-shadow: 0 1px 0 var(--surface), 0 0 8px var(--surface), 0 0 3px var(--surface);
+}
+.lw-app .ek-fx--spend {
+  color: var(--accent-2);
+}
+
+/* Karte: Jeder Ausbau lässt das Bauwerk hüpfen und die Stufe am Schild aufblitzen */
+.lw-pop {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.lw-slot__level {
+  display: inline-block;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.ek-reduced-motion) .lw-pop { animation: lw-pop 0.34s cubic-bezier(0.3, 1.5, 0.5, 1); }
+  :root:not(.ek-reduced-motion) .lw-slot__level.is-pop { animation: lw-level-pop 0.4s cubic-bezier(0.3, 1.6, 0.5, 1); }
+}
+@keyframes lw-pop { 0% { transform: scale(1, 1); } 30% { transform: scale(1.08, 0.9); } 60% { transform: scale(0.95, 1.1); } 100% { transform: scale(1, 1); } }
+@keyframes lw-level-pop { 0% { transform: scale(1); } 40% { transform: scale(1.5); color: var(--ember); } 100% { transform: scale(1); } }
+
+/* Der große Moment (Rangaufstieg, Meilenstein): goldene Marke */
+.lw-app .ek-toast--big {
+  background: linear-gradient(var(--gold), var(--gold-deep));
+  color: var(--night);
+  border-color: var(--night);
+  font-size: var(--fs-xl);
+  box-shadow: 0 6px 0 var(--night), 0 0 26px rgb(255 159 67 / 0.7);
+}
+/* Leiste unten: Der aktive Knopf sitzt auf einem leuchtenden Kissen, sein Zeichen ist größer */
+.lw-app .ek-tab {
+  transition: color 0.15s;
+}
+.lw-app .ek-tab.is-active::before {
+  content: '';
+  position: absolute;
+  inset: 6px 14% 6px;
+  border-radius: 16px;
+  background: radial-gradient(ellipse at 50% 30%, rgb(233 185 90 / 0.28), rgb(233 185 90 / 0.08) 70%);
+  box-shadow: inset 0 0 0 1px rgb(233 185 90 / 0.35);
+}
+.lw-app .ek-tab__icon,
+.lw-app .ek-tab__label {
+  position: relative;
+}
+.lw-app .ek-tab.is-active .lw-icon {
+  transform: translateY(-1px) scale(1.15);
+}
+.lw-app .ek-tab .lw-icon {
+  transition: transform 0.18s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.lw-app .ek-tab:active .lw-icon {
+  transform: scale(0.88);
+}
+/* Schilder: Was man sich leisten kann, wippt leise; der beste Kauf deutlicher */
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.ek-reduced-motion) .lw-slot.is-best .lw-slot__plaque { animation: lw-nudge 1.6s ease-in-out infinite; }
+}
+@keyframes lw-nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+.lw-slot.is-best .lw-slot__plaque {
+  box-shadow: 0 2px 6px rgb(23 32 64 / 0.4), 0 0 12px rgb(255 159 67 / 0.7);
+}
