@@ -25,11 +25,7 @@ const r = sim.simulate(def, { profile, hours: Number(hours), play, onEvent })
 console.log(`${slug} · ${profile} · ${hours} h`)
 console.log(sim.formatResult(r, !!process.env.SUMMARY))
 if (process.env.CHECK) {
-  // Lande als eigener Strang (zwei aktive Stunden je Land) nur bei Profilen mit Besuchen, wie in tempo.test.ts:
-  // Wer 16 Stunden am Tag spielt (engaged), wartet zwischen zwei Landen zwangsläufig länger als „drei mal Tempo“,
-  // weil ein Land seine eigene Kasse hat. Bis zur Tempo-Runde öffnete sich bei engaged in 72 h gar kein Land.
-  const landWalls = profile === 'engaged' ? [] : sim.checkWalls(r, 3, 120, Infinity, ['region'])
-  const fails = [...sim.checkTargets(r, sim.game.balanceTargets?.[profile] ?? []), ...sim.checkWalls(r), ...landWalls]
+  const fails = [...sim.checkTargets(r, sim.game.balanceTargets?.[profile] ?? []), ...sim.checkWalls(r), ...sim.checkWalls(r, 3, 120, Infinity, ['region'])]
   for (const f of fails) console.error('ZIEL VERFEHLT: ' + f)
   if (fails.length) process.exit(1)
   console.log('Zielkorridore eingehalten.')

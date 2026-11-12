@@ -85,12 +85,6 @@ export interface PrestigeLayerDef {
    * at once (but no reward).
    */
   milestones?: readonly LayerMilestone[]
-  /**
-   * What a run of this layer leaves standing: every producer starts the new
-   * run at `producerShare` (0–1) of its level, rounded down. Effects on
-   * `start.keep:<layer>` add to the share. Default: nothing is kept.
-   */
-  carry?: { producerShare: number }
 }
 
 export interface LayerMilestone {
@@ -278,7 +272,22 @@ export interface BalanceConfig {
    * `floorSeconds` / `capShare` keep a find between a few seconds of income and a share of
    * (income of this run + one minute of income). `minIntervalMs` throttles all of them.
    */
-  surprises: { chance: number; seconds: number; minIntervalMs: number; secondsMax?: number; every?: { count: number; seconds: number }; floorSeconds?: number; capShare?: number }
+  surprises: {
+    chance: number
+    seconds: number
+    minIntervalMs: number
+    secondsMax?: number
+    every?: { count: number; seconds: number }
+    floorSeconds?: number
+    capShare?: number
+    /**
+     * "Almost there": once per run each, when the income of this run crosses `ratios` of the gate of
+     * the first prestige layer, a find worth `seconds` of income (with the same floor and cap).
+     */
+    near?: { ratios: readonly number[]; seconds: number }
+    /** Lucky return: after at least `minAwayMs` away, `chance` to get `bonus` (0.35 = +35 %) on the claimed offline income. */
+    offline?: { chance: number; minAwayMs: number; bonus: number }
+  }
   helper: { ranks: readonly { cost: Amount; intervalMs: number }[] }
   /** Free room for game-specific knobs (simulator can override). */
   extra?: Record<string, number>

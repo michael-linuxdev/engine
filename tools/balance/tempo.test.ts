@@ -15,14 +15,14 @@ describe('Tempo (Simulator gegen die echte Engine)', () => {
     expect(checkTargets(r, balanceTargets.engaged as readonly BalanceTarget[])).toEqual([])
     expect(checkWalls(r)).toEqual([])
   })
-  it('regular: neun Bauwerke an Tag 1, alle bis Tag 4, Lange Nacht an Tag 4 bis 7, keine Mauer', () => {
+  it('regular: alle Bauwerke um Tag 5, Lange Nacht um Tag 9, keine Mauer', () => {
     const r = simulate(game, { profile: 'regular', hours: 12 * 24 })
     expect(checkTargets(r, balanceTargets.regular as readonly BalanceTarget[])).toEqual([])
     expect(checkWalls(r)).toEqual([])
     // Lande als eigener Strang: Tempo mindestens zwei aktive Stunden je Land
     expect(checkWalls(r, 3, 120, Infinity, ['region'])).toEqual([])
   })
-  it('regular lang: erstes Zeitalter nach etwa drei Wochen, Lange Nacht hat Ruhezeit', () => {
+  it('regular lang: erstes Zeitalter nach drei bis fünf Wochen, Lange Nacht hat Ruhezeit', () => {
     const r = simulate(game, { profile: 'regular', hours: 35 * 24 })
     expect(checkTargets(r, balanceTargets.regularLong as readonly BalanceTarget[])).toEqual([])
     const nights = r.events.filter((e) => e.kind === 'prestige' && e.id === 'longNight').map((e) => e.at)

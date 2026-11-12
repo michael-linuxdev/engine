@@ -31,6 +31,9 @@ export const feedback: FeedbackMap = (e: EngineEvent, ui) => {
       return { kind: 'fly', anchor: 'burst' }
     case 'surprise.found':
       // Der sichere Fund (jede fünfte Stufe) kommt oft: nur Zahl und Flug. Der seltene Glücksfund bekommt die Meldung.
+      // „Fast geschafft“ (72 / 88 / 97 % der Mondwende) und der Glücksfund bei der Rückkehr sind selten: mit Meldung
+      if (e.kind === 'near') return [toast(t.fx.near[Math.min(2, num(e.tier))](ui.fmt(num(e.amount)), glimmer)), { kind: 'fly', anchor: 'map' }]
+      if (e.kind === 'offline') return [toast(t.fx.offlineLuck(ui.fmt(num(e.amount)), glimmer)), { kind: 'fly' }]
       return e.kind === 'lucky'
         ? [toast(t.fx.surprise(ui.fmt(num(e.amount)), glimmer)), { kind: 'fly', anchor: 'map' }]
         : [{ kind: 'float', text: t.fx.gained(ui.fmt(num(e.amount)), glimmer), anchor: 'hud' }, { kind: 'fly', anchor: 'map' }]
