@@ -32,6 +32,15 @@ describe('prestige formulas', () => {
     expect(gateAt(L[0], 0, true)).toBe(500)
     expect(payoutAtGate(L[0], 0, true)).toBe(3)
   })
+  it('further bends flatten the gate from their run on; without bends nothing changes', () => {
+    const bent = { ...L[0], gate: { ...L[0].gate, bends: [{ from: 7, growth: 1.05 }, { from: 9, growth: 1.02 }] } }
+    for (const p of [0, 3, 5, 7]) expect(gateAt(bent, p)).toBe(gateAt(L[0], p))
+    expect(gateAt(bent, 8)).toBe(Math.floor(1000 * 2 ** 5 * 1.1 ** 2 * 1.05))
+    expect(gateAt(bent, 11)).toBe(Math.floor(1000 * 2 ** 5 * 1.1 ** 2 * 1.05 ** 2 * 1.02 ** 2))
+    // A bend at or before the knee replaces the late growth
+    const early = { ...L[0], gate: { ...L[0].gate, bends: [{ from: 5, growth: 1.5 }] } }
+    expect(gateAt(early, 7)).toBe(Math.floor(1000 * 2 ** 5 * 1.5 ** 2))
+  })
   it('√ payout up to ×2 at r = 4, then +0.5 per doubling', () => {
     expect(payoutCurve(1)).toBe(1)
     expect(payoutCurve(4)).toBe(2)

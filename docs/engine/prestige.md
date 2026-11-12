@@ -14,6 +14,8 @@
 }
 ```
 
+Die Schwelle wächst bis zum Knie (`knee`) mit `growth`, danach mit `lateGrowth`. Optional flachen weitere Knicke sie später noch einmal ab: `gate.bends: [{ from: 32, growth: 1.2 }, …]` (aufsteigend nach `from`; ab Lauf `from` gilt deren `growth`).
+
 | Begriff | Bedeutung |
 |---|---|
 | `layers[k].count` | Läufe dieser Schicht insgesamt (für Freischalt-Tore) |

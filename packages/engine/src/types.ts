@@ -55,7 +55,14 @@ export interface PrestigeLayerDef {
   /** Currency paid out by this layer. */
   currency: string
   /** gate(p) = base · growth^min(p, knee) · lateGrowth^max(0, p − knee) */
-  gate: { base: Num; growth: number; knee: number; lateGrowth: number }
+  gate: {
+    base: Num
+    growth: number
+    knee: number
+    lateGrowth: number
+    /** Further bends after the knee, ascending by `from`: from run `from` on the gate grows by `growth` per run. */
+    bends?: readonly { from: number; growth: number }[]
+  }
   /** Optional low gate for the very first run of this layer ever (all layers ≥ this at 0). */
   probe?: { gate: Num; payout: Num }
   /** payout = base · growth^p · f(earned / gate), f = √r up to `sqrtCap`, then +0.5 per doubling. */

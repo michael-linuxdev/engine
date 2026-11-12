@@ -161,10 +161,13 @@ Entscheidung: Die späte Schwelle wächst mit 1,25 statt 1,35; die ersten vier Z
 | Faktor | Jahr 2 | Jahr 3 | Jahr 4 | Jahr 5 |
 |---|---|---|---|---|
 | 1,35 (vorher) | 31 bis 38 | 36 bis 46 | nicht gemessen | nicht gemessen |
-| 1,30 | 26 bis 40, im Mittel 32 | 40 bis 50, im Mittel 44 | läuft noch | läuft noch |
-| **1,25 (jetzt)** | 23 bis 33, im Mittel 27 | 34 bis 40, im Mittel 35 | läuft noch | läuft noch |
+| 1,30 | 26 bis 40, im Mittel 32 | 40 bis 57, im Mittel 45 | 61 bis 84, im Mittel 75 | 84 bis 106, im Mittel 94 |
+| 1,25 allein | 23 bis 33, im Mittel 27 | 34 bis 48, im Mittel 38 | 53 bis 73, im Mittel 64 | 66 bis 89, im Mittel 73 |
+| **1,25 mit Knicken (jetzt)** | 23 bis 33, im Mittel 27 | 34 bis 42, im Mittel 36 | 36 bis 44, im Mittel 40 | 32 bis 41, im Mittel 37 |
 
-Der Abstand wächst mit den Jahren; mit 1,25 beginnt er bei knapp vier Wochen und liegt in Jahr 3 bei fünf. Die Lande fallen bei allen Faktoren am selben Tag (Hochlande Tag 140 bis 466, Küsten Tag 481 bis 859, Inseln ab Tag 876): Die Zeitalter verschieben die Lande nicht.
+Ein einzelner Faktor hält die fünf Wochen nicht: Der Ertrag wächst mit den Jahren langsamer, und der größte Teil der Zeit zwischen zwei Zeitaltern ist Wiederaufbau nach dem Neubeginn. Die Schwelle hat deshalb weitere Knicke (`gate.bends`, neu in der Engine): ab dem 32. Zeitalter wächst sie mit 1,1, ab dem 43. mit 1,12 (das Leuchtfeuer hebt den Ertrag), ab dem 50. mit 1,08. Bis zum 32. Zeitalter (Tag 920) ändert sich nichts. Ein erster Versuch mit 1,2 / 1,15 / 1,12 / 1,1 war zu schwach (Jahr 4: 49 bis 57 Tage).
+
+Über fünf Jahre sind es damit 55 Zeitalter (mit 1,25 allein 46). In Jahr 4 liegt der Abstand mit im Mittel 40 Tagen eher bei knapp sechs als bei fünf Wochen; er wächst aber nicht mehr. Die Lande fallen bei allen Faktoren am selben Tag: Die Zeitalter verschieben die Lande nicht.
 
 ### Festmarken
 
@@ -172,18 +175,19 @@ Entscheidung: knapper. Eine Marke je Mondwende allein reichte nicht: gemessen fi
 
 ### Jahre 4 und 5: Messung
 
-Zwei Läufe über 1.825 Tage (Faktor 1,30 und 1,25); der Simulator spielt Schule und Leuchtfeuer mit und gibt Ereignisse laufend aus (`STREAM=1`). Stand bei Tag 1.076:
+Läufe über 1.825 Tage mit `PLAY=1`, Profil „regular“; der Simulator spielt Schule und Leuchtfeuer mit und gibt Ereignisse laufend aus (`STREAM=1`).
 
 | Was | Gemessen |
 |---|---|
-| Inseln | ab Tag 876, alle 16 bis 18 Tage; die letzte fällt damit um Tag 1.290 |
-| Lehrlinge (zwei Tage, +12 %) | **alle zwanzig nach 128 Tagen ausgebildet** (Tag 876 bis 1.004), der letzte an Tag 1.022 entsandt. Danach hätte Jahr 4 neun Monate lang nur noch die Inseln gehabt. |
-| Lichtkiesel | bremsen nicht: an Tag 1.050 liegen rund 55.000 ungenutzt (der Simulator kauft nichts im Markt), alle zwanzig Lehrlinge kosten zusammen rund 20.500. |
-| Seiten von Buch 4 | 27 Seiten bis Tag 1.062, größter Abstand 18 Tage, zweimal zwei am selben Tag |
+| Inseln (Jahr 4) | Tag 876 bis 1.295, alle 16 bis 18 Tage |
+| Rand der Karte (Jahr 5) | Tag 1.313 bis 1.797, alle 19 bis 22 Tage; das letzte Land öffnet vier Wochen vor dem Ende von Jahr 5 |
+| Lehrlinge | Mit zwei Tagen Ausbildung (+12 % je Lehrling) waren alle zwanzig nach 128 Tagen fertig (Tag 1.004). **Nachgestellt** auf vier Tage und +12,5 %: jetzt ist der zwanzigste an Tag 1.146 ausgebildet und an Tag 1.184 entsandt. Die Schule trägt damit gut zehn Monate; die letzten 111 Tage des Jahres tragen die Inseln allein. |
+| Lichtkiesel | bremsen nicht: an Tag 1.800 liegen rund 107.000 ungenutzt (der Simulator kauft nichts im Markt), alle zwanzig Lehrlinge kosten zusammen rund 20.500. |
+| Großes Leuchtfeuer | alle 30 Stufen von Tag 1.313 bis 1.545, eine Stufe alle acht Tage: Die Ruhezeit bestimmt den Takt, die Gaben der Lande bremsen nie. Danach tragen bis Tag 1.797 nur noch die Lande. |
+| Seiten von Buch 4 | 40 Seiten von Tag 876 bis 1.295, größter Abstand 18 Tage, viermal zwei am selben Tag |
+| Seiten von Buch 5 | 40 Seiten von Tag 1.313 bis 1.797, größter Abstand 22 Tage, einmal zwei am selben Tag |
 
-**Nachgestellt:** Die Ausbildung dauert jetzt vier Tage und wächst je Lehrling um 12,5 % (der zwanzigste 37 Tage, zusammen rund 305 Tage). Damit reicht die Schule über das ganze Jahr der Inseln. Nicht nachgemessen.
-
-Noch offen (die Läufe sind nicht zu Ende): Taktung der Lande am Rand der Karte, die Stufen des Großen Leuchtfeuers, die Seiten von Buch 5, Zeitalter in Jahr 4 und 5.
+**Bewusst nicht geändert:** Das Leuchtfeuer ist nach gut sieben Monaten fertig. Eine längere Ruhezeit würde es über das Jahr strecken, nähme aber Ertrag weg und schöbe die Lande am Rand über das Ende von Jahr 5 hinaus. Offen für den Testlauf: ob die letzten acht Monate von Jahr 5 mit einem Land alle drei Wochen genug tragen und ob die Lichtkiesel ein weiteres Ziel brauchen.
 
 ## Was „fünf Jahre“ hier heißt
 
