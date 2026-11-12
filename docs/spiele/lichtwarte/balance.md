@@ -106,6 +106,8 @@ Seit dem **Abgleich mit der Vorlage (2026-11-12)** gelten Häufigkeit **und Betr
 | „Fast geschafft“ | bei 72 / 88 / 97 % der Mondwende-Schwelle, je einmal im Lauf | 25 s Ertrag |
 | Glück bei der Rückkehr | 15 % Chance nach mindestens 30 min Abwesenheit | +35 % auf den eingesammelten Ertrag |
 
+„Fast geschafft“ meldet sich nie gestapelt: Überspringt der Ertrag mehrere Marken auf einmal (Rückkehr nach einer Pause), gibt es einen Fund für die höchste; ist die Schwelle schon erreicht, gibt es keinen mehr (Testlog 2026-11-12: drei Meldungen auf einmal, als die Mondwende längst bereit war).
+
 Höchstens ein Fund vom Ausbauen je 5 Sekunden. Deckel: 12 % des Ertrags dieses Laufs plus einer Minute; mindestens 8 s Ertrag.
 
 **Vorher** waren die Beträge ein Fünftel davon (8 s und 20 bis 45 s), und die beiden unteren Funde gab es nicht. Die kleinen Beträge sollten die Korridore „alle Bauwerke um Tag 5“ halten; gemessen bleiben die Korridore auch mit den Beträgen der Vorlage eingehalten (alle Bauwerke an Tag 4,1, Lange Nacht an Tag 7,0), weil zugleich die Schwellen der Vorlage gelten (siehe unten).

@@ -190,7 +190,8 @@ describe('surprises: almost there and lucky return', () => {
     run(200_000)
     run(1000)
     expect(surprisesOf(s).near).toBe(1)
-    run(200_000)
+    // stays below the gate (500): at the gate itself "almost there" has nothing left to say
+    run(150_000)
     run(1000)
     run(1000)
     expect(surprisesOf(s).near).toBe(3)
@@ -205,5 +206,35 @@ describe('surprises: almost there and lucky return', () => {
     const d = testGame()
     const m = d.modules.find((x) => x.id === 'surprises')
     expect(m?.parse({ found: 3, lastAt: 5, buys: 9 }, { clock: createManualClock(T0), rng: { next: () => 0 } } as never, d)).toEqual({ found: 3, lastAt: 5, buys: 9, near: 0 })
+  })
+})
+
+describe('surprises: almost there after a jump', () => {
+  const near = (s: EngineState) => (s.modules.surprises as { found: number; near: number })
+  const start = () => {
+    const d = testGame()
+    d.balance.surprises = { chance: 0, seconds: 10, minIntervalMs: 0, near: { ratios: [0.5, 0.7, 0.9], seconds: 20 } }
+    const c = createManualClock(T0)
+    let s = createState(d, c)
+    s = { ...s, modules: { ...s.modules, producers: { owned: { a: 1 } } } }
+    return { d, c, s }
+  }
+  it('several shares crossed in one step give one find, for the highest', () => {
+    const { d, c, s } = start()
+    // probe gate 500 at 1/s: one step to 80 %
+    const a = tick(d, s, 400_000, c)
+    const b = tick(d, a.state, 1000, c)
+    const found = [...a.events, ...b.events].filter((e) => e.type === 'surprise.found')
+    expect(found).toHaveLength(1)
+    expect((found[0] as unknown as { tier: number }).tier).toBe(1)
+    expect(near(b.state).near).toBe(3)
+  })
+  it('already past the gate: no find at all, and none later in this run', () => {
+    const { d, c, s } = start()
+    const a = tick(d, s, 3_000_000, c)
+    const b = tick(d, a.state, 1000, c)
+    const x = tick(d, b.state, 1000, c)
+    expect([...a.events, ...b.events, ...x.events].filter((e) => e.type === 'surprise.found')).toHaveLength(0)
+    expect(near(x.state).near).toBe(7)
   })
 })
