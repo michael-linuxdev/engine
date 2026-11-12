@@ -2073,34 +2073,36 @@ html:has(.lw-app) {
   bottom: 4px;
 }
 
-/* Meilenstein-Balken: hoch, mit Schrift darin und einem Stern am Ziel */
+/* Meilenstein-Balken: hoch, mit Schrift darin und einem Stern am Ziel. Die Schrift darf umbrechen (große Schrift,
+   lange Übersetzung): Der Balken wächst dann mit, abgeschnitten wird nichts. */
 .lw-app .ek-upgrade__milestone {
   display: grid;
-  align-items: center;
+  align-items: stretch;
 }
 .lw-app .ek-upgrade__milestone > * {
   grid-area: 1 / 1;
 }
 .lw-app .ek-upgrade__milestone .ek-progress {
-  height: 1.5rem;
+  height: auto;
+  min-height: 1.5rem;
   border: 2px solid var(--gold-deep);
   background: #f3e6c8;
 }
 .lw-app .ek-upgrade__milestone .ek-muted {
   position: relative;
   z-index: 1;
-  padding: 0 1.9rem 0 var(--space-3);
+  align-self: center;
+  padding: 3px 1.9rem 3px var(--space-3);
   color: var(--ink);
   font-size: var(--fs-s);
   font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: clip;
+  line-height: 1.2;
 }
 .lw-app .ek-upgrade__milestone::after {
   content: '★';
   grid-area: 1 / 1;
   justify-self: end;
+  align-self: center;
   z-index: 1;
   margin-right: 8px;
   color: var(--gold-deep);
