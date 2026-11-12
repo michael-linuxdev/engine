@@ -188,31 +188,3 @@ describe('layer forecast', () => {
     expect(layerForecast(w, 'l1', 600)!.secondsToGate).toBe(Infinity)
   })
 })
-
-describe('carry: what a run leaves standing', () => {
-  const carryGame = testGame()
-  carryGame.prestigeLayers = carryGame.prestigeLayers.map((l, i) => (i === 0 ? { ...l, carry: { producerShare: 0.5 } } : l))
-  const run = (g: typeof carryGame, levels: Record<string, number>, layer = 'l1') => {
-    let s = createState(g, clock)
-    s = { ...s, modules: { ...s.modules, producers: { owned: levels } } }
-    // enough income for the gate of any layer in one long tick
-    s = tick(g, s, 1e12, clock).state
-    const r = dispatch(g, s, { module: 'prestige', type: 'perform', payload: { layer } }, clock)
-    expect(r.ok).toBe(true)
-    return owned(r.state)
-  }
-  it('keeps the share of every level, rounded down; a level of 1 is not kept', () => {
-    expect(run(carryGame, { a: 21, b: 10, c3: 1 })).toEqual({ a: 10, b: 5 })
-  })
-  it('without carry nothing stays (unchanged default)', () => {
-    expect(run(def, { a: 21, b: 10 })).toEqual({})
-  })
-  it('a higher layer without carry still resets everything', () => {
-    let s = createState(carryGame, clock)
-    s = { ...s, modules: { ...s.modules, producers: { owned: { a: 40, b: 40 } }, prestige: { layers: layers(s).map((l, i) => (i === 0 ? { ...l, count: 5, sinceReset: 5 } : l)) } } }
-    s = tick(carryGame, s, 1e13, clock).state
-    const r = dispatch(carryGame, s, { module: 'prestige', type: 'perform', payload: { layer: 'l2' } }, clock)
-    expect(r.ok).toBe(true)
-    expect(owned(r.state)).toEqual({})
-  })
-})

@@ -41,7 +41,7 @@ export const gameDe = {
     sternwarte: { name: 'Sternwarte', blurb: 'Die Kuppel über dem Tal. Von hier aus schaut das Licht zurück.', note: 'Als die Sternwarte noch brannte, schlief niemand im Tal im Dunkeln.' },
   },
   layers: {
-    moonturn: { name: 'Mondwende', action: 'Mondwende feiern', blurb: 'Der Mond dreht sich, das Tal ruht. Du beginnst neu, aber nicht bei null: Die Hälfte jedes Bauwerks bleibt stehen, und das Archiv macht dich stärker.', keeps: ['Die Hälfte der Stufen jedes Bauwerks', 'Archiv und Runensplitter', 'Wächterrang und Taten', 'Sammlung, Schmuck und Talstile', 'Lichtkiesel'], loses: ['Glimmer', 'Die andere Hälfte der Stufen', 'Zweige der Bauwerke'] },
+    moonturn: { name: 'Mondwende', action: 'Mondwende feiern', blurb: 'Der Mond dreht sich, das Tal ruht. Du beginnst neu und behältst, was die Wächter im Archiv bewahren.', keeps: ['Archiv und Runensplitter', 'Wächterrang und Taten', 'Sammlung, Schmuck und Talstile', 'Lichtkiesel'], loses: ['Glimmer', 'Stufen aller Bauwerke', 'Zweige der Bauwerke'] },
     longNight: { name: 'Lange Nacht', action: 'Die Lange Nacht beginnen', blurb: 'Eine Nacht, die Tage dauert. Danach steht die Warte stärker als je zuvor.', keeps: ['Archiv und Runensplitter', 'Wächterrang und Taten', 'Sammlung und Lande'], loses: ['Glimmer und Bauwerke', 'Die Schwelle der Mondwende beginnt wieder klein'] },
     ages: { name: 'Zeitalter', action: 'Ein neues Zeitalter', blurb: 'Du gibst die Wacht weiter. Was du gelernt hast, bleibt als Ahnenlicht.', keeps: ['Alle Archive und Runensplitter', 'Wächterrang und Taten', 'Sammlung und Lande'], loses: ['Glimmer und Bauwerke', 'Nicht ausgegebener Nachttau', 'Die Schwellen beginnen wieder klein'] },
   },
@@ -75,7 +75,6 @@ export const gameDe = {
     today: 'Wacht',
     letter: 'Ein Brief wartet. Chronik öffnen.',
     burst: 'Funkenruf',
-    spark: 'Funken einsammeln',
     map: 'Talkarte',
     wild: 'Wildnis',
     clear: 'Freilegen',

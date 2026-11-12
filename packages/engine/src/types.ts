@@ -85,12 +85,6 @@ export interface PrestigeLayerDef {
    * at once (but no reward).
    */
   milestones?: readonly LayerMilestone[]
-  /**
-   * What a run of this layer leaves standing: every producer starts the new
-   * run at `producerShare` (0–1) of its level, rounded down. Effects on
-   * `start.keep:<layer>` add to the share. Default: nothing is kept.
-   */
-  carry?: { producerShare: number }
 }
 
 export interface LayerMilestone {

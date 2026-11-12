@@ -49,8 +49,7 @@ const LADDER: [number, number, number, number, number, number, number][] = [
   [12_000_000, 1.12, 30_000, 150_000_000, 3, 16, 10],
   [90_000_000, 1.115, 180_000, 1_000_000_000, 5, 20, 10],
   [700_000_000, 1.11, 1_100_000, 8_000_000_000, 8, 25, 10],
-  // Sternwarte ab der 16. Mondwende (vorher 12): Mit dem neuen Tempo fiele sie sonst noch auf Tag 1 (balance.md, Tempo-Runde)
-  [5_000_000_000, 1.105, 7_000_000, 50_000_000_000, 16, 30, 10],
+  [5_000_000_000, 1.105, 7_000_000, 50_000_000_000, 12, 30, 10],
 ]
 
 export const producers: ProducerDef[] = PRODUCER_IDS.map((id, i) => {
@@ -89,7 +88,7 @@ export const archive: MetaItemDef[] = [
     ],
     unlock: { tip: 'immediate', offset: 8_000 },
   },
-  { id: 'sparkBell', currency: shards, branch: 'watch', maxRank: 12, cost: { base: 20, growth: 1.32 }, effects: [{ target: 'burst.seconds', kind: 'add', perRank: 4 }], unlock: { tip: 'wave2', offset: 14_000 } },
+  { id: 'sparkBell', currency: shards, branch: 'watch', maxRank: 12, cost: { base: 20, growth: 1.32 }, effects: [{ target: 'burst.seconds', kind: 'add', perRank: 15 }], unlock: { tip: 'wave2', offset: 14_000 } },
   {
     id: 'nightCandle',
     currency: shards,
@@ -125,17 +124,11 @@ export const archive: MetaItemDef[] = [
   { id: 'lineage', currency: CURRENCY.forebearLight, branch: 'ages', maxRank: 99, cost: { base: 1, growth: 1.15 }, effects: [{ target: 'rate:*', kind: 'mulLinear', perRank: 0.15 }], unlock: { tip: 'free' } },
   { id: 'starLore', currency: CURRENCY.forebearLight, branch: 'ages', maxRank: 99, cost: { base: 1, growth: 1.15 }, effects: [{ target: 'rate:sternwarte', kind: 'mulLinear', perRank: 0.25 }], unlock: { tip: 'free' } },
   { id: 'nightRoots', currency: CURRENCY.forebearLight, branch: 'ages', maxRank: 99, cost: { base: 2, growth: 1.2 }, effects: [{ target: `prestige.payout:${LAYER.longNight}`, kind: 'mulLinear', perRank: 0.1 }], unlock: { tip: 'free' } },
-  { id: 'hearthRecipe', currency: CURRENCY.forebearLight, branch: 'ages', maxRank: 99, cost: { base: 1, growth: 1.2 }, effects: [{ target: 'burst.seconds', kind: 'mulLinear', perRank: 0.03 }], unlock: { tip: 'free' } },
+  { id: 'hearthRecipe', currency: CURRENCY.forebearLight, branch: 'ages', maxRank: 99, cost: { base: 1, growth: 1.2 }, effects: [{ target: 'burst.seconds', kind: 'mulLinear', perRank: 0.1 }], unlock: { tip: 'free' } },
   { id: 'deftHand', currency: CURRENCY.forebearLight, branch: 'ages', maxRank: 99, cost: { base: 2, growth: 1.25 }, effects: [{ target: 'cost:*', kind: 'mulCompound', perRank: 0.97 }], unlock: { tip: 'free' } },
 ]
 
 const balance = defaultBalance(LAYER.moonturn)
-// Tempo-Runde (2026-11-12): Der Funkenruf ist die Handlung der aktiven Sitzung. Er lädt alle 45 s statt alle 5 min
-// und bringt dafür 20 s Ertrag statt 60 s; gemessen lagen vorher 40 bis 60 s reines Warten zwischen zwei Käufen und
-// sechs Rufe in zwanzig Minuten. Funkenglocke und Herdrezept sind entsprechend kleiner (4 s je Rang, 3 % je Rang).
-balance.burst = { ...balance.burst, rechargeMs: 45_000, seconds: 20 }
-// Der Wächterrang soll nicht in vier Tagen ausgereizt sein, wenn doppelt so viele Mondwenden gefeiert werden
-balance.progression = { ...balance.progression, xpPerPrestige: 60 }
 // Rückkehr-Brief: nach mindestens 48 Stunden Abwesenheit ein Geschenk
 // Funde am Wegrand so OFT wie in der Referenz: jede fünfte Stufe ein sicherer Fund, dazu 7 % Glücksfund je Ausbau,
 // höchstens einer je 5 s. Die BETRÄGE sind kleiner als dort (8 s bzw. 20 bis 45 s Ertrag statt 45 s bzw. 90 bis 210 s):
@@ -170,28 +163,17 @@ export const game: GameDefinition = {
     {
       id: LAYER.moonturn,
       currency: CURRENCY.runeShards,
-      // Tempo-Runde (2026-11-12): Die Mondwende ist ein Sprung, keine Strafe. Vorher kostete die erste 18 Minuten Aufbau
-      // und brachte +10 % Ertrag; die zweite kam 58 Minuten später (gemessen, engaged).
-      //  - Die Hälfte der Stufen jedes Bauwerks bleibt stehen (`carry`).
-      //  - Die erste Mondwende verdoppelt den Ertrag für immer (Meilenstein 1).
-      //  - Die zweite Schwelle liegt bei 6 statt 10 Mio.
-      // Gemessen danach: zweite Mondwende rund 12 Minuten nach der ersten, neun Bauwerke am ersten Tag (balance.md).
-      gate: { base: 6_000_000, growth: 3.2, knee: 13, lateGrowth: 1.12 },
+      gate: { base: 10_000_000, growth: 3.2, knee: 13, lateGrowth: 1.12 },
       probe: { gate: 1_000_000, payout: 70 },
       payout: { base: 100, growth: 1.12 },
       minimum: { producersOnline: 3, producersFromCount: 1 },
-      carry: { producerShare: 0.5 },
-      // Die übrigen Meilensteine erst weit nach Tag 90: Die gemessene Taktung bleibt unberührt.
-      milestones: [
-        { at: 1, reward: [{ currency: CURRENCY.glowPebbles, amount: 10 }], bonus: 1 },
-        ...[1000, 2500, 5000, 10_000, 25_000].map((at, i) => ({ at, reward: [{ currency: CURRENCY.glowPebbles, amount: 30 + i * 15 }], bonus: 0.01 })),
-      ],
+      // Meilensteine erst weit nach Tag 90 (regular: rund 730 Mondwenden an Tag 90): Die gemessene Taktung bleibt unberührt.
+      milestones: [1000, 2500, 5000, 10_000, 25_000].map((at, i) => ({ at, reward: [{ currency: CURRENCY.glowPebbles, amount: 30 + i * 15 }], bonus: 0.01 })),
     },
     {
       id: LAYER.longNight,
       currency: CURRENCY.nightDew,
-      // Schwelle 2e15 statt 6e14 (Tempo-Runde): Mit dem schnelleren Tal käme die erste Lange Nacht sonst schon an Tag 2
-      gate: { base: 2e15, growth: 6, knee: 8, lateGrowth: 1.5 },
+      gate: { base: 6e14, growth: 6, knee: 8, lateGrowth: 1.5 },
       payout: { base: 5, growth: 1.08 },
       // Nach jeder Langen Nacht drei Tage Ruhe (wie die Referenz)
       minimum: { lowerRuns: 12, restMs: 3 * 86_400_000 },
@@ -210,8 +192,7 @@ export const game: GameDefinition = {
       // lagen in Jahr 4 im Mittel 64 und in Jahr 5 im Mittel 73 Tage zwischen zwei Zeitaltern. Bis zum 32. bleibt alles gleich.
       // Mit den Knicken gemessen: Jahr 4 im Mittel 40, Jahr 5 im Mittel 37 Tage (fuenf-jahre.md).
       gate: {
-        // 1,5e17 statt 5e16 (Tempo-Runde): sonst käme das erste Zeitalter nach einer Woche
-        base: 1.5e17,
+        base: 5e16,
         growth: 3,
         knee: 3,
         lateGrowth: 1.25,
@@ -306,28 +287,23 @@ export const extraIds = {
 
 /** Zielkorridore für den Simulator (CHECK=1), begründet in docs/spiele/lichtwarte/balance.md. */
 export const balanceTargets = {
-  // Tempo-Runde (2026-11-12): Die erste Stunde ist dicht, jede der ersten Mondwenden öffnet sofort ein Bauwerk.
   engaged: [
-    { label: 'Holzlager nach 2–5 min', kind: 'unlock', id: 'holzlager', clock: 'active', min: 2, max: 5 },
-    { label: 'Steinbruch nach 6–12 min', kind: 'unlock', id: 'steinbruch', clock: 'active', min: 6, max: 12 },
-    { label: 'Erste Mondwende nach 12–18 min', kind: 'prestige', id: LAYER.moonturn, nth: 1, clock: 'active', min: 12, max: 18 },
-    { label: 'Schmiede gleich nach der ersten Mondwende (bis Minute 22)', kind: 'unlock', id: 'schmiede', clock: 'active', min: 12, max: 22 },
-    { label: 'Zweite Mondwende 8–20 min nach der ersten', kind: 'prestige', id: LAYER.moonturn, nth: 2, clock: 'active', min: 22, max: 36 },
-    { label: 'Dritte Mondwende in der ersten Dreiviertelstunde', kind: 'prestige', id: LAYER.moonturn, nth: 3, clock: 'active', min: 28, max: 48 },
-    { label: 'Greifenhorst (Bauwerk 8) in der ersten Stunde', kind: 'unlock', id: 'greifenhorst', clock: 'active', min: 35, max: 65 },
+    { label: 'Holzlager nach 3–5 min', kind: 'unlock', id: 'holzlager', clock: 'active', min: 3, max: 5 },
+    { label: 'Steinbruch nach 8–15 min', kind: 'unlock', id: 'steinbruch', clock: 'active', min: 8, max: 15 },
+    { label: 'Erste Mondwende nach 15–20 min', kind: 'prestige', id: LAYER.moonturn, nth: 1, clock: 'active', min: 15, max: 20 },
+    { label: 'Zweite Mondwende frühestens 20 min später', kind: 'prestige', id: LAYER.moonturn, nth: 2, clock: 'active', min: 40, max: 200 },
   ],
   // „Tag N“ beginnt bei Minute (N − 1) · 1440
   regular: [
-    { label: 'Neun Bauwerke am ersten Tag', kind: 'unlock', id: 'runenhalle', clock: 'wall', min: 0, max: 1440 },
-    { label: 'Alle 10 Bauwerke an Tag 2 bis 4', kind: 'unlock', id: 'sternwarte', clock: 'wall', min: (2 - 1) * 1440, max: 4 * 1440 },
-    { label: 'Lange Nacht an Tag 4 bis 7', kind: 'prestige', id: LAYER.longNight, nth: 1, clock: 'wall', min: (4 - 1) * 1440, max: 7 * 1440 },
+    { label: 'Alle 10 Bauwerke um Tag 5 ± 1', kind: 'unlock', id: 'sternwarte', clock: 'wall', min: (4 - 1) * 1440, max: (6 - 1) * 1440 },
+    { label: 'Lange Nacht um Tag 9 ± 2', kind: 'prestige', id: LAYER.longNight, nth: 1, clock: 'wall', min: (7 - 1) * 1440, max: (11 - 1) * 1440 },
   ],
-  /** Langer Lauf (35 Tage): erstes Zeitalter nach etwa drei Wochen. */
-  regularLong: [{ label: 'Erstes Zeitalter um Tag 20 ± 5', kind: 'prestige', id: LAYER.ages, nth: 1, clock: 'wall', min: (15 - 1) * 1440, max: 25 * 1440 }],
-  /** Späte Taktung (90 Tage): zweites Zeitalter vor Tag 45, drittes vor Tag 80. */
+  /** Langer Lauf (35 Tage): erstes Zeitalter nach drei bis fünf Wochen. */
+  regularLong: [{ label: 'Erstes Zeitalter um Tag 28 ± 7', kind: 'prestige', id: LAYER.ages, nth: 1, clock: 'wall', min: (21 - 1) * 1440, max: (35 - 1) * 1440 }],
+  /** Späte Taktung (90 Tage): zweites Zeitalter deutlich vor Tag 60, drittes vor Tag 90. */
   regularLate: [
-    { label: 'Zweites Zeitalter um Tag 37 ± 7', kind: 'prestige', id: LAYER.ages, nth: 2, clock: 'wall', min: (30 - 1) * 1440, max: 44 * 1440 },
-    { label: 'Drittes Zeitalter um Tag 67 ± 10', kind: 'prestige', id: LAYER.ages, nth: 3, clock: 'wall', min: (57 - 1) * 1440, max: 77 * 1440 },
+    { label: 'Zweites Zeitalter um Tag 47 ± 8', kind: 'prestige', id: LAYER.ages, nth: 2, clock: 'wall', min: (39 - 1) * 1440, max: (55 - 1) * 1440 },
+    { label: 'Drittes Zeitalter um Tag 80 ± 10', kind: 'prestige', id: LAYER.ages, nth: 3, clock: 'wall', min: (70 - 1) * 1440, max: (90 - 1) * 1440 },
   ],
 } as const
 
