@@ -135,7 +135,9 @@ const balance = defaultBalance(LAYER.moonturn)
 // Mit den Beträgen der Referenz lief das gemessene Tempo davon (alle Bauwerke an Tag 2,6 statt Tag 5, zweite Mondwende
 // nach 57 statt 81 Minuten). Deckel: 12 % des Ertrags dieses Laufs plus einer Minute.
 balance.surprises = { chance: 0.07, seconds: 20, secondsMax: 45, minIntervalMs: 5000, every: { count: 5, seconds: 8 }, floorSeconds: 3, capShare: 0.12 }
-balance.offline = { ...balance.offline, comebackMs: 48 * 3600_000, comebackGrant: [{ currency: CURRENCY.glowPebbles, amount: 20 }] }
+// Kurze Abwesenheit (unter fünf Minuten) wird sofort gutgeschrieben, ohne Korb: Im Testlog wurden 14 von 50 Körben
+// nach weniger als zwei Minuten eingesammelt (Entscheidung 2026-11-12). Ab fünf Minuten kommt das Willkommens-Fenster.
+balance.offline = { ...balance.offline, directBelowMs: 5 * 60_000, comebackMs: 48 * 3600_000, comebackGrant: [{ currency: CURRENCY.glowPebbles, amount: 20 }] }
 balance.helper = {
   ranks: [
     { cost: { currency: CURRENCY.glowPebbles, amount: 30 }, intervalMs: 20_000 },

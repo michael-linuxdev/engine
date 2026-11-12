@@ -60,6 +60,29 @@ describe('fixed-step ticker', () => {
 })
 
 describe('offline', () => {
+  it('a short absence is credited at once when the game says so; a longer one still makes a basket', () => {
+    const def = testGame()
+    const quick: GameDefinition = { ...def, balance: { ...def.balance, offline: { ...def.balance.offline, directBelowMs: 5 * 60_000 } } }
+    const clock = createManualClock(T0)
+    let s = createState(quick, clock)
+    s = dispatch(quick, { ...s, core: { ...s.core, primary: 1e6 } }, { module: 'producers', type: 'buy', payload: { id: quick.producers[0].id, count: 1 } }, clock).state
+    const rate = view(quick, s).rate()
+    expect(rate).toBeGreaterThan(0)
+    const before = s.core.primary
+    clock.advance(2 * 60_000)
+    const short = applyOffline(quick, s, clock)
+    expect((short.state.modules.offline as { pending: unknown }).pending).toBeNull()
+    expect(short.state.core.primary).toBeCloseTo(before + rate * 120, 6)
+    expect(short.events.some((e) => e.type === 'offline.direct')).toBe(true)
+    clock.advance(10 * 60_000)
+    const long = applyOffline(quick, short.state, clock)
+    expect((long.state.modules.offline as { pending: { gained: number } | null }).pending?.gained).toBeCloseTo(rate * 600, 6)
+    expect(long.state.core.primary).toBe(short.state.core.primary)
+    // While a basket waits, a further short absence goes into it
+    clock.advance(60_000)
+    const again = applyOffline(quick, long.state, clock)
+    expect((again.state.modules.offline as { pending: { gained: number } | null }).pending?.gained).toBeCloseTo(rate * 660, 6)
+  })
   it('closed form: soft full, decay to hard, nothing beyond', () => {
     expect(offlineGain(1, 3600, 8, 24, 0.5)).toBe(3600)
     expect(offlineGain(1, 10 * 3600, 8, 24, 0.5)).toBe(8 * 3600 + 0.5 * 2 * 3600)

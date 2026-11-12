@@ -70,7 +70,7 @@ export const stringsEn: Strings = {
     best: 'Best buy',
     toStar: (n: string) => `${n} to ★`,
     nextUp: (pct: string) => `Up next, ${pct} % reached`,
-    today: 'Today',
+    today: 'Watch',
     letter: 'A letter is waiting. Open the chronicle.',
     burst: 'Spark Call',
     map: 'Valley map',

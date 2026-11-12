@@ -48,6 +48,9 @@ export function offlineModule(): EngineModule<OfflineState> {
       const gained = offlineGain(world.rate(), elapsedMs / 1000, soft, hard, world.def.balance.offline.decay)
       if (!(gained > 0)) return s
       const prev = s.pending
+      // A short absence is not worth a basket: credit it at once (unless a basket is already waiting)
+      const direct = world.def.balance.offline.directBelowMs ?? 0
+      if (!prev && elapsedMs < direct) return act(s, { grant: [{ currency: primaryCurrency(world.def), amount: gained, source: 'offline' }], events: [{ type: 'offline.direct', amount: gained, elapsedMs }] })
       return {
         ...s,
         pending: {

@@ -62,8 +62,10 @@ export const MARKET: MarketConfig = {
   ad: {
     cooldownMs: 3 * 60_000,
     choices: [
+      // Nur noch eine Belohnung (Entscheidung 2026-11-12): Im Testlog fiel die Wahl 19-mal auf Glimmer und nie auf 6 Lichtkiesel.
+      // Die Kiesel-Wahl bleibt als stillgelegter Eintrag stehen: IDs verschwinden nie (ids.lock.json).
       { id: 'glimmer', seconds: 10 * 60 },
-      { id: 'pebbles', grant: [pebbles(6)] },
+      { id: 'pebbles', grant: [pebbles(6)], retired: true },
     ],
   },
   pass: {

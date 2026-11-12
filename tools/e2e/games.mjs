@@ -141,7 +141,7 @@ export const GAMES = [
       await q.getByTestId('tab-market').click()
       await q.getByTestId('card-gift').waitFor()
       assert((await q.getByTestId('ad-glimmer').count()) === 1, 'Bonus-Video: mit Ertrag gibt es die Glimmer-Wahl')
-      // Ohne Ertrag wäre die Glimmer-Wahl „0 Glimmer“ wert: Sie fehlt dann, die Kiesel-Wahl bleibt
+      // Ohne Ertrag wäre der Bonus „0 Glimmer“ wert: Der Knopf fehlt dann, und die Karte sagt warum
       const bare = await browser.newContext(phone)
       const z = await bare.newPage()
       await z.goto(URL + '?installGate=0')
@@ -150,8 +150,8 @@ export const GAMES = [
       await z.keyboard.press('Escape')
       await z.getByTestId('chronicle').waitFor({ state: 'detached' })
       await z.getByTestId('tab-market').click()
-      await z.getByTestId('ad-pebbles').waitFor()
-      assert((await z.getByTestId('ad-glimmer').count()) === 0, 'Bonus-Video: ohne Ertrag keine Wahl mit 0 Glimmer')
+      await z.getByTestId('ad-none').waitFor()
+      assert((await z.getByTestId('ad-glimmer').count()) === 0 && (await z.getByTestId('ad-pebbles').count()) === 0, 'Bonus-Video: ohne Ertrag kein Knopf mit 0 Glimmer, und keine Kiesel-Wahl mehr')
       await bare.close()
       await q.getByTestId('tab-play').click()
       await q.getByTestId('menu').click()
@@ -314,7 +314,8 @@ export const GAMES = [
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
       await r.getByTestId('upgrade-sheet').waitFor({ state: 'detached' })
 
-      // Kurze Abwesenheit (unter 5 Minuten): kein Fenster, nur ein Einsammeln-Knopf auf der Karte
+      // Ein wartender Korb unter 5 Minuten (etwa nach „Später“): kein Fenster, nur ein Einsammeln-Knopf auf der Karte.
+      // Eine frische Abwesenheit unter 5 Minuten wird sofort gutgeschrieben (Engine-Test), sie macht keinen Korb mehr.
       await r.getByTestId('tab-play').click()
       await r.evaluate(() => {
         const rt = window.__engine
@@ -345,7 +346,10 @@ export const GAMES = [
         rt.replace({ ...s, modules: { ...s.modules, prestige: { layers } } })
         rt.dispatch('producers', 'buy', { id: 'kraeuterkate', count: 1 })
       })
-      await viaMenu(r, 'realms')
+      // Ab der ersten Langen Nacht stehen die Lande in der Leiste (fünf Knöpfe), nicht mehr im Menü
+      await r.getByTestId('tab-realms').waitFor()
+      assert((await r.locator('.ek-tabbar .ek-tab').count()) === 5, 'Leiste: fünf Knöpfe, sobald die Lande offen sind')
+      await r.getByTestId('tab-realms').click()
       await r.getByTestId('realm-open-moorgrund').click()
       await r.getByTestId('realm-sheet').getByText(T.realms.lands.moorgrund.areas.boardwalk, { exact: true }).waitFor()
       await r.getByTestId('area-buy-moorgrund_boardwalk').click()
@@ -538,9 +542,9 @@ export const GAMES = [
       await r.getByTestId('offer-buy-removeAds').click()
       await r.getByTestId('testbuy-yes').click()
       await r.getByTestId('market-tab-free').click()
-      const p2 = await pebbles()
-      await r.getByTestId('ad-pebbles').click()
-      assert((await r.getByTestId('ad-overlay').count()) === 0 && (await pebbles()) === p2 + 6, 'Ohne Werbung: Bonus sofort')
+      const adsBefore = await r.evaluate(() => window.__engine.get().core.primary)
+      await r.getByTestId('ad-glimmer').click()
+      assert((await r.getByTestId('ad-overlay').count()) === 0 && (await r.evaluate(() => window.__engine.get().core.primary)) > adsBefore, 'Ohne Werbung: Bonus sofort')
       await r.getByTestId('tab-play').click()
       assert((await r.locator('.lw-map[data-style="emberRed"]').count()) === 1, 'Talstil auf der Karte')
 

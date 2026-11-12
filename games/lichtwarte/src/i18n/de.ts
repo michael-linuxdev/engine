@@ -72,7 +72,7 @@ export const gameDe = {
     best: 'Bester Kauf',
     toStar: (n: string) => `Noch ${n} bis ★`,
     nextUp: (pct: string) => `Als Nächstes, ${pct} % erreicht`,
-    today: 'Heute',
+    today: 'Wacht',
     letter: 'Ein Brief wartet. Chronik öffnen.',
     burst: 'Funkenruf',
     map: 'Talkarte',

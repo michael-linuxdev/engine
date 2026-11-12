@@ -202,13 +202,19 @@ Steht die letzte Stufe des Leuchtfeuers, wird das Feuer genährt: 30-mal, alle a
 
 | Beobachtung | Zahl | Folgerung |
 |---|---|---|
-| Besuchte Tabs | Tal 131, Markt 74, Mondwende 69, Wacht 11, Laden 7, Lande 2 | Der Markt wird fast so oft geöffnet wie die Mondwende. Wacht und Lande liegen im Menü und werden kaum gefunden. |
-| Bonus-Video | 19-mal Glimmer, nie Lichtkiesel | 6 Lichtkiesel sind gegen zehn Minuten Ertrag keine Wahl. Offen: Betrag anheben oder die Wahl streichen. |
+| Besuchte Tabs | Tal 131, Markt 74, Mondwende 69, Wacht 11, Laden 7, Sammlung 2 | Der Markt wird fast so oft geöffnet wie die Mondwende. Wacht und Sammlung liegen im Menü und werden kaum gefunden. Die Lande waren noch nicht offen (keine Lange Nacht); in einer ersten Fassung dieser Tabelle stand hier fälschlich „Lande 2“. |
+| Bonus-Video | 19-mal Glimmer, nie Lichtkiesel | 6 Lichtkiesel sind gegen zehn Minuten Ertrag keine Wahl. Entschieden: Wahl gestrichen. |
 | Werbung | zweimal nach drei Sekunden abgebrochen, direkt danach „Werbung entfernen“ geöffnet; später gekauft | Der Wunsch, Werbung loszuwerden, ist echt. Ein 60-Sekunden-Video lief über fünf Minuten (App im Hintergrund, Uhr läuft nach Wanduhr; nur aus dem Code geschlossen). |
 | Testkäufe | 4 von 6 Angeboten, 8,96 € von 20 € Testgeld | Stilpaket, Werbefrei, Startpaket, Fest-Pass. Den Fest-Pass erst beim dritten Anlauf. |
 | Rad | 4 von 5 Drehungen dasselbe Feld | Zufall ist geprüft und in Ordnung; es wirkt trotzdem eintönig. |
-| Korb mit Ertrag | 50-mal eingesammelt, 14-mal davon nach weniger als zwei Minuten | Der Korb erscheint schon nach 15 Sekunden Abwesenheit. Offen: Schwelle anheben. |
+| Korb mit Ertrag | 50-mal eingesammelt, 14-mal davon nach weniger als zwei Minuten | Der Korb erscheint schon nach 15 Sekunden Abwesenheit. Entschieden: erst nach einigen Minuten. |
 | Zweiter Tag | drei Sitzungen von zusammen knapp vier Minuten, keine Mondwende | Einsammeln und wieder gehen. Ein Vormittag ist zu wenig für ein Urteil. |
+
+**Entschieden und umgesetzt (Michael, 2026-11-12):**
+
+- **Bonus-Video:** nur noch eine Belohnung (zehn Minuten Glimmer). Die Kiesel-Wahl ist stillgelegt (`retired`), ihre ID bleibt gesperrt erhalten. Ohne Ertrag sagt die Karte, warum es gerade nichts gibt.
+- **Korb:** Eine Abwesenheit unter fünf Minuten wird sofort gutgeschrieben (`balance.offline.directBelowMs`), ohne Korb. Ab fünf Minuten kommt wie bisher das Willkommens-Fenster. Der Knopf auf der Karte bleibt für einen Korb, der schon wartet (nach „Später“).
+- **Wacht und Lande:** Die Lande stehen ab der ersten Langen Nacht als fünfter Knopf in der Leiste (Tal, Mondwende, Lande, Markt, Menü). Der Knopf unten rechts auf der Karte, der schon immer zur Wacht führte, heißt jetzt „Wacht“ statt „Heute“. Die Sammlung bleibt im Menü.
 
 ## Was „fünf Jahre“ hier heißt
 

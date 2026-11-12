@@ -2,7 +2,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { createManualClock, createState, view } from '@engine/core'
+import { adChoices, createManualClock, createState, view } from '@engine/core'
 import { contrast, CONTRAST_PAIRS, cssTokens, walk } from '@engine/testing'
 import { BRAND } from '../src/brand'
 import { NAMES } from '../src/content/names'
@@ -73,6 +73,8 @@ describe('Spiel: Markt (Attrappen)', () => {
     expect(MARKET.skips).toHaveLength(2)
     expect(MARKET.skipCapHours).toBe(6)
     expect(MARKET.ad.choices).toHaveLength(2)
+    // Angeboten wird nur noch Glimmer; die Kiesel-Wahl ist stillgelegt, ihre ID bleibt
+    expect(adChoices(MARKET).map((c) => c.id)).toEqual(['glimmer'])
   })
   it('Echtgeld bleibt aus; Testgeld nur in der Testphase', () => {
     expect(STORE_ENABLED).toBe(false)
