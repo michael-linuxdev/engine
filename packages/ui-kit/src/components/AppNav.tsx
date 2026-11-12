@@ -7,6 +7,8 @@ export interface NavItem {
   label: string
   icon?: ReactNode
   badge?: number | boolean
+  /** The badge only says "new" or "something could be bought": a quiet ring instead of the loud dot. */
+  quiet?: boolean
   /** Something waits there (a dot), as opposed to `badge` = new. Used for views that live in the menu. */
   dot?: boolean
   /** One short line of status under the label of a menu tile ("12 of 60"). */
@@ -71,13 +73,14 @@ export function AppNav({ items, active, onChange, menu, menuIcon, menuActive, me
           >
             {it.icon ? <span className="ek-tab__icon" aria-hidden="true">{it.icon}</span> : null}
             <span className="ek-tab__label">{it.label}</span>
-            {it.badge ? <span className="ek-badge" aria-label={t.common.new}>{typeof it.badge === 'number' ? it.badge : ''}</span> : null}
+            {it.badge ? <span className={`ek-badge${it.quiet ? ' ek-badge--quiet' : ''}`} aria-label={it.quiet ? t.common.new : t.common.ready}>{typeof it.badge === 'number' ? it.badge : ''}</span> : null}
           </button>
         ))}
         <button type="button" className={`ek-tab${menuActive ? ' is-active' : ''}`} data-testid="menu" aria-haspopup="dialog" onClick={() => setOpen(true)}>
           <span className="ek-tab__icon" aria-hidden="true">{menuIcon ?? '☰'}</span>
           <span className="ek-tab__label">{t.nav.menu}</span>
-          {menu.some((m) => m.badge || m.dot) ? <span className="ek-badge" aria-label={t.common.new} /> : null}
+          {/* Loud only when something waits to be collected; "new" alone is a quiet ring */}
+          {menu.some((m) => m.dot) ? <span className="ek-badge" aria-label={t.common.ready} /> : menu.some((m) => m.badge) ? <span className="ek-badge ek-badge--quiet" aria-label={t.common.new} /> : null}
         </button>
       </nav>
       <Sheet open={open} title={t.nav.menuTitle} onClose={() => setOpen(false)} testId="menu-sheet">

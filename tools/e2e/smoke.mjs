@@ -158,6 +158,11 @@ try {
     else await p.getByTestId('tab-prestige').click()
     const item = def.metaShop.find((i) => i.unlock?.tip)
     const metaBtn = p.getByTestId(`meta-buy-${item.id}`)
+    // As a section of the new-beginning tab the shop sits behind its own sub-tab: open the one that holds it
+    for (const jump of await p.locator('[data-testid^="ptab-jump-"]').all()) {
+      if (await metaBtn.count()) break
+      await jump.click()
+    }
     assert(await metaBtn.isEnabled(), `Meta-Gegenstand ${item.id} kaufbar`)
     await metaBtn.click()
     const rank = await p.evaluate((id) => window.__engine.get().modules.metaShop.ranks[id], item.id)

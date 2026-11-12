@@ -40,6 +40,8 @@ export interface GameShellProps<S extends EngineStrings> {
   prestigeSections?: readonly PrestigeSection[]
   /** Dots at the built-in tabs (something is ready there). */
   navBadges?: Partial<Record<'play' | 'prestige' | 'shop', boolean>>
+  /** The dot at a built-in tab only says "something could be bought": shown as a quiet ring. */
+  navQuiet?: Partial<Record<'play' | 'prestige' | 'shop', boolean>>
   /** Icons for the built-in tabs (`play`, `prestige`, `shop`) and the menu button (`menu`). */
   navIcons?: Partial<Record<'play' | 'prestige' | 'shop' | 'menu', ReactNode>>
   /** Other labels for the built-in tabs (default: the engine's own words). */
@@ -173,9 +175,9 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
   }
   const t = p.i18n.t
   const items: NavItem[] = [
-    { id: 'play', label: p.navLabels?.play ?? t.nav.play, icon: p.navIcons?.play, badge: p.navBadges?.play },
-    { id: 'prestige', label: p.navLabels?.prestige ?? t.nav.prestige, icon: p.navIcons?.prestige, badge: p.navBadges?.prestige },
-    ...(p.shopVisible === false ? [] : [{ id: 'shop', label: p.navLabels?.shop ?? t.nav.shop, icon: p.navIcons?.shop, badge: p.navBadges?.shop }]),
+    { id: 'play', label: p.navLabels?.play ?? t.nav.play, icon: p.navIcons?.play, badge: p.navBadges?.play, quiet: p.navQuiet?.play },
+    { id: 'prestige', label: p.navLabels?.prestige ?? t.nav.prestige, icon: p.navIcons?.prestige, badge: p.navBadges?.prestige, quiet: p.navQuiet?.prestige },
+    ...(p.shopVisible === false ? [] : [{ id: 'shop', label: p.navLabels?.shop ?? t.nav.shop, icon: p.navIcons?.shop, badge: p.navBadges?.shop, quiet: p.navQuiet?.shop }]),
     ...(p.tabs ?? []).map((x) => x.item),
   ]
   const go = (id: string) => {
@@ -196,6 +198,7 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
     shop: <MetaShopPanel branchVisible={p.metaBranchVisible} />,
   }
   for (const x of [...(p.tabs ?? []), ...(p.menuViews ?? [])]) views[x.item.id] = x.view
+  const menuView = (p.menuViews ?? []).find((x) => x.item.id === tab)
   const close = () => setOverlay(null)
   return (
     <ErrorBoundary strings={() => t}>
@@ -212,6 +215,15 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
             {p.notice}
             {/* The only scrolling area of the app; focusable so the keyboard can scroll it (axe) */}
             <main className="ek-main" id="main" data-testid={`view-${tab}`} tabIndex={0}>
+              {/* A view opened from the menu has no tab of its own: it names itself and offers the way back */}
+              {menuView ? (
+                <div className="ek-viewhead" data-testid="view-head">
+                  <button type="button" className="ek-viewhead__back" data-testid="view-back" onClick={() => go('play')}>
+                    <span aria-hidden="true">‹</span> {t.common.back}
+                  </button>
+                  <h1 className="ek-viewhead__title">{menuView.item.label}</h1>
+                </div>
+              ) : null}
               {views[tab] ?? p.play}
             </main>
             <AppNav
@@ -220,7 +232,7 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
               onChange={go}
               menu={menu}
               menuIcon={p.navIcons?.menu}
-              menuActive={(p.menuViews ?? []).some((x) => x.item.id === tab)}
+              menuActive={!!menuView}
               menuTop={p.menuTop}
             />
             {testPhase ? <TestPhaseNotice onDone={(record) => {
@@ -257,6 +269,11 @@ export function GameShell<S extends EngineStrings>(p: GameShellProps<S>) {
             <MultSheet open={overlay === 'mult'} onClose={close} />
             {p.overlays}
             {p.feedback ? <FeedbackLayer map={p.feedback} /> : null}
+            {/* Phones held sideways: the game is built upright (shown by CSS only) */}
+            <div className="ek-rotate" role="status" data-testid="rotate-hint">
+              <span className="ek-rotate__icon" aria-hidden="true" />
+              <p>{t.common.rotate}</p>
+            </div>
           </div>
         )}
       </UiProvider>

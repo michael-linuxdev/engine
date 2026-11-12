@@ -226,8 +226,14 @@ function UpgradeBody({ p, art, note, buyModes }: { p: ProducerDef; art?: ReactNo
                   <Pips n={rank} max={max} />
                 </span>
                 <span className="ek-muted ek-branch__blurb">{kind === 'efficiency' ? ui.t.upgrade.efficiencyBlurb : ui.t.upgrade.capacityBlurb}</span>
-                <Button size="small" variant="secondary" data-testid={`branch-${kind}`} disabled={full || world.balance(primaryCurrency(world.def)) < cost} onClick={() => dispatch(MODULE.branches, 'buy', { id: p.id, kind })}>
-                  {full ? ui.t.meta.maxed : ui.fmt(cost)}
+                <Button size="small" variant="secondary" className={full ? undefined : 'ek-btn--cost'} data-testid={`branch-${kind}`} disabled={full || world.balance(primaryCurrency(world.def)) < cost} onClick={() => dispatch(MODULE.branches, 'buy', { id: p.id, kind })}>
+                  {full ? ui.t.meta.maxed : (
+                    <>
+                      {/* A bare number is no price: the game draws its coin before it (.ek-btn--cost), readers hear the currency */}
+                      {ui.fmt(cost)}
+                      <span className="ek-visually-hidden"> {ui.labels.currency(primaryCurrency(world.def))}</span>
+                    </>
+                  )}
                 </Button>
               </div>
             )

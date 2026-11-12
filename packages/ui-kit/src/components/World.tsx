@@ -5,6 +5,7 @@
  * `folio.<id>`, `card.<id>`, `omen.<id>`, `work.<id>`.
  */
 import { useState, type ReactNode } from 'react'
+import { noBreak } from '../text'
 import {
   ALBUM_ID, CARDS_ID, CHOICES_ID, collectionProgress, COLLECTIONS_ID, COMBINE_ID, DECOR_ID, PROJECTS_ID, VISITORS_ID,
   type AlbumConfig, type AlbumState, type CardConfig, type CardsState, type ChoiceState, type CollectionConfig, type CollectionsState, type CombineConfig, type CombineState,
@@ -179,7 +180,7 @@ export function VoyagesCard({ cfg }: { cfg: VoyagesConfig }) {
   const running = cfg.list.find((v) => v.id === s.active)
   const back = voyageBack(s, now)
   const reward = (v: VoyagesConfig['list'][number]) =>
-    [...(v.grant ?? []).map((g) => `${ui.fmt(g.amount)} ${ui.labels.currency(g.currency)}`), ...(v.seconds ? [`${ui.fmt(world.rate() * v.seconds)} ${ui.labels.currency(primaryCurrency(world.def))}`] : [])].join(' + ')
+    [...(v.grant ?? []).map((g) => `${ui.fmt(g.amount)} ${ui.labels.currency(g.currency)}`), ...(v.seconds ? [`${ui.fmt(world.rate() * v.seconds)} ${ui.labels.currency(primaryCurrency(world.def))}`] : [])].map(noBreak).join(' + ')
   return (
     <Card id="voyages">
       <p className="ek-muted" data-testid="voyages-done">{ui.t.live.voyagesDone(String(s.done))}</p>

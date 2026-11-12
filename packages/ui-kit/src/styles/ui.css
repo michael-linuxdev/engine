@@ -70,17 +70,17 @@ html:has(.ek-app) body {
   line-height: 1.2;
 }
 .ek-h1 {
-  font-size: 1.6rem;
+  font-size: var(--fs-2xl);
 }
 .ek-h2 {
-  font-size: 1.3rem;
+  font-size: var(--fs-xl);
 }
 .ek-h3 {
-  font-size: 1.05rem;
+  font-size: var(--fs-base);
 }
 .ek-muted {
   color: var(--ink-muted);
-  font-size: 0.92rem;
+  font-size: var(--fs-m);
 }
 .ek-strong {
   font-weight: 700;
@@ -150,7 +150,7 @@ html:has(.ek-app) body {
 }
 .ek-btn--small {
   padding: var(--space-1) var(--space-3);
-  font-size: 0.92rem;
+  font-size: var(--fs-m);
 }
 .ek-btn__cost {
   font-weight: 400;
@@ -161,7 +161,7 @@ html:has(.ek-app) body {
   border: none;
   background: transparent;
   color: var(--ink);
-  font-size: 1.6rem;
+  font-size: var(--fs-2xl);
   cursor: pointer;
   border-radius: var(--radius-s);
 }
@@ -269,7 +269,7 @@ html:has(.ek-app) body {
   border-radius: 999px;
   background: var(--accent-2);
   color: var(--on-accent);
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
   padding: 0 4px;
 }
 .ek-badge--inline {
@@ -315,7 +315,7 @@ html:has(.ek-app) body {
 }
 .ek-hud__value {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: var(--fs-2xl);
   font-weight: 700;
 }
 .ek-hud__rate {
@@ -331,7 +331,7 @@ html:has(.ek-app) body {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  font-size: 0.9rem;
+  font-size: var(--fs-m);
 }
 .ek-burst {
   min-height: var(--tap);
@@ -352,7 +352,7 @@ html:has(.ek-app) body {
 }
 .ek-burst__charges {
   font-weight: 400;
-  font-size: 0.8rem;
+  font-size: var(--fs-s);
 }
 
 /* Tab bar */
@@ -378,7 +378,7 @@ html:has(.ek-app) body {
   background: transparent;
   color: var(--ink-muted);
   font: inherit;
-  font-size: 0.82rem;
+  font-size: var(--fs-s);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -391,7 +391,7 @@ html:has(.ek-app) body {
   font-weight: 700;
 }
 .ek-tab__icon {
-  font-size: 1.3rem;
+  font-size: var(--fs-xl);
   line-height: 1;
 }
 .ek-tab .ek-badge {
@@ -450,7 +450,7 @@ html:has(.ek-app) body {
 }
 .ek-sheet__title {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: var(--fs-xl);
   margin: 0;
   overflow-wrap: anywhere;
 }
@@ -474,7 +474,7 @@ html:has(.ek-app) body {
 }
 .ek-code {
   font-family: ui-monospace, monospace;
-  font-size: 0.8rem;
+  font-size: var(--fs-s);
   width: 100%;
   border: 1px solid var(--line);
   border-radius: var(--radius-s);
@@ -679,7 +679,7 @@ html:has(.ek-app) body {
 }
 .ek-wheel__result strong {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: var(--fs-xl);
 }
 .ek-wheel__legend {
   list-style: none;
@@ -687,7 +687,7 @@ html:has(.ek-app) body {
   padding: 0;
   display: grid;
   gap: var(--space-1);
-  font-size: 0.9rem;
+  font-size: var(--fs-m);
 }
 .ek-wheel__legend li {
   display: flex;
@@ -891,7 +891,7 @@ html:has(.ek-app) body {
   overflow-wrap: anywhere;
 }
 .ek-upgrade__rate {
-  font-size: 1.15rem;
+  font-size: var(--fs-l);
 }
 .ek-upgrade__badge {
   position: absolute;
@@ -909,7 +909,7 @@ html:has(.ek-app) body {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  font-size: 0.86rem;
+  font-size: var(--fs-m);
 }
 .ek-upgrade__branches {
   display: grid;
@@ -929,7 +929,7 @@ html:has(.ek-app) body {
   gap: var(--space-1);
 }
 .ek-branch__blurb {
-  font-size: 0.8rem;
+  font-size: var(--fs-s);
 }
 .ek-buy {
   position: relative;
@@ -943,7 +943,7 @@ html:has(.ek-app) body {
 .ek-hold-hint {
   margin: 0;
   text-align: center;
-  font-size: 0.82rem;
+  font-size: var(--fs-s);
 }
 .ek-pips {
   display: inline-flex;
@@ -991,7 +991,7 @@ html:has(.ek-app) body {
 }
 
 .ek-menu__hint {
-  font-size: 0.78rem;
+  font-size: var(--fs-s);
   font-weight: 400;
   color: var(--ink-muted);
 }
@@ -1125,7 +1125,7 @@ html:has(.ek-app) body {
   flex: none;
 }
 .ek-pay__need {
-  font-size: 0.8em;
+  font-size: var(--fs-s);
   color: var(--ink-muted);
 }
 
@@ -1164,7 +1164,7 @@ html:has(.ek-app) body {
   transform: translate(-50%, -50%);
   white-space: nowrap;
   font-weight: 800;
-  font-size: 1.15rem;
+  font-size: var(--fs-l);
   color: var(--accent);
   text-shadow: 0 0 6px var(--surface), 0 0 2px var(--surface);
 }
@@ -1343,7 +1343,7 @@ html:has(.ek-app) body {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
-  font-size: 0.85rem;
+  font-size: var(--fs-m);
   color: var(--ink-muted);
 }
 .ek-goal--btn {
@@ -1369,7 +1369,7 @@ html:has(.ek-app) body {
 
 /* Coach: step counter, action row, highlighted target, place at the bottom when it would cover the target */
 .ek-coach__step {
-  font-size: 0.8rem;
+  font-size: var(--fs-s);
   color: var(--ink-muted);
 }
 .ek-coach__actions {
@@ -1413,7 +1413,7 @@ html:has(.ek-app) body {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 0.8rem;
+  font-size: var(--fs-s);
   font-weight: 700;
   background: radial-gradient(closest-side, var(--surface) 76%, transparent 78%), conic-gradient(var(--accent) calc(var(--p) * 1%), var(--surface-2) 0);
 }
@@ -1560,7 +1560,7 @@ html:has(.ek-app) body {
 .ek-goal__note {
   display: block;
   margin-top: 2px;
-  font-size: 0.85rem;
+  font-size: var(--fs-m);
   color: var(--ink-muted);
   text-align: left;
 }
@@ -1568,4 +1568,110 @@ html:has(.ek-app) body {
   border-color: var(--accent);
   background: var(--accent);
   color: var(--on-accent);
+}
+
+/* ── UI pass 4 ─────────────────────────────────────────────────────────── */
+/* Quiet mark: "new" or "something could be bought". The filled dot is kept for "collect this now". */
+.ek-badge--quiet {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 2px solid var(--accent-2);
+  min-width: 10px;
+  min-height: 10px;
+  padding: 0;
+}
+/* A view opened from the menu names itself and offers the way back */
+.ek-viewhead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+.ek-viewhead__back {
+  flex: none;
+  min-height: var(--tap);
+  min-width: var(--tap);
+  padding: 0 var(--space-3) 0 var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ek-viewhead__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  line-height: 1.2;
+}
+/* Sub-tabs of the new-beginning tab: the mark sits beside the label */
+.ek-ptab__jump button {
+  position: relative;
+}
+.ek-ptab__jump .ek-badge {
+  display: inline-block;
+  margin-left: var(--space-1);
+  vertical-align: 0.15em;
+}
+/* The fixed bar reaches the edges of the view; its button keeps its own corners */
+.ek-ptab__bar {
+  margin: 0 calc(-1 * var(--space-3)) calc(-1 * var(--space-3));
+  padding: var(--space-2) var(--space-3);
+}
+/* Bonus window: the sum first */
+.ek-mult-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin: 0;
+  font-size: var(--fs-l);
+}
+.ek-mult-total strong {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+}
+/* Small pills keep a 44 px touch area */
+.ek-pill {
+  position: relative;
+}
+.ek-pill::after {
+  content: '';
+  position: absolute;
+  inset: min(0px, calc((100% - var(--tap)) / 2)) 0;
+}
+/*
+ * Phones held sideways: the game is built upright. The manifest locks the
+ * installed app; in the browser this notice covers the squeezed layout.
+ */
+.ek-rotate {
+  display: none;
+}
+@media (orientation: landscape) and (max-height: 480px) {
+  .ek-rotate {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: var(--fs-l);
+    text-align: center;
+  }
+  .ek-rotate p {
+    margin: 0;
+  }
+  .ek-rotate__icon {
+    width: 34px;
+    height: 56px;
+    border: 3px solid currentColor;
+    border-radius: 8px;
+  }
 }

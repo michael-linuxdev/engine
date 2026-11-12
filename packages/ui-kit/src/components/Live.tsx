@@ -14,6 +14,7 @@ import { useEngine } from '@engine/react'
 import { useUi } from '../useUi'
 import { Button } from './Button'
 import { ProgressBar } from './ProgressBar'
+import { noBreak } from '../text'
 import { Sheet } from './Sheet'
 
 function Card({ title, children, testId }: { title: string; children: ReactNode; testId: string }) {
@@ -37,7 +38,7 @@ function Ring({ ratio }: { ratio: number }) {
 
 function useAmounts() {
   const ui = useUi()
-  return (list: readonly Amount[]) => list.map((g) => `${ui.fmt(g.amount)} ${ui.labels.currency(g.currency)}`)
+  return (list: readonly Amount[]) => list.map((g) => noBreak(`${ui.fmt(g.amount)} ${ui.labels.currency(g.currency)}`))
 }
 
 export function DailyCard({ cfg }: { cfg: DailyConfig }) {
@@ -78,14 +79,14 @@ export function QuestsCard({ cfg }: { cfg?: QuestConfig }) {
         {list.map((q) => {
           const l = ui.labels.content(`quest.${q.id}`)
           const tpl = cfg?.templates.find((x) => x.id === q.id)
-          const reward = tpl ? [...amounts(tpl.reward), ...(tpl.rewardSeconds ? [`${ui.fmt(world.rate() * tpl.rewardSeconds)} ${ui.labels.currency(primaryCurrency(world.def))}`] : [])] : []
+          const reward = tpl ? [...amounts(tpl.reward), ...(tpl.rewardSeconds ? [noBreak(`${ui.fmt(world.rate() * tpl.rewardSeconds)} ${ui.labels.currency(primaryCurrency(world.def))}`)] : [])] : []
           const ready = !q.claimed && q.progress >= q.goal
           return (
             <li key={q.id} className={`ek-row${q.claimed ? ' is-done' : ''}`} data-testid={`quest-${q.id}`} data-state={q.claimed ? 'claimed' : ready ? 'ready' : 'open'}>
               <div className="ek-row__main">
                 <strong>{l.name}</strong>
                 <span className="ek-muted">{l.blurb}</span>
-                <ProgressBar ratio={q.progress / q.goal} label={l.name} />
+                {/* The ring (open) or the button (ready) already shows how far it is: no bar on top of that */}
                 <span className="ek-muted">{ui.t.live.progress(ui.fmt(q.progress), ui.fmt(q.goal))}</span>
                 {reward.length ? <span data-testid={`quest-reward-${q.id}`}>{ui.t.live.rewardLine(reward.join(' + '))}</span> : null}
               </div>

@@ -124,41 +124,55 @@ export interface PrestigeSection {
   id: string
   label: string
   view: ReactNode
+  /** Something can be done there right now (a quiet mark at the tab). */
+  dot?: boolean
 }
 
+const LAYERS = 'layers'
+
 /**
- * The whole new-beginning tab: jump buttons, the layers, further sections of
- * the game (meta shop, challenges …) and a fixed bar with the button of the
- * first layer once it is ready.
+ * The whole new-beginning tab: real sub-tabs (the layers, then further sections
+ * of the game such as meta shop and challenges), one short page each, and a
+ * fixed bar with the button of the first layer once it is ready.
  */
-export function PrestigeTab({ onPerformed, art, sections, title }: { onPerformed?: (layer: string, payout: number) => void; art?: (layer: string) => ReactNode; sections: readonly PrestigeSection[]; /** Label of the jump button to the layers (default: the engine's word). */ title?: string }) {
+export function PrestigeTab({ onPerformed, art, sections, title }: { onPerformed?: (layer: string, payout: number) => void; art?: (layer: string) => ReactNode; sections: readonly PrestigeSection[]; /** Label of the tab with the layers (default: the engine's word). */ title?: string }) {
   const ui = useUi()
   const { world, dispatch } = useEngine(ui.rt)
   const first = world.def.prestigeLayers[0]
   const st = first ? layerStatus(world, first.id) : null
-  const jump = (id: string) => document.getElementById(`ptab-${id}`)?.scrollIntoView({ block: 'start' })
+  // Not remembered on purpose: whoever opens this tab lands on the new beginning itself
+  const [picked, setPicked] = useState(LAYERS)
+  // A section can vanish (not open yet in this save): fall back to the layers
+  const active = sections.some((x) => x.id === picked) ? picked : LAYERS
+  const pick = (id: string) => {
+    setPicked(id)
+    const main = document.getElementById('main')
+    if (main) main.scrollTop = 0
+  }
+  const section = sections.find((x) => x.id === active)
+  const tab = (id: string, label: string, dot?: boolean) => (
+    <button key={id} type="button" role="tab" aria-selected={active === id} className={active === id ? 'is-active' : ''} data-testid={`ptab-jump-${id}`} onClick={() => pick(id)}>
+      {label}
+      {dot && active !== id ? <span className="ek-badge ek-badge--quiet" aria-label={ui.t.common.ready} /> : null}
+    </button>
+  )
   return (
     <div className="ek-ptab" data-testid="prestige-tab">
       {sections.length ? (
-        <div className="ek-segmented ek-ptab__jump" role="group" aria-label={ui.t.prestige.title}>
-          <button type="button" data-testid="ptab-jump-layers" onClick={() => jump('layers')}>
-            {title ?? ui.t.prestige.title}
-          </button>
-          {sections.map((x) => (
-            <button key={x.id} type="button" data-testid={`ptab-jump-${x.id}`} onClick={() => jump(x.id)}>
-              {x.label}
-            </button>
-          ))}
+        <div className="ek-segmented ek-ptab__jump" role="tablist" aria-label={ui.t.prestige.title}>
+          {tab(LAYERS, title ?? ui.t.prestige.title, !!st && st.block === null)}
+          {sections.map((x) => tab(x.id, x.label, x.dot))}
         </div>
       ) : null}
-      <div id="ptab-layers">
-        <PrestigePanel onPerformed={onPerformed} art={art} />
-      </div>
-      {sections.map((x) => (
-        <div key={x.id} id={`ptab-${x.id}`} data-testid={`ptab-${x.id}`}>
-          {x.view}
+      {section ? (
+        <div id={`ptab-${section.id}`} data-testid={`ptab-${section.id}`}>
+          {section.view}
         </div>
-      ))}
+      ) : (
+        <div id="ptab-layers" data-testid="ptab-layers">
+          <PrestigePanel onPerformed={onPerformed} art={art} />
+        </div>
+      )}
       {first && st && st.block === null ? (
         <div className="ek-ptab__bar">
           <Button
