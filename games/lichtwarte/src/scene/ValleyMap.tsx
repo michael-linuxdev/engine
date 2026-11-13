@@ -99,6 +99,17 @@ export function ValleyMap({ onOpen, children, today, letter, preview, decorEdit 
     // nur auf geänderte Stufen reagieren
     // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [tierKey])
+  // Jeder Ausbau ist auf der Karte zu sehen: Das Bauwerk hüpft kurz, die Stufe am Schild auch
+  const levelKey = levels.join(',')
+  const prevLevels = useRef(levels)
+  const [pops, setPops] = useState<Record<string, number>>({})
+  useEffect(() => {
+    const grown = SLOTS.filter((_sl, i) => levels[i] > (prevLevels.current[i] ?? 0)).map((sl) => sl.id)
+    prevLevels.current = levels
+    if (grown.length) setPops((cur) => ({ ...cur, ...Object.fromEntries(grown.map((id) => [id, (cur[id] ?? 0) + 1])) }))
+    // nur auf geänderte Stufen reagieren
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
+  }, [levelKey])
   // Dank nach dem Begrüßen: kurz als Sprechblase am Platz des Gasts
   const [thanks, setThanks] = useState<{ key: number; text: string; y: number } | null>(null)
   useEffect(() => {
@@ -131,8 +142,10 @@ export function ValleyMap({ onOpen, children, today, letter, preview, decorEdit 
             const p = game.producers.find((x) => x.id === s.id)!
             return (
               <g key={s.id} transform={`translate(${(s.x / 100) * MAP_W} ${(s.y / 100) * MAP_H}) scale(${s.scale * BUILD_SCALE})`} opacity={tiers[i] === 0 && !isUnlocked(world, p) ? 0.8 : 1}>
-                <g key={tiers[i]} className={tiers[i] > 0 ? 'lw-rise' : undefined}>
-                  <BuildingArt id={s.id} tier={tiers[i]} m={mood} variant={i} />
+                <g key={pops[s.id] ?? 0} className={pops[s.id] ? 'lw-pop' : undefined}>
+                  <g key={tiers[i]} className={tiers[i] > 0 ? 'lw-rise' : undefined}>
+                    <BuildingArt id={s.id} tier={tiers[i]} m={mood} variant={i} />
+                  </g>
                 </g>
               </g>
             )
@@ -190,7 +203,7 @@ export function ValleyMap({ onOpen, children, today, letter, preview, decorEdit 
                   {isBest ? <span className="lw-slot__up" aria-hidden="true" /> : null}
                   <span className="lw-slot__name">{name}</span>
                   {level > 0 ? (
-                    <span className="lw-slot__level">
+                    <span key={pops[s.id] ?? 0} className={`lw-slot__level${pops[s.id] ? ' is-pop' : ''}`}>
                       <span className="ek-visually-hidden">{t.play.slotLevel(String(level))}</span>
                       <span aria-hidden="true">{level}</span>
                     </span>

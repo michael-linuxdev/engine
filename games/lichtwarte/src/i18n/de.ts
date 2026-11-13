@@ -110,7 +110,7 @@ export const gameDe = {
     next: 'Weiter',
     steps: {
       welcome: { title: `Willkommen in der ${BRAND.de}`, body: 'Eine Seite aus der Chronik wartet auf dich.' },
-      build: { title: 'Die Kräuterkate', body: 'Tippe auf die Kräuterkate und richte sie auf.' },
+      build: { title: 'Die Kräuterkate', body: 'Die Kräuterkate glimmt schon. Tippe sie an und baue sie aus.' },
       burst: { title: 'Funkenruf', body: 'Ruf die Funken: Sie bringen dir sofort Glimmer.' },
       unlock: { title: 'Wildnis freilegen', body: 'Mit genug Glimmer legst du das Holzlager frei.' },
       offline: { title: 'Auch wenn du fort bist', body: 'Die Warte glimmt weiter. Komm später zurück und sammle ein.' },

@@ -269,3 +269,15 @@ describe('pressing goal', () => {
     expect(pressingGoal(view(d, s))).toMatchObject({ kind: 'prestige', ready: true, ratio: 1, near: false })
   })
 })
+
+describe('pressing goal: ready prestige', () => {
+  it('outranks an affordable upgrade', () => {
+    const d = testGame()
+    const c = createManualClock(T0)
+    let s = createState(d, c)
+    s = { ...s, modules: { ...s.modules, producers: { owned: { a: 1 } } } }
+    s = tick(d, s, 600_000, c).state
+    s = { ...s, core: { ...s.core, primary: 1e9 } }
+    expect(pressingGoal(view(d, s))).toMatchObject({ kind: 'prestige', ready: true })
+  })
+})

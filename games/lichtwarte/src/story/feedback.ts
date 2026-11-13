@@ -10,6 +10,8 @@ import { CURRENCY, game } from '../game'
 import { t } from '../runtime'
 
 const toast = (text: string): FeedbackItem => ({ kind: 'toast', text })
+/** Für die seltenen Momente, die gefeiert werden: Rangaufstieg, Meilenstein, „fast geschafft“ kurz vor dem Ziel. */
+const cheer = (text: string): FeedbackItem => ({ kind: 'toast', text, tone: 'big' })
 const str = (v: unknown): string => (typeof v === 'string' ? v : '')
 const num = (v: unknown): number => (typeof v === 'number' ? v : 0)
 
@@ -20,11 +22,13 @@ export const feedback: FeedbackMap = (e: EngineEvent, ui) => {
     case 'producer.bought': {
       if (e.source !== 'manual') return null
       const level = num(e.level)
-      const out: FeedbackItem[] = [{ kind: 'float', text: t.fx.spent(ui.fmt(num(e.cost))), anchor: 'hud', tone: 'spend' }]
+      // Keine „−23“ mehr: Der Preis steht am Knopf, und der Kontostand zählt sichtbar herunter. Die Zahl lag sonst
+      // immer auf etwas anderem (Kontostand, Meilenstein-Balken).
+      const out: FeedbackItem[] = []
       // Meilenstein in diesem Kauf überschritten: Das ist der Moment, der gefeiert wird
       const m = game.balance.milestones
       const crossed = m.levels.filter((l) => l > level - num(e.count) && l <= level).pop()
-      if (crossed) out.push(toast(t.fx.milestone(ui.labels.producer(str(e.id)).name, ui.fmt(crossed), ui.fmt(m.factor))))
+      if (crossed) out.push(cheer(t.fx.milestone(ui.labels.producer(str(e.id)).name, ui.fmt(crossed), ui.fmt(m.factor))))
       return out
     }
     case 'burst.used':
@@ -32,20 +36,20 @@ export const feedback: FeedbackMap = (e: EngineEvent, ui) => {
     case 'surprise.found':
       // Der sichere Fund (jede fünfte Stufe) kommt oft: nur Zahl und Flug. Der seltene Glücksfund bekommt die Meldung.
       // „Fast geschafft“ (72 / 88 / 97 % der Mondwende) und der Glücksfund bei der Rückkehr sind selten: mit Meldung
-      if (e.kind === 'near') return [toast(t.fx.near[Math.min(2, num(e.tier))](ui.fmt(num(e.amount)), glimmer)), { kind: 'fly', anchor: 'map' }]
+      if (e.kind === 'near') return [(num(e.tier) >= 2 ? cheer : toast)(t.fx.near[Math.min(2, num(e.tier))](ui.fmt(num(e.amount)), glimmer)), { kind: 'fly', anchor: 'map' }]
       if (e.kind === 'offline') return [toast(t.fx.offlineLuck(ui.fmt(num(e.amount)), glimmer)), { kind: 'fly' }]
       return e.kind === 'lucky'
         ? [toast(t.fx.surprise(ui.fmt(num(e.amount)), glimmer)), { kind: 'fly', anchor: 'map' }]
-        : [{ kind: 'float', text: t.fx.gained(ui.fmt(num(e.amount)), glimmer), anchor: 'hud' }, { kind: 'fly', anchor: 'map' }]
+        : [{ kind: 'float', text: t.fx.gained(ui.fmt(num(e.amount)), glimmer), anchor: 'hero,hud' }, { kind: 'fly', anchor: 'hero,map' }]
     case 'offline.claimed':
       return [toast(t.fx.offline(ui.fmt(num(e.amount)), glimmer)), { kind: 'fly' }]
     case 'currency.gained':
       // Das Sternenrad zeigt seinen Gewinn selbst, sobald es steht; die Zahl würde ihn vorher verraten
       if (e.source === 'wheel') return null
       // Nebenwährungen: Jede Gutschrift steigt als Zahl an der Kopfzeile auf
-      return { kind: 'float', text: t.fx.gained(ui.fmt(num(e.amount)), ui.labels.currency(str(e.currency))), anchor: 'hud' }
+      return { kind: 'float', text: t.fx.gained(ui.fmt(num(e.amount)), ui.labels.currency(str(e.currency))), anchor: 'purse,hud' }
     case 'level.up':
-      return toast(t.fx.rank(ui.fmt(num(e.level))))
+      return cheer(t.fx.rank(ui.fmt(num(e.level))))
     case 'daily.claimed':
       return toast(t.fx.daily)
     case 'quest.claimed':

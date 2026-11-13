@@ -45,6 +45,28 @@ Jetzt wie die Vorlage (Engine: `pressingGoal`):
 - Antippen führt dorthin: zum Bauwerk, zum Rang oder in den Mondwende-Tab.
 - Die Zeile darunter („Die nächste Mondwende öffnet …“) bleibt, wie sie war.
 
+## Start und Rang (Abgleich mit der Vorlage, 2026-11-12)
+
+- **Das erste Bauwerk steht von der ersten Sekunde an** auf Stufe 1 und bringt Ertrag, auch nach jeder Mondwende; der erste Ausbau ist sofort bezahlbar (Engine: `startProducers`). Vorher begann man bei 0/s und legte die Kräuterkate erst frei.
+- Der erste Schritt des Einstiegs ist deshalb der erste **Ausbau**; die erste Chronik-Seite, die Seite zur Kate und die Tat „Erstes Licht“ gehören zu Stufe 2.
+- **Der Wächterrang** steht mit Namen und breitem Balken in der Kopfzeile („Wächterrang 2“), nicht mehr als kleine Zahl.
+
+## Spielgefühl (UI-Runde 5, 2026-11-12)
+
+Grundlage: Kauf und Tipp in beiden Spielen Bild für Bild aufgenommen (60 bis 900 ms nach dem Tippen).
+
+- **Ausbau-Knopf:** immer derselbe dicke goldene Knopf mit Preis-Marke (Münze und Zahl). Reicht das Geld nicht, ist er matter, und unten läuft ein Balken voll. Vorher wechselte er zwischen zwei Gestalten und blitzte beim Kauf weiß.
+- **Bild des Bauwerks** im Ausbau-Fenster füllt seinen Rahmen (kleine Stufen vergrößert), mit Boden und Schein.
+- **Meilenstein-Balken:** hoch, mit der Schrift darin und einem Stern am Ziel.
+- **Zahlen und Meldungen liegen nie auf anderen Zahlen:** Die „−23“ beim Kauf entfällt (der Preis steht am Knopf, der Kontostand zählt herunter). Funde steigen am Bild des Bauwerks auf, Nebenwährungen an der Vorräte-Zeile. Meldungen stehen direkt unter der Kopfzeile, wo auch immer sie gerade endet.
+- **Kontostand** zählt zu seinem neuen Wert, statt zu springen, und hüpft bei großen Sprüngen.
+- **Große Momente** (Rangaufstieg, Meilenstein, „fast geschafft“ bei 97 %) bekommen eine goldene Marke mit Glanz statt der normalen Meldung.
+- **Karte:** Jeder Ausbau lässt das Bauwerk hüpfen und die Stufe am Schild aufblitzen; das Schild des besten Kaufs wippt.
+- **Leiste:** Der aktive Knopf sitzt auf einem leuchtenden Kissen.
+- **Ziel-Zeile:** Eine bereite Mondwende schlägt auch einen bezahlbaren Ausbau.
+
+Alles Bewegte ruht bei „Ruhige Bewegung“.
+
 ## Aufbau
 
 - **Kopf über der Karte:** Kontostand, Vorräte, eine schmale Ziel-Zeile mit dünnem Balken, eine Reihe Pillen. Die Reihe läuft rechts weich aus (scrollbar).

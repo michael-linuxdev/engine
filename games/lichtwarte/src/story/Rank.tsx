@@ -1,4 +1,4 @@
-/** Wächterrang: kleine Kachel in der Kopfzeile (Rang und Balken) und das Fenster dazu. */
+/** Wächterrang: Kachel in der Kopfzeile (Name, Rang und Balken) und das Fenster dazu. */
 import { useEffect, useRef, useState } from 'react'
 import { levelMult, levelOf, MODULE, type ProgressionState } from '@engine/core'
 import { useEngine } from '@engine/react'
@@ -24,12 +24,11 @@ export function RankTile({ onOpen }: { onOpen: () => void }) {
   }, [r.level])
   return (
     <button type="button" key={pulse} className={`lw-hud-btn lw-rank${pulse ? ' is-up' : ''}`} data-testid="hud-rank" data-level={r.level} onClick={onOpen}>
-      <strong aria-hidden="true">{r.level}</strong>
-      <span>{t.rank.short}</span>
+      {/* Wie die Vorlage: der Rang mit Namen und einem Balken, an dem man ihn wachsen sieht */}
+      <span className="lw-rank__name">{t.rank.title(String(r.level))}</span>
       <span className="lw-rank__bar" aria-hidden="true">
         <i style={{ width: `${Math.round(r.ratio * 100)}%` }} />
       </span>
-      <span className="ek-visually-hidden">{t.rank.title(String(r.level))}</span>
     </button>
   )
 }

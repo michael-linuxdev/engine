@@ -27,6 +27,11 @@ import type {
 } from './types'
 import { walletAdd, WALLET_ID, type WalletState } from './modules/wallet'
 import { isResult } from './result'
+import { unitCost } from './producers'
+import { MODULE } from './modules/ids'
+
+/** What is left over after the first upgrade following a reset (see `startProducers`). */
+const START_SPARE = 5
 
 export { act } from './result'
 
@@ -254,7 +259,15 @@ function prestigeDraft(def: GameDefinition, d: Draft, ctx: Ctx, layer: string, j
     modules[m.id] = rule === 'reset' ? m.init(ctx, def) : rule(d.modules[m.id], layer, ctx, before)
   }
   d.modules = modules
-  d.core = { ...d.core, primary: clampNum(startPrimary), primaryRun: 0 }
+  // With standing producers the next level of the first one is always affordable right after the reset
+  let floor = 0
+  const firstId = Object.keys(def.startProducers ?? {})[0]
+  const first = firstId ? def.producers.find((p) => p.id === firstId) : undefined
+  if (first) {
+    const level = (modules[MODULE.producers] as { owned?: Record<string, number> } | undefined)?.owned?.[first.id] ?? 0
+    floor = unitCost(first, level, Math.max(0, before.value(`cost:${first.id}`, 1))) + START_SPARE
+  }
+  d.core = { ...d.core, primary: clampNum(Math.max(startPrimary, floor)), primaryRun: 0 }
   grant(def, d, ldef.currency, payout, `prestige:${layer}`, jobs)
   jobs.push({ kind: 'event', event: { type: 'prestige.performed', layer, payout } })
   return true

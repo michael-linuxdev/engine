@@ -46,11 +46,12 @@ export function BuyButton({ p, label }: { p: ProducerDef; label?: string }) {
   }, [level])
   const count = q.levels || 1
   return (
-    <Button data-testid={`buy-${p.id}`} className={`ek-buy${affordable ? ' is-ready' : ''}${flash ? ' is-bought' : ''}`} repeat disabled={!unlocked || !affordable} onClick={buy}>
+    <Button data-testid={`buy-${p.id}`} data-fx="buy" data-fx-y="-0.1" className={`ek-buy${affordable ? ' is-ready' : ''}${flash ? ' is-bought' : ''}`} repeat disabled={!unlocked || !affordable} onClick={buy}>
       <span className="ek-buy__fill" style={{ width: `${Math.round(ratio * 100)}%` }} data-testid="buy-fill" data-ratio={Math.round(ratio * 100)} aria-hidden="true" />
       <span className="ek-buy__label">{ui.t.upgrade.buy(count > 1 ? `×${count}` : '').trim()}</span>
       <span className="ek-visually-hidden">{label ?? ui.labels.producer(p.id).name}</span>
-      <span className="ek-btn__cost">{ui.fmt(q.cost)}</span>
+      {/* The price as its own chip: a game can draw its coin in front of it */}
+      <span className="ek-btn__cost ek-buy__price">{ui.fmt(q.cost)}</span>
     </Button>
   )
 }
@@ -177,7 +178,7 @@ function UpgradeBody({ p, art, note, buyModes }: { p: ProducerDef; art?: ReactNo
     <div className="ek-stack">
       {/* Compact like a card over the map: picture with level badge, yield and a short line beside it */}
       <div className="ek-upgrade__top">
-        <div className="ek-upgrade__hero">
+        <div className="ek-upgrade__hero" data-fx="hero" data-fx-y="0.35">
           {art}
           <span className="ek-upgrade__badge">
             <span className="ek-visually-hidden">{ui.t.common.level('').trim()}</span>
